@@ -1,0 +1,61 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Add Conclusion</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="70px">
+    <div>
+      <div style="display: flex; justify-content: space-between;">
+        <p class="subtitle">Upload Documents</p>
+        <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyyy' }}</b></p>
+      </div>
+      <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+        (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+          Drag and Drop or
+          <p class="browser" (click)="openFileSelector()">Browse File</p>
+        </ng-template>
+      </ngx-file-drop>
+    </div>
+  </mat-grid-list>
+  <div class="upload-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="upload-name-style">
+        <tr>
+          <td class="subtitle">{{ temporalDocument.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <br>
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="2">
+      <div class="textarea">
+        <br><br>
+        <p >Comment</p>
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea required matInput [(ngModel)]="comment" #message
+            maxlength="500"></textarea>
+        </mat-form-field>
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_comment">Field is required</mat-hint>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="validForm()">Save</button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,170 @@
+<div *ngIf="ready">
+  <!------------------------------------OPEN HEADER------------------------------------------>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Add Call</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <!-----------------------------------primera seccion-------------------------------------->
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <mat-form-field appearance="fill">
+            <mat-label>Caller</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_call.caller">
+              <mat-option *ngFor="let item of userto_catalogue.value" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <mat-form-field appearance="fill">
+            <mat-label>Callee</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_call.calle">
+              <mat-option selected disabled value="">Callee</mat-option>
+              <mat-option *ngFor="let item of userto_catalogue.value" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="pickertres" placeholder="Date" [(ngModel)]="data_call.date">
+            <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+            <mat-datepicker #pickertres></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Time</mat-label>
+            <input matInput required placeholder="Time" [(ngModel)]="data_call.time" type="text" />
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Duration</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_call.duration">
+            <mat-option *ngFor="let item of duration_catalogue" [value]="item.id">
+              {{ item.duration }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea" style="height: 80%;">
+          <p class="subtitle" style="font-size: 12px; margin: 0;"> Welcome Call </p>
+          <mat-checkbox class="example-margin" [(ngModel)]="data_call.welcomeCall" [checked]="data_call.welcomeCall">
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea" style="height: 80%;">
+          <p class="subtitle" style="font-size: 12px; margin: 0;"> Escalate</p>
+          <mat-checkbox class="example-margin" [(ngModel)]="data_call.escalate" [checked]="data_call.escalate">
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service Record</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_call.serviceRecordId" (ngModelChange)="searchWorkOrder()">
+            <mat-option *ngFor="let item of serviceRecord" [value]="item.id">
+              {{ item.numberServiceRecord }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    <!--
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service Line</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_call.serviceLineId">
+            <mat-option *ngFor="let item of serviceline_catalogue" [value]="item.id">
+              {{ item.serviceLine }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    -->
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Work Order</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_call.workOrderId" (ngModelChange)="searchService()">
+            <mat-option *ngFor="let item of wo" [value]="item.id">
+              {{ item.numberWorkOrder }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_call.serviceId">
+            <mat-option *ngFor="let item of service" [value]="item.id">{{item.serviceNumber}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Assistants</mat-label>
+            <mat-select [formControl]="toppings" multiple [(ngModel)]="data_call.assistance">
+              <mat-option *ngFor="let data of userto_catalogue.value" [value]="data.id">{{data.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="130px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p>Comment</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput [(ngModel)]="data_call.comments" #message maxlength="500">{{data_call.reply}}</textarea>
+            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-dialog-content>
+  <!----------------------------------------------------------------------->
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save();">Add Call</button>
+    </div>
+  </mat-dialog-actions>
+</div>

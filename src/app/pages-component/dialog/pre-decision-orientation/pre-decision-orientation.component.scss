@@ -1,0 +1,40 @@
+mat-card{
+    padding: 15px!important;
+    margin: 15px 0 15px 0!important;
+}
+
+.addPropperty{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.wid{
+    width: 100%;
+}
+
+.page__section-button--big {
+    flex: 0 1 146px;
+}
+
+th.mat-header-cell {
+    text-align: center !important;
+}
+
+
+.acot{
+  display: flex;
+  align-items: center;
+}
+
+.dot{
+  width: 10px;
+  height: 10px;
+  background: #ffe0e0;
+  border-radius: 100%;
+  border: solid 1px #979797;
+}
+
+  .urgente{
+    background: #ffe0e0;
+  }

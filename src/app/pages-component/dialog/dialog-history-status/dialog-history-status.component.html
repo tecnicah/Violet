@@ -1,0 +1,79 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Status History</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!-----------------------------------content-------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <div class="comments" *ngFor="let item of history; let i = index">
+    <mat-grid-list cols="10" rowHeight="80px">
+      <mat-grid-tile [colspan]="10" [rowspan]="1">
+        <div style="width: 100%;">
+          <p class="subtitledos">Status #{{i+1}}</p>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="10" rowHeight="80px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+              <img class="avatar" src="{{_services.url_images}}{{item.createdByNavigation.avatar}}" alt=""
+                *ngIf="item.createdByNavigation.avatar != null">
+              <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="item.createdByNavigation.avatar === null"></div>
+            </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Name</span><br />
+              {{item.createdByNavigation.name}} {{item.createdByNavigation.lastName}} {{item.createdByNavigation.motherLastName}}
+            </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Title</span><br />
+              <span> {{item.createdByNavigation.userType.type}}</span>
+            </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Date</span><br />
+            {{item.createdDate | date:'dd MMM yyy'}}
+          </div>
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Status</span><br />
+          <span> {{statusName(item.status)}}</span>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="160px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p>Comment</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput (change)="item.comment = $event.target.value" #message maxlength="500"
+              [disabled]="true">{{item.comment}}</textarea>
+            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</mat-dialog-content>

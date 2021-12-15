@@ -1,0 +1,274 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin center / {{tableCatalog}}</div>
+    <br>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <!-- Title dependiendo del catalogo seleccionado -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Select Catalog</mat-label>
+          <mat-select
+            matNativeControl
+            [(ngModel)]="tableCatalog"
+            (ngModelChange)="get_catalogos()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Catalog</mat-label>
+              <input matInput placeholder="Catalog" [(ngModel)]="filterCatalog.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of selectCatalogs | filterBy: filterCatalog" [value]="item.value">
+                {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(selectCatalogs | filterBy: filterCatalog).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- primera Search  -->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="tableCatalog != 'Users'"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="tableCatalog === 'Users' && dataRolesSerch != undefined">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Role</mat-label>
+          <mat-select
+            multiple
+            matNativeControl
+            [(ngModel)]="data_model.role"
+            (ngModelChange)="searchData()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Role</mat-label>
+              <input  matInput placeholder="Role" [(ngModel)]="filterRole.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of dataRolesSerch | filterBy: filterRole" [value]="item.id">
+                {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(dataRolesSerch | filterBy: filterRole).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- inicio Botones para agregar dependiendo el catalogo -->
+      <!-- add Role  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Roles'">
+      <div class="page__section-butuonc" id="roles" style="margin-top: -30px;">
+        <button class="button-icon button-icon--more " (click)="addRole(0)" *ngIf="permission_write || permission_edit">
+          Add Role
+        </button>
+        </div>
+      </mat-grid-tile>
+      <!-- add users  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Users'">
+        <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+          <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+            (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+        <div class="page__section-butuonc" id="users" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more" (click)="addUser(0)" *ngIf="permission_write || permission_edit">
+            Add User
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Delete user  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Delete user'">
+      </mat-grid-tile>
+    </mat-grid-list>
+      <!-- fin Botones para agregar dependiendo el catalogo -->
+      <!-- inicio de botones y tabla -->
+      <!-- subtitle inicio botones -->
+      <!-- boton users -->
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+      <div class="filterCard cursor-pointer" >
+        <div class="filterCard__card" id="user" (click)="selectCatalog('Users')">
+          <div>
+            <p class="filterCard__card-text">Active Users</p>
+          </div>
+        </div>
+      </div>
+      </mat-grid-tile> -->
+       <!-- table roles -->
+      <!-- <mat-grid-tile [colspan]="4" [rowspan]="8" *ngIf="tableCatalog === 'Roles'" class="position-relative">
+        <div class="table" style="display: block; margin-left: 2rem; width: -webkit-fill-available; position: absolute; top:1rem;"> -->
+      <table *ngIf="tableCatalog === 'Roles'" mat-table [dataSource]="dataRoles" #sortrole='matSort' matSort class="mat-elevation-z8 textarea">
+        <!-- Role -->
+        <ng-container matColumnDef="Role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="role"> Role </th>
+          <td mat-cell *matCellDef="let role"> {{role.role}} </td>
+        </ng-container>
+        <!-- Description -->
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="description
+          "> Description </th>
+          <td mat-cell *matCellDef="let role"> {{role.description}} </td>
+        </ng-container>
+        <!-- Creation Date  -->
+        <ng-container matColumnDef="Creation Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate"> Creation Date </th>
+          <td mat-cell *matCellDef="let role"> {{ role.createdDate | date:'dd MMM yyy'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef > </th>
+          <td mat-cell *matCellDef="let role">
+            <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;"
+            *ngIf="permission_write || permission_edit" (click)="addRole(role.id)" >
+            <span>&nbsp;</span>
+              <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;"
+              *ngIf="permission_delete" (click)="deleteRole(role.id)" >
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsRoles"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsRoles;"></tr>
+      </table>
+      <div *ngIf="tableCatalog === 'Roles'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+        <mat-paginator  [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
+        <!-- <mat-paginator
+          #pagrole
+          (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+          #paginator #paginatorElement
+          [pageSizeOptions]="[10, 20, 2147483647]"
+          showFirstLastButtons
+        ></mat-paginator> -->
+      </div>
+
+      <table *ngIf="tableCatalog === 'Users'"  class="mat-elevation-z8 textarea" mat-table [dataSource]="dataUser"  #sortuser='matSort' matSort >
+        <!-- Name -->
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
+          <td mat-cell *matCellDef="let user" (click)="profilePage(user.id)">
+            <span class="browser" *ngIf="user.roleId != 4">{{user.name}} </span>
+            <span *ngIf="user.roleId == 4">{{user.name}} </span>
+         </td>
+        </ng-container>
+        <!-- Email -->
+        <ng-container matColumnDef="Email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+          <td mat-cell *matCellDef="let role"> {{role.email}} </td>
+        </ng-container>
+        <!-- Office -->
+        <ng-container matColumnDef="Office">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Office"> Office </th>
+          <td mat-cell *matCellDef="let user"> {{user.office}} </td>
+        </ng-container>
+        <!-- Country  -->
+        <ng-container matColumnDef="Country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
+          <td mat-cell *matCellDef="let user"> {{user.country}} </td>
+        </ng-container>
+        <!-- Job Title  -->
+        <ng-container matColumnDef="Job Title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="title"> Job Title </th>
+          <td mat-cell *matCellDef="let user"> {{user.title}} </td>
+        </ng-container>
+        <!-- Role  -->
+        <ng-container matColumnDef="Role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="role"> Role </th>
+          <td mat-cell *matCellDef="let user"> {{user.role}} </td>
+        </ng-container>
+        <!-- Creation Date  -->
+        <ng-container matColumnDef="Creation Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate"> Creation Date </th>
+          <td mat-cell *matCellDef="let user"> {{ user.createdDate| date:'dd MMM yyy'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let user">
+            <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;"
+            *ngIf="permission_write || permission_edit" (click)="addUser(user.id, user.role)" >
+            <!-- (click)="profilePage(user.id)" -->
+            <span>&nbsp;</span>
+              <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;"
+              *ngIf="permission_delete" (click)="deleteUser(user.userId)">
+              <!-- (click)="deletePaymentConcept(element)" -->
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsUser"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsUser;"></tr>
+      </table>
+      <div *ngIf="tableCatalog === 'Users'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+        <mat-paginator  [pageSizeOptions]="[10, 20, dataUser.paginator?.length]" showFirstLastButtons></mat-paginator>
+        <!-- <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator> -->
+
+        <!-- <mat-paginator
+          #paguser
+          (page)="paginatoruserHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+          #paginator
+          #paginatoruserElement
+          [pageSizeOptions]="[10, 20, 2147483647]"
+           showFirstLastButtons
+        >
+        </mat-paginator> -->
+      </div>
+
+      <table *ngIf="tableCatalog === 'Delete user'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataDeleteUser"  #sortdeleteuser='matSort' matSort >
+        <!-- Name -->
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
+          <td mat-cell *matCellDef="let deleteUser">
+            <span class="browser" *ngIf="user.roleId != 4">{{user.name}} </span>
+            <span *ngIf="user.roleId == 4">{{user.name}} </span>
+         </td>
+        </ng-container>
+        <!-- Email -->
+        <ng-container matColumnDef="Email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+          <td mat-cell *matCellDef="let role"> {{role.email}} </td>
+        </ng-container>
+        <!-- Office -->
+        <ng-container matColumnDef="Office">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="office"> Office </th>
+          <td mat-cell *matCellDef="let deleteUser"> {{deleteUser.office}} </td>
+        </ng-container>
+        <!-- Country  -->
+        <ng-container matColumnDef="Country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
+          <td mat-cell *matCellDef="let deleteUser"> {{deleteUser.country}} </td>
+        </ng-container>
+        <!-- Job Title  -->
+        <ng-container matColumnDef="Job Title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="title"> Job Title </th>
+          <td mat-cell *matCellDef="let deleteUser"> {{deleteUser.title}} </td>
+        </ng-container>
+        <!-- Role  -->
+        <ng-container matColumnDef="Role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="role"> Role </th>
+          <td mat-cell *matCellDef="let deleteUser"> {{deleteUser.role}} </td>
+        </ng-container>
+        <!-- Creation Date  -->
+        <ng-container matColumnDef="Creation Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate"> Creation Date </th>
+          <td mat-cell *matCellDef="let deleteUser"> {{ deleteUser.createdDate | date:'dd MMM yyy'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let deleteUser">
+            <img src="assets\icons\pencil.png"
+            *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="activeUser(deleteUser.userId)" >
+
+            <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;"
+              *ngIf="permission_delete" (click)="deleteUserPermanente(deleteUser.userId)">
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsDeleteUser"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsDeleteUser;"></tr>
+      </table>
+      <div *ngIf="tableCatalog === 'Delete user'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+        <mat-paginator  [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
+        <!-- <mat-paginator  #pagdeleteuser
+          (page)="paginatordeleteHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatordeleteElement
+          [pageSizeOptions]="[10, 20, 2147483647]"
+          showFirstLastButtons
+        ></mat-paginator> -->
+      </div>
+
+  </div>
+</div>

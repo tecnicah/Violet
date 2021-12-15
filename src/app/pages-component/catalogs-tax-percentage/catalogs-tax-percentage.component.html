@@ -1,0 +1,49 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Operations / Report</div>
+    <div class="page__title title">
+      Tax percentage
+    </div>
+    <mat-grid-list cols="4"rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more" (click)="addTaxPercentage(0)">
+            Add Taxes
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="page__section">
+      <table mat-table [dataSource]="dataCatalogTaxes" #sortTaxes='matSort' matSort class="mat-elevation-z8 textarea">
+        <!-- type catalog -->
+        <ng-container matColumnDef="Taxe">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Taxe"> Taxes Percentage </th>
+          <td mat-cell *matCellDef="let catalog"> {{catalog.taxe}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let catalog; let i = index">
+            <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="addTaxPercentage(catalog.id)">
+            <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteTaxPercentage(catalog.id)" >
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsTaxes"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsTaxes;"></tr>
+      </table>
+    </div>
+    <div  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator #pagTaxes [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

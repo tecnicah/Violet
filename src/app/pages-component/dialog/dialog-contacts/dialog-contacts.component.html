@@ -1,0 +1,109 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Contact</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="3" rowHeight="60px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{valid: active_contactType}">Contact Type</mat-label>
+        <mat-select (focus)="active_contactType = false" required matNativeControl [(ngModel)]="data.idContactType">
+          <mat-option *ngFor="let item of caTypeOffice" [value]="item.id">{{item.type}}</mat-option>
+        </mat-select>
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_contactType">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field class="input_central">
+        <mat-label [ngClass]="{valid: active_contactName}">Contact Name</mat-label>
+        <input (focus)="active_contactName = false" required matInput placeholder="Contact Name" type="text" [(ngModel)]="data.contactName" />
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_contactName">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field class="input_final">
+        <mat-label [ngClass]="{valid: active_title}">Title</mat-label>
+        <input (focus)="active_title = false" required matInput placeholder="Title" type="text" [(ngModel)]="data.tittle" />
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_title">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field class="input_central">
+        <mat-label>Phone Number</mat-label>
+        <input matInput placeholder="Phone Number"  type="number" [(ngModel)]="data.phoneNumber" min="1" />
+      </mat-form-field>
+    </mat-grid-tile> -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: -62px;">
+        <mat-label>Prefix</mat-label>
+        <mat-select matNativeControl [(ngModel)]="prefix">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Prefix</mat-label>
+            <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+          </mat-form-field>
+          <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+            {{ item.countriesIsdCode }} / {{ item.countriesName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 50% !important;">
+        <mat-label>Mobile Phone</mat-label>
+        <input required matInput placeholder="Contact Phone"  type="number" min="0" (keydown)="validaNumericos($event)" [(ngModel)]="data.phoneNumber" />
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_phone">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field class="input_central">
+        <mat-label [ngClass]="{valid: fass_validator.no_emai}">E-mail</mat-label>
+        <input (focus)="fass_validator.no_emai = false" required matInput placeholder="E-mail" type="text" [(ngModel)]="data.email"  (change)="
+        removeErrorLabel( $event.target.value, {handler: fass_validator, field: 'no_emai'} );
+        validEmailAssignee( $event.target.value )" />
+        <!-- validateEmailServerAvailability( $event.target.value ); -->
+        <span class="label-error" *ngIf="fass_validator.no_emai">
+          Field is required
+        </span>
+        <span class="label-error" *ngIf="!fass_validator.no_emai && fass_validator.no_emai_val">
+          Email format is not valid
+        </span>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_final">
+        <mat-label [ngClass]="{valid: active_city}">City</mat-label>
+        <mat-select (focus)="active_city = false" required matNativeControl [(ngModel)]="data.idCity">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="City" [(ngModel)]="filterCity.name">
+          </mat-form-field>
+          <mat-option *ngFor="let item of caCity | filterBy: filterCity" [value]="item.id">{{item.name}}</mat-option>
+          <mat-option disabled *ngIf="(caCity | filterBy: filterCity).length === 0">No matching elements</mat-option>
+        </mat-select>
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_city">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong" *ngIf="permission_write || permission_edit">
+    <button (click)="valida_form()">Save</button>
+  </div>
+</mat-dialog-actions>

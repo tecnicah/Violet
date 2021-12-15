@@ -1,0 +1,23 @@
+.addPropperty{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.width{
+    width: 100%;
+}
+
+.HideDiv{
+  display: none;
+}
+
+.ShowButton{
+    display: block !important;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: wrap;
+}

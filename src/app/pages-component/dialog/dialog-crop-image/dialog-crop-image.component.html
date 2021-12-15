@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Update profile picture</h1>
+<div mat-dialog-content>
+     <input type="file" id="select_image" name="select_image" (change)="fileChangeEvent($event)" />
+     
+     <mat-grid-list cols="2" rowHeight="1:1" style="padding: 15px;">
+        <mat-grid-tile>
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="4 / 4"
+                format="png"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()"
+                (cropperReady)="cropperReady()"
+                (loadImageFailed)="loadImageFailed()">
+            </image-cropper>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <img [src]="data.image" />
+        </mat-grid-tile>
+      </mat-grid-list>
+    
+</div>
+<div mat-dialog-actions align="end">
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button (click)="onNoClick()" style="background-color: #f9f9f9;color: #9d3292;">No, cancel</button>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+      <button [mat-dialog-close]="data.image" cdkFocusInitial>Yes, delete</button>
+    </div>
+</div>
+
+
+

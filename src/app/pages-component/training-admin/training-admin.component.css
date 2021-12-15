@@ -1,0 +1,123 @@
+th.mat-header-cell {
+    text-align: center !important;
+  }
+  
+  .Payment-Methods {
+    width: 64px;
+    height: 10px;
+    margin: 0 129px 6px 0;
+    font-family: Lato;
+    font-size: 8px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .addPropperty {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  div {
+    width: 100%;
+  }
+  
+  
+  .input__image-label img {
+    height: 150px;
+    width: 150px;
+    top: -40px;
+  }
+  
+  .valid{
+    color:#e91e63;
+    font-size: 12px;
+  }
+
+  .type_text{
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 11px;
+  }
+
+  .type_text_header{
+    color: rgba(0, 0, 0, 0.904);
+    font-size: 12px;
+  }
+
+  .type_text_header_group{
+    color: rgba(0, 0, 0, 0.904);
+    font-size: 16px;
+  }
+
+  .flex{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .flex_{
+    justify-content: flex-end;
+    display: flex;
+  }
+  .delete{
+    width: 15px;
+  }
+
+  .card{
+    padding: 16px;
+    height: 50px;
+    margin-top: 10px;
+  }
+
+  .nodata{
+    width: 100%;
+    height: 100px;
+    border-style: groove;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+  }
+
+  .pointer{
+    cursor: pointer;
+  }
+
+  
+
+.refresh {
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.refresh_{
+  width: 70%; 
+  height: 100%; 
+  text-align: center;
+}
+
+.div_grupo{
+  height: 50px;
+}
+
+.div_grupo_{
+  height: 40px;
+}
+
+.boton_refresh{
+  margin-right: 0px; margin-top: 1px;
+}

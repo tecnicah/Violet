@@ -1,0 +1,59 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Operations / Report</div>
+    <div class="page__title title">
+      Job Titles
+    </div>
+    <mat-grid-list cols="4"rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" id="jobTitles" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more" (click)="addTitle(0)">
+            Add Title
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="page__section">
+      <table mat-table [dataSource]="dataTitles" sorttitle='matSort' matSort class="mat-elevation-z8 textarea">
+        <!-- Office -->
+        <ng-container matColumnDef="Office">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Office"> Office </th>
+          <td mat-cell *matCellDef="let office"> {{office.office}} </td>
+        </ng-container>
+        <!-- Section -->
+        <ng-container matColumnDef="Section">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Section"> Section </th>
+          <td mat-cell *matCellDef="let office"> {{office.section}} </td>
+        </ng-container>
+        <!-- Job Title  -->
+        <ng-container matColumnDef="Job Title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Job Title"> Job Title </th>
+          <td mat-cell *matCellDef="let office"> {{office.title}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let office">
+            <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="addTitle(office.id)" >
+            <span>&nbsp;</span>
+              <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteTitle(office.id)" >
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsTitles"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsTitles;"></tr>
+      </table>
+    </div>
+    <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator #pagtitle [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Document</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="3" rowHeight="70px">
+
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments textarea" style="display: flex;">
+        <div style="flex-basis: 50%;">
+          <span class="text-mini gray_05">Document</span><br />
+        </div>
+
+        <div style="text-align: end; flex-basis: 50%;">
+          <span class="text-mini gray_05">Uploaded Date</span>
+          {{data.createdDate | date: 'dd MMM yyyy'}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="data.id!=0">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;" (click)="viewDocument();">
+        <span class="browser" style="font-size: 12px;">View Document</span><br />
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Document Type</span><br />
+          {{getDocumentType(data.documentType)}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Relationship</span><br />
+          {{getNameDependent(data.relationship)}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Issue Date</span><br />
+          {{data.issueDate | date: 'dd MMM yyyy'}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Expiration Date</span><br />
+          {{data.expirationDate | date: 'dd MMM yyyy'}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Issuing Authority</span><br />
+          {{data.issuingAuthority}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Country of Origin</span><br />
+          {{getNameCountry(data.countryOrigin)}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="4" rowHeight="130px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <br><br>
+        <p>Comment</p>
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput #message maxlength="500" disabled>{{data.comment}}</textarea>
+          <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+</mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

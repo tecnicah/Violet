@@ -1,0 +1,13 @@
+.circle{
+    text-align: center;
+    color: white;
+    width: 20px;
+    border-radius: 41px;
+    background-color: #ffe0e0;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.active{
+    background-color: #9d3292;
+}

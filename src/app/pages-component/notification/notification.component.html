@@ -1,0 +1,198 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Dashboard / Notification Center</div>
+    <div class="page__title title">
+      Notification Center
+      <button class="page__path--closeButton" (click)="goBack()" routerLinkActive="router-link-active">
+        Back
+      </button>
+    </div>
+
+    <mat-grid-list cols="6" rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="textarea" style="padding: 0 10px 0 0;">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+              [(ngModel)]="data_model.filter" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" style="padding: 0 10px 0 0;">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="dateRange1" placeholder="Start date" autocomplete="off" name="date1"
+              id="date1" />
+            <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="dateRange2"
+              autocomplete="off" placeholder="End date" name="date2" id="date2" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea" style="padding: 0 10px 0 0;">
+          <mat-form-field appearance="fill">
+            <mat-label>Notification Type</mat-label>
+            <mat-select [(ngModel)]="data_model.notificationType" (ngModelChange)="searchData()">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Notification Type</mat-label>
+                <input matInput placeholder="Notification Type" [(ngModel)]="filterNotification.type">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_notificationType | filterBy: filterNotification" [value]="data.id">{{data.type}}</mat-option>
+              <mat-option disabled *ngIf="(ca_notificationType | filterBy: filterNotification).length === 0">No matching elements</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea" style="padding: 0 10px 0 0;">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Record</mat-label>
+            <mat-select [(ngModel)]="data_model.serviceRecord" (ngModelChange)="searchData()">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Service Record</mat-label>
+                <input matInput placeholder="Service Record" [(ngModel)]="filterServiceRecord.numberServiceRecord">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_SR | filterBy: filterServiceRecord" [value]="data.id">{{data.numberServiceRecord}}</mat-option>
+              <mat-option disabled *ngIf="(ca_SR | filterBy: filterServiceRecord).length === 0">No matching elements</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div style="display: flex; justify-content: space-between; width: 70%;">
+          <div style="height: 50px;">
+            <p class="subtitle" style="font-size: 8px; margin: 0;">Archived</p>
+            <mat-checkbox class="example-margin" [(ngModel)]="data_model.archive" (ngModelChange)="searchData()">
+            </mat-checkbox>
+          </div>
+
+          <div style="padding: 0 10px 0 0;">
+            <div class="page__section-butuon" style="margin-top: 10px; width: 100%; text-align:left">
+              <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;"
+                matTooltip="Clear filter" (click)="cleanFilter()">
+                <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <div class="margin"><b>{{date_ | date: 'dd MMM yyyy'}}</b></div>
+
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+
+      <div class="mat-elevation-z4" style='flex-basis: 30%; border-radius: 3px; margin-bottom: 20px;'
+        *ngFor="let data of ca_notification.filteredData">
+        <div class="padding header background" [ngStyle]="{'background': data.color }">
+          <span>{{data.type}}</span>
+
+          <span [ngClass]="{'active': data.view}" class="material-icons"
+            style="cursor: pointer; font-size: 18px; margin-top: 3px;" (click)="marcarLeida(data)">notifications</span>
+
+          <span>
+            Archive
+            <mat-checkbox (change)="archive(data,$event)" [checked]="data.archive"></mat-checkbox>
+          </span>
+        </div>
+
+        <mat-grid-list cols="5" rowHeight="29px" class="card">
+          <mat-grid-tile [colspan]="1" [rowspan]="3">
+            <div class="pageAvatar__section pageAvatar__section-inputs no-padding-tbAvatar">
+              <div class="pageAvatar__section pageAvatar__section-inputs no-padding-tbAvatar">
+                <div class="pageAvatar__section pageAvatar__section-input--x no-padding-tbAvatar">
+                  <div class="inputAvatar__image">
+                    <div class="inputAvatar__image-label--card cursor-pointer" style="top: -15px !important; left: 62.5% !important;">
+                      <img [src]="_services.url_images+data.fromAvatar" *ngIf="data.fromAvatar != ''">
+                      <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.fromAvatar === ''"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <img class="avatar" src="{{_services.url_images}}{{data.fromAvatar}}" alt="" *ngIf="user.avatar != null">
+            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="user.avatar === null"></div> -->
+          </mat-grid-tile>
+          <!-- time -->
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="time">
+              <span class="text-mini gray_05"> Time</span><b class="titleTime"> &nbsp; {{ data.time | slice:0:5 }} hr </b><br />
+            </div>
+          </mat-grid-tile>
+          <!-- from -->
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <div class="person">
+              <!-- <span class="text-mini gray_05">From</span><br>
+              <span (click)="profilePage(data.fromProfile, data.roleFromId)" class="cursor-pointer titleNotification" title="{{ data.from }}">
+                {{ ( data.from.length > 40 )? ( data.from | slice:0:40 )+ '...' : ( data.from ) }}
+              </span> -->
+
+              <span (click)="profilePage(data.fromProfile, data.roleFromId)" class="cursor-pointer titleNotification" title="{{ data.from }}"> <span class="gray_05 text-mini">From: </span>
+                {{ ( data.from?.length > 40 )? ( data.from | slice:0:40 )+ '...' : ( data.from ) }}
+              </span>  <br>
+              <span class="titleNotification text-mini"> <span class="gray_05">Assignee: </span>
+                {{ ( data.assignee?.length > 40 )? ( data.assignee | slice:0:40 )+ '...' : ( data.assignee ) }}
+              </span>
+            </div>
+          </mat-grid-tile>
+          <!-- service record -->
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <div class="time" >
+              <span class="text-mini gray_05"> Service Record</span> <b class="text-color titleNotification cursor-pointer" routerLink='/editServiceRecord/{{data.serviceRecordId}}'> &nbsp;
+                {{data.serviceRecord}} </b><br />
+
+                <span class="text-host gray_05">From:</span><b class="titleTime"> &nbsp;{{ data.serviceRecordCountry}}</b>, <span class="titleTime"> {{ data.serviceRecordCityHome}}</span> <br>
+
+                <span class="text-host gray_05">To:</span><b class="titleTime"> &nbsp; {{ data.serviceRecordCountryHost}}</b>, <span class="titleTime"> {{ data.serviceRecordCityHost}}</span>
+            </div>
+          </mat-grid-tile>
+          <!-- <mat-grid-tile [colspan]="5" [rowspan]="1">
+            <div class="ofto">
+              <span class="text-host gray_05">oFrom</span><b class="titleTime"> &nbsp;{{ data.serviceRecordCountry}}</b>, <span class="titleTime"> {{ data.serviceRecordCountry}}</span>
+            </div>
+            <div class="ofto">
+              <span class="text-host gray_05">to:</span><b class="titleTime"> &nbsp; {{ data.serviceRecordCountryHost}}</b>, <span class="titleTime"> {{ data.serviceRecordCityHost}}</span>
+            </div>
+          </mat-grid-tile> -->
+
+        </mat-grid-list>
+        <!-- termina card -->
+        <!-- actionCall -->
+<!-- *ngIf="data.actionCall.accept != ''  && data.actionCall.rejected != '' &&  data.description != ''" -->
+        <div class="padding">
+          <p class="description" *ngIf="data.description != ''">
+            {{data.description}}
+          </p>
+
+          <div class="display" style="justify-content: flex-end !important;"
+            *ngIf="data.actionCall.accept != null  && data.actionCall.rejected != null">
+
+            <button class="btnr btnr--decline" (click)="decline(data,data.actionCall.rejected)" matRipple
+              matRippleColor="rgba(255, 255, 255, 0.5)">
+              Decline
+            </button>
+            <span>&nbsp;</span>
+            <button class="btnr btnr--accept" (click)="accept(data,data.actionCall.accept)" matRipple
+              matRippleColor="rgba(255, 255, 255, 0.5)">
+              Accept
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

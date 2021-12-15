@@ -1,0 +1,380 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Office Information</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="5" rowHeight="60px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_type}">Office Type</mat-label>
+          <mat-select [(ngModel)]="data.idTypeOffice" (ngModelChange)="typename()" (focus)="active_type = false" required>
+            <mat-option *ngFor="let item of caTypeOffice" [value]="item.id">{{item.type}}</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_type">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{valid: active_comercialName}">Commercial Name</mat-label>
+        <input matInput [(ngModel)]="data.commercialName" (focus)="active_comercialName = false" required/>
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_comercialName">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{valid: active_legalName}">Legal Name</mat-label>
+        <input matInput [(ngModel)]="data.legalName"  (focus)="active_legalName = false" required />
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_legalName">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- country -->
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
+          <mat-select [(ngModel)]="data.idCountry" (selectionChange)="getState(data)" (ngModelChange)="countryname()" (focus)="active_country = false" required>
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Country</mat-label>
+              <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of caCountry| filterBy: filterCountry" [value]="item.id"> {{item.name}}</mat-option>
+            <mat-option disabled *ngIf="(caCountry | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- state -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_state}">State</mat-label>
+          <mat-select [(ngModel)]="data.idState" (selectionChange)="getcity(data)"  (focus)="active_state = false" required>
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>State</mat-label>
+              <input matInput placeholder="State" [(ngModel)]="filterState.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of ca_state| filterBy: filterState" [value]="item.id"> {{item.name}}</mat-option>
+            <mat-option disabled *ngIf="(ca_state | filterBy: filterState).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_state">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_city}">City</mat-label>
+          <mat-select [(ngModel)]="data.idCity" (ngModelChange)="cityname()" [disabled]="ccity.length == 0" (focus)="active_city = false" required>
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>City</mat-label>
+              <input matInput placeholder="City" [(ngModel)]="filterCity.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of ccity | filterBy: filterCity" [value]="item.id"> {{item.name}}</mat-option>
+            <mat-option disabled *ngIf="(ccity | filterBy: filterCity).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_city">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{valid: active_address}">Current Address</mat-label>
+        <input matInput [(ngModel)]="data.currentAddress"  (focus)="active_address = false" required />
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_address">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_final">
+        <mat-label [ngClass]="{valid: active_code}">ZIP Code</mat-label>
+        <input matInput [(ngModel)]="data.zipCode" (focus)="active_code = false" required  type="number" min="1"/>
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_code">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="subtitledos">Contacts</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+
+  <table mat-table [dataSource]="officeContacts" matSort class="mat-elevation-z8 margin_table">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="uno">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="idContactType"> Contact Type </th>
+      <td mat-cell *matCellDef="let element"> {{get_contacType(element.idContactType)}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="dos">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="contactName"> Contact Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="tres">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="tittle"> Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.tittle}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="cuatro">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="phoneNumber"> Phone Number </th>
+      <td mat-cell *matCellDef="let element"> {{element.phoneNumber | mask: '(000) 000-0000'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cinco">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> E-mail </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="seis">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="idCity"> City </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.city}}
+        <!-- {{get_city(element.idCity)}} -->
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="siete">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element let i = index">
+        <img src="/assets/icons/pencil.png" (click)="dialogContact(element, i)"
+        *ngIf="permission_write || permission_edit" style="width: 20px;">
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="siete"></tr>
+    <tr mat-row *matRowDef="let row; columns: siete;"></tr>
+  </table>
+
+  <div class="textarea margin_table" style="text-align: end;">
+    <button class="btnr btnr--add" (click)="validCountry(null, 0)"
+     matRipple matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit" >
+      Add New Contact
+    </button>
+  </div>
+
+  <div class="textarea margin_table">
+    <p class="subtitledos">Payment Information</p>
+  </div>
+
+  <div class="textarea margin_table">
+    <mat-slide-toggle [(ngModel)]="paymentMetod"></mat-slide-toggle>
+  </div>
+
+  <div class="mat-elevation-z5" *ngIf="paymentMetod" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <span>
+            <p class="subtitle" style="font-size: 12px;">
+              Payment Methods
+            </p>
+            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOffices[0].creditCard">
+              <span class="subtitle" style="font-size: 12px;">Credit Card</span>
+            </mat-checkbox>
+          </span>
+          <span>
+            <p class="subtitle" style="font-size: 12px;">
+              Fiscal Invoice
+            </p>
+            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOffices[0].fiscalInvoice"></mat-checkbox>
+          </span>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile  [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard" >
+        <div class="input_final" *ngIf="data.paymentInformationOffices[0].creditCard == true">
+          <mat-checkbox class="cuadrado">
+            <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile  [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <div class="textarea margin_table">
+            <mat-slide-toggle [(ngModel)]="data.ifSupplierPartner">Wire Transfer</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div *ngIf="data.ifSupplierPartner">
+    <!--------------------------------------------------------------------------------------->
+    <!--TABLE PAYMENTS-->
+    <table class="mat-elevation-z8 textarea mat-table">
+      <tr class="mat-header-row">
+        <th class="mat-header-cell">Account Type</th>
+        <th class="mat-header-cell">Account Holders Name</th>
+        <th class="mat-header-cell">Bank Name</th>
+        <th class="mat-header-cell">Account Number / CLABE</th>
+        <th class="mat-header-cell">International Payment Acceptance</th>
+        <th class="mat-header-cell"></th>
+      </tr>
+      <tr class="mat-row" *ngFor="let data_ of data.paymentInformationOffices[0].wireTransferPaymentInformationOffices; let k = index">
+        <td class="mat-cell">{{get_account(data_.accountType)}}</td>
+        <td class="mat-cell">{{data_.accountHoldersName}}</td>
+        <td class="mat-cell">{{data_.bankName}}</td>
+        <td class="mat-cell">{{data_.accountNumber}}</td>
+        <td class="mat-cell">
+          <div class="table-row__check">
+            <img src="assets/table-icons/check.png" *ngIf="data_.internationalPaymentAcceptance" />
+            <img src="assets/table-icons/uncheck.png" *ngIf="!data_.internationalPaymentAcceptance" />
+          </div>
+        </td>
+        <td class="mat-cell">
+          <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editWireTransfer(data_, k);">
+        </td>
+      </tr>
+
+
+    </table>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big"
+            style="flex: 0 1 180px !important; left: 6px !important;">
+            <button class="button-icon button-icon--more" (click)="addWireTransfer();">
+              Add Wire Transfer
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    </div>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea">
+          <mat-checkbox [(ngModel)]="data.paymentInformationOffices[0].checks">
+            <span class="subtitle" style="font-size: 12px;">Checks</span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea">
+          <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOffices[0].cash">
+            <span class="subtitle" style="font-size: 12px;">Cash</span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOffices[0].checks == true">
+        <div class="input_final">
+          <mat-form-field appearance="fill">
+            <mat-label>Pay to the Order Of</mat-label>
+            <input matInput [(ngModel)]="data.paymentInformationOffices[0].payToOrderOf"  placeholder="Pay to the Order Of" type="text" #message_payto maxlength="150">
+            <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOffices[0].cash == true">
+        <div class="input_final">
+          <mat-form-field appearance="fill">
+            <mat-label>Comment</mat-label>
+            <input matInput [(ngModel)]="data.paymentInformationOffices[0].comment"  placeholder="Comment" type="text" #message_bankcomment maxlength="150">
+            <mat-hint align="end">{{message_bankcomment.value.length}} / 150</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field appearance="fill">
+          <mat-label>General Comments</mat-label>
+          <input matInput [(ngModel)]="data.paymentInformationOffices[0].generalComment" placeholder="General Comments" type="text" #message_pcomment maxlength="150">
+          <mat-hint align="end">{{message_pcomment.value.length}} / 150</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <mat-grid-list cols="1">
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Documents
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Description
+          </span>
+        </div>
+      </div>
+
+      <div class="page__section documents__ascard" *ngFor="let item of data.documentOfficeInformations">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;">
+        <div class="page__section-input page__section-input--25 documents__ascard--task" >
+          {{getDocument(item.idDocumentType)}}
+        </div>
+        <div  class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.updateDate | date:'dd MMM yyy'}}
+        </div>
+        <div  class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.description}}
+        </div>
+      </div>
+
+    </div>
+  </mat-grid-list>
+
+  <div class="textarea margin_table" style="text-align: end;">
+    <button class="btnr btnr--add" (click)="DialogDocumentsLeadClientComponent(null)" matRipple
+      matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+      Add New Document
+    </button>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong" *ngIf="permission_write || permission_edit">
+    <button (click)="valida_form()">Save</button>
+  </div>
+</mat-dialog-actions>

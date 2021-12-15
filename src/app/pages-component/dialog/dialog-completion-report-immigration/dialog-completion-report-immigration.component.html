@@ -1,0 +1,267 @@
+
+<div *ngIf="show">
+  <!---------------------header--------------------->
+  <div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">Completion Report / Immigration</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <!-------------------content---------------------->
+  <mat-dialog-content class="mat-typography" *ngIf="dataCompletionReport">
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <p class="page__section-name">Summary</p>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+      <!-- data -->
+    <mat-grid-list cols="5" rowHeight="70px" *ngIf="generalSummary">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Assignee Name</span><br />
+            {{generalSummary.assigneeName}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Company</span><br />
+            {{generalSummary.client}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Partner</span><br />
+            {{generalSummary.partner}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Dependents</span><br />
+            {{generalSummary.dependentsNo}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <!--  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Assigned Coordinator</span><br />
+            {{generalSummary.coordinatorImmigration[0]}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Assigned Consultant</span><br />
+            <!-- {{generalSummary.assigneeName}} -->
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Home Country</span><br />
+            {{generalSummary.homeCountry}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Host Country</span><br />
+            {{generalSummary.hostCountry}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+    <br>
+    <!-- table -->
+    <!-- immigration-->
+    <table *ngIf="immigrationSummary" mat-table [dataSource]="immigrationSummary" class="mat-elevation-z8 textarea">
+      <!-- date Column -->
+      <ng-container matColumnDef="Services">
+        <th mat-header-cell *matHeaderCellDef>Services</th>
+        <td mat-cell *matCellDef="let element"> {{element.services}}</td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="Location">
+        <th mat-header-cell *matHeaderCellDef>Location</th>
+        <td mat-cell *matCellDef="let element">{{element.location}}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element"> {{ element.status[0].status }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Autho Date">
+        <th mat-header-cell *matHeaderCellDef>Autho Date</th>
+        <td mat-cell *matCellDef="let element"> {{element.authoDate| date: 'dd MMM yyyy'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="End Date">
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.closingDate[0].date === 'N/A'">N/A</div>
+          <div *ngIf="element.closingDate[0].date != 'N/A'">{{element.closingDate[0].date}}</div>
+        </td>
+
+      </ng-container>
+      <!-- Documents Obteined -->
+      <ng-container matColumnDef="Documents">
+        <th mat-header-cell *matHeaderCellDef>Obteined</th>
+        <td mat-cell *matCellDef="let element"> {{ element.documentObtained[0].document }}
+        </td>
+      </ng-container>
+      <!-- Suppliers -->
+      <ng-container matColumnDef="Suppliers">
+        <th mat-header-cell *matHeaderCellDef>Authorized Hours</th>
+        <td mat-cell *matCellDef="let element"> {{ element.authorizedTime }}
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsRelocationSummary"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsRelocationSummary;"></tr>
+    </table>
+
+    <!-- fin de tabla  -->
+    <!-- services Detail -->
+    <br>
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <p class="page__section-name">Services Detail</p>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+     <!-- tabla immi -->
+     <div [style.display]="(detailImmigration.length == 0) ? 'none' : 'initial' ">
+      <div class="mat-elevation-z8 textarea" *ngFor="let tableImmi of detailImmigration">
+        <mat-card>
+          <!-- header de servicio -->
+          <mat-grid-list cols="5" rowHeight="70px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Service</span><br />
+                  <b>
+                    {{tableImmi.service}}
+                  </b>
+                </div>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Autho Date</span><br />
+                  {{tableImmi.dates.item1 | date:'dd MMM yyy'}}
+                </div>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Completion Date</span><br />
+                    {{tableImmi.dates.item2 | date:'dd MMM yyy'}}
+                </div>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+          </mat-grid-list>
+          <!-- tabla actividates -->
+          <table *ngIf="tableImmi.serviceDetails.length != 0" mat-table [dataSource]="tableImmi.serviceDetails" class="textarea">
+            <!-- date Column -->
+            <ng-container matColumnDef="Activity">
+              <th mat-header-cell *matHeaderCellDef>Activity</th>
+              <td mat-cell *matCellDef="let element"> {{element.description}}</td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="Documents">
+              <th mat-header-cell *matHeaderCellDef>Documents</th>
+              <td mat-cell *matCellDef="let element">{{element.description}}</td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="Date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let element"> {{ element.serviceStartDate | date: 'dd MMM yyyy' }}
+              </td>
+            </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsDetailActivity"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsDetailActivity;"></tr>
+          </table>
+          <!-- header conclusion -->
+          <mat-grid-list cols="5" rowHeight="50px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div>
+                <p class="conclusion">Conclusion</p>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+            <!-- add conclusion -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-button page__section-button--big" style="left: 6px;">
+                <button (click)="addConclution(tableImmi.id)" class="button-icon button-icon--more">
+                  Conclusion
+                </button>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+         <!-- tabla image conclusion -->
+          <mat-grid-list cols="1">
+            <div class="page__section ">
+              <div class="page__section" [style.display]="(tableImmi.conclusions.length == 0) ? 'none' : 'initial' ">
+                <div class="page__section documents__ascard contentConclu" *ngFor="let item of tableImmi.conclusions; let i = index">
+                  <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+                    style="background: transparent!important;" (click)="deleteDocument(item.id)" style="right: 40px;">
+                  <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                    <a target="_blank" [href]="image_path + item.filePath">
+                      <img [src]="image_path + item.filePath" class="fileimg"
+                    style="background: transparent!important;">
+                    </a>
+                  </div>
+                  <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                    {{item.fileName}}
+                  </div>
+                  <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                    {{item.conclusion}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-grid-list>
+      </mat-card>
+      </div>
+     </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <!-- <div class="page__section-buttong botones">
+      <button class="export">Export</button>
+    </div> -->
+    <div class="page__section-buttong">
+      <button (click)="send()">Save</button>
+    </div>
+  </mat-dialog-actions>
+</div>

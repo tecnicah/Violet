@@ -1,0 +1,307 @@
+<!---------------------------------------------------------------------------------------->
+<!--START HEADER-->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Report of the Day</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!--END HEADER-->
+<!----------------------------------------------------------------------------------------->
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex;" class="input_central comments">
+        <div>
+          <p class="subtitle">Report No.</p>
+          <p class="title">{{ report_no }}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex;" class="input_central comments">
+        <div>
+          <p class="subtitle">Report By</p>
+          <p class="title">{{userReport.name}} {{userReport.lastName}} {{userReport.motherLastName}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex;" class="input_central comments">
+        <div>
+          <p class="subtitle">Creation Date</p>
+          <p class="title">{{data.creationDate | date:'dd MMM yyy'}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex;" class="input_central comments">
+        <div>
+          <p class="subtitle">Report Date</p>
+          <p class="title">{{data.reportDate | date:'dd MMM yyy'}}</p>
+        </div>
+      </div>
+    </mat-grid-tile> -->
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_reportDate}">Report Date</mat-label>
+          <input onkeydown="return false"  matInput (focus)="active_reportDate = false" required [matDatepicker]="ReportDate" [(ngModel)]="data.reportDate" [max]="getMaxDateTo(0)" />
+          <mat-datepicker-toggle matSuffix [for]="ReportDate"></mat-datepicker-toggle>
+          <mat-datepicker #ReportDate></mat-datepicker>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_reportDate">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_serviceLine}">Service Line</mat-label>
+          <mat-select  [(ngModel)]="data.serviceLine" (ngModelChange)="getWorkOrders()" required>
+            <mat-option *ngFor="let item of caServiceLine" [value]="item.id">{{item.serviceLine}}</mat-option>
+            <mat-option *ngIf="caServiceLine.length == 0" disabled value=""> No Service </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceLine">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_workOrder}">Work Order</mat-label>
+          <mat-select (focus)="active_workOrder = false" required [(ngModel)]="data.workOrder" [disabled]="wos.length == 0">
+            <mat-option *ngFor="let item of wos" [value]="item.id">{{item.numberWorkOrder}}</mat-option>
+            <mat-option *ngIf="wos.length == 0" disabled value=""> No work order </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_workOrder">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex;" class="input_central comments" *ngIf="data.id != 0">
+        <div>
+          <p class="subtitle">Start Time</p>
+          <p class="title">{{data.startTime}}</p>
+        </div>
+
+        <div style="text-align:end; width: auto !important;">
+          <mat-icon class="calendar">schedule</mat-icon>
+        </div>
+      </div>
+      <div class="input_central" *ngIf="data.id == 0">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_startTime}">Start Time</mat-label>
+          <input
+            (focus)="active_startTime = false" required
+            matInput
+            required
+            (change)="enableEndDate( data.startTime )"
+            placeholder="Start Time"
+            (change)="getHoursDifference()"
+            [(ngModel)]="data.startTime"
+            type="time" />
+            <mat-error>Field is required</mat-error>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_startTime">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex;" class="input_central comments" *ngIf="data.id != 0">
+        <div>
+          <p class="subtitle">End Time</p>
+          <p class="title">{{data.endTime}}</p>
+        </div>
+
+        <div style="text-align:end; width: auto !important;">
+          <mat-icon class="calendar">schedule</mat-icon>
+        </div>
+      </div>
+      <div class="input_central" *ngIf="data.id == 0">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_endTime}">End Time</mat-label>
+          <input
+            (focus)="active_endTime = false" required
+            matInput
+            required
+            placeholder="End Time"
+            [(ngModel)]="data.endTime"
+            type="time"
+            (change)="getHoursDifference()"
+            [disabled]="!end_date_disabled"
+          />
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_endTime">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Total Time</mat-label>
+          <input
+            matInput
+            required
+            placeholder="Total Time"
+            type="number"
+            disabled
+            [(ngModel)]="data.totalTime"
+            [value]="get_total_hours" />
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="Section-Name">Services</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <div class="contenedor" *ngFor="let itemreport of this.data.serviceReportDays">
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label [ngClass]="{valid: active_service}">Service</mat-label>
+            <mat-select (focus)="active_service = false" required [(ngModel)]="itemreport.service" [disabled]="caService.length == 0">
+              <mat-option *ngFor="let item of caService" [value]="item.id">{{item.serviceNumber}}</mat-option>
+            </mat-select>
+            <mat-error>Field is required</mat-error>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_service">Field is required</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label [ngClass]="{valid: active_serviceTime}">Time</mat-label>
+            <input (focus)="active_serviceTime = false" required  matInput required placeholder="Time"  type="number" min="0" [(ngModel)]="itemreport.time">
+            <mat-error>Field is required</mat-error>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-- <mat-grid-list cols="4" rowHeight="200px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p style="font-size: 10px;">Comment</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput (change)="itemreport.comments = $event.target.value"  #message maxlength="500">{{itemreport.comments}}</textarea>
+            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list> -->
+  </div>
+  <br><br>
+  <div class="addPropperty" *ngIf="data.id == 0" (click)="addReport()">
+    <div class="page__section-button page__section-button--big" style="left: 6px;">
+      <button class="button-icon button-icon--bag" >
+        Add Service
+      </button>
+    </div>
+  </div>
+  <div class="comments" *ngIf="data.id != 0">
+    <mat-grid-list cols="10" rowHeight="80px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <img class="avatar" src="{{_services.url_images}}{{userReport.avatar}}" alt=""
+            *ngIf="userReport.avatar != null">
+          <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="userReport.avatar === null"></div>
+        </div>
+      </mat-grid-tile>
+     <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Name</span><br />
+            {{userReport.name}} {{userReport.lastName}} {{userReport.motherLastName}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Title</span><br />
+            <!--{{data.user.userType.type}}-->
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Date</span><br />
+            {{data.createdDate | date:'dd MMM yyy'}}
+          </div>
+
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+
+    </mat-grid-list>
+  </div>
+  <mat-grid-list cols="4" rowHeight="200px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <br><br>
+        <p style="font-size: 10px;">Activity</p>
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput  style="line-height: 35px !important"
+            (change)="data.activity = $event.target.value" #message_activity maxlength="500">{{data.activity}}</textarea>
+            <mat-hint align="end">{{message_activity.value.length}} / 500</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="200px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <br><br>
+        <p style="font-size: 10px;">Conclusion of the Day / Next Steps</p>
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput style="line-height: 35px !important"
+            (change)="data.conclusion = $event.target.value" #message_conclusion maxlength="500">{{data.conclusion}}</textarea>
+            <mat-hint align="end">{{message_conclusion.value.length}} / 500</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <br><br>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong" *ngIf="data.id == 0">
+    <button (click)="validarCampos()">Create Report</button>
+  </div>
+</mat-dialog-actions>

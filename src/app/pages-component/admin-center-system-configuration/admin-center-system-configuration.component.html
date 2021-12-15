@@ -1,0 +1,376 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin center / {{tableCatalog}}</div>
+    <!-- <div class="page__title title">
+      System configuration
+    </div> -->
+    <br>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <!-- Title dependiendo del catalogo seleccionado -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Select Catalog</mat-label>
+          <mat-select
+            matNativeControl
+            [(ngModel)]="tableCatalog"
+            (ngModelChange)="get_catalogos()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Catalog</mat-label>
+              <input matInput placeholder="Catalog" [(ngModel)]="filterCatalog.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of selectCatalogs | filterBy: filterCatalog" [value]="item.value">
+                {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(selectCatalogs | filterBy: filterCatalog).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- primera Search  -->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <!-- inicio Botones para agregar dependiendo el catalogo -->
+      <!-- office add -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'offices'">
+        <div class="page__section-butuonc" id="offices" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addOffice(0)">
+            Add Office
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- country add  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'countries'">
+        <div class="page__section-butuonc" id="countries" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addCountry()">
+            Add Country
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Service add  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'services'">
+        <div class="page__section-butuonc" id="services" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addService(0)">
+            Add Service
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Emergency response add  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'emergency response'">
+        <div class="page__section-butuonc" id="emergencyResponse" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addEmergencyResponse(0)">
+            Add Emergency Response
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- add upcoming  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'upcoming'">
+        <div class="page__section-butuonc" id="upcoming" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addUpcoming(0)">
+            Add Upcoming
+          </button>
+        </div>
+      </mat-grid-tile>
+       <!-- add slider  -->
+       <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'slider'">
+        <div class="page__section-butuonc" id="slider" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addSlider(0)">
+            Add Slider
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <table *ngIf="tableCatalog === 'offices'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataOffices" #sortoffice='matSort' matSort>
+      <!-- Office Name -->
+      <ng-container matColumnDef="Office Name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="office"> Office Name </th>
+        <td mat-cell *matCellDef="let office"> {{office.office}} </td>
+      </ng-container>
+      <!-- Country -->
+      <ng-container matColumnDef="Country">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
+        <td mat-cell *matCellDef="let office"> {{office.country}} </td>
+      </ng-container>
+      <!-- City  -->
+      <ng-container matColumnDef="City">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="city"> City </th>
+        <td mat-cell *matCellDef="let office"> {{office.city}} </td>
+      </ng-container>
+      <!-- Phone Number  -->
+      <ng-container matColumnDef="Phone Number">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="phone"> Phone Number </th>
+        <td mat-cell *matCellDef="let office"> {{office.phone | mask: '(000) 000-0000'}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let office">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addOffice(office.id)">
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;"(click)="deleteOffice(office.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsOffices"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsOffices;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'offices'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagoffice (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+    <table *ngIf="tableCatalog === 'countries'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCountries"  #sortcountry='matSort' matSort >
+      <!-- country -->
+      <ng-container matColumnDef="Country">
+        <th mat-sort-header="country" mat-header-cell *matHeaderCellDef>country</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.country}}
+        </td>
+      </ng-container>
+      <!-- currency -->
+      <ng-container matColumnDef="Currency">
+        <th mat-sort-header="currency" mat-header-cell *matHeaderCellDef>Currency</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.currency}}
+        </td>
+      </ng-container>
+      <!-- Languages  -->
+      <ng-container matColumnDef="Languages">
+        <th mat-sort-header="lenguage" mat-header-cell *matHeaderCellDef>Languages</th>
+        <td mat-cell *matCellDef="let element"> {{element.lenguage}} </td>
+      </ng-container>
+      <!-- Cities  -->
+      <ng-container matColumnDef="Cities">
+        <th  mat-sort-header="cities" mat-header-cell *matHeaderCellDef> Cities </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.cities}}
+        </td>
+      </ng-container>
+      <!-- Creation Date  -->
+      <ng-container matColumnDef="Creation Date">
+        <th  mat-sort-header="createdDate" mat-header-cell *matHeaderCellDef>Creation Date</th>
+        <td mat-cell *matCellDef="let element"> {{element.createdDate | date: 'dd MMM yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <img src="assets/icons/pencil.png" *ngIf="permission_write || permission_edit" style="width: 20px; margin-right: 10px;" (click)="editRegistro(element)">
+          <img src="assets/icons/delete.png" *ngIf="permission_delete" style="width: 20px;" (click)="deleteCountry(element)">
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsCountry"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsCountry;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'countries'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagocountry (page)="paginatorcountriesHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcountriesElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+
+    <mat-tab-group *ngIf="tableCatalog === 'services'">
+      <mat-tab label="Immigration">
+        <table class="mat-elevation-z8 textarea"  mat-table [dataSource]="serviceLocationsimmi" #immi #immisort='matSort' matSort>
+          <!-- Name Column -->
+          <ng-container matColumnDef="dos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="service"> Service </th>
+            <td mat-cell *matCellDef="let element"> {{element.service}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="tres">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="countries"> Countries </th>
+            <td mat-cell *matCellDef="let element" (click)="viewData(element)" [matMenuTriggerFor]="countryImmi">
+
+              <span matTooltip="{{ element.countriesName }}" class="font-purple-dark cursor-pointer">
+                {{element.countries}}
+              </span>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="cuatro">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <img src="/assets/icons/pencil.png" *ngIf="permission_write || permission_edit" (click)="addService(element.id)" style="width: 20px;">
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="cuatro"></tr>
+          <tr mat-row *matRowDef="let row; columns: cuatro;"></tr>
+        </table>
+        <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+          <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+          <!-- <mat-paginator  #immipag (page)="paginatorserimmiHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+            #paginator
+            #paginatorserimmiElement
+            [pageSizeOptions]="[10, 20, 2147483647]"
+            showFirstLastButtons></mat-paginator> -->
+        </div>
+      </mat-tab>
+      <mat-tab label="Relocation">
+        <table class="mat-elevation-z8 textarea" mat-table [dataSource]="serviceLocationsrelo" #relo #relosort='matSort' matSort>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="dos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="service"> Service </th>
+            <td mat-cell *matCellDef="let element"> {{element.service}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tres">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="countries"> Countries </th>
+            <td mat-cell *matCellDef="let element" (click)="viewData(element)" [matMenuTriggerFor]="countryImmi">
+              <span matTooltip="{{element.countriesName}}" class="font-purple-dark cursor-pointer">
+                {{element.countries}}
+              </span>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="cuatro">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <img src="/assets/icons/pencil.png" *ngIf="permission_write || permission_edit" (click)="addService(element.id)" style="width: 20px;">
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="cuatro"></tr>
+          <tr mat-row *matRowDef="let row; columns: cuatro;"></tr>
+        </table>
+        <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+          <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+          <!-- <mat-paginator  #relopag (page)="paginatorserreloHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+            #paginator
+            #paginatorserreloElement
+            [pageSizeOptions]="[10, 20, 2147483647]"
+            showFirstLastButtons></mat-paginator> -->
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <mat-menu #countryImmi="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Countries:</b> {{info_row.country}}</span>
+          <br>
+        </div>
+      </div>
+    </mat-menu>
+
+    <!---------------- table emergency ---------------->
+    <div *ngIf="tableCatalog === 'emergency response'" class="position-relative">
+      <span>emergency</span>
+    </div>
+
+    <table *ngIf="tableCatalog === 'upcoming'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataUpcoming" #sortupcoming='matSort' matSort>
+      <!-- Office Name -->
+      <ng-container matColumnDef="EventDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="eventDate"> Event Date </th>
+        <td mat-cell *matCellDef="let upcoming"> {{upcoming.eventDate | date: 'dd MMM yyyy'}} </td>
+      </ng-container>
+      <!-- Country -->
+      <ng-container matColumnDef="Title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="title"> Title </th>
+        <td mat-cell *matCellDef="let upcoming"> {{upcoming.title}} </td>
+      </ng-container>
+      <!-- City  -->
+      <ng-container matColumnDef="Country">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
+        <td mat-cell *matCellDef="let upcoming"> {{getCountryOriginName(upcoming.country)}} </td>
+      </ng-container>
+      <!-- Phone Number  -->
+      <ng-container matColumnDef="City">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="city"> City </th>
+        <td mat-cell *matCellDef="let upcoming"> {{getCity(upcoming.city)}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Creation Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate"> Creation Date </th>
+        <td mat-cell *matCellDef="let upcoming"> {{upcoming.createdDate | date: 'dd MMM yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let upcoming">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addUpcoming(upcoming.id)">
+          <!-- <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;"(click)="deleteOffice(office.id)" > -->
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnUpcoming"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnUpcoming;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'upcoming'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagupcoming (page)="paginatorupcomingHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorupcomingElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+    <table *ngIf="tableCatalog === 'slider'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataSlider" #sortslider='matSort' matSort>
+      <!-- Office Name -->
+      <ng-container matColumnDef="Image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="image"> Image </th>
+        <td mat-cell *matCellDef="let slider"> {{slider.image | slice:14}} </td>
+      </ng-container>
+      <!-- Country -->
+      <ng-container matColumnDef="Phrase">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="phrase"> Phrase </th>
+        <td mat-cell *matCellDef="let slider"> {{slider.phrase}} </td>
+      </ng-container>
+      <!-- City  -->
+      <ng-container matColumnDef="Creation Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate"> Creation Date </th>
+        <td mat-cell *matCellDef="let slider"> {{slider.createdDate | date: 'dd MMM yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let upcoming">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addSlider(upcoming.id)">
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteSlider(upcoming.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnSlider"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnSlider;"></tr>
+    </table>
+
+    <div *ngIf="tableCatalog === 'slider'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagslider (page)="paginatorsliderHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorsliderElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,160 @@
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 100%;
+}
+.dot--absolute {
+  position: absolute;
+  top: 40px;
+  left: 7.5px;
+}
+.dot__green {
+  background: #009577;
+}
+.dot__yellow {
+  background: #fbb03b;
+}
+.dot__red {
+  background: #ff5858;
+}
+
+.link {
+  color: #9d3292;
+  cursor: pointer;
+}
+
+.acot {
+  display: flex;
+  width: 120px;
+  height: 10px;
+  opacity: 0.8;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.text_end {
+  justify-content: flex-end;
+}
+
+.assigned_services {
+  border-radius: 4px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);
+  background-color: #ffffff;
+  padding: 15px;
+}
+.assigned_services .services {
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #9d3292;
+}
+.assigned_services img {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+}
+.assigned_services .perfil {
+  width: 250px;
+  display: flex;
+  align-content: space-between;
+}
+.assigned_services .perfil div {
+  width: 100%;
+  text-align: end;
+  margin-top: 10px;
+}
+.assigned_services .title {
+  font-size: 8px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.5);
+}
+.assigned_services .title img {
+  width: 16px;
+  height: 16px;
+}
+.assigned_services .data {
+  max-width: 250px;
+}
+.assigned_services .data p {
+  font-size: 12px;
+  color: black;
+}
+.assigned_services .pie {
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  color: #9d3292;
+  font-size: 12px;
+  font-weight: 800;
+}
+.assigned_services .pie span {
+  cursor: pointer;
+}
+
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+.mat-menu-panel {
+  margin-right: -100px;
+}
+
+th.mat-header-cell {
+  text-align: center !important;
+}
+
+.cdiv {
+  width: 100%;
+}
+
+.contenedor {
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+  margin: 15px 0 15px 0;
+  padding: 20px;
+}
+.contenedor div {
+  width: 100%;
+}
+
+.refresh {
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+.table_position {
+  position: relative;
+}
+
+.table_dot {
+  position: absolute;
+  top: 20px;
+}

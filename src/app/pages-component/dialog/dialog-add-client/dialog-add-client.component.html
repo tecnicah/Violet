@@ -1,0 +1,37 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add Client</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="3" rowHeight="60px">
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-form-field appearance="fill" class="textarea">
+        <mat-label>Client</mat-label>
+        <mat-select [(ngModel)]="data.idClientTo">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Client</mat-label>
+            <input matInput placeholder="Client name" [(ngModel)]="filterC.name">
+          </mat-form-field>
+          <mat-option *ngFor="let item of caCliente | filterBy: filterC" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+          <mat-option disabled *ngIf="(caCliente | filterBy: filterC).length === 0">No matching elements</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

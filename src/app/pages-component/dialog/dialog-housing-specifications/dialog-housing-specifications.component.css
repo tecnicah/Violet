@@ -1,0 +1,11 @@
+.contenedor {
+    border-radius: 3px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    margin: 15px 0 15px 0;
+    padding: 20px;
+  }
+
+div{
+    width: 100%;
+}

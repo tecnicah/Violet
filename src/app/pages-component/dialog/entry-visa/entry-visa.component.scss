@@ -1,0 +1,87 @@
+.entry_visa{
+    max-height: 500px;
+}
+
+.text_end{
+    justify-content: flex-end;
+}
+
+.browser{
+    color: #9d3292;
+    cursor: pointer;
+}
+.page__section-input--6_1-local{
+  flex: 0 1 31.666667%;
+
+}
+
+
+mat-card{
+    padding: 15px!important;
+    margin: 0px!important;
+    margin-bottom: 15px !important;
+}
+
+.addPropperty{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.wid{
+    width: 100%;
+}
+
+.avatar{
+    border-radius: 100%;
+    height: 55px;
+    // object-fit: cover;
+
+}
+
+th.mat-header-cell {
+  text-align: center !important;
+}
+
+.input_cental{
+    padding: 0 70px 0 0;
+}
+
+.input_final{
+    padding: 0 0 0 70px;
+}
+
+
+.browser{
+    color: #9d3292;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.rp_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.acot{
+    display: flex;
+    align-items: center;
+}
+
+.dot{
+    width: 10px;
+    height: 10px;
+    background: #ffe0e0;
+    border-radius: 100%;
+    border: solid 1px #979797;
+}
+
+.rp_header span{
+    color: #9d3292;
+    font-weight: bold;
+}
+
+.urgente{
+    background-color: #ffe0e0;
+}

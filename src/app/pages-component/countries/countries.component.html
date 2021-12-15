@@ -1,0 +1,98 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin Center / Countries</div>
+    <br>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text"  (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more" (click)="addCountry();">
+            Add Country
+          </button>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-------------------------------------------------------------------------------------------------------------->
+    <!--OPEN TABLE SUPPLIER-->
+    <div class="page__section" id="exportReport">
+      <table mat-table [dataSource]="dataSource" matTableExporter #exporter="matTableExporter"
+      class="mat-elevation-z8 textarea" #sortcountry='matSort' matSort>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="Country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="country">Country</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.country}}
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Currency">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="currency">Currency</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.currency}}
+          </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Languages">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="lenguage">Languages</th>
+          <td mat-cell *matCellDef="let element"> {{element.lenguage}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Cities">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="cities"> Cities </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.cities}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Creation Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="createdDate">Creation Date</th>
+          <td mat-cell *matCellDef="let element"> {{element.createdDate | date: 'dd MMM yyyy'}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <img src="assets/icons/pencil.png" *ngIf="permission_write || permission_edit" style="width: 20px; margin-right: 10px;" (click)="editRegistro(element)">
+            <img src="assets/icons/delete.png" *ngIf="permission_delete" style="width: 20px;" (click)="deleteCountry(element)">
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons
+      ></mat-paginator> -->
+    </div>
+    <br><br>
+    <!--CLOSE TABLE SUPPLIER-->
+  </div>
+</div>

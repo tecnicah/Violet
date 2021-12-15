@@ -1,0 +1,277 @@
+  <div class="main-wrapper padding-general-x">
+    <div class="page">
+      <div class="page__path subtitle">Operations / Supplier Partners</div>
+      <div class="page__title title">
+        Supplier Partners
+      </div>
+
+      <mat-grid-list cols="5" rowHeight="70px">
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Search</mat-label>
+              <input matInput (keyup)="applyFilter($event)" [(ngModel)]="search.filter" placeholder="Search"
+                type="text" />
+              <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Supplier Category</mat-label>
+              <mat-select matNativeControl [(ngModel)]="search.supplierCategory" (ngModelChange)="searchData()">
+                <mat-option [value]=1>Consultant</mat-option>
+                <mat-option [value]=2>Services</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile> -->
+
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Supplier Partner Type</mat-label>
+              <mat-select matNativeControl [(ngModel)]="search.partnerType" (ngModelChange)="searchData()">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Supplier Partner Type</mat-label>
+                  <input matInput placeholder="Supplier Partner Type" [(ngModel)]="filterSPT.supplierType">
+                </mat-form-field>
+
+                <mat-option *ngFor="let data of ca_supplierType | filterBy: filterSPT" [value]="data.id">
+                  {{data.supplierType}}
+                </mat-option>
+                <mat-option disabled *ngIf="(ca_supplierType | filterBy: filterSPT).length === 0">No matching elements</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile> -->
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Supplier Partner Category</mat-label>
+              <mat-select matNativeControl [(ngModel)]="search.supplierCategory" (ngModelChange)="searchData()">
+                
+
+                <mat-option *ngFor="let data of ca_supplierCategory" [value]="data.id">
+                  {{data.category}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="addPropperty" *ngIf="permission_write">
+            <div class="page__section-button page__section-button--big" style="flex: 0 1 180px !important; left: -6;">
+              <button class="button-icon button-icon--more" style="width: 180px;" (click)="newSupplier()">
+                New Supplier Partner
+              </button>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Country</mat-label>
+              <mat-select matNativeControl [(ngModel)]="search.country" (ngModelChange)="searchData(); getCity();">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Country</mat-label>
+                  <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+                </mat-form-field>
+                <mat-option *ngFor="let data of ca_country | filterBy: filterCountry" [value]="data.id">
+                  {{data.name}}
+                </mat-option>
+                <mat-option disabled *ngIf="(ca_country | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>City</mat-label>
+              <mat-select matNativeControl [(ngModel)]="search.city" (ngModelChange)="searchData()" [disabled]="ca_city.length == 0">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>City</mat-label>
+                  <input matInput placeholder="City" [(ngModel)]="filterCity.city">
+                </mat-form-field>
+                <mat-option *ngFor="let data of ca_city | filterBy: filterCity" [value]="data.id">
+                  {{data.city}}
+                </mat-option>
+                <mat-option disabled *ngIf="(ca_city | filterBy: filterCity).length === 0">No matching elements</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select matNativeControl [(ngModel)]="search.status" (ngModelChange)="searchData()">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>status</mat-label>
+                  <input matInput placeholder="status" [(ngModel)]="filterStatus.status">
+                </mat-form-field>
+                <mat-option *ngFor="let data of ca_status| filterBy: filterStatus" [value]="data.id">
+                  {{data.status}}
+                </mat-option>
+                <mat-option disabled *ngIf="(ca_status | filterBy: filterStatus).length === 0">No matching elements</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+            <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;"
+              matTooltip="Clear filter" (click)="cleanFilter()">
+              <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+            </button>
+          </div>
+          <div class="page__section-butuonc" style="margin-top: -30px;">
+            <button (click)="showExportDialog()" class="button-icon button-icon--export" *ngIf="__userlog__.role.id != 3">
+              Export
+            </button>
+          </div>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+      <button (click)="exporter.exportTable('xls')" id="excel" style="display: none;"
+        class="button-icon button-icon--adder">
+        Export
+      </button>
+
+      <!-------------------------------------------------------------------------------------------------------------->
+      <!--OPEN TABLE SUPPLIER-->
+      <div class="page__section" id="exportReport">
+        <table mat-table [dataSource]="supplier" matTableExporter #exporter="matTableExporter" #sort='matSort' matSort
+          class="mat-elevation-z8 textarea">
+
+        
+          <!-- Name Column -->
+          <ng-container matColumnDef="SupplierPartner">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="supplierPartner"> Supplier Partner </th>
+            <td mat-cell *matCellDef="let element">
+              <p class="browser" style="font-size: 12px;" (click)="viewSupplier(element)">{{element.supplierPartner}}</p>
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="SupplierCategory">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="supplierCategory">Supplier Category</th>
+            <td mat-cell *matCellDef="let element"> {{element.supplierCategory}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="SupplierPartnerType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="supplierPartnerType"> Supplier Partner Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.supplierPartnerType}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="VIP">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="luxuryVip"> VIP </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="table-row__check">
+                <img src="assets/table-icons/check.png" *ngIf="element.luxuryVip" />
+                <img src="assets/table-icons/uncheck.png" *ngIf="!element.luxuryVip" />
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <!--ng-container matColumnDef="Country">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Country </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container-->
+
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="City">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="city"> City </th>
+            <td mat-cell *matCellDef="let element" [matMenuTriggerFor]="country"
+            (click)="viewCity(element)"  style="cursor: pointer" matTooltip="{{element.name}}">
+              {{ element.city?.length > 10 ? (element.city | slice:0:10) + '...' : element.city }}
+             </td>
+          </ng-container>
+
+
+          <mat-menu #country="matMenu" xPosition="before">
+            <div class="bg"></div>
+            <div class="assigned_services">
+              <div class="data" style="padding: 10px;">
+                <span style="font-size: 10px;"><b>Country:</b> {{info_country.country}}</span>
+                <!--br-->
+                <!--span style="font-size: 10px;"><b>City:</b> {{info_country.city}}</span--->
+              </div>
+            </div>
+          </mat-menu>
+          
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="ContactName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="contactName"> Contact Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="phone"> Phone </th>
+            <td mat-cell *matCellDef="let element"> {{element.phone  | mask: '(000) 000-0000'}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="TotalServices">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="totalServices"> TotalServices </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalServices}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Experience">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="experience"> Experience </th>
+            <td mat-cell *matCellDef="let element"> {{element.experience}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Contact">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="contact"> Contact </th>
+            <td mat-cell *matCellDef="let element" style="cursor: pointer !important;">
+              <!--{{element.contact}}-->
+              <div class="browser">
+                <a href="mailto:{{element.contact}}">
+                <img src="assets/email.png" style="height: 30px; cursor: pointer;" />
+              </a>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+        <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+        <!-- <mat-paginator #Supplier
+          (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+          [pageSizeOptions]="[10, 20, 2147483647]"
+          showFirstLastButtons
+        ></mat-paginator> -->
+      </div>
+      <br><br>
+      <!--CLOSE TABLE SUPPLIER-->
+    </div>
+  </div>

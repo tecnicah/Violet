@@ -1,0 +1,49 @@
+th.mat-header-cell {
+  text-align: center !important;
+}
+
+.Payment-Methods {
+  width: 64px;
+  height: 10px;
+  margin: 0 129px 6px 0;
+  font-family: Lato;
+  font-size: 8px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.addPropperty{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+div{
+  width: 100%;
+}
+
+.refresh{
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}
+/* ::ng-deep mat-option:last-child:before{
+  content: 'view all';
+}
+::ng-deep mat-option:last-child .mat-option-text{
+  display: none;
+} */
+mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
+	width: 65px !important;
+}

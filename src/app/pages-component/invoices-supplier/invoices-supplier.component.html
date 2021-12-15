@@ -1,0 +1,269 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Finance / Invoices Supplier</div>
+    <div class="page__title title">
+      Supplier Invoices
+    </div>
+
+    <mat-grid-list cols="6" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)" [(ngModel)]="data.filter" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="renge1" placeholder="Start date" autocomplete="off" />
+            <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="range2" autocomplete="off"
+              placeholder="End date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Line</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data.serviceLine" (ngModelChange)="searchData();">
+              <mat-option *ngFor="let item of ca_serviceLine" [value]="item.id">{{item.serviceLine}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Invoice Type</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data.invoiceType" (ngModelChange)="searchData();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Invoice Type</mat-label>
+                <input matInput placeholder="Invoice Type" [(ngModel)]="filterInvoice.type">
+              </mat-form-field>
+              <mat-option *ngFor="let item of ca_invoiceType | filterBy: filterInvoice" [value]="item.id">{{item.type}}</mat-option>
+              <mat-option disabled *ngIf="(ca_invoiceType | filterBy: filterInvoice).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Partner</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data.partner" (ngModelChange)="getCliente(); searchData();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Partner</mat-label>
+                <input matInput placeholder="Partner" [(ngModel)]="filterPartner.coordinator">
+              </mat-form-field>
+              <mat-option *ngFor="let item of ca_partner| filterBy: filterPartner" [value]="item.id">{{item.coordinator}}</mat-option>
+              <mat-option disabled *ngIf="(ca_partner | filterBy: filterPartner).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Client</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data.client" (ngModelChange)="searchData();" [disabled]='ca_cliente.length == 0'>
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Client</mat-label>
+                <input matInput placeholder="Client" [(ngModel)]="filterClient.name">
+              </mat-form-field>
+              <mat-option *ngFor="let item of ca_cliente| filterBy: filterClient" [value]="item.id">{{item.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_cliente | filterBy: filterClient).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data.country" (ngModelChange)="searchData();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+              </mat-form-field>
+              <mat-option *ngFor="let item of ca_country| filterBy: filterCountry" [value]="item.id">{{item.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_country | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data.status" (ngModelChange)="searchData();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>status</mat-label>
+                <input matInput placeholder="status" [(ngModel)]="filterStatus.status">
+              </mat-form-field>
+              <mat-option *ngFor="let item of ca_status | filterBy: filterStatus" [value]="item.id">{{item.status}}</mat-option>
+            </mat-select>
+            <mat-option disabled *ngIf="(ca_status | filterBy: filterStatus).length === 0">No matching elements</mat-option>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuon" style=" width: 70%; height: 100%; text-align: center;">
+          <button mat-icon-button color="primary" (click)="cleanFilter()" style="margin-right: 0px; margin-top: 1px;" matTooltip="Clear filter">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+
+
+    </mat-grid-list>
+
+    <!-------------------------------------------------------------------------------------------------------------->
+    <!--OPEN TABLE REQUEST CENTER-->
+    <div class="page__section" id="exportReport">
+      <table mat-table [dataSource]="dataSource" matTableExporter #exporter="matTableExporter" #sort='matSort' matSort
+        class="mat-elevation-z8 textarea">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="Service Record">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="serviceRecord">Service <br> Record</th>
+          <td mat-cell *matCellDef="let element">
+            <p class="browser" style="font-size: 12px;" (click)="sr(element)" [matMenuTriggerFor]="supplier" >{{element.serviceRecord}}</p>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Service Line">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="serviceLine">Service Line</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.serviceLine}}
+          </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Invoice No">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="tres">Invoice No.</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.tres}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Invoice Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="cuatro"> Invoice Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.cuatro}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Invoice Type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="request_type">Invoice Type</th>
+          <td mat-cell *matCellDef="let element">{{element.request_type}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Supplier Partner">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="partner">Supplier Partner</th>
+          <td mat-cell *matCellDef="let element">{{element.partner}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="amount">Amount</th>
+          <td mat-cell *matCellDef="let element">{{element.amount | currency}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Currency">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="currency">Currency</th>
+          <td mat-cell *matCellDef="let element">{{element.currency}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Due Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="dueDate">Due Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.dueDate | date:'dd MMM yyyy'}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="country">Country</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.country}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.status}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Accion">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <div>
+              <img src="assets\icons\pencil.png" style="width: 17px;" (click)="editarInvoice(element)">
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+      <!-- <mat-paginator
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons
+      ></mat-paginator> -->
+    </div>
+
+
+      <mat-menu #supplier="matMenu" xPosition="before">
+        <div class="bg"></div>
+        <div class="assigned_services">
+          <div class="data" style="padding: 10px;">
+            <span style="font-size: 10px;"><b>Assignee:</b> {{data_registro.assinee}}</span>
+            <br>
+            <span style="font-size: 10px;"><b>Partner:</b> {{data_registro.partner}}</span>
+            <br>
+            <span style="font-size: 10px;"><b>Client:</b> {{data_registro.client}}</span>
+            <br>
+          </div>
+        </div>
+      </mat-menu>
+
+    <br><br>
+  </div>
+</div>

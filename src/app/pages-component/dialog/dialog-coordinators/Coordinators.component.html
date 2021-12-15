@@ -1,0 +1,223 @@
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Coordinators</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+    <!-- Filters ------------------------------------------------------------------- -->
+    <!-- Filters ------------------------------------------------------------------- -->
+    <mat-grid-list cols="4" rowHeight="60px">
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <mat-form-field class="input_central_half">
+              <mat-label>Search</mat-label>
+              <input matInput placeholder="Search" type="text" (keyup)="tableSerchFilter( $event )" />
+              <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central_half">
+              <mat-label>Service Line</mat-label>
+              <mat-select
+                matNativeControl
+                [(ngModel)]="filter_data.serviceLine"
+                (selectionChange)="updateTableRequest();">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Service Line</mat-label>
+                  <input matInput placeholder="Service Line" [(ngModel)]="filter_.serviceLine">
+                </mat-form-field>
+                <mat-option *ngFor="let item of serviceline_catalogue | filterBy: filter_" [value]="item.id">
+                    {{ item.serviceLine }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div style="width: 100%; display: flex;">
+                <mat-form-field appearance="fill" class="input_central_half">
+                    <mat-label>Office</mat-label>
+                    <mat-select
+                      matNativeControl
+                      [(ngModel)]="filter_data.office"
+                      (selectionChange)="updateTableRequest();">
+                      <mat-form-field appearance="outline" style="padding: 5px;">
+                        <mat-label>Office</mat-label>
+                        <input matInput placeholder="Office" [(ngModel)]="filter.office">
+                      </mat-form-field>
+                      <mat-option *ngFor="let item of office_catalogue | filterBy: filter" [value]="item.id">
+                          {{ item.office }}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button
+                    (click)="resetCoordinatorsFiltersTable()"
+                    mat-icon-button
+                    color="primary"
+                    style="margin-left: -30px; margin-top: 12px;"
+                    matTooltip="Clear filter">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </div>
+        </mat-grid-tile>
+
+
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="60px" class="display-none">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central_half">
+              <mat-label>Country</mat-label>
+              <mat-select
+                matNativeControl
+                [(ngModel)]="filter_data.country"
+                (selectionChange)="ableCityField(); updateTableRequest();">
+                <mat-option selected disabled value="">Country</mat-option>
+                <mat-option *ngFor="let item of country_catalogue" [value]="item.id">
+                    {{ item.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central_half">
+              <mat-label>City</mat-label>
+              <mat-select
+                matNativeControl
+                [(ngModel)]="filter_data.city"
+                [disabled]="!able_city_filter"
+                (selectionChange)="updateTableRequest();">
+                <mat-option selected disabled value="">City</mat-option>
+                <mat-option *ngFor="let item of city_catalogue;" [value]="item.id">
+                    {{ item.city }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- Coordinators Table ------------------------------------------------------------------- -->
+    <!-- Coordinators Table ------------------------------------------------------------------- -->
+    <!-- Coordinators Table ------------------------------------------------------------------- -->
+    <!-- Coordinators Table ------------------------------------------------------------------- -->
+    <div class="page__section" id="export">
+        <table
+            mat-table [dataSource]="coordinators_table_data"
+            #sortcoord='matSort' matSort matTableExporter #exporter="matTableExporter"
+            class="main-table">
+            <ng-container matColumnDef="col_1">
+                <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">Name</th>
+                <td mat-cell *matCellDef="let element" class="text-center browser" [matMenuTriggerFor]="coordinador" (click)="data_coord(element)">
+                    {{ element.coordinator }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="col_2">
+                <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceLine">Service Line</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    {{ element.serviceLine }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="col_3">
+              <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="office">Office</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  {{ element.office }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="col_4">
+              <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="services">Total Services</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  {{ element.services }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="col_5">
+              <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="active">Active</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  <span class="font-purple-dark text-bold">
+                      {{ element.active }}
+                  </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="col_6">
+              <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="inProgress">In Progress</th>
+              <td mat-cell *matCellDef="let element" class="text-center" >
+                  <span class="font-purple-dark text-bold">
+                      {{ element.inProgress }}
+                  </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="col_7">
+              <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="onHold">On Hold</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  <span class="font-purple-dark text-bold">
+                      {{ element.onHold }}
+                  </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="col_8">
+              <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="pendingBilling">Pending Billing</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  <span class="font-purple-dark text-bold">
+                      {{ element.pendingBilling }}
+                  </span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="coordinators_table_colums"></tr>
+            <tr mat-row *matRowDef="let row; columns: coordinators_table_colums;"></tr>
+        </table>
+    </div>
+    <div class="page__section text-center paginator">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons
+      >
+      </mat-paginator> -->
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="hideModal()">Close</button>
+    </div>
+</mat-dialog-actions>
+
+
+<mat-menu #coordinador="matMenu" xPosition="before">
+  <div class="bg"></div>
+  <div class="assigned_services">
+    <div class="avatares">
+      <div class="content">
+        <img src="{{_services.url_images}}{{data_coordinador?.photo}}" alt="" class="img">
+      </div>
+    </div>
+    <br>
+    <div class="data">
+      <span class="title">Service Line</span>
+    </div>
+
+    <div class="pie">
+      <mat-checkbox [checked]="data_coordinador?.serviceLine == 'Immigration'">Immigration</mat-checkbox>
+      <mat-checkbox [checked]="data_coordinador?.serviceLine == 'Relocation'">Relocation</mat-checkbox>
+    </div>
+    <div class="data">
+      
+
+      <span class="title">Coordinator</span>
+      <p>{{data_coordinador?.coordinator}}</p>
+
+      <span class="title">Premier Email</span>
+      <p>{{data_coordinador?.email}}</p>
+
+      <span class="title">Phone Number</span>
+      <p>{{data_coordinador?.phoneNumber}}</p>
+
+      <span class="browser" style="color: #9d3292;" (click)="gotoProfile(data_coordinador?.profileId)">View Profile</span>
+
+    </div>
+  </div>
+</mat-menu>

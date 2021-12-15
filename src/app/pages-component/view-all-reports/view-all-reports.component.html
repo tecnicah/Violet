@@ -1,0 +1,335 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle"></div>
+    <div class="page__title title">
+      <button class="page__path--closeButton" (click)="goBack()">Back</button>
+      View All Reports
+    </div>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)" [(ngModel)]="search.filter"
+              placeholder="Search" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Line</mat-label>
+            <mat-select matNativeControl [(ngModel)]="search.serviceLine" (ngModelChange)="searchData()">
+              <mat-option *ngFor="let item of caServiceLine" [value]="item.id">{{item.serviceLine}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <!--mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service</mat-label>
+            <mat-select matNativeControl>
+              <mat-option>Service</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile-->
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Total Time Authorized</mat-label>
+            <input matInput placeholder="Total Time Authorized" [(ngModel)]="search.totalTimeAuthorized" type="number"
+              min="0" (ngModelChange)="searchData()" />
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="initialReportDate" placeholder="Start date" autocomplete="off" />
+            <input matEndDate formControlName="finalReportDate" (dateChange)="filteringServiceRecordTable()"
+              autocomplete="off" placeholder="End date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuon" style=" width: 70%; height: 100%; text-align: center;">
+          <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: 1px;" matTooltip="Clear filter"
+            (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+
+        <div class="page__section-butuonc" style="margin-top: -30px;">
+          <button class="button-icon button-icon--export">
+            Export
+          </button>
+        </div>
+
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-------------------------------------------------------------------------------------------------------------->
+    <!--OPEN CARD REPORT HISTORY-->
+    <div class="mat-elevation-z4" style="padding: 25px; margin-bottom: 20px;"
+      *ngFor="let item of all_reports?.filteredData; let i = index">
+      <div class="textarea" style="text-align: end;">
+        <b class="browser" *ngIf="!item.show" (click)="item.show = true">Show</b>
+        <b class="browser" *ngIf="item.show" (click)="item.show = false">Hide</b>
+      </div>
+
+
+      <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <div class="page__title title font-18">
+            Report
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+            <div>
+              <span class="text-mini gray_05">Report By</span><br />
+              {{item?.reportByNavigation?.name}} {{item?.reportByNavigation?.lastName}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+            <div>
+              <span class="text-mini gray_05">Creation Date</span><br />
+              {{item.createdDate | date:'dd MMM yyy'}}
+            </div>
+
+            <div style="text-align:end; width: auto !important;">
+              <mat-icon class="calendar">calendar_today</mat-icon>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field appearance="fill" class="input_central_half">
+            <mat-label>Report Date</mat-label>
+            <input matInput [min]="minDate" [matDatepicker]="pickertres" placeholder="Supplier Since"
+              [(ngModel)]="item.reportDate" required>
+            <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+            <mat-datepicker #pickertres></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Service Line</span><br />
+              {{item?.serviceLineName}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Work Order</span><br />
+              {{item?.workOrder}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Start Time</span><br />
+              {{item.startTime}}
+            </div>
+
+            <div style="text-align:end; width: auto !important;">
+              <mat-icon class="calendar">schedule</mat-icon>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">End Time</span><br />
+              {{item.endTime}}
+            </div>
+
+            <div style="text-align:end; width: auto !important;">
+              <mat-icon class="calendar">schedule</mat-icon>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Total Time</span><br />
+              {{item?.totalTime}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      </mat-grid-list>
+
+
+      <div *ngIf="item.show">
+        <mat-grid-list cols="4" rowHeight="80px">
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="page__title title font-18">
+              Services
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <div class="mat-elevation-z4" style="padding: 25px" *ngFor="let item_ of item.serviceReportDays; let i = index">
+          <mat-grid-list cols="4" rowHeight="80px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Service</span><br />
+                  {{item_?.serviceName}}
+                </div>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Time</span><br />
+                  {{item_?.time}}
+                </div>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+          </mat-grid-list>
+
+          <mat-grid-list cols="4" rowHeight="130px">
+            <mat-grid-tile [colspan]="4" [rowspan]="1">
+              <div class="textarea">
+                <br><br>
+                <p style="font-size: 10px; color: rgba(0, 0, 0, 0.5);">Comments</p>
+                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                  <textarea matInput (change)="item_.comments = $event.target.value" [disabled]="item_.id > 0" #message
+                    maxlength="500">{{item_.comments}}</textarea>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+
+        <br>
+
+        <div class="comments">
+          <mat-grid-list cols="10" rowHeight="80px">
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div>
+                <!--
+              <img class="avatar" src="{{_services.url_images}}{{data.user.avatar}}" alt=""
+                *ngIf="data.user.avatar != null">
+              <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.user.avatar === null"></div>
+              -->
+                <div class="avatar" style="background: rgba(0, 0, 0, 0.2);"></div>
+              </div>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="page__section-data font-size-12" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Name</span><br />
+                  No esta el nodo
+                </div>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="page__section-data font-size-12" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Title</span><br />
+                  No esta el nodo
+                </div>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="page__section-data font-size-12" style="display: flex;">
+                <div>
+                  <span class="text-mini gray_05">Date</span><br />
+                  {{item.createdDate | date:'dd MMM yyy'}}
+                </div>
+
+                <div style="text-align:end; width: auto !important;">
+                  <mat-icon class="calendar">calendar_today</mat-icon>
+                </div>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <mat-grid-list cols="4" rowHeight="130px">
+            <mat-grid-tile [colspan]="4" [rowspan]="1">
+              <div class="textarea">
+                <br><br>
+                <p style="font-size: 10px; color: rgba(0, 0, 0, 0.5);">Activity</p>
+                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                  <textarea matInput (change)="item.activity = $event.target.value" [disabled]="item.id > 0" #message
+                    maxlength="500">{{item.activity}}</textarea>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <br>
+
+          <mat-grid-list cols="4" rowHeight="130px">
+            <mat-grid-tile [colspan]="4" [rowspan]="1">
+              <div class="textarea">
+                <br><br>
+                <p style="font-size: 10px; color: rgba(0, 0, 0, 0.5);">Conclusion of the Day / Next Steps</p>
+                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                  <textarea matInput (change)="item.conclusion = $event.target.value" [disabled]="item.id > 0" #message
+                    maxlength="500">{{item.conclusion}}</textarea>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+    </div>
+
+    <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator #Supplier [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+    <!--CLOSE CARD REPORT HISTORY-->
+  </div>
+</div>

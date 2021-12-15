@@ -1,0 +1,35 @@
+div{
+    width: 100%;
+}
+
+.contenedor {
+    border-radius: 3px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    margin: 15px 0 15px 0;
+    padding: 20px;
+  }
+
+  .Section-Name {
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .maxlengt{
+    font-family: Lato;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
+    padding-right: 10px;
+    color: rgba(0, 0, 0, 0.25);
+  }

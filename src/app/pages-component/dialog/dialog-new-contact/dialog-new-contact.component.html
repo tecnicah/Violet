@@ -1,0 +1,262 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Administrative Contact</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="100px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="3">
+      <!--div>
+        <div class="input__image">
+          <label class="input__image-label" for="ass_prof_photo_input">
+            <img class="input__image-label--ass" src="{{administrativeContactsServices.b64}}" *ngIf="administrativeContactsServices.b64" alt="">
+            <img class="input__image-label--ass" src="{{_services.url_images}}{{administrativeContactsServices.photo}}"
+              *ngIf="administrativeContactsServices.photo != '' && administrativeContactsServices.photo!=undefined && administrativeContactsServices.id != 0 && !administrativeContactsServices.b64"
+              alt="">
+            <img class="input__image-label--ass" *ngIf="!administrativeContactsServices.b64 && administrativeContactsServices.photo == ''"
+              src="assets/images/users/avatar.png" id="ass_prof_photo" />
+            <span class="page__section-button page__section-button--big " style="bottom: -50px;">
+             
+              <p style="width: 106px; position: relative; margin-top: 50px; margin-left: 3px;" (click)="editPhoto()"class="input__image-label--cardSpanConsultant">Edit Photo</p>
+            </span>
+          </label>
+        </div>
+      </div-->
+      <div class="page__sectionConsultant page__section-inputs no-padding-tb">
+        <div class="page__sectionConsultant page__section-inputs no-padding-tb">
+          <div class="page__sectionConsultant page__section-input--x no-padding-tb">
+            <div class="input__image">
+              <label for="file" class="input__image-label">
+                <div class="input__image-label--cardConsultant">
+
+                  <img class="lead_client_avatar" src="{{administrativeContactsServices.b64}}"
+                    *ngIf="administrativeContactsServices.b64" alt="" 
+                    alt="">
+
+                  <img class="lead_client_avatar" src="{{_services.url_images}}{{administrativeContactsServices.photo}}"
+                    *ngIf="administrativeContactsServices.photo != '' && administrativeContactsServices.photo!=undefined && administrativeContactsServices.id != 0 && !administrativeContactsServices.b64">
+
+                  <img class="lead_client_avatar"
+                    *ngIf="!administrativeContactsServices.b64 && administrativeContactsServices.photo == ''"
+                    src="assets/images/users/avatar.png" id="ass_prof_photo" />
+
+                </div>
+                <p class="input__image-label--cardSpanConsultant" (click)="editPhoto()" class="input__image-label--cardSpanConsultant">Edit Photo
+                </p>
+                
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <ngx-file-drop style="display: none;" class="file-drop" dropZoneLabel="Drop files here"
+        (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"
+        [multiple]="false" accept="image/*">
+        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+          Drag and Drop or
+          <p class="browser" id="photoCont" (click)="openFileSelector()">Browse File</p>
+        </ng-template>
+      </ngx-file-drop>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_final" style="display: flex;">
+        <div *ngIf="administrativeContactsServices.createdDate == null">
+          <span class="text-mini gray_05">Creation Date</span><br />
+          {{date| date:'dd MMM yyy'}}
+        </div>
+
+        <div *ngIf="administrativeContactsServices.createdDate != null">
+          <span class="text-mini gray_05">Creation Date</span><br />
+          {{administrativeContactsServices.createdDate  | date:'dd MMM yyy'}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Contact Type</mat-label>
+          <mat-select [(ngModel)]="administrativeContactsServices.contactType" (focus)="activeContactType = false;">
+            <mat-option *ngFor="let item of ca_contactType" [value]="item.id">{{item.type}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeContactType">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Contact Name</mat-label>
+          <input matInput required placeholder="Contact Name" type="text"
+            [(ngModel)]="administrativeContactsServices.contactName" (focus)="activeContactName = false;">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeContactName">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput required placeholder="Title" type="text" [(ngModel)]="administrativeContactsServices.title"
+            (focus)="activeTitle = false;">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeTitle">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Phone Number</mat-label>
+          <input matInput required placeholder="Phone Number" type="tel" min="0" (keydown)="validaNumericos($event)"
+            [(ngModel)]="administrativeContactsServices.phoneNumber" (focus)="FalseVar()">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activePhoneNumber">Field is required</mat-hint>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNumberLongitud">Maximum length 20 characters
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>E-mail</mat-label>
+          <input matInput required placeholder="E-mail" type="email" [(ngModel)]="administrativeContactsServices.email"
+            (change)="validateEmail()" (focus)="activeEmail = false">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeEmail">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <mat-select [(ngModel)]="administrativeContactsServices.city" (focus)="activeCity = false">
+            <mat-option *ngFor="let item of ca_city" [value]="item.id">{{item.city}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCity">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="170px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <br>
+        <p>Comments</p>
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput #message maxlength="500" [(ngModel)]="administrativeContactsServices.comments"
+            (focus)="activeComents = false;"></textarea>
+          <mat-hint align="end">{{message.value.length || 0}} / 500 </mat-hint>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeComents">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!----------------------------------------------------------------------------------------->
+  <!--UPLOAD DOCUMENT-->
+  <mat-grid-list cols="1">
+    <div class="page__section margin-top-min" style="margin-bottom: 20px;">
+      <div class="page__section-name">
+        Documents
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--6_2">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Expiration Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Location
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+
+      <div class="page__section documents__ascard"
+        *ngFor="let doc of administrativeContactsServices.documentAdministrativeContactsServices; let i = index">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deleteDocument(doc.id, i)">
+
+        <img src="../../../../assets/icons/eye-view.svg" *ngIf="doc.id != 0"
+          class="page__section--card-closeButton delete" style="background: transparent!important; margin-right: 25px;"
+          (click)="openFileOnWindow(doc.filePath)">
+
+        <img src="../../../../assets/icons/eye-view.svg" *ngIf="doc.id == 0"
+          class="page__section--card-closeButton delete" style="background: transparent!important; margin-right: 25px;"
+          (click)="onClickDownloadPdf(doc.filePath, doc.fileExtension)">
+
+        <div class="page__section-input page__section-input--6_2 documents__ascard--task">
+          {{nameDocument(doc.documentType)}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{doc.createdDate | date:'dd MMM yyy' }}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{doc.expirationDate | date:'dd MMM yyy'}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{nameCity(doc.city)}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{namePrivacy(doc.privacy)}}
+        </div>
+      </div>
+    </div>
+    <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeDocumentos">Field is required</mat-hint>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big"
+          style="flex: 0 1 180px !important; left: 6px !important; width: 160px;">
+          <button class="button-icon button-icon--more" (click)="addDocument()">
+            Add New Document
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!--ENDS UPLOAD DOCUMENTS-->
+  <!----------------------------------------------------------------------------------------->
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="validForm();">Save Contact</button>
+  </div>
+</mat-dialog-actions>

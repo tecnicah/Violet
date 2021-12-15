@@ -1,0 +1,87 @@
+<div class="main-wrapper padding-general-x">
+    <div class="page">
+      <div class="page__path subtitle">Training / Preview</div>
+      <div class="page__title title">
+        Preview
+        <button class="page__path--closeButton" (click)="goBack()">Back</button>
+      </div>
+  
+      <div class="padding">
+       
+        <!---------------------------------------------------------------------------------------------------->
+        <!--SE RENDERIZA CONTENIDO DE UN TEMA-->
+        <div class="contenedor_principal__contenido mat-elevation-z4" *ngIf="show_theme">
+  
+          <div *ngFor="let data of renderizarHTML">
+            <h1 class="contenedor_principal__title" *ngIf="data.element == 1">{{data.text}}</h1>
+            <h1 class="contenedor_principal__subtitle" *ngIf="data.element == 2">{{data.text}}</h1>
+            <p class="contenedor_principal__paragraph" *ngIf="data.element == 3">{{data.text}}</p>
+            <div *ngIf="data.element == 4" class="contenedor_principal__space"></div>
+            <img src="{{data.image.changingThisBreaksApplicationSecurity}}" alt="" class="contenedor_principal__img"
+              *ngIf="data.element == 5 && data.files.length > 0">
+            <p *ngIf="data.element == 6">
+              <iframe width="560" height="315" [src]="getVideoIframe(data.url)" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </p>
+            <div class="mat-elevation-z4 textarea contenedor_principal__documento"
+              *ngIf="data.element == 7 && data.files.length > 0">
+              <p>Document Name</p>
+            </div>
+          </div>
+        </div>
+        <!---------------------------------------------------------------------------------------------------->
+        <!--SE RENDERIZA CONTENIDO DE UNA EVALUACION-->
+        <div class="contenedor_principal__contenido mat-elevation-z4" *ngIf="show_evaluation">
+  
+          <div *ngFor="let data of renderizarHTML; let i = index">
+            <h1 class="contenedor_principal__title" *ngIf="data.element == 1">{{data.text}}</h1>
+            <h1 class="contenedor_principal__subtitle" *ngIf="data.element == 2">{{data.text}}</h1>
+            <p class="contenedor_principal__paragraph" *ngIf="data.element == 3">{{data.text}}</p>
+            <div *ngIf="data.element == 4" class="contenedor_principal__space"></div>
+            <img src="{{data.image.changingThisBreaksApplicationSecurity}}" alt="" class="contenedor_principal__img"
+              *ngIf="data.element == 5 && data.files.length > 0">
+            <div *ngIf="data.element == 8">
+              <p class="texto">{{data.question}}</p><br>
+              <div>
+                <div>
+                  <mat-radio-group [(ngModel)]="data.respuesta_elegida" class="radio_button">
+                    <mat-radio-button *ngFor="let respuestas of data.answers" class="basics">
+                      <span class="body_question">{{respuestas.answer1}}</span>
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="data.element == 9">
+              <p class="texto">{{data.question}}</p><br>
+              <div class="Multiple" class="ancho">
+                <mat-form-field appearance="fill">
+                  <mat-select matNativeControl placeholder="Select">
+                    <mat-option *ngFor="let respuestas of data.answers" [value]='respuestas.id'>{{respuestas.answer1}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="data.element == 10">
+              <p class="texto">{{data.question}}</p><br>
+              <div class="Multiple">
+                <div *ngFor="let respuestas of data.answers" class="Multiple__Basics">
+                  <mat-checkbox>
+                    <span class="body_question">{{respuestas.answer1}}</span>
+                  </mat-checkbox>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="data.element == 11">
+              <mat-form-field>
+                <input matInput placeholder="Write your answer" #myimg (blur)='obtenerRespuesta(data)'/>
+              </mat-form-field>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

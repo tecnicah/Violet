@@ -1,0 +1,29 @@
+<!-----------------------------------OPEN HEADER-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add Child</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------CLOSE HEADER-------------------------------------->
+
+<!---------------------------------OPEN CONTENT--------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngFor = "let item of data">
+        <div>
+          <mat-checkbox class="example-margin" [(ngModel)]="item.active">
+            <p class="subtitle" style="font-size: 12px; margin: 0;">{{item.name}}</p>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<!--------------------------------CLOSE CONTENT--------------------------------------->
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

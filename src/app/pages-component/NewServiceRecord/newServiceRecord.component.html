@@ -1,0 +1,2141 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page" [class.display-none]="!show_listado">
+    <div class="page__path subtitle">Operations/New Service Record</div>
+    <div class="page__title title">
+      Service Records
+    </div>
+
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" [(ngModel)]="filter_data.sr" placeholder="Search" type="text" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Partner</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.partner"
+            (selectionChange)="filteringServiceRecordTable(); getClient();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Partner</mat-label>
+              <input matInput placeholder="Partner" [(ngModel)]="filterPartner0.coordinator">
+            </mat-form-field>
+            <mat-option *ngFor="let item of parther_catalogue | filterBy: filterPartner0" [value]="item.id">
+              {{ item.coordinator }}
+            </mat-option>
+            <mat-option disabled *ngIf="(parther_catalogue | filterBy: filterPartner0).length === 0">No matching
+              elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Client</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.client"
+            (selectionChange)="filteringServiceRecordTable(); getCoordinator()"
+            [disabled]="client_catalogue.length == 0">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Client</mat-label>
+              <input matInput placeholder="Client" [(ngModel)]="filterClient0.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of client_catalogue | filterBy: filterClient0" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(client_catalogue | filterBy: filterClient0).length === 0">No matching elements
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Country</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.country"
+            (selectionChange)="getcity( filter_data.country ); filteringServiceRecordTable(); getSupplierPartner()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Country</mat-label>
+              <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of country_catalogue | filterBy: filterCountry" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(country_catalogue | filterBy: filterCountry).length === 0">No matching elements
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>City</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.city"
+            (selectionChange)="filteringServiceRecordTable(); getSupplierPartner()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>City</mat-label>
+              <input matInput placeholder="City" [(ngModel)]="filterCity.city">
+            </mat-form-field>
+            <mat-option *ngFor="let item of city_catalogue  | filterBy: filterCity" [value]="item.id">
+              {{ item.city }}
+            </mat-option>
+            <mat-option disabled *ngIf="(city_catalogue | filterBy: filterCity).length === 0">No matching elements
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" *ngIf="permission_write">
+          <button (click)="toggleSection()" class="button-icon button-icon--more">New Service Record</button>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service Line</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.serviceLine"
+            (selectionChange)="filteringServiceRecordTable(); getSupplierPartner(); getCoordinator()">
+            <mat-option selected value="">Service Line</mat-option>
+            <mat-option *ngFor="let item of caServiceLine" [value]="item.id">{{item.serviceLine}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Coordinator</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.coordinator"
+            (selectionChange)="filteringServiceRecordTable();" [disabled]="coordinator_catalogue.length == 0">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Coordinator</mat-label>
+              <input matInput placeholder="Coordinator" [(ngModel)]="filterCoordinator.coordinator">
+            </mat-form-field>
+            <mat-option *ngFor="let item of coordinator_catalogue | filterBy: filterCoordinator" [value]="item.id">
+              {{ item.coordinator }}
+            </mat-option>
+            <mat-option disabled *ngIf="(coordinator_catalogue | filterBy: filterCoordinator).length === 0">No matching
+              elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Supplier Partner</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.supplier" [disabled]="supplier_catalogue.length == 0"
+            (selectionChange)="filteringServiceRecordTable()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Supplier Partner</mat-label>
+              <input matInput placeholder="Supplier Partner" [(ngModel)]="filterSupplierPart.comercialName">
+            </mat-form-field>
+            <mat-option *ngFor="let item of supplier_catalogue | filterBy: filterSupplierPart" [value]="item.id">
+              {{ item.comercialName }}
+            </mat-option>
+            <mat-option disabled *ngIf="(supplier_catalogue | filterBy: filterSupplierPart).length === 0">No matching
+              elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date" autocomplete="off" />
+            <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="end" autocomplete="off"
+              placeholder="End date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+          <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;"
+            matTooltip="Clear filter" (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+        <div class="page__section-butuonc" style="margin-top: -30px;">
+          <button (click)="showExportDialog()" class="button-icon button-icon--export" *ngIf="USERDATA.role.id != 3">
+            Export
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <button (click)="exporter.exportTable('xls')" id="excel" style="display: none;"
+      class="button-icon button-icon--adder">
+      Export
+    </button>
+
+    <div class="page__section" id="export">
+
+      <table mat-table [dataSource]="service_records_table_data" matSort #sort='matSort' matTableExporter
+        #exporter="matTableExporter" class="main-table">
+
+        <ng-container matColumnDef="service_record">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="serviceRecordNo" class="text-center">SR</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span (click)="navigateTo('editServiceRecord/'+element.id, element)" class="font-purple-dark cursor-pointer"
+              title="{{ element.serviceRecordNo }}">
+              {{ element.serviceRecordNo != null ? element.serviceRecordNo : 'SR-###' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="service_line">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="service_line" class="text-center">Service <br />
+            Line</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+    
+            <span (click)="navigateTo('editServiceRecord/'+element.id, element)" class="font-purple-dark cursor-pointer"
+              title="{{ element.serviceLineName }}" *ngIf="element.serviceLineName=='Relocation'">
+              R
+            </span>
+
+            <span (click)="navigateTo('editServiceRecord/'+element.id, element)" class="font-purple-dark cursor-pointer"
+              title="{{ element.serviceLineName }}" *ngIf="element.serviceLineName=='Immigration'">
+              I
+            </span>
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="vip">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">VIP</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img id="ckeck" [src]="check" *ngIf="element.vip == true" />
+              <img id="uncheck" [src]="uncheck" *ngIf="element.vip == false" />
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center position-relative">
+            <span title="{{ element.status?.status }}">
+              <!-- {{ ( element.status?.status.length > 12 )? ( element.status?.status | slice:0:12 )+ '...' : ( element.status?.status ) }} -->
+              {{element.status?.status}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="autho_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="autho" class="text-center">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.autho | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+
+         <!--ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Country</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.country }}
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">City</th>
+          <td mat-cell *matCellDef="let element" class="text-center" [matMenuTriggerFor]="country"
+          (click)="viewCity(element)"  style="cursor: pointer" matTooltip="{{element.country}}">
+            {{ element.city }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="partner">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Partner</th>
+          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer">
+            <span title="{{ element.partner }}" [matMenuTriggerFor]="partner" (click)="viewPartner(element)">
+              <!-- {{ ( element.partner?.length > 10 )? ( element.partner | slice:0:10 ) + '...' : ( element.partner ) }} -->
+              {{element.partner}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Client</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.client }}">
+              {{ ( element.client?.length > 10 )? ( element.client | slice:0:10 ) + '...' : ( element.client ) }}
+            </span>
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="assigne_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="assigneeName" class="text-center">Assignee Name</th>
+          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer"
+            [matMenuTriggerFor]="supplier" (click)="viewData(element)">
+            <!--span matTooltip="{{element.assigneeName}}">
+              {{ ( element.assigneeName?.length > 20 )? (element.assigneeName | slice:0:20) + '...' : (element.assigneeName) }}
+            </span-->
+            <span matTooltip="{{element.assigneeName}}">
+              {{element.assigneeName}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="services">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Services</th>
+          <td mat-cell *matCellDef="let element" class="browser">
+            <button mat-button [matMenuTriggerFor]="menu" class="browser"
+              (click)="getServices(element)">{{element.standaloneServices?.length + element.bundledService?.length}}
+            </button>
+            <div class="bg"></div>
+      
+            <mat-menu #menu="matMenu">
+              <div *ngIf="element.serviceLineName == 'Immigration'">
+                <span *ngFor="let item of services_consult">
+                  <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                    (click)="showDialogentryVisa(item)">{{item.service_name}} / {{item.numberWorkOrder}} /
+                    {{item.number_server}}</button>
+                  <button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                    (click)="openmodal(item, edit_sr_model.assigneeInformations[0].homeCountryId)">{{item.service_name}}
+                    / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+                </span>
+              </div>
+
+              <div *ngIf="element.serviceLineName == 'Relocation'">
+                <span *ngFor="let item of services_consult">
+                  <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                    (click)="PreDecision(item)">{{item.service_name}} / {{item.numberWorkOrder}} /
+                    {{item.number_server}}</button>
+                  <button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                    (click)="openmodal(item, edit_sr_model.assigneeInformations[0].homeCountryId)">{{item.service_name}}
+                    / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+                </span>
+              </div>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="coordinator">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Coordinator</th>
+          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer"
+            [matMenuTriggerFor]="supplier" (click)="viewData(element)">
+
+            <span matTooltip="{{element.coordinator}}">
+              {{element.coordinator}}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'urgent': row.urgent == true}"></tr>
+      </table>
+
+    </div>
+    <div class="page__section text-center paginator">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator class="paginator"
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator #paginatorElement [pageSizeOptions]="[10, 20, 2147483647]" showFirstLastButtons></mat-paginator> -->
+    </div>
+
+
+    <mat-menu #supplier="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Assignee:</b> {{info_row.assignee}}</span>
+          <br>
+          <span style="font-size: 10px;"><b>Supplier:</b> {{info_row.coordinator}}</span>
+        </div>
+      </div>
+    </mat-menu>
+
+    <mat-menu #country="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Country:</b> {{info_country.country}}</span>
+          <br>
+          <span style="font-size: 10px;"><b>City:</b> {{info_country.city}}</span>
+        </div>
+      </div>
+    </mat-menu>
+
+    <mat-menu #partner="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Partner:</b> {{info_partner.partner}}</span>
+          <br>
+          <span style="font-size: 10px;"><b>Client:</b> {{info_partner.client}}</span>
+        </div>
+      </div>
+    </mat-menu>
+
+  </div>
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <!-- Welcomeback Mr. Anderson... We missed you! -->
+  <div class="page" *ngIf="!show_listado">
+    <div class="page__path subtitle">
+      Operations/New Service Record
+      <button class="page__path--closeButton" (click)="goBack_()">Back</button>
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="page__title title">
+          New Service Record
+        </div>
+      </mat-grid-tile>
+      <!-- office -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Office</mat-label>
+          <mat-select matNativeControl required placeholder="Office"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: nso_fields, field: 'no_offi'} )"
+            [(ngModel)]="new_service_record_data.office">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Office</mat-label>
+              <input matInput placeholder="Office" [(ngModel)]="filterOffice.office">
+            </mat-form-field>
+            <mat-option *ngFor="let item of office_catalogues | filterBy: filterOffice" [value]="item.id">
+              {{ item.office }}
+            </mat-option>
+            <mat-option disabled *ngIf="(office_catalogues | filterBy: filterOffice).length === 0">No matching
+              elements</mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="nso_fields.no_offi">
+            Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="page__section">
+      <div class="page__section-name">
+        Partner / Client Information
+      </div>
+      <div class="page__section-button">
+        <button (click)="searchModal()" class="button-icon button-icon--lupa">Search Profile</button>
+      </div>
+    </div>
+
+
+    <mat-grid-list cols="4" rowHeight="100px">
+      <!-- initial autho -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Initial Autho Date*</mat-label>
+          <input matInput [min]="minDate" [matDatepicker]="new_record_i_date" autocomplete="off"
+            (dateChange)="removeErrorLabel( $event.target.value, {handler: nso_fields, field: 'no_init'} )"
+            (change)="removeErrorLabel( $event.target.value, {handler: nso_fields, field: 'no_init'} )"
+            [(ngModel)]="new_service_record_data.initialAutho" />
+          <mat-datepicker-toggle matSuffix [for]="new_record_i_date"></mat-datepicker-toggle>
+          <mat-datepicker #new_record_i_date></mat-datepicker>
+          <span class="label-error" *ngIf="nso_fields.no_init">
+            Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- initial autho accept -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Initial Autho Acceptance Date*</mat-label>
+          <input matInput [min]="minDate" [matDatepicker]="new_record_accep_date" autocomplete="off"
+            (dateChange)="removeErrorLabel( $event.target.value, {handler: nso_fields, field: 'no_iaut'} )"
+            (change)="removeErrorLabel( $event.target.value, {handler: nso_fields, field: 'no_iaut'} )"
+            [(ngModel)]="new_service_record_data.inithialAuthoAcceptance" />
+          <mat-datepicker-toggle matSuffix [for]="new_record_accep_date"></mat-datepicker-toggle>
+          <mat-datepicker #new_record_accep_date></mat-datepicker>
+          <span class="label-error" *ngIf="nso_fields.no_iaut">
+            Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- partner -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Partner</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="new_service_record_data.partnerId"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: nso_fields, field: 'no_part'} ); getClientNew(); getCoordinatorImmigration(); getCoordinatorRelocation();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Partner</mat-label>
+              <input matInput placeholder="Partner" [(ngModel)]="filterPartner.coordinator">
+            </mat-form-field>
+            <!-- <mat-option selected disabled value="">Partner</mat-option> -->
+            <mat-option *ngFor="let item of parther_catalogue | filterBy: filterPartner" [value]="item.id">
+              {{ item.coordinator }}
+            </mat-option>
+            <mat-option disabled *ngIf="(parther_catalogue | filterBy: filterPartner).length === 0">No matching
+              elements</mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="nso_fields.no_part">
+            Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- client -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Client</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="new_service_record_data.clientId"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: nso_fields, field: 'no_clie'} ); athorizedBy();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Client</mat-label>
+              <input matInput placeholder="Client" [(ngModel)]="filterClient.name">
+            </mat-form-field>
+            <!-- <mat-option selected disabled value="null">Client</mat-option> -->
+            <mat-option *ngFor="let item of client_catalogue | filterBy: filterClient" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(client_catalogue | filterBy: filterClient).length === 0">No matching elements
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="nso_fields.no_clie">
+            Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="100px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Client File Number</mat-label>
+          <input matInput #ClientFileNumber maxlength="20" placeholder="Client File Number" type="text"
+            (change)="removeErrorLabel( $event.target.value, {handler: nso_fields, field: 'no_file'} )"
+            [(ngModel)]="new_service_record_data.clientFileNumber" />
+            <mat-hint align="end">{{ClientFileNumber.value.length}} / 20</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section page__section-inputs">
+          <div class="page__section-input page__section-input padding-top-x">
+            <mat-checkbox [(ngModel)]="new_service_record_data.vip" class="example-margin">
+              VIP
+            </mat-checkbox>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section page__section-inputs">
+          <div class="page__section-input padding-top-x red">
+            <mat-checkbox [(ngModel)]="new_service_record_data.confidentialMove" class="example-margin">
+              Confidential Move
+            </mat-checkbox>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <div class="page__section page__section-inputs">
+      <div class="page__section-input page__section-input--x" style="padding-right: 0px !important">
+        <mat-form-field class="example-full-width" style="padding-right: 0px !important">
+          <mat-label>Special Instructions</mat-label>
+          <input matInput #specialInstruccion maxlength="100" 
+          placeholder="Schooling Preferences, Specific Educational Programs, Medical Conditions, etc." [(ngModel)]="new_service_record_data.specialIntructions" />
+          <mat-hint align="end">{{specialInstruccion.value.length}} / 100</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="page__section no-padding">
+      <div class="page__section-tabs" id="tabs">
+        <div class="page__section-tab page__section-tab--active" id="tab_assign_section"
+          (click)="showTabSelected('ass', $event)">
+          Assignee & Family Info
+        </div>
+        <div class="page__section-tab" id="tab_immigration_section" (click)="showTabSelected('imm', $event)">
+          Immigration
+        </div>
+        <div class="page__section-tab" (click)="showTabSelected('rel', $event)">
+          Relocation
+        </div>
+        <div class="page__section-tab display-none" (click)="showTabSelected('lib', $event)">
+          Library
+        </div>
+        <div class="page__section-tab display-none" (click)="showTabSelected('fin', $event)">
+          Finance
+        </div>
+      </div>
+    </div>
+    <div class="page__section no-padding">
+      <!-- Assignee & Family Info Form -------------------------------------------------------- -->
+      <div class="page__section-form" id="tab_ass">
+        <div class="page__title">
+          Assignee Information
+        </div>
+        <mat-grid-list cols="4" rowHeight="80px">
+          <mat-grid-tile [colspan]="1" [rowspan]="3">
+            <!-- Funciona bien -->
+            <div class="page__section page__section-inputs no-padding-tb">
+              <div class="page__section page__section-inputs no-padding-tb">
+                <div class="page__section page__section-input--x no-padding-tb">
+                  <!-- <input type="file" id="ass_prof_photo_input" name="ass_prof_photo_input" class="display-none"
+                    (change)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')" /> -->
+                  <div class="input__image">
+                    <label for="ass_prof_photo_input" class="input__image-label">
+                      <div class="input__image-label--card">
+                        <img id="ass_prof_photo" src="assets/images/users/avatar.png" />
+                      </div>
+                      <span class="input__image-label--cardSpan" (click)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')" >Edit Photo</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+
+            <!-- actual -->
+            <!-- <input type="file" class="display-none" id="ass_prof_photo_input"
+              (change)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')" />
+            <div class="input__image">
+              <label class="input__image-label" for="ass_prof_photo_input">
+                <img [class.input__image-label--error]="no_main_photo" class="input__image-label--ass"
+                  src="assets/images/users/avatar.png" id="ass_prof_photo" />
+                <span class="input__image-label--assSpan">Edit Photo</span>
+              </label>
+            </div> -->
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>Name (as shown on passport)*</mat-label>
+              <input matInput placeholder="Name (as shown on passport)*"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_name'} )"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].assigneeName" />
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_name">
+                Field is required
+              </span>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- sex -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section position-relative">
+              <span class="fixed-label">Sex</span>
+              <mat-radio-group aria-label="Gender" style="display: flex;"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].sexId">
+                <mat-radio-button *ngFor="let item of gender_catalogue;" [value]="item.id">
+                  {{ item.sex }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+          <!-- birth -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_final">
+              <mat-label>Date of Birth</mat-label>
+              <input matInput [matDatepicker]="ass_bd" autocomplete="off" [max]="getMaxDateTo()"
+                (dateChange)="calculateHowOld(); removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_bdat'} )"
+                (change)="calculateHowOld(); removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_bdat'} )"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].birth" />
+              <mat-datepicker-toggle matSuffix [for]="ass_bd"></mat-datepicker-toggle>
+              <mat-datepicker #ass_bd></mat-datepicker>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_bdat">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- age -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>Age</mat-label>
+              <input matInput readonly placeholder="Age" type="number"
+                [value]="new_service_record_data.assigneeInformations[0].age" />
+              <!-- span class="label-error display-none" *ngIf="nso_ainfo_fields.no_age">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- nationality -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Nationality</mat-label>
+              <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].nationalityId"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_nati'} )">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Nationality</mat-label>
+                  <input matInput placeholder="Nationality" [(ngModel)]="filterNationality.nationality1">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Nationality</mat-option> -->
+                <mat-option *ngFor="let item of nationality_catalogue | filterBy: filterNationality" [value]="item.id">
+                  {{ item.nationality1 }}
+                </mat-option>
+                <mat-option disabled *ngIf="(nationality_catalogue | filterBy: filterNationality).length === 0">No
+                  matching elements</mat-option>
+              </mat-select>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_nati">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- marital status -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_final">
+              <mat-label>Marital Status</mat-label>
+              <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].maritalStatusId"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_stat'} )">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Marital Status</mat-label>
+                  <input matInput placeholder="Marital Status" [(ngModel)]="filterMarital.name">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Marital Status</mat-option> -->
+                <mat-option *ngFor="let item of marital_catalogue | filterBy: filterMarital" [value]="item.id">
+                  {{ item.name }}
+                </mat-option>
+                <mat-option disabled *ngIf="(marital_catalogue | filterBy: filterMarital).length === 0">No matching
+                  elements</mat-option>
+              </mat-select>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_stat">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- email -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>E-mail*</mat-label>
+              <input matInput [(ngModel)]="new_service_record_data.assigneeInformations[0].email" (change)="
+                  removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_emai'} );
+                  validEmailAssignee( $event.target.value );
+                  validateEmailServerAvailability( $event.target.value );" placeholder="E-mail*" />
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_emai">
+                Field is required
+              </span>
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai">
+                E-mail format not valid
+              </span>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- mobile phone -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: -62px;">
+              <mat-label>Prefix</mat-label>
+              <mat-select matNativeControl [(ngModel)]="prefix">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Prefix</mat-label>
+                  <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+                </mat-form-field>
+                <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+                  {{ item.countriesIsdCode }} / {{ item.countriesName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 50% !important;">
+              <mat-label>Mobile Phone</mat-label>
+              <input matInput type="number" min="0" placeholder="Mobile Phone" (keydown)="validaNumericos($event)"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_mpho'} );"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].mobilePhone" />
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_mpho">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- work phone -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: 65px;">
+              <mat-label>Prefix</mat-label>
+              <mat-select matNativeControl [(ngModel)]="prefixWork">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Prefix</mat-label>
+                  <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+                </mat-form-field>
+                <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+                  {{ item.countriesIsdCode }} / {{ item.countriesName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 50% !important;">
+              <mat-label>Work Phone</mat-label>
+              <input matInput maxlength="20" type="number" min="0" placeholder="Work Phone" (keydown)="validaNumericos($event)"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_wpho'} );"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].workPhone" />
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_wpho">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- policy type -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Policy Type</mat-label>
+              <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].policyTypeId"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_poli'} )">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Policy Type</mat-label>
+                  <input matInput placeholder="Policy Type" [(ngModel)]="filterPolicy.policyType">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Policy Type</mat-option> -->
+                <mat-option *ngFor="let item of policytype_catalogue | filterBy: filterPolicy" [value]="item.id">
+                  {{ item.policyType }}
+                </mat-option>
+                <mat-option disabled *ngIf="(policytype_catalogue | filterBy: filterPolicy).length === 0">No matching
+                  elements</mat-option>
+              </mat-select>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_poli">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- assignment -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1" class="cria">
+            <mat-form-field style="width: 37.5% !important; margin-right: 2%;">
+              <mat-label>Assignment Duration</mat-label>
+              <input matInput min="0" placeholder="" type="number" autocomplete="off"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].assignmentDuration"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_atim'} );" />
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_atim">
+                Field is required
+              </span -->
+            </mat-form-field>
+
+            <mat-form-field style="width: 32.5% !important;">
+              <mat-label></mat-label>
+              <mat-select matNativeControl
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].assignmentDurationTime"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_adur'} )">
+                <mat-option selected disabled value="null">Assignment Duration</mat-option>
+                <mat-option *ngFor="let item of assduration_catalogue;" [value]="item.id">
+                  {{ item.duration }}
+                </mat-option>
+              </mat-select>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_adur">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- initial arrival -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Initial Arrival Date</mat-label>
+              <input [min]="minDate" matInput [matDatepicker]="ass_ia_date" autocomplete="off"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_idat'} );"
+                (dateChange)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_idat'} );"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].initialArrival" />
+              <mat-datepicker-toggle matSuffix [for]="ass_ia_date"></mat-datepicker-toggle>
+              <mat-datepicker #ass_ia_date></mat-datepicker>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_idat">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_final">
+              <mat-label>Final Move Date</mat-label>
+              <input [min]="minDate" matInput [matDatepicker]="ass_ea_date" autocomplete="off"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_fmov'} );"
+                (dateChange)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_fmov'} );"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].finalMove" />
+              <mat-datepicker-toggle matSuffix [for]="ass_ea_date"></mat-datepicker-toggle>
+              <mat-datepicker #ass_ea_date></mat-datepicker>
+              <!--span class="label-error" *ngIf="nso_ainfo_fields.no_fmov">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- home country -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Home Country (Current Residence)</mat-label>
+              <mat-select matNativeControl required
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].homeCountryId" (selectionChange)="
+                removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_home'} );
+                ableInputsFromAssignmentSection( $event.value, 'client' );
+                getcityhome(new_service_record_data.assigneeInformations[0].homeCountryId); athorizedBy();">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Home Country</mat-label>
+                  <input matInput placeholder="Home Country" [(ngModel)]="filterHomeCountry.name">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Home Country (Current Residence)</mat-option> -->
+                <mat-option *ngFor="let item of country_catalogue | filterBy: filterHomeCountry" [value]="item.id">
+                  {{ item.name }}
+                </mat-option>
+                <mat-option disabled *ngIf="(country_catalogue | filterBy: filterHomeCountry).length === 0">No
+                  matching elements</mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_home">
+                Field is required
+              </span>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- home city -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Home City (Current Residence)</mat-label>
+              <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].homeCityId"
+                [disabled]="!home_city_client_able"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_city'} ); athorizedBy();Homecitychange();">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Home City</mat-label>
+                  <input matInput placeholder="Home City" [(ngModel)]="filterHomeCity.city">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Home City (Current Residence)</mat-option> -->
+                <mat-option *ngFor="let item of city_home_catalogue  | filterBy: filterHomeCity" [value]="item.id">
+                  {{ item.city }}
+                </mat-option>
+                <mat-option disabled *ngIf="(city_home_catalogue | filterBy: filterHomeCity).length === 0">No matching
+                  elements</mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_city">
+                Field is required
+              </span>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>Current Job Position</mat-label>
+              <input matInput
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_posi'} );"
+                placeholder="Current Position"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].currentPosition" />
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_posi">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- languages -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_final">
+              <mat-label>Languages Spoken</mat-label>
+              <mat-select matNativeControl multiple
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].languagesSpokens_">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Languages Spoken</mat-label>
+                  <input matInput placeholder="Languages Spoken" [(ngModel)]="filterLanguages.name">
+                </mat-form-field>
+                <mat-option *ngFor="let item of languages_catalogue | filterBy: filterLanguages" [value]="item.id">
+                  {{ item.name }}
+                </mat-option>
+                <mat-option disabled *ngIf="(languages_catalogue | filterBy: filterLanguages).length === 0">No
+                  matching elements</mat-option>
+              </mat-select>
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_hhos">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- host country -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Host Country</mat-label>
+              <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].hostCountry"
+                (selectionChange)="
+                removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_hhos'} );
+                ableInputsFromAssignmentSection( $event.value, 'host' );
+                getcityhost(new_service_record_data.assigneeInformations[0].hostCountry);">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Host Country</mat-label>
+                  <input matInput placeholder="Host Country" [(ngModel)]="filterHostCountry.name">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Host Country</mat-option> -->
+                <mat-option *ngFor="let item of country_catalogue | filterBy: filterHostCountry" [value]="item.id">
+                  {{ item.name }}
+                </mat-option>
+                <mat-option disabled *ngIf="(country_catalogue | filterBy: filterHostCountry).length === 0">No
+                  matching elements</mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_hhos">
+                Field is required
+              </span>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- host city -->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Host City</mat-label>
+              <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].hostCityId"
+                [disabled]="!home_city_host_able"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_chos'} ); Hostcitychange();">
+                <mat-form-field appearance="outline" style="padding: 5px;">
+                  <mat-label>Host city</mat-label>
+                  <input matInput placeholder="Host city" [(ngModel)]="filterHostCity.city">
+                </mat-form-field>
+                <!-- <mat-option selected disabled value="">Host City</mat-option> -->
+                <mat-option *ngFor="let item of city_hosts_catalogue | filterBy: filterHostCity" [value]="item.id">
+                  {{ item.city }}
+                </mat-option>
+                <mat-option disabled *ngIf="(city_hosts_catalogue | filterBy: filterHostCity).length === 0">No
+                  matching elements</mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="nso_ainfo_fields.no_chos">
+                Field is required
+              </span>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>New Job Position</mat-label>
+              <input matInput placeholder="New Position"
+                (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_npos'} );"
+                [(ngModel)]="new_service_record_data.assigneeInformations[0].newPosition" />
+              <!-- span class="label-error" *ngIf="nso_ainfo_fields.no_npos">
+                Field is required
+              </span -->
+            </mat-form-field>
+          </mat-grid-tile>
+          <!-- mat-grid-tile [colspan]="1" [rowspan]="1" class="position-relative overflow-visible">
+            <div class="page__section-data font-size-12 cursor-pointer" (click)="showLanguagesDropdow()">
+              <span class="gray_05">Language spoken</span><br />
+              <span class="text-mini font-purple-dark">
+                <span *ngIf="languages_selected.length == 0">Select your languages</span>
+                <span class="text-underline" *ngIf="languages_selected.length != 0">
+                  {{ languages_selected }}
+                </span>
+              </span>
+            </div>
+            <div class="data__dropdown" [class.display-none]="!show_language_dropdown">
+              <button class="data__dropdown--close" (click)="showLanguagesDropdow()">x
+              </button>
+              <div class="page__section page__section-inputs">
+                <div class="page__section">
+                  <div class="page__section-data no-padding margin-bottom-mini">
+                    <span class="text-mini gray_05">
+                      Click to your languages
+                    </span><br />
+                  </div>
+                </div>
+                <div class="page__section-input" *ngFor="let item of user_languages;">
+                  <mat-checkbox (click)="selectingLanguages( item )" class="example-margin margin-top-mini">
+                    <span class="text-mini">
+                      {{ item.name }}
+                    </span>
+                  </mat-checkbox>
+                </div>
+              </div>
+            </div>
+          </mat-grid-tile -->
+        </mat-grid-list>
+        <div class="page__section">
+          <div class="page__title">
+            Dependents Information
+            <br /><br />
+            <mat-slide-toggle (click)="toggleDependentsSection()"></mat-slide-toggle>
+          </div>
+        </div>
+        <div *ngIf="show_dependent_section">
+          <div class="page__section page__section--card margin-bottom-min aaf_dependent"
+            *ngFor="let dependent_item of assing_dependents, index as index;">
+            <button class="page__section--card-closeButton" (click)="removeDepartament( index )">x
+            </button>
+            <div class="page__section page__section--nowrap">
+              <div class="column-grid-2">
+                <div class="page__section page__section-inputs no-padding-tb">
+                  <div class="page__section page__section-inputs no-padding-tb">
+                    <div class="page__section page__section-input--x no-padding-tb">
+                      <input type="file" id="ass_dep_input_{{ index }}" name="ass_dep_input_{{ index }}"
+                        class="display-none"
+                        (change)="previewSelectedPhoto( $event, 'ass_dep_photo_' + index, 'dependents')" />
+                      <div class="input__image">
+                        <label for="ass_dep_input_{{ index }}" class="input__image-label">
+                          <div class="input__image-label--card">
+                            <img id="ass_dep_photo_{{ index }}" src="assets/images/users/avatar.png" />
+                          </div>
+                          <span class="input__image-label--cardSpan">Edit Photo</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column-grid-8">
+                <mat-grid-list cols="3" rowHeight="80px">
+                  <!-- relatioship -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Relationship</mat-label>
+                      <mat-select matNativeControl required
+                        (selectionChange)="dependent_item.relationshipId = $event.value">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Relationship</mat-label>
+                          <input matInput placeholder="Relationship" [(ngModel)]="filterRelationship.relationship">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="0">Relationship</mat-option> -->
+                        <mat-option *ngFor="let item of relationship_catalogue | filterBy: filterRelationship"
+                          [value]="item.id">
+                          {{ item.relationship }}
+                        </mat-option>
+                        <mat-option disabled
+                          *ngIf="(relationship_catalogue | filterBy: filterRelationship).length === 0">No matching
+                          elements</mat-option>
+                      </mat-select>
+                      <span class="label-error" *ngIf="dependent_item.relationshipId == '0' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="dependent_item.relationshipId == '3'">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>(If Other Please Specify)</mat-label>
+                      <input matInput placeholder="(If Other Please Specify)"
+                        (change)="dependent_item.ifOther = $event.target.value;" />
+                      <span class="label-error" *ngIf="dependent_item.ifOther == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Name (as shown on passport)</mat-label>
+                      <input matInput placeholder="Name (as shown on passport)"
+                        (change)="dependent_item.name = $event.target.value" />
+                      <span class="label-error" *ngIf="dependent_item.name == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div class="page__section position-relative">
+                      <span class="fixed-label">Sex</span>
+                      <mat-radio-group aria-label="Gender" style="display: flex;" [(ngModel)]="dependent_item.sex">
+                        <mat-radio-button *ngFor="let item of gender_catalogue;" [value]="item.id">
+                          {{ item.sex }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Date of Birth</mat-label>
+                      <input matInput autocomplete="off" [matDatepicker]="depen_bd" [max]="getMaxDateTo(0)" 
+                            (change)="
+                            dependent_item.birth = $event.target.value;
+                            calculateHowOldDina( 'dependent_age_' + index, $event.target.value);" 
+                            (dateChange)="
+                            dependent_item.birth = $event.value;
+                            calculateHowOldDina( 'dependent_age_' + index, $event.value, false)" />
+                      <mat-datepicker-toggle matSuffix [for]="depen_bd"></mat-datepicker-toggle>
+                      <mat-datepicker #depen_bd></mat-datepicker>
+                      <span class="label-error" *ngIf="dependent_item.birth == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Age</mat-label>
+                      <input readonly matInput id="dependent_age_{{ index }}" placeholder="Age" type="number" />
+                      <span class="label-error display-none">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <!-- languages -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Languages spoken</mat-label>
+                      <mat-select matNativeControl required multiple
+                        (selectionChange)="dependent_item.languageDependentInformations_ = $event.value;">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Languages spoken</mat-label>
+                          <input matInput placeholder="Languages spoken" [(ngModel)]="filterLanguagesRe.name">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="">Languages spoken</mat-option> -->
+                        <mat-option *ngFor="let item of languages_catalogue | filterBy: filterLanguagesRe"
+                          [value]="item.id">
+                          {{ item.name }}
+                        </mat-option>
+                        <mat-option disabled *ngIf="(languages_catalogue | filterBy: filterLanguagesRe).length === 0">
+                          No matching elements</mat-option>
+                      </mat-select>
+                      <span class="label-error"
+                        *ngIf="dependent_item.languageDependentInformations_.length == 0 && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <!-- nationality -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Nationality</mat-label>
+                      <mat-select matNativeControl required
+                        (selectionChange)="dependent_item.nationalityId = $event.value">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Nationality</mat-label>
+                          <input matInput placeholder="Nationality" [(ngModel)]="filterNationalityRe.nationality1">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="">Nationality</mat-option> -->
+                        <mat-option *ngFor="let item of nationality_catalogue | filterBy: filterNationalityRe"
+                          [value]="item.id">
+                          {{ item.nationality1 }}
+                        </mat-option>
+                        <mat-option disabled
+                          *ngIf="(nationality_catalogue | filterBy: filterNationalityRe).length === 0">
+                          No matching elements</mat-option>
+                      </mat-select>
+                      <span class="label-error" *ngIf="dependent_item.nationalityId == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <!-- grade -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="dependent_item.relationshipId == '2'">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Current Grade</mat-label>
+                      <mat-select matNativeControl required
+                        (selectionChange)="dependent_item.currentGrade = $event.value;">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Current Grade</mat-label>
+                          <input matInput placeholder="Current Grade" [(ngModel)]="filterGrade.grade">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="">Current Grade</mat-option> -->
+                        <mat-option *ngFor="let item of schoolgrades_catalogue | filterBy: filterGrade"
+                          [value]="item.id">
+                          {{ item.grade }}
+                        </mat-option>
+                        <mat-option disabled *ngIf="(schoolgrades_catalogue | filterBy: filterGrade).length === 0">No
+                          matching elements</mat-option>
+                      </mat-select>
+                      <span class="label-error" *ngIf="dependent_item.education == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="dependent_item.relationshipId == '1'">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>E-mail</mat-label>
+                      <input matInput placeholder="E-mail" (change)="dependent_item.email = $event.target.value;"
+                        type="text" />
+                      <span class="label-error" *ngIf="dependent_item.email == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                      <span class="label-error"
+                        *ngIf="dependent_item.email != '' && !validateEmail( dependent_item.email )">
+                        E-mail format is not valid
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="dependent_item.relationshipId == '1'">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Phone</mat-label>
+                      <input matInput placeholder="Phone" type="number" min="0"
+                        (change)="dependent_item.phone = $event.target.value"  (keydown)="validaNumericos($event)"/>
+                      <span class="label-error" *ngIf="dependent_item.phone == '' && show_dependent_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="3" [rowspan]="1">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Additional Comment</mat-label>
+                      <input matInput #aditionalComment maxlength="100" (change)="dependent_item.aditionalComments = $event.target.value"
+                        placeholder="Schooling Preferences, Specific Educational Programs, Medical Conditions, etc." />
+                        <mat-hint align="end">{{aditionalComment.value.length}} / 100</mat-hint>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                </mat-grid-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page__section margin-bottom-m" *ngIf="show_dependent_section">
+          <div class="page__section-name"></div>
+          <div class="page__section-button">
+            <button class="button-icon button-icon--adder margin-top-mini" (click)="addDepartament()">
+              Add Dependent
+            </button>
+          </div>
+        </div>
+        <div class="page__section">
+          <div class="page__title">
+            Pets
+            <br /><br />
+            <mat-slide-toggle (click)="togglePetsSection()"></mat-slide-toggle>
+          </div>
+        </div>
+        <div *ngIf="show_pets_section">
+          <div class="page__section page__section--card margin-bottom-min aaf_pet"
+            *ngFor="let pet of assing_pets, index as index;">
+            <button (click)="removePet( index )" class="page__section--card-closeButton">x
+            </button>
+            <!-- imagen con buena resolucion -->
+            <div class="page__section page__section--nowrap">
+              <div class="column-grid-2">
+                <div class="page__section page__section-inputs no-padding-tb">
+                  <div class="page__section page__section-inputs no-padding-tb">
+                    <div class="page__section page__section-input--x no-padding-tb">
+
+                      <input type="file" id="ass_pet_input_{{ index }}" name="ass_pet_input_{{ index }}"
+                        class="display-none"
+                        (change)="previewSelectedPhoto( $event, 'ass_pet_photo_' + index, 'pets')" />
+                      <div class="input__image">
+                        <label for="ass_pet_input_{{ index }}" class="input__image-label">
+                          <div class="input__image-label--card">
+                            <img id="ass_pet_photo_{{ index }}" src="assets/images/users/avatar.png" />
+                          </div>
+                          <span class="input__image-label--cardSpan">Edit Photo</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- actual -->
+              <!-- <div class="column-grid-2">
+                <div class="page__section page__section-inputs no-padding-tb">
+                  <div class="page__section page__section-inputs no-padding-tb">
+                    <div class="page__section page__section-input--x no-padding-tb">
+                      <input type="file" id="ass_pet_input_{{ index }}" name="ass_pet_input_{{ index }}"
+                        class="display-none"
+                        (change)="previewSelectedPhoto( $event, 'ass_pet_photo_' + index, 'pets')" />
+                      <div class="input__image">
+                        <label for="ass_pet_input_{{ index }}" class="input__image-label">
+                          <img id="ass_pet_photo_{{ index }}" src="assets/images/users/avatar.png"
+                            class="input__image-label--card" />
+                          <span class="input__image-label--cardSpan">Edit Photo</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <div class="column-grid-8">
+                <mat-grid-list cols="3" rowHeight="80px">
+                  <!-- pet type  -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Pet Type</mat-label>
+                      <mat-select matNativeControl required (selectionChange)="
+                        requestPetBreedCatalogue( $event.value );
+                        pet.petTypeId = $event.value;">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Pet type</mat-label>
+                          <input matInput placeholder="Pet type" [(ngModel)]="filterPet.petType">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="">Pet Type</mat-option> -->
+                        <mat-option *ngFor="let item of pettype_catalogue | filterBy: filterPet" [value]="item.id">
+                          {{ item.petType }}
+                        </mat-option>
+                        <mat-option disabled *ngIf="(pettype_catalogue | filterBy: filterPet).length === 0">No
+                          matching elements</mat-option>
+                      </mat-select>
+                      <span class="label-error" *ngIf="pet.petTypeId == '' && show_pets_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Pet Name</mat-label>
+                      <input matInput placeholder="Pet Name" (change)="pet.name = $event.target.value;" />
+                      <span class="label-error" *ngIf="pet.name == '' && show_pets_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <!-- breed -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Breed</mat-label>
+                      <input matInput (change)="pet.breedId = $event.target.value;" type="text" />
+                    </mat-form-field>
+                    <!--mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Breed</mat-label>
+                      <mat-select matNativeControl required (selectionChange)="pet.breedId = $event.value;">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Breed</mat-label>
+                          <input matInput placeholder="Breed" [(ngModel)]="filterBreed.breed">
+                        </mat-form-field>
+
+                        <mat-option *ngFor="let item of breed_catalogue | filterBy: filterBreed" [value]="item.id">
+                          {{ item.breed }}
+                        </mat-option>
+                        <mat-option disabled *ngIf="(breed_catalogue | filterBy: filterBreed).length === 0">No
+                          matching elements</mat-option>
+                      </mat-select>
+                      <span class="label-error" *ngIf="pet.breedId == '' && show_pets_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field-->
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Date of Birth</mat-label>
+                      <input matInput autocomplete="off" [max]="getMaxDateTo(0)" [matDatepicker]="pet_bd"
+                        [(ngModel)]="pet.birthDate" (change)="
+                            pet.birthDate = $event.target.value;
+                            calculateHowOldDina( 'pet_' + index, $event.target.value );
+                            pet.age = calculateHowOldDina( 'pet_' + index, $event.target.value );" (dateChange)="
+                            calculateHowOldDina( 'pet_' + index, $event.target.value, false);
+                            pet.age = calculateHowOldDina( 'pet_' + index, $event.value );" />
+                      <mat-datepicker-toggle matSuffix [for]="pet_bd"></mat-datepicker-toggle>
+                      <mat-datepicker #pet_bd></mat-datepicker>
+                      <span class="label-error" *ngIf="pet.age == '' && show_pets_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Age</mat-label>
+                      <input matInput readonly id="pet_{{ index }}" placeholder="Age" type="number" />
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <!-- size -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Size</mat-label>
+                      <mat-select matNativeControl required (selectionChange)="pet.sizeId = $event.value;">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>size</mat-label>
+                          <input matInput placeholder="size" [(ngModel)]="filterSize.size">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="">Size</mat-option> -->
+                        <mat-option *ngFor="let item of petsize_catalogue | filterBy: filterSize" [value]="item.id">
+                          {{ item.size }}
+                        </mat-option>
+                        <mat-option disabled *ngIf="(petsize_catalogue | filterBy: filterSize).length === 0">No
+                          matching elements</mat-option>
+                      </mat-select>
+                      <span class="label-error" *ngIf="pet.sizeId == '' && show_pets_erros">
+                        Field is required
+                      </span>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field class="input_central_half">
+                      <mat-label>Weight</mat-label>
+                      <input matInput placeholder="Weight" type="number" (change)="pet.weight = $event.target.value;" />
+                      <!-- <span class="label-error" *ngIf="[pet.weight == null && show_pets_erros]">
+                        Field is required
+                      </span> -->
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <!-- weight -->
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Weight Measure</mat-label>
+                      <mat-select matNativeControl (selectionChange)="pet.weightMeasuresId = $event.value;">
+                        <mat-form-field appearance="outline" style="padding: 5px;">
+                          <mat-label>Weight Measure</mat-label>
+                          <input matInput placeholder="Weight Measure" [(ngModel)]="filterWeight.name">
+                        </mat-form-field>
+                        <!-- <mat-option selected disabled value="">Weight Measure</mat-option> -->
+                        <mat-option *ngFor="let item of weightmeasure_catalogue | filterBy: filterWeight"
+                          [value]="item.id">
+                          {{ item.name }}
+                        </mat-option>
+                        <mat-option disabled *ngIf="(weightmeasure_catalogue | filterBy: filterWeight).length === 0">
+                          No matching elements</mat-option>
+                      </mat-select>
+                      <!-- <span class="label-error" *ngIf="pet.weightMeasuresId == '' && show_pets_erros">
+                        Field is required
+                      </span> -->
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field appearance="fill" class="input_central_half">
+                      <mat-label>Color</mat-label>
+                      <input [disabled]="profileCunsultant == true" (change)="pet.color = $event.target.value;"  matInput [(ngModel)]="pet.color"
+                        [value]="pet.color" type="text" />
+                    </mat-form-field>
+                  </mat-grid-tile>
+                </mat-grid-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page__section margin-bottom-m" *ngIf="show_pets_section">
+          <div class="page__section-name"></div>
+          <div class="page__section-button">
+            <button class="button-icon button-icon--adder margin-top-mini" (click)="addPet()">
+              Add Pet
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Assignee & Family Info Form -------------------------------------------------------- -->
+      <!-- Immigration -------------------------------------------------------- -->
+      <div action="" class="page__section-form display-none" id="tab_imm">
+        <div class="page__section page__section--nowrap">
+          <!--div class="page__section page__section-inputs">
+            <div class="page__section-input">
+              <mat-form-field appearance="fill" class="input_central">
+                <mat-label>Authorized By</mat-label>
+                <mat-select matNativeControl required [(ngModel)]="new_service_record_data.authorizedByImmigration"
+                  [disabled]="authorize_catalogue.length == 0">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Authorized By</mat-label>
+                    <input matInput placeholder="Authorized By" [(ngModel)]="filterImiAutori.name">
+                  </mat-form-field>
+                  <mat-option *ngFor="let item of authorize_catalogue | filterBy: filterImiAutori" [value]="item.id">
+                    {{ item.name }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(authorize_catalogue | filterBy: filterImiAutori).length === 0">No
+                    matching elements</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="page__section-input padding-top-x">
+              <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.copyOnEmailImmigration">
+                Copy On E-mails
+              </mat-checkbox>
+            </div>
+            <div class="page__section-input page__section-input--10 padding-top-x">
+              <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.spocImmigration">
+                SPOC
+              </mat-checkbox>
+            </div>
+          </div-->
+        </div>
+        <div class="page__title">
+          Experience Team
+        </div>
+        <div class="page__section">
+          <div class="page__title">
+            Coordinators
+          </div>
+        </div>
+        <div class="page__section page__section--card margin-bottom-min page__section--nowrap">
+          <mat-grid-list cols="4" rowHeight="60px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <!-- coordinator  type-->
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Coordinator Type</mat-label>
+                <mat-select matNativeControl required [(ngModel)]="imm_coordinator_model.coordinatorTypeId"
+                  (selectionChange)="removeErrorLabel( $event.value, {handler: imm_form, field: 'ctype'} );">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Coordinator Type</mat-label>
+                    <input matInput placeholder="Coordinator Type" [(ngModel)]="filterImiCoordina.coordinatorType">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Coordinator Type</mat-option> -->
+                  <mat-option *ngFor="let item of coordinatortype_catalogue | filterBy: filterImiCoordina"
+                    [value]="item.id">
+                    {{ item.coordinatorType }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(coordinatortype_catalogue | filterBy: filterImiCoordina).length === 0">
+                    No matching elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="imm_form.ctype && !one_coordinator_selected">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- coordinator -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Coordinator</mat-label>
+                <mat-select matNativeControl required [(ngModel)]="imm_coordinator_model.coordinatorId"
+                  (selectionChange)="removeErrorLabel( $event.value, {handler: imm_form, field: 'no_coor'} );">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Coordinator</mat-label>
+                    <input matInput placeholder="Coordinator" [(ngModel)]="filterImiCoordina2.coordinator">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Coordinator</mat-option> -->
+                  <mat-option *ngFor="let item of coordinator_catalogue | filterBy: filterImiCoordina2"
+                    [value]="item.id">
+                    {{ item.coordinator }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(coordinator_catalogue | filterBy: filterImiCoordina2).length === 0">No
+                    matching elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="imm_form.no_coor && !one_coordinator_selected">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- assigned date -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Assigned Date</mat-label>
+                <input matInput [matDatepicker]="team_assig" autocomplete="off" [max]="getMaxDateTo(0)"
+                  (change)="removeErrorLabel( $event.target.value, {handler: imm_form, field: 'no_assi'} )"
+                  (dateChange)="removeErrorLabel( $event.target.value, {handler: imm_form, field: 'no_assi'} )"
+                  [(ngModel)]="imm_coordinator_model.assigned" />
+                <mat-datepicker-toggle matSuffix [for]="team_assig"></mat-datepicker-toggle>
+                <mat-datepicker #team_assig></mat-datepicker>
+                <span class="label-error" *ngIf="(imm_coordinator_model.assigned == null || imm_coordinator_model.assigned == undefined)&& !one_coordinator_selected">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" style="display: none;">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Accepted Date</mat-label>
+                <input disabled matInput [matDatepicker]="team_accep" autocomplete="off" [max]="getMaxDateTo(0)"
+                  [(ngModel)]="imm_coordinator_model.accepted" />
+                <mat-datepicker-toggle matSuffix [for]="team_accep"></mat-datepicker-toggle>
+                <mat-datepicker #team_accep></mat-datepicker>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+        <!-- add supplier immigration -->
+        <div class="page__section">
+          <div class="page__title">
+            Supplier Partners
+          </div>
+        </div>
+        <div class="page__section">
+          <table mat-table mat-sort [dataSource]="table_imm_sup_par" class="main-table">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_0">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Type</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.supplierTypeIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_1">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Company</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.supplierCompanyIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_2">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.supplierIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_3">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Date</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ filterDate( element.assignedDate ) }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_4">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Services</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.assignedServicesIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_5">
+              <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+              <td mat-cell *matCellDef="let index = index" class="text-center">
+                <div class="table-row__check">
+                  <img (click)="deleteImmSupPar(index)" class="cursor-pointer" src="/assets/icons/delete.png" />
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="colums_sup_table"></tr>
+            <tr mat-row *matRowDef="let row; columns: colums_sup_table;"></tr>
+          </table>
+        </div>
+        <div class="page__section display-none">
+          <mat-paginator  [pageSizeOptions]="getPageSizeOptionsImmi()" showFirstLastButtons></mat-paginator>
+
+          <!-- <mat-paginator class="paginator"
+            (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+            #paginator #paginatorElement [pageSizeOptions]="[10, 20, 2147483647]" showFirstLastButtons></mat-paginator> -->
+        </div>
+        <div class="page__section no-padding-tb margin-tb-min">
+          <div class="page__section-name"></div>
+          <div class="page__section-button">
+            <button *ngIf="!show_supplier_section" class="button-icon button-icon--adder"
+              (click)="showSupplierSection()">
+              Add Supplier
+            </button>
+          </div>
+        </div>
+        <div class="page__section page__section--card margin-bottom-min" *ngIf="show_supplier_section">
+          <button (click)="showSupplierSection()" class="page__section--card-closeButton">
+          </button>
+          <mat-grid-list cols="4" rowHeight="80px">
+            <!-- supplier type -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Supplier Country</mat-label>
+                <mat-select matNativeControl required (selectionChange)="
+                    removeErrorLabel( $event.value, {handler: imm_sup_form, field: 'no_styp'} );
+                    imm_sup_model.supplierTypeId = $event.value;">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Supplier Country</mat-label>
+                    <input matInput placeholder="Supplier Country" [(ngModel)]="filterImiSupplier.type">
+                  </mat-form-field>
+                  <mat-option *ngIf="(new_service_record_data.assigneeInformations[0].homeCountryId != undefined)"
+                    [value]="new_service_record_data.assigneeInformations[0].homeCountryId"
+                    (click)="__supplier__(new_service_record_data.assigneeInformations[0].homeCountryId, new_service_record_data.assigneeInformations[0].homeCityId, 1)">
+                    {{ getNameCountry(new_service_record_data.assigneeInformations[0].homeCountryId )}}
+                  </mat-option>
+                  <mat-option *ngIf="(new_service_record_data.assigneeInformations[0].hostCountry != undefined)"
+                    [value]="new_service_record_data.assigneeInformations[0].hostCountry"
+                    (click)="__supplier__(new_service_record_data.assigneeInformations[0].hostCountry, new_service_record_data.assigneeInformations[0].hostCityId, 1)">
+                    {{getNameCountry( new_service_record_data.assigneeInformations[0].hostCountry) }}
+                  </mat-option>
+                  <mat-option disabled
+                    *ngIf="(new_service_record_data.assigneeInformations[0].homeCountryId == undefined) &&(new_service_record_data.assigneeInformations[0].hostCountry == undefined)">
+                    No matching
+                    elements</mat-option>
+                  <!-- <mat-option *ngFor="let item of sp_catalog | filterBy: filterImiSupplier" [value]="item.id">
+                    {{ item.type }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(sp_catalog | filterBy: filterImiSupplier).length === 0">No matching
+                    elements</mat-option> -->
+                </mat-select>
+                <span class="label-error" *ngIf="imm_sup_form.no_styp">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- supplier -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Supplier</mat-label>
+                <mat-select matNativeControl required (selectionChange)="
+                    company_();
+                    ableSupplierCompImm( $event.value, 1 );
+                    removeErrorLabel( $event.value, {handler: imm_sup_form, field: 'no_supp'} );"
+                  [(ngModel)]="imm_sup_model.supplierId">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Supplier</mat-label>
+                    <input matInput placeholder="Supplier" [(ngModel)]="filterImiSupplier2.name">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Supplier</mat-option> -->
+                  <mat-option *ngFor="let item of supplier_catalogue | filterBy: filterImiSupplier2" [value]="item.id">
+                    {{ item.name }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(supplier_catalogue | filterBy: filterImiSupplier2).length === 0">No
+                    matching elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="imm_sup_form.no_supp">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+                <div>
+                  <span class="text-mini gray_05">Supplier Company</span><br />
+                  {{type_company}}
+                </div>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Assigned Date</mat-label>
+                <input matInput [matDatepicker]="assign_date" [(ngModel)]="imm_sup_model.assignedDate"
+                  autocomplete="off" [min]="minDate"
+                  (change)="removeErrorLabel( $event.target.value, {handler: imm_sup_form, field: 'no_date'} )"
+                  (dateChange)="removeErrorLabel( $event.target.value, {handler: imm_sup_form, field: 'no_date'} )">
+                <mat-datepicker-toggle matSuffix [for]="assign_date"></mat-datepicker-toggle>
+                <mat-datepicker #assign_date></mat-datepicker>
+                <span class="label-error" *ngIf="imm_sup_form.no_date">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list cols="4" rowHeight="80px" style="display: none;">
+            <!-- assigned service -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Assigned Services</mat-label>
+                <mat-select matNativeControl required (selectionChange)="
+                  removeErrorLabel( $event.value, {handler: imm_sup_form, field: 'no_serv'} );
+                  imm_sup_model.assignedServicesId = $event.value;">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Assigned Services</mat-label>
+                    <input matInput placeholder="Assigned Services"
+                      [(ngModel)]="filterImiAssignedService.assignedService">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Assigned Services</mat-option> -->
+                  <mat-option *ngFor="let item of assigment_catalogue  | filterBy: filterImiAssignedService"
+                    [value]="item.id">
+                    {{ item.assignedService }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(assigment_catalogue | filterBy: filterImiAssignedService).length === 0">
+                    No matching
+                    elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="imm_sup_form.no_serv">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <div class="page__section margin-top-mini page__section--justify-end">
+            <div class="page__section-buttong">
+              <button (click)="addImmigrationSupplier()">
+                Add Supplier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Immigration -------------------------------------------------------- -->
+      <!-- Relocation -------------------------------------------------------- -->
+      <div class="page__section-form display-none" id="tab_rel">
+        <div class="page__section page__section--nowrap">
+          <!--div class="page__section page__section-inputs">
+            <div class="page__section-input">
+              <mat-form-field appearance="fill" class="input_central">
+                <mat-label>Authorized By</mat-label>
+                <mat-select matNativeControl required [(ngModel)]="new_service_record_data.authorizedByRelocation"
+                  [disabled]="authorize_catalogue.length == 0">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Authorized By</mat-label>
+                    <input matInput placeholder="Authorized By" [(ngModel)]="filterReloAutori.type">
+                  </mat-form-field>
+                  <mat-option *ngFor="let item of authorize_catalogue | filterBy: filterReloAutori" [value]="item.id">
+                    {{ item.name }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(authorize_catalogue | filterBy: filterReloAutori).length === 0">No
+                    matching elements</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="page__section-input padding-top-x">
+              <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.copyOnEmailRelocation">
+                Copy On E-mails
+              </mat-checkbox>
+            </div>
+            <div class="page__section-input page__section-input--10 padding-top-x">
+              <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.spocRelocation">
+                SPOC
+              </mat-checkbox>
+            </div>
+          </div-->
+        </div>
+        <div class="page__title">
+          Experience Team
+        </div>
+        <div class="page__section">
+          <div class="page__title">
+            Coordinators
+          </div>
+        </div>
+        <div class="page__section page__section--card margin-bottom-min page__section--nowrap">
+          <mat-grid-list cols="4" rowHeight="60px">
+            <!-- coordinator type -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Coordinator Type</mat-label>
+                <mat-select matNativeControl required
+                  (selectionChange)="rel_coordinator_model.coordinatorTypeId = $event.value;">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Coordinator Type</mat-label>
+                    <input matInput placeholder="Coordinator Type" [(ngModel)]="filterReloCoordina.coordinatorType">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Coordinator Type</mat-option> -->
+                  <mat-option *ngFor="let item of coordinatortype_catalogue | filterBy: filterReloCoordina"
+                    [value]="item.id">
+                    {{ item.coordinatorType }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(coordinatortype_catalogue | filterBy: filterReloCoordina).length === 0">
+                    No matching
+                    elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="
+                        rel_coordinator_model.coordinatorTypeId == '' &&
+                        show_dependent_erros &&
+                        !one_coordinator_selected">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- coordinator -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Coordinator</mat-label>
+                <mat-select matNativeControl required
+                  (selectionChange)="rel_coordinator_model.coordinatorId = $event.value;">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Coordinator</mat-label>
+                    <input matInput placeholder="Coordinator" [(ngModel)]="filterReloCoordina2.coordinator">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Coordinator</mat-option> -->
+                  <mat-option *ngFor="let item of coordinator_catalogue_rel | filterBy: filterReloCoordina2"
+                    [value]="item.id">
+                    {{ item.coordinator }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(coordinator_catalogue_rel | filterBy: filterReloCoordina2).length === 0">
+                    No matching
+                    elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="
+                        rel_coordinator_model.coordinatorId == '' &&
+                        show_dependent_erros &&
+                        !one_coordinator_selected">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Assigned Date</mat-label>
+                <input matInput [matDatepicker]="relocation_ass" autocomplete="off" [max]="getMaxDateTo(0)"
+                  [(ngModel)]="rel_coordinator_model.assigned" />
+                <mat-datepicker-toggle matSuffix [for]="relocation_ass"></mat-datepicker-toggle>
+                <mat-datepicker #relocation_ass></mat-datepicker>
+                <span class="label-error" *ngIf="
+                        (rel_coordinator_model.assigned == '' || rel_coordinator_model.assigned == undefined) &&
+                        !one_coordinator_selected">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" style="display: none;">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Accepted Date</mat-label>
+                <input disabled matInput [matDatepicker]="relocation_acc" autocomplete="off" [max]="getMaxDateTo(0)"
+                  [(ngModel)]="rel_coordinator_model.accepted" />
+                <mat-datepicker-toggle matSuffix [for]="relocation_acc"></mat-datepicker-toggle>
+                <mat-datepicker #relocation_acc></mat-datepicker>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+        <!-- add supplier relocation -->
+        <div class="page__section">
+          <div class="page__title">
+            Supplier Partners
+          </div>
+        </div>
+        <div class="page__section">
+          <table mat-table [dataSource]="table_rel_sup_par" class="main-table">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_0">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Type</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.supplierTypeIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_1">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Company</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.supplierCompanyIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_2">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.supplierIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_3">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Date</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ filterDate( element.assignedDate ) }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_4">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Services</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.assignedServicesIdText }}
+              </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="campo_5">
+              <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+              <td mat-cell *matCellDef="let index = index" class="text-center">
+                <div class="table-row__check">
+                  <img (click)="deleteRelSupPar(index)" class="cursor-pointer" src="/assets/icons/delete.png" />
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="colums_sup_table"></tr>
+            <tr mat-row *matRowDef="let row; columns: colums_sup_table;"></tr>
+          </table>
+        </div>
+        <div class="page__section no-padding-tb margin-tb-min">
+          <div class="page__section-name"></div>
+          <div class="page__section-button">
+            <button *ngIf="!show_supplier_section" class="button-icon button-icon--adder"
+              (click)="showSupplierSection()">
+              Add Supplier
+            </button>
+          </div>
+        </div>
+        <div class="page__section page__section--card margin-bottom-min" *ngIf="show_supplier_section">
+          <button (click)="showSupplierSection()" class="page__section--card-closeButton">
+          </button>
+          <mat-grid-list cols="4" rowHeight="80px">
+            <!-- supplier type -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Supplier Country</mat-label>
+                <mat-select matNativeControl required (selectionChange)="
+                    removeErrorLabel( $event.value, {handler: rel_sup_form, field: 'no_styp'} );"
+                    [(ngModel)]="rel_sup_model.supplierTypeId">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Supplier Country</mat-label>
+                    <input matInput placeholder="Supplier Country" [(ngModel)]="filterReloSupplier.type">
+                  </mat-form-field>
+                  <mat-option *ngIf="(new_service_record_data.assigneeInformations[0].homeCountryId != undefined)"
+                    [value]="new_service_record_data.assigneeInformations[0].homeCountryId"
+                    (click)="__supplier__r(new_service_record_data.assigneeInformations[0].homeCountryId, new_service_record_data.assigneeInformations[0].homeCityId, 2)">
+                    {{ getNameCountry(new_service_record_data.assigneeInformations[0].homeCountryId )}}
+                  </mat-option>
+                  <mat-option *ngIf="(new_service_record_data.assigneeInformations[0].hostCountry != undefined)"
+                    [value]="new_service_record_data.assigneeInformations[0].hostCountry"
+                    (click)="__supplier__r(new_service_record_data.assigneeInformations[0].hostCountry, new_service_record_data.assigneeInformations[0].hostCityId, 2)">
+                    {{getNameCountry( new_service_record_data.assigneeInformations[0].hostCountry) }}
+                  </mat-option>
+                  <mat-option disabled
+                    *ngIf="(new_service_record_data.assigneeInformations[0].homeCountryId == undefined) &&(new_service_record_data.assigneeInformations[0].hostCountry == undefined)">
+                    No matching
+                    elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="rel_sup_form.no_styp">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- supplier -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Supplier</mat-label>
+                <mat-select matNativeControl required (selectionChange)="
+                  company_Relocation();
+                  removeErrorLabel( $event.value, {handler: rel_sup_form, field: 'no_supp'} );
+                  ableSupplierCompImm( $event.value, 2 )" [(ngModel)]="rel_sup_model.supplierId">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Supplier</mat-label>
+                    <input matInput placeholder="Supplier" [(ngModel)]="filterReloSupplier2.name">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Supplier</mat-option> -->
+                  <mat-option *ngFor="let item of supplier_catalogue | filterBy: filterReloSupplier2" [value]="item.id">
+                    {{ item.name }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(supplier_catalogue | filterBy: filterReloSupplier2).length === 0">No
+                    matching elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="rel_sup_form.no_supp">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+            <!-- supplier company -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+                <div>
+                  <span class="text-mini gray_05">Supplier Company</span><br />
+                  {{type_company_relocation}}
+                </div>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_half_central">
+                <mat-label>Assigned Date</mat-label>
+                <input matInput [matDatepicker]="assign_date" [(ngModel)]="rel_sup_model.assignedDate"
+                  autocomplete="off" [min]="minDate"
+                  (change)="removeErrorLabel( $event.target.value, {handler: rel_sup_form, field: 'no_date'} )"
+                  (dateChange)="removeErrorLabel( $event.target.value, {handler: rel_sup_form, field: 'no_date'} )">
+                <mat-datepicker-toggle matSuffix [for]="assign_date"></mat-datepicker-toggle>
+                <mat-datepicker #assign_date></mat-datepicker>
+                <span class="label-error" *ngIf="rel_sup_form.no_date">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list cols="4" rowHeight="80px" style="display: none;">
+            <!-- assigned services -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Assigned Services</mat-label>
+                <mat-select matNativeControl required (selectionChange)="
+                    removeErrorLabel( $event.value, {handler: rel_sup_form, field: 'no_serv'} );
+                    rel_sup_model.assignedServicesId = $event.value;">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Assigned Services</mat-label>
+                    <input matInput placeholder="Assigned Services"
+                      [(ngModel)]="filterReloAssignedService.assignedService">
+                  </mat-form-field>
+                  <!-- <mat-option selected disabled value="">Assigned Services</mat-option> -->
+                  <mat-option *ngFor="let item of assigment_catalogue | filterBy: filterReloAssignedService"
+                    [value]="item.id">
+                    {{ item.assignedService }}
+                  </mat-option>
+                  <mat-option disabled *ngIf="(assigment_catalogue | filterBy: filterReloAssignedService).length === 0">
+                    No matching
+                    elements</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="rel_sup_form.no_serv">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <div class="page__section margin-top-mini page__section--justify-end">
+            <div class="page__section-buttong">
+              <button (click)="addRelocationSupplier()">
+                Add Supplier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Relocation -------------------------------------------------------- -->
+      <!-- Library -------------------------------------------------------- -->
+      <form action="" class="page__section-form display-none" id="tab_lib">
+        <div class="page__title">
+          Library
+        </div>
+      </form>
+      <!-- Library -------------------------------------------------------- -->
+      <!-- Finance -------------------------------------------------------- -->
+      <form action="" class="page__section-form display-none" id="tab_fin">
+        <div class="page__title">
+          Finance
+        </div>
+      </form>
+      <!-- Finance -------------------------------------------------------- -->
+    </div>
+    <div class="page__section margin-top-min page__section--justify-end">
+      <div class="page__section-input page__section-input--2 text-center">
+        <p class="subtitle" style="margin: 0; font-size: 12px;"> Create as Urgent</p>
+        <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.urgent"></mat-checkbox>
+      </div>
+      <div class="page__section-buttong">
+        <!-- button (click)="continueAddServices()">
+            Continue
+        </button -->
+        <button (click)="addNewServiceRecord()">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #country="matMenu" xPosition="before">
+  <div class="bg"></div>
+  <div class="assigned_services">
+    <div class="data" style="padding: 10px;">
+      <span style="font-size: 10px;"><b>Country:</b> {{info_country.country}}</span>
+      <!--br-->
+      <!--span style="font-size: 10px;"><b>City:</b> {{info_country.city}}</span--->
+    </div>
+  </div>
+</mat-menu>

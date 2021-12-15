@@ -1,0 +1,40 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Sticky note</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="3" rowHeight="70px" *ngIf="stick.length">
+    <mat-grid-tile [colspan]="1" [rowspan]="3" *ngFor="let note of stick">
+      <div class="textarea" style="padding: 2px; width: 70%; height: 85%; margin-top: -20px; margin-left: 35px;">
+        <div class="mat-elevation-z4 tarjetas">
+          <div class="delete">
+            <p style="float: right;
+            margin-left: 6px;" (click)="deleteNote(note)">X</p>
+            <p *ngIf="note.check == true" (click)="updateStick(note)">✔</p>
+            <!-- p para que no se desajuste -->
+            <p style="color: #9d3292;" *ngIf="note.check == false">.</p>
+
+          </div>
+
+          <mat-form-field appearance="outline" class="textarea">
+            <textarea style="width: 90%;" rows="5" matInput #message [(ngModel)]="note.post"
+            (click)="palomaDeUpdate(note)"
+            maxlength="500"> </textarea>
+            <!-- (mwlKeydownEnter)="updateStick(note)" -->
+          </mat-form-field>
+          <br>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong" >
+    <button (click)="addNote()">Add note</button>
+  </div>
+</mat-dialog-actions>

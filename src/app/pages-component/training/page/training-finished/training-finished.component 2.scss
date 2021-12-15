@@ -1,0 +1,36 @@
+.padding__{
+    padding-top: 15%;
+}
+.contenedor__{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.thanks{
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.title{
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.descripcion{
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
+.score{
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.porcentaje{
+    font-size: 80px;
+    color: #9d3292;
+}

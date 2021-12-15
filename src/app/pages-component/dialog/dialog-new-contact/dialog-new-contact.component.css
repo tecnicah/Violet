@@ -1,0 +1,24 @@
+
+
+  .addPropperty {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /*div{
+      width: 100%;
+  }*/
+  
+  /*.input__image-label img {
+      height: 150px;
+      width: 150px;
+      top: -40px;
+    }*/
+  
+  .input__image-label--cardSpanConsultant {
+    bottom: -50px !important;
+    left: -25px !important;
+    text-align: center;
+  }
+  

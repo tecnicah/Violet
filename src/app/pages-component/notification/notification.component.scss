@@ -1,0 +1,160 @@
+.avatar{
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    // height: 60px;
+    // width: 60px;
+    // object-fit: cover;
+}
+
+.card{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.padding{
+    padding: 10px;
+}
+
+.text-color{
+    color: #9d3292;
+}
+
+.background{
+    color: white;
+}
+
+.titleNotification{
+  font-size: 11px;
+}
+.titleTime{
+  font-size: 11px;
+}
+
+.description{
+    text-align: justify;
+    font-size: 11px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.display{
+    display: flex;
+    justify-content: space-between;
+}
+
+.boton{
+    width: 70px !important;
+}
+
+.margin{
+    margin-bottom: 10px;
+}
+
+.type_uno {
+    background-color: #f06689;
+}
+
+.refresh {
+    animation: refreshed 2s;
+  }
+
+  @keyframes refreshed {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+
+
+  .active{
+      color: #9d3292;
+  }
+
+
+  .btnr {
+    border-radius: 20px;
+    font-size: 12px;
+    background-color: white;
+    border: none;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.14);
+    color: #9d3292;
+    font-weight: 600;
+    height: 25px;
+    padding: 5px 40px 5px 11px;
+    cursor: pointer;
+
+
+    &--pencil {
+      background: url('/assets/icons/pencil.png');
+      background-repeat: no-repeat;
+      background-size: 20px;
+      background-position-x: calc(100% - 10px);
+      background-position-y: center;
+    }
+
+    &--add {
+      background: url('/assets/icons/more.png');
+      background-repeat: no-repeat;
+      background-size: 20px;
+      background-position-x: calc(100% - 10px);
+      background-position-y: center;
+    }
+
+    &--export{
+      background: url('/assets/icons/export.png');
+      background-repeat: no-repeat;
+      background-size: 20px;
+      background-position-x: calc(100% - 10px);
+      background-position-y: center;
+    }
+
+    &--decline{
+        background: url('/assets/icons/delete-red.png');
+        color: white;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        background-position-x: calc(100% - 10px);
+        background-position-y: center;
+        background-color: #d84b4b;
+      }
+
+      &--accept{
+        background: url('/assets/icons/green-check.png');
+        background-repeat: no-repeat;
+        color: white;
+        background-size: 18px;
+        background-position-x: calc(100% - 10px);
+        background-position-y: center;
+        background-color: #009577;
+      }
+  }
+
+  .time{
+    text-align: end !important;
+    width: 100% !important;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .ofto{
+    text-align: end !important;
+    width: 100% !important;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .person{
+    text-align: start !important;
+    width: 100% !important;
+    height: 100%;
+  }
+  .text-host{
+    font-size: 10px;
+  }
+

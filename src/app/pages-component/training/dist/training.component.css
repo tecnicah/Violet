@@ -1,0 +1,75 @@
+.contenedot_principal__paragraph {
+  font-size: 12px;
+  text-align: justify;
+}
+
+.ancho {
+  width: 100% !important;
+  display: flex;
+  cursor: pointer;
+}
+
+.contenedor_detalles {
+  margin-left: 30px;
+  width: 100%;
+}
+
+.detalle_curso {
+  display: flex;
+  margin-top: 40px;
+}
+.detalle_curso__img {
+  width: 25%;
+}
+.detalle_curso__title {
+  font-size: 14px;
+  color: #9d3292;
+  font-weight: bold;
+}
+.detalle_curso__text_curso {
+  margin-top: 30px;
+  font-size: 12px;
+  text-align: justify;
+}
+.detalle_curso__informacion_curso {
+  display: flex;
+  align-items: center;
+}
+.detalle_curso__fecha {
+  display: flex;
+  flex-basis: 21%;
+  width: 100%;
+}
+.detalle_curso__basicsEstatus {
+  flex-basis: 18%;
+}
+.detalle_curso__basicsProgress {
+  flex-basis: 25%;
+}
+.detalle_curso__anchoProgress {
+  width: 60% !important;
+  height: 10px;
+  border-radius: 10px 10px;
+  margin-left: 10px;
+}
+.detalle_curso__basicsScore {
+  flex-basis: 18%;
+}
+
+.line_heigth {
+  line-height: 20px !important;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.width60 {
+  width: 60%;
+}
+
+.margin {
+  margin-top: 20px;
+}

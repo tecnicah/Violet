@@ -1,0 +1,9 @@
+.addPropperty{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+th.mat-header-cell {
+    text-align: center !important;
+}

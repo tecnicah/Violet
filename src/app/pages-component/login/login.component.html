@@ -1,0 +1,81 @@
+<div class="main">
+  <div class="container">
+    <div class="container-logo">
+      <!-- img src="assets/logo-login.png" style="height: 150px;"/ logo-horizontal-copy-->
+      <img src="assets/logo_premier.svg" />
+    </div>
+    <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit(loginFormGroup.value)" *ngIf="section_active == 'login'"
+      class="example-form">
+      <mat-card-content style="margin-bottom: 0;">
+        <mat-form-field class="example-full-width" style="padding-bottom:0;">
+          <input matInput id="email" placeholder="User" formControlName="email" />
+          <mat-error *ngIf="!email.valid && email.touched">
+            {{ getErrorEmail() }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <div style="display: flex; justify-content: space-between;">
+            <input matInput id="password" type="{{type_input}}" placeholder="Password" formControlName="password" />
+            <mat-icon *ngIf="!eyed" style="cursor: pointer;" (click)="changeType(true)">visibility</mat-icon>
+            <mat-icon *ngIf="eyed" style="cursor: pointer;" (click)="changeType(false)">visibility_off</mat-icon>
+          </div>
+          <mat-error *ngIf="!password.valid && password.touched">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <div class="row mb-5 text-center form-buttons">
+        <button id="start" mat-raised-button style="padding:0 120px 0 120px; background-color:#9d3292; color:#fff"
+          type="submit" [disabled]="!loginFormGroup.valid">
+          Login
+        </button>
+      </div>
+      <div class="link">
+        <span (click)="showSection('recover_pass')">Forgot password</span>
+      </div>
+    </form>
+    <form *ngIf="section_active == 'recover_pass'" [formGroup]="recoverFormPassword" class="example-form"
+      style="width: 350px !important;" (ngSubmit)="recoverPassword( recoverFormPassword.value )">
+      <mat-card-content style="margin-bottom: 0;">
+        <mat-form-field class="example-full-width" style="padding-bottom:0;">
+          <input matInput placeholder="Email to recover" formControlName="email_recover" />
+          <mat-error *ngIf="!email_recover.valid && email_recover.touched">
+            {{ getErrorEmailRecover() }}
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <div class="row mb-5 text-center form-buttons">
+        <button mat-raised-button [disabled]="!recoverFormPassword.valid"
+          style="padding:0 120px 0 120px; background-color:#9d3292; color:#fff">
+          Send
+        </button>
+      </div>
+      <div class="link">
+        <span (click)="showSection('login')">Login</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- div class="login-wrapper" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+
+  <mat-card class="box">
+    <img mat-card-image src="assets/images/aldea_logo.png" alt="ALDEA">
+
+    <form class="example-form" style="margin-bottom:25px; margin-top:0;">
+      <mat-card-content style="margin-bottom: 0">
+        <mat-form-field class="example-full-width" style="padding-bottom:0;">
+          <input matInput placeholder="Usuario">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Contraseña">
+        </mat-form-field>
+      </mat-card-content>
+      <div class="row mb-5 text-center">
+        <button mat-raised-button style="padding:0 120px 0 120px; background-color:#FFBD59; color:#fff" (click)="enviar()">Enviar</button>
+      </div>
+    </form>
+  </mat-card>
+</div -->

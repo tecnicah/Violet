@@ -1,0 +1,146 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title" *ngIf="this.data.id == 0">Add Country</h2>
+    <h2 mat-dialog-title class="primary_title" *ngIf="this.data.id != 0">Update Country</h2>
+
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="4" rowHeight="60px">
+
+    <!-- add countru multicheck en caso de que la data reciba action = new -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action == 'new' && data.id == 0">
+      <form [formGroup]="searchUserForm" fxFlex fxLayout="column" autocomplete="off" style="margin: 30px">
+        <!--mat-form-field appearance="fill" class="textarea input_central">
+          <mat-label>Country</mat-label>
+          <mat-select [(ngModel)]="data.country" (selectionChange)='all()' matNativeControl multiple>
+            <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+            <mat-option *ngFor="let item of caCounty" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field-->
+        <mat-form-field appearance="fill" class="textarea input_central">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="userType" multiple>
+            <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+            <mat-option *ngFor="let filters of caCounty" [value]="filters.id">
+              {{filters.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-grid-tile>
+    <!-- country se mostrara sin multicheck cuando el action sea 0 ya que es un update -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new'">
+      <mat-form-field appearance="fill" class="textarea input_central">
+        <mat-label>Country</mat-label>
+        <mat-select [disabled]="data.id != 0" [(ngModel)]="data.country" matNativeControl>
+          <mat-option *ngFor="let item of caCounty" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <p>Standar Scope & Documents</p>
+        <mat-checkbox [checked]="data.standarScopeDocuments==='1'"
+          (change)="data.standarScopeDocuments = $event.checked ?'1':'0'"></mat-checkbox>
+      </mat-grid-tile> -->
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+  </mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="60px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-name">
+        Scope Description
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="4" rowHeight="300px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <!--mat-form-field>
+        <mat-label>Scope Description</mat-label>
+        <textarea matInput placeholder="Scope Description" rows="3" [(ngModel)]="data.scopeDescription"></textarea>
+      </mat-form-field-->
+      <!--a ngular-editor [(ngModel)]="data.scopeDescription" (ngModelChange)="view()" [config]="config"></angular-editor-->
+      <kendo-editor [value]="data.scopeDescription" [(ngModel)]="data.scopeDescription"
+        style="height: 280px; width: 100%;"></kendo-editor>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+
+  <mat-grid-list cols="1">
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Documents
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+
+      <div class="page__section documents__ascard" *ngFor="let item of data.documentServiceCountries; let i = index">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deleteDocument(item.id, i) ">
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{ getDocumentName(item.documentType)}} {{item.documentTypeNavigation?.privacyNavigation}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.updatedDate| date:'dd MMM yyy'}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{statusName(item.status)}} {{item.statusNavigation?.status}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{privacyName(item.privacy)}} {{item.privacyNavigation?.privacy}}
+        </div>
+      </div>
+
+    </div>
+  </mat-grid-list>
+
+  <div class="textarea margin_table" style="text-align: end;">
+    <button class="btnr btnr--add" (click)="DialogDocumentsLeadClientComponent(null)" matRipple
+      matRippleColor="rgba(157, 50, 146, 0.5)">
+      Add New Document
+    </button>
+  </div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

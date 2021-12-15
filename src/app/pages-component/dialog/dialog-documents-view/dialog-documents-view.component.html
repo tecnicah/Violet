@@ -1,0 +1,87 @@
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Document</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="80px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Document</span><br />
+            <span class="gray_05 cursor-pointer font-purple-dark" (click)="openFileOnWindow( library_data.ulr_document )">
+              View Document
+            </span>
+          </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Uploaded Date</span><br />
+            {{ library_data.upload_date | date:'dd MMM yyy' }}
+          </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Document Type</span><br />
+              {{ library_data.document_type }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Relationship</span><br />
+              {{ library_data.relationship }}
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Issue Date</span><br />
+              {{ library_data.issueDate | date:'dd MMM yyy' }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Expiration Date</span><br />
+              {{ library_data.expirationDate | date:'dd MMM yyy' }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Issuing Authority</span><br />
+              {{ library_data.issuingAuthority }}
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Country of Origin</span><br />
+              {{ library_data.name }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Comment</span><br />
+              {{ library_data.comment }}
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="hideModal()">Close</button>
+    </div>
+</mat-dialog-actions>

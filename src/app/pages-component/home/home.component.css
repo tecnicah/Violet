@@ -1,0 +1,410 @@
+.nametitle{
+  margin-bottom: 10px;
+}
+
+
+
+.colorGris{
+  color: rgba(0, 0, 0, 0.5);
+
+}
+textarea {
+  resize: none;
+}
+
+.avatar {
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+}
+
+.Write {
+  font-family: Lato;
+  font-size: 8px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.5);
+}
+.item{
+  padding: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 8px 10px;
+  border-radius: 7px;
+}
+
+
+
+  font{
+    font-size: 10px !important;
+  }
+  .cardCelebres{
+    /* align-items: flex-end; */
+    /* position: relative; */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    /* display: inline-block; */
+  }
+  .caroucelImg{
+    width: 100%;
+    height: 18rem;
+  }
+
+  .frasesCelebres{
+    /* width: 100%;
+    height: auto; */
+    width: 100%;
+    height: auto;
+    text-align:center;
+    position: absolute;
+    bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .textCompany {
+  /* margin: 4px 7px 14px 27px; */
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  /* text-align: center; */
+  color: rgba(0, 0, 0, 0.5);
+}
+.contenedorCards{
+  column-count: 3; /* número de columnas */
+  /* column-gap: 10px; ancho de columnas */
+  /* display: flex; opcional para que el texto se acomode */
+  /* padding: 10px; se quitar */
+  /* justify-content: space-between; */
+  /* margin-bottom: 20px; */
+  width: 100%;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+.textFrasesCelebres {
+  margin: 8px 5px;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #9d3292;
+}
+
+.columnaCard{
+  /* margin-bottom: 20px; */
+  /* margin-top: 20px; */
+  text-align: center;
+  /* padding: 10px; */
+  align-items: center;
+  justify-content: center;
+  /* nuevas */
+}
+.index-aqua { background-color: #009b7c; }
+.requestTime{
+    font-family: Lato;
+    font-weight: bold !important;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #9d3292;
+}
+
+/* clases clima */
+.cardClima {
+  width: 74%;
+  height: 97%;
+  border-radius: 4px;
+
+  /* margin-left: 35px;
+  margin: auto; */
+}
+.headerClima{
+  display: flex;
+  padding: 10px;
+}
+.Weather {
+  margin: 4px 62px 20px 0;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #9d3292;
+}
+.imgdiv{
+  width: 100%;
+  text-align: end;
+}
+.bodyClima{
+  /* width: 70% !important; */
+  text-align: center !important;
+  /* position: absolute;
+  bottom: 10px; */
+}
+.status {
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.temperature {
+  margin: 8px 5px 4px 25px;
+  font-family: Lato;
+  font-size: 38px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #9d3292;
+}
+.fecha {
+  margin: 4px 7px 14px 27px;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+.ciudad {
+  margin: 14px 11px 0 31px;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.85);
+}
+.imgClima{
+  width: 7rem;
+  height: 7rem;
+}
+/* events */
+
+.cardEvent{
+  width: 74%;
+  height: 98%;
+  margin: auto;
+  max-height: 100rem;
+  overflow-y: auto;
+  border-radius: 4px;
+}
+.headerEvent{
+  display: flex;
+  padding: 10px;
+  margin-bottom: 13px;
+}
+.upcomingEvent{
+  margin-bottom: 19px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #9d3292;
+}
+.imgdivEvent{
+  /* width: 100%; */
+  text-align: end;
+}
+.bodyEvent{
+  display: flex;
+  /* justify-content: space-between; */
+  /* text-align: center !important; */
+}
+.inside{
+  width: 50px;
+  height: 50px;
+  padding: 1px;
+  border-radius: 1px;
+}
+.porcentaje {
+  /* margin: 8px 5px 4px 25px; */
+  font-family: Lato;
+  font-size: 24px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #9d3292;
+}
+.calendarEvent{
+  font-size: 13px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  margin-left: 2px;
+  color:rgba(0, 0, 0, 0.5);
+}
+.titleEvent{
+  font-size: 11px;
+  font-weight: bold;
+}
+.dayEvent {
+  width: 45px;
+  height: 19px;
+  margin: 5px 0 6px 13px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #9d3292;
+}
+.countryEvent{
+  margin-top: -4px;
+  font-size: 11px;
+}
+
+.descriptionEvent{
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+/* post it */
+.cardPostIt{
+  width: 74%;
+  height: 95%;
+  /* margin-top: 5px;
+  margin-left: 35px;   */
+  overflow-y: auto;
+  border-radius: 4px;
+}
+.headerPostIt{
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+.btnViewNote{
+  width: 100%;
+  text-align: end;
+}
+.bodyPostIt{
+  align-content: center;
+  text-align: center;
+}
+.btnAddNote {
+  width: 100%;
+  text-align: end;
+  /* padding: 10px;
+  text-align: right;
+  margin-right: .4rem;
+  margin-bottom: 2px; */
+}
+.something{
+  /* padding: 6px; */
+  text-align: left;
+  font-size: 10px;
+}
+.divSomething{
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  /* margin-top: 10px; */
+}
+.titlePostIt{
+  margin-bottom: 19px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #9d3292;
+}
+
+/* company */
+.cardCompany{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  max-height: 100rem;
+  overflow-y: auto;
+  padding: 3px;
+  /* border-radius: 4px; */
+}
+.titleCompany{
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.7);
+}
+.tarjetas{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 90%;
+}
+.cardPadre{
+  align-content: center;
+  text-align: center;
+}
+.companyName{
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0px 9px 0px 9px;
+}
+.porcentajeCompany {
+  font-family: Lato;
+  font-size: 20px;
+  font-weight: bold !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #9d3292;
+}

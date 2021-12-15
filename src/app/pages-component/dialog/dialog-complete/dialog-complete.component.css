@@ -1,0 +1,27 @@
+div{
+    width: 100%;
+}
+
+.evaluate{
+ background: #4435a6;
+}
+
+.evaluate  mat-icon{
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+
+ }
+
+ .pur button{
+    background: #4435a6;
+ }
+
+ .browser{
+     font-weight: 600;
+ }
+
+ .disabled{
+    background: rgba(0,0,0,.5) !important;
+    cursor: default;
+ }

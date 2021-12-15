@@ -1,0 +1,280 @@
+<style>
+  div {
+    width: 100%;
+  }
+
+</style>
+<!-------------------------------------------------------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Escalation</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!-------------------------------------------------------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="80px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central comments" style="display: flex;">
+        <div>
+          <p class="subtitle">From</p>
+          <p class="title">{{user_log_name}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>To</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="escalation_model.userToId"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: esc_form_validator, field: 'no_fron'} )">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>To</mat-label>
+              <input matInput placeholder="To" [(ngModel)]="typeTo.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of userto_catalogue | filterBy: typeTo" (click)="SetServiceLine(item)" [value]="item.userId">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="esc_form_validator.no_fron">
+            Field is required
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central comments" style="display: flex;">
+        <div>
+          <p class="subtitle">Status</p>
+          <p class="title">{{escalation_model.status ? 'Active' : 'Unactive'}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final comments" style="display: flex;">
+        <div>
+          <p class="subtitle">Escalation Date</p>
+          <p class="title">{{escalation_model.createdDate | date:'dd MMM yyy'}}</p>
+        </div>
+
+        <div style="text-align: end; width: auto !important">
+          <mat-icon class="calendar">calendar_today</mat-icon>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central position-relative">
+        <mat-form-field appearance="fill">
+          <mat-label>Escalation level</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="escalation_model.escalationLevel"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: esc_form_validator, field: 'no_leve'} )">
+            <mat-option selected disabled value="">Escalation Level</mat-option>
+            <mat-option value="1">1/Low</mat-option>
+            <mat-option value="2">2/Medium Low</mat-option>
+            <mat-option value="3">3/Medium</mat-option>
+            <mat-option value="4">4/High</mat-option>
+            <mat-option value="5">5/Very High</mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="esc_form_validator.no_leve">
+            Field is required
+          </span>
+        </mat-form-field>
+        <img style="width: 15px;" (click)="showEscalationLevels()" class="cursor-pointer input-icon-right"
+          src="../../../../assets/icons/question.svg" />
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Service Line</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="escalation_model.serviceLineId" (selectionChange)="
+              removeErrorLabel( $event.value, {handler: esc_form_validator, field: 'no_lser'} );
+              getServiceLine( $event.value );">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Service Line</mat-label>
+              <input matInput placeholder="Service Line" [(ngModel)]="typeLine.serviceLine">
+            </mat-form-field>
+            <mat-option *ngFor="let item of serviceline_catalogue | filterBy: typeLine" [value]="item.id">
+              {{ item.serviceLine }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="esc_form_validator.no_lser">
+            Field is required
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!--mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Supplier Type</mat-label>
+        <mat-select [formControl]="toppings" [(ngModel)]="ST" (ngModelChange)="getSupplier()">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Supplier Type</mat-label>
+            <input matInput placeholder="Name" [(ngModel)]="typeFilter.supplierType">
+          </mat-form-field>
+          <mat-option *ngFor="let data of SupplierType | filterBy: typeFilter" [value]="data.id">
+            {{data.supplierType}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile-->
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Work Order</mat-label>
+          <mat-select matNativeControl required [formControl]="toppings" [(ngModel)]="escalation_model.workOrderId"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: esc_form_validator, field: 'no_lser'} )">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Work Order</mat-label>
+              <input matInput placeholder="Work Order" [(ngModel)]="typeFilter.numberWorkOrder">
+            </mat-form-field>
+            <mat-option *ngFor="let item of workorders_catalogue | filterBy: typeFilter" [value]="item.id">
+              {{ item.numberWorkOrder }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="esc_form_validator.no_lser">
+            Field is required
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final">
+        <mat-form-field appearance="fill">
+          <mat-label>Service ID</mat-label>
+          <mat-select [disabled]="!now_can_see_services" matNativeControl required
+            [(ngModel)]="escalation_model.serviceId"
+            (selectionChange)="removeErrorLabel( $event.value, {handler: esc_form_validator, field: 'no_serv'} )">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Service ID</mat-label>
+              <input matInput placeholder="Service ID" [(ngModel)]="typeService.category">
+            </mat-form-field>
+            <mat-option *ngFor="let item of services_catalogue.value | filterBy: typeService" [value]="item.id">
+              {{item.serviceNumber}} / {{ item.category }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="esc_form_validator.no_serv">
+            Field is required
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+  </mat-grid-list>
+  <div class="page__section-input" style="flex: 100%;">
+    <p> Upload Documents</p>
+    <div class="center">
+      <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+        (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+          Drag and Drop or
+          <p class="browser font-purple-dark" (click)="openFileSelector()">
+            Browse File
+          </p>
+        </ng-template>
+      </ngx-file-drop>
+      <div class="upload-table" *ngIf="files.length > 0">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="upload-name-style">
+            <tr style="padding: 5px 0;" *ngFor="let item of files; let i=index">
+              <td style="font-size: 12px;">{{ item.relativePath }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="documents margin-top-m">
+    <div *ngFor="let item of escalation_model.scalateDocuments;" [class.display-none]="item.document_from == 'local'"
+      class="documents__document">
+      {{ item.fileRequest }}
+      <button (click)="deleteDocumentSelected( item.id )" class="documents__document-delete">x
+      </button>
+    </div>
+  </div>
+  <!-- div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="page__section-input page__section-input--x page__section-input--no-padding"
+        *ngFor="let comment of escalation_model?.scalateComments">
+        <div class="comment">
+          {{ comment?.comments }}
+        </div>
+      </div>
+    </div>
+  </div -->
+
+  <div fxLayout="row" fxLayoutGap="10px" class="margin-bottom-min">
+    <div class="page__section margin-top-min">
+      <div class="page__section-input--60px">
+        <div class="page__section-dataImg">
+          <img src="{{ image_path + user.avatar }}" class="page__section-dataImg-img" />
+        </div>
+      </div>
+      <div class="page__section-input--25">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Name</span><br />
+          {{ user.name }} {{ user.lastName }}
+        </div>
+      </div>
+      <div class="page__section-input--25">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Job Title</span><br />
+          {{user.role.role}}
+        </div>
+      </div>
+      <div class="page__section-input--25">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Date</span><br />
+          {{ today_date | date:'dd MMM yyy' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div class="page__section-input" style="flex: 100%;">
+      <p>Comment</p>
+      <mat-form-field appearance="outline" style="width: 100% !important">
+        <textarea matInput id="replay-comment" class="comment-in" placeholder="Comment"
+          [(ngModel)]="escalation_model.scalateComments[0].comments"></textarea>
+        <span class="label-error" *ngIf="no_first_comment">
+          Field is required
+        </span>
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- div fxLayout="row" fxLayoutGap="10px">
+    <div class="page__section margin-bottom-m" *ngIf="!is_it_newone">
+      <div class="page__section-name"></div>
+      <div class="page__section-button">
+        <button class="button-icon button-icon--adder margin-top-mini" (click)="replayComment()">
+          Reply
+        </button>
+      </div>
+    </div>
+  </div -->
+</mat-dialog-content>
+<!-------------------------------------------------------------------------------------->
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="sendEscalationData()">Save</button>
+    <!-- button *ngIf="!is_it_newone" (click)="sendEscalationDataUpdated()">Save</button -->
+  </div>
+</mat-dialog-actions>

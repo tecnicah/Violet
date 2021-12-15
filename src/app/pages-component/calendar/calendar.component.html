@@ -1,0 +1,437 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+  integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+  integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+<!--------------------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------------------->
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Operations / Service Calendar </div>
+    <div class="page__title title">
+      Service Calendar
+    </div>
+    <mat-grid-list cols="5" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+              [(ngModel)]="data_calendar.filter" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.country"
+              (ngModelChange)="getCity(); searchData();  getSupplierPartner();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_country| filterBy: filterCountry" [value]="data.id">{{data.name}}
+              </mat-option>
+              <mat-option disabled *ngIf="(ca_country | filterBy: filterCountry).length === 0">No matching elements
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.city"
+              (ngModelChange)="searchData(); getSupplierPartner()" [disabled]="ca_city.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="City" [(ngModel)]="filterCity.city">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_city | filterBy: filterCity" [value]="data.id">{{data.city}}
+              </mat-option>
+              <mat-option disabled *ngIf="(ca_city | filterBy: filterCity).length === 0">No matching elements
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Line</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.serviceLine"
+              (ngModelChange)="searchData();getCoordinatorImmigration();  getSupplierPartner();">
+              <mat-option *ngFor="let data of ca_serviceLine" [value]="data.id">{{data.serviceLine}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Partner</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.partner"
+              (ngModelChange)="searchData();getClient();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Partner</mat-label>
+                <input matInput placeholder="Partner" [(ngModel)]="filterPartner.coordinator">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_partner | filterBy: filterPartner" [value]="data.id">
+                {{data.coordinator}}</mat-option>
+              <mat-option disabled *ngIf="(ca_partner | filterBy: filterPartner).length === 0">No matching elements
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Client</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.client"
+              (ngModelChange)="searchData(); getCoordinatorImmigration();" [disabled]="ca_cliente.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Client</mat-label>
+                <input matInput placeholder="Client" [(ngModel)]="filterClient.name">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_cliente | filterBy: filterClient" [value]="data.id">{{data.name}}
+              </mat-option>
+              <mat-option disabled *ngIf="(ca_cliente | filterBy: filterClient).length === 0">No matching elements
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Coordinator</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.coordinator" (ngModelChange)="searchData()"
+              [disabled]="ca_coordinator.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Coordinator</mat-label>
+                <input matInput placeholder="Coordinator" [(ngModel)]="filterCoordinator.coordinator">
+              </mat-form-field>
+
+              <mat-option *ngFor="let data of ca_coordinator | filterBy: filterCoordinator" [value]="data.id">
+                {{data.coordinator}}</mat-option>
+              <mat-option disabled *ngIf="(ca_coordinator | filterBy: filterCoordinator).length === 0">No matching
+                elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Supplier Partner</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_calendar.supplier" (ngModelChange)="searchData()"
+              [disabled]="supplier_catalogue.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Supplier Partner</mat-label>
+                <input matInput placeholder="Supplier Partner" [(ngModel)]="filterSP.comercialName">
+              </mat-form-field>
+              <mat-option *ngFor="let data of supplier_catalogue | filterBy: filterSP" [value]="data.id">
+                {{data.comercialName}}</mat-option>
+              <mat-option disabled *ngIf="(supplier_catalogue | filterBy: filterSP).length === 0">No matching elements
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+        <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+          <button mat-icon-button id="refresh" color="primary" style="margin-right: 0px; margin-top: -30px;"
+            matTooltip="Clear filter" (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <br>
+    <br>
+    <!--START CALENDAR-->
+    <!----------------------------------------------------------------------------------------->
+    <!--div class="mat-elevation-z5" style="padding: 10px 10px 10px 10px;">
+      <div class="row text-center">
+        <div class=" header_calendar">
+          <div style="text-align: initial; margin: auto 0 auto 15px;">
+            <div class="btn-group">
+              <div id="month" class="btn  color_button" (click)="[setView(CalendarView.Month), colorBtn('month')]"
+                [class.active]="view === CalendarView.Month">
+                Month
+              </div>
+              <div id="week" class="btn  color_button" (click)="[setView(CalendarView.Week), colorBtn('week') ]"
+                [class.active]="view === CalendarView.Week">
+                Week
+              </div>
+              <div id="day" class="btn  color_button" (click)="[setView(CalendarView.Day), colorBtn('day')]"
+                [class.active]="view === CalendarView.Day">
+                Day
+              </div>
+            </div>
+          </div>
+
+
+
+          <div style="display: flex; margin: auto;">
+            <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+              (viewDateChange)="closeOpenMonthViewDay()">
+              <mat-icon style="color:#9d3292;" class="browser">arrow_back_ios</mat-icon>
+            </div>
+
+            <h3 class="text">{{ viewDate | date: 'EEEE, dd MMM yyy' }}</h3>
+
+            <div mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <mat-icon style="color:#9d3292;" class="browser">arrow_forward_ios</mat-icon>
+            </div>
+          </div>
+
+          <div style="text-align: end; margin-right: 15px;">
+            <ul style="list-style:none">
+              <li class="time">
+                08:00 am - 12:00 pm
+                <div class="circuloMorning"></div>
+              </li>
+              <li class="time">
+                12:00 pm - 16:00 pm
+                <div class="circuloMidday"></div>
+              </li>
+              <li class="time">
+                16:00 pm - 20:00 pm
+                <div class="circuloafternoon"></div>
+              </li>
+              <li>
+                <div class="page__section-butuonc" style="margin-top: 15px;" *ngIf="selectedDays.length > 0">
+                  <button class="button-icon button-icon--more" (click)="dialogConfirmAvailability();">
+                    Add Availability
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <br />
+
+      <div [ngSwitch]="view">
+        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+          [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day, $event.day)"
+          (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event, $event)"
+          (beforeViewRender)="beforeMonthViewRender($event)">
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+          [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"  (beforeViewRender)="beforeMonthViewRender($event, $event)">
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
+          [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"  (beforeViewRender)="beforeMonthViewRender($event, $event)">
+        </mwl-calendar-day-view>
+      </div>
+      <br>
+      <br>
+    </div-->
+
+    <div class="row text-center">
+      <div class=" header_calendar">
+        <div style="text-align: initial; margin: auto 0 auto 15px;">
+          <div class="btn-group">
+            <div id="month" class="btn  color_button" (click)="[setView(CalendarView.Month), colorBtn('month')]"
+              [class.active]="view === CalendarView.Month" style="cursor: pointer;">
+              Month
+            </div>
+            <div id="week" class="btn  color_button" (click)="[setView(CalendarView.Week), colorBtn('week') ]"
+              [class.active]="view === CalendarView.Week" style="cursor: pointer;">
+              Week
+            </div>
+            <div id="day" class="btn  color_button" (click)="[setView(CalendarView.Day), colorBtn('day')]"
+              [class.active]="view === CalendarView.Day" style="cursor: pointer;">
+              Day
+            </div>
+          </div>
+        </div>
+
+
+
+        <div style="display: flex; margin: auto;">
+          <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()">
+            <mat-icon style="color:#9d3292;" class="browser">arrow_back_ios</mat-icon>
+          </div>
+
+          <h3 class="text">{{ viewDate | date: 'EEEE, dd MMM yyy' }}</h3>
+
+          <div mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <mat-icon style="color:#9d3292;" class="browser">arrow_forward_ios</mat-icon>
+          </div>
+        </div>
+
+        <div style="text-align: end; margin-right: 15px;">
+          <ul style="list-style:none">
+            <li class="time">
+              08:00 am - 12:00 pm
+              <div class="circuloMorning"></div>
+            </li>
+            <li class="time">
+              12:00 pm - 16:00 pm
+              <div class="circuloMidday"></div>
+            </li>
+            <li class="time">
+              16:00 pm - 20:00 pm
+              <div class="circuloafternoon"></div>
+            </li>
+            <li>
+              <div class="page__section-butuonc" style="margin-top: 15px;" *ngIf="selectedDays.length > 0 && mostrar_boton_available == false">
+                <button class="button-icon button-icon--more" (click)="dialogConfirmAvailability();">
+                  Add Availability
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+<ng-template #customCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0"
+      >{{ day.badgeTotal }}</span
+    >
+    <span class="cal-day-number"
+      >{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span
+    >
+  </div>
+  <div class="cell-totals">
+    <span
+      *ngFor="let group of day.eventGroups"
+      class="badge badge-{{ group[0] }}"
+    >
+      {{ group[1].length }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template
+  #customEventTemplate
+  let-weekEvent="weekEvent"
+  let-tooltipPlacement="tooltipPlacement"
+  let-eventClicked="eventClicked"
+  let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody"
+  let-tooltipDisabled="tooltipDisabled"
+  let-tooltipDelay="tooltipDelay"
+  let-column="column"
+>
+  <ng-template #groupedEventsTemplate>
+    <div style="min-width: 150px">
+      <div *ngFor="let event of weekEvent.event.meta.groupedEvents">
+        <mwl-calendar-event-actions [event]="event">
+        </mwl-calendar-event-actions>
+        &ngsp;
+        <mwl-calendar-event-title [event]="event" view="week">
+        </mwl-calendar-event-title>
+      </div>
+    </div>
+  </ng-template>
+
+  <div
+    [ngbPopover]="groupedEventsTemplate"
+    [disablePopover]="!weekEvent.event.meta.groupedEvents"
+    class="cal-event"
+    [ngStyle]="{
+      backgroundColor: weekEvent.event.color?.primary,
+      borderColor: weekEvent.event.color?.primary
+    }"
+    [mwlCalendarTooltip]="
+          !tooltipDisabled && !weekEvent.event.meta.groupedEvents
+            ? (weekEvent.event.title
+              | calendarEventTitle: 'weekTooltip':weekEvent.event)
+            : ''
+        "
+    [tooltipPlacement]="tooltipPlacement"
+    [tooltipEvent]="weekEvent.event"
+    [tooltipTemplate]="tooltipTemplate"
+    [tooltipAppendToBody]="tooltipAppendToBody"
+    [tooltipDelay]="tooltipDelay"
+    (mwlClick)="eventClicked.emit()"
+  >
+    <ng-container *ngIf="!weekEvent.event.meta.groupedEvents">
+      <mwl-calendar-event-actions [event]="weekEvent.event">
+      </mwl-calendar-event-actions>
+      &ngsp;
+    </ng-container>
+    <mwl-calendar-event-title [event]="weekEvent.event" view="week">
+    </mwl-calendar-event-title>
+  </div>
+</ng-template>
+
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="'month'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [cellTemplate]="customCellTemplate"
+    (beforeViewRender)="beforeMonthViewRender($event, $event)"
+    [activeDayIsOpen]="activeDayIsOpen"
+    (dayClicked)="dayClicked($event.day, $event.day)"
+    (eventClicked)="handleEvent('Clicked', $event.event)"
+  >
+  </mwl-calendar-month-view>
+
+  <mwl-calendar-week-view
+    *ngSwitchCase="'week'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [eventTemplate]="customEventTemplate"
+  >
+  </mwl-calendar-week-view>
+
+  <mwl-calendar-day-view
+    *ngSwitchCase="'day'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [eventTemplate]="customEventTemplate"
+  >
+  </mwl-calendar-day-view>
+</div>
+
+
+
+  </div>
+</div>

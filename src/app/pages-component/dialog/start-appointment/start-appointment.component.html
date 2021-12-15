@@ -1,0 +1,32 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">{{ data.header }}</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon (click)="hideModal()" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+    <div class="page__section margin-bottom-m">
+        {{ data.body }}
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div class="page__section">
+        <div class="page__section-data">
+            <span class="text-mini gray_05"></span><br />
+        </div>
+        <div class="page__section-buttong" style="flex: 0 1 100px;">
+            <button 
+                (click)="confirmAction(0)"
+                class="page__section-button--lineButtons">No
+            </button>
+        </div>
+        <div class="page__section-buttong" style="flex: 0 1 100px;">
+            <button 
+                (click)="confirmAction(1)"
+                class="page__section-button--lineButtons">Yes
+            </button>
+        </div>
+    </div>
+</mat-dialog-actions>

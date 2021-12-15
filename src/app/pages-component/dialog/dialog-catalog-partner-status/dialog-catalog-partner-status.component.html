@@ -1,0 +1,26 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Add Partner</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="2" rowHeight="70px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <input matInput required placeholder="status" [(ngModel)]="data.status">
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_partner">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="validForm()">Save</button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,393 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add Vehicle</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="page__section-name">Vehicle Information</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Vehicle Type</mat-label>
+          <mat-select [(ngModel)]="data_vehiculo.vehicleType" (focus)="activeVehicleType = false">
+            <mat-option *ngFor="let car of ca_vehiculo" [value]="car.id">{{car.type}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleType">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Vehicle Make</mat-label>
+          <input matInput required placeholder="Vehicle Make" type="text" [(ngModel)]="data_vehiculo.vehicleMake" (focus)="activeVehicleMake = false">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleMake">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Vehicle Model</mat-label>
+          <input matInput required placeholder="Vehicle Model" type="text" (focus)="activeVehicleModel = false" [(ngModel)]="data_vehiculo.vehicleModel">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleModel">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Year</mat-label>
+          <mat-select [(ngModel)]="data_vehiculo.year" (focus)="activeVehicleYear = false">
+            <mat-option [value]=2020>2022</mat-option>
+            <mat-option [value]=2020>2021</mat-option>
+            <mat-option [value]=2020>2020</mat-option>
+            <mat-option [value]=2019>2019</mat-option>
+            <mat-option [value]=2018>2018</mat-option>
+            <mat-option [value]=2017>2017</mat-option>
+            <mat-option [value]=2016>2016</mat-option>
+            <mat-option [value]=2015>2015</mat-option>
+            <mat-option [value]=2014>2014</mat-option>
+            <mat-option [value]=2013>2013</mat-option>
+            <mat-option [value]=2012>2012</mat-option>
+            <mat-option [value]=2011>2011</mat-option>
+            <mat-option [value]=2010>2010</mat-option>
+            <mat-option [value]=2009>2009</mat-option>
+            <mat-option [value]=2008>2008</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleYear">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Plate Number</mat-label>
+          <input matInput required placeholder="Plate Number" type="text" [(ngModel)]="data_vehiculo.plateNumber" (focus)="activeVehiclePlateNumber = false">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehiclePlateNumber">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!--mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Color</mat-label>
+          <input matInput required placeholder="Color" type="text" [(ngModel)]="data_vehiculo.color">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Color</mat-label>
+          <mat-select [(ngModel)]="data_vehiculo.color"  (focus)="activeVehicleColor = false">
+            <mat-option value="White">White</mat-option>
+            <mat-option value="Yellow">Yellow</mat-option>
+            <mat-option value="Pink">Pink</mat-option>
+            <mat-option value="Purple">Purple</mat-option>
+            <mat-option value="Blue">Blue</mat-option>
+            <mat-option value="Orage">Orage</mat-option>
+            <mat-option value="Green">Green</mat-option>
+            <mat-option value="Gray">Gray</mat-option>
+            <mat-option value="Red">Red</mat-option>
+            <mat-option value="Black">Black</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleColor">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Capacity</mat-label>
+          <mat-select [(ngModel)]="data_vehiculo.capacity" (focus)="activeVehicleCapacity = false">
+            <mat-option [value]=1>1</mat-option>
+            <mat-option [value]=2>2</mat-option>
+            <mat-option [value]=3>3</mat-option>
+            <mat-option [value]=4>4</mat-option>
+            <mat-option [value]=5>5</mat-option>
+            <mat-option [value]=6>6</mat-option>
+            <mat-option [value]=7>7</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleCapacity">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Number of Doors</mat-label>
+          <mat-select [(ngModel)]="data_vehiculo.numberDoor" (focus)="activeVehicleDoors = false">
+            <mat-option [value]=1>1</mat-option>
+            <mat-option [value]=2>2</mat-option>
+            <mat-option [value]=3>3</mat-option>
+            <mat-option [value]=4>4</mat-option>
+            <mat-option [value]=5>5</mat-option>
+            <mat-option [value]=6>6</mat-option>
+            <mat-option [value]=7>7</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleDoors">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea input_final" style="display: flex;">
+        <div class="textarea" style="height: 55px;">
+          <p class="subtitle" style="font-size: 11px; margin: 0;">Air Conditioner</p>
+          <mat-checkbox class="subtitle" style="font-size: 11px !important; margin: 0;"
+            [(ngModel)]="data_vehiculo.airConditioner" (focus)="activeVehicleAir = false"></mat-checkbox>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleAir">Field is required</mat-hint>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="page__section-name">Vehicle Photos</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="sub">Interior Photos</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="6" rowHeight="100px" [ngClass]="{'HideDiv':interiorShow == true}">
+    <mat-grid-tile [colspan]="6" [rowspan]="1">
+      <div class="textarea">
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 1)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false" accept="image/*">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" id="doc1" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4">
+    <div class="flex">
+      <div *ngFor="let foto of data_vehiculo.photosVehicleServices" [ngClass]="{'HideDiv': !foto.interior}"
+        style="width: 150px; height: 150px;">
+        <img *ngIf="foto.b64 && foto.interior" style="width: 150px; height: 150px;" src="{{foto.b64}}" alt="">
+        <img *ngIf="foto.id != 0 && foto.interior" style="width: 150px; height: 150px;"
+          src="{{_services.url_images}}{{foto.photo}}" alt="">
+      </div>
+    </div>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px" style="display: none;" [ngClass]="{'ShowButton':interiorShow == true}">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big"
+          style="flex: 0 1 180px !important; left: 6px !important; width: 160px;">
+          <button class="button-icon button-icon--more" (click)="addNewPhoto(1)">
+            Add New Photo
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!------------------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="sub">Exterior Photos</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="6" rowHeight="100px" [ngClass]="{'HideDiv':exteriorShow == true}">
+    <mat-grid-tile [colspan]="6" [rowspan]="1">
+      <div class="textarea">
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 2)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false" accept="image/*">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" id="doc2" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4">
+    <div class="flex">
+      <div *ngFor="let foto of data_vehiculo.photosVehicleServices" [ngClass]="{'HideDiv': !foto.exterior}"
+        style="width: 150px; height: 150px;">
+        <img *ngIf="foto.b64 && foto.exterior" style="width: 150px; height: 150px;" src="{{foto.b64}}" alt="">
+        <img *ngIf="foto.id != 0 && foto.exterior" style="width: 150px; height: 150px;"
+          src="{{_services.url_images}}{{foto.photo}}" alt="">
+      </div>
+    </div>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px" style="display: none;" [ngClass]="{'ShowButton':exteriorShow == true}">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big"
+          style="flex: 0 1 180px !important; left: 6px !important; width: 160px;">
+          <button class="button-icon button-icon--more" (click)="addNewPhoto(2)">
+            Add New Photo
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!------------------------------------------------------------------------------------------------------>
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="sub">Safety Photos</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="6" rowHeight="100px" [ngClass]="{'HideDiv':safetyShow == true}">
+    <mat-grid-tile [colspan]="6" [rowspan]="1">
+      <div class="textarea">
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 3)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false" accept="image/*">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" id="doc3" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4">
+    <div class="flex">
+      <div *ngFor="let foto of data_vehiculo.photosVehicleServices" [ngClass]="{'HideDiv': !foto.safety}" style="width: 150px; height: 150px;">
+        <img *ngIf="foto.b64 && foto.safety" style="width: 150px; height: 150px;" src="{{foto.b64}}" alt="">
+        <img *ngIf="foto.id != 0 && foto.safety" style="width: 150px; height: 150px;"
+          src="{{_services.url_images}}{{foto.photo}}" alt="">
+      </div>
+    </div>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px" style="display: none;" [ngClass]="{'ShowButton':safetyShow == true}">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big"
+          style="flex: 0 1 180px !important; left: 6px !important; width: 160px;">
+          <button class="button-icon button-icon--more" (click)="addNewPhoto(3)">
+            Add New Photo
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--UPLOAD DOCUMENT-->
+  <mat-grid-list cols="1">
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Documents
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--6_2">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Expiration Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Location
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+
+      <div class="page__section documents__ascard" *ngFor="let doc of data_vehiculo.documentVehicleServices">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;">
+          <img src="../../../../assets/icons/eye-view.svg" *ngIf="doc.id != 0" class="page__section--card-closeButton delete"
+          style="background: transparent!important; margin-right: 25px;" (click)="openFileOnWindow(doc.filePath)"> 
+
+          <img src="../../../../assets/icons/eye-view.svg" *ngIf="doc.id == 0" class="page__section--card-closeButton delete"
+          style="background: transparent!important; margin-right: 25px;" (click)="onClickDownloadPdf(doc.filePath, doc.fileExtension)"> 
+        <div class="page__section-input page__section-input--6_2 documents__ascard--task">
+          {{nameDocument(doc.documentType)}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{doc.createdDate | date:'dd MMM yyy' }}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{doc.expirationDate | date:'dd MMM yyy'}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{nameCity(doc.city)}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{namePrivacy(doc.privacy)}}
+        </div>
+      </div>
+    </div>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big"
+          style="flex: 0 1 180px !important; left: 6px !important; width: 160px;">
+          <button class="button-icon button-icon--more" (click)="addDocument()">
+            Add New Document
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!--ENDS UPLOAD DOCUMENTS-->
+  <!----------------------------------------------------------------------------------------->
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="validForm()">Save</button>
+  </div>
+</mat-dialog-actions>

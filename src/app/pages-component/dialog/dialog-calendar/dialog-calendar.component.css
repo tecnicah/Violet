@@ -1,0 +1,24 @@
+h3 {
+  margin: 0 0 10px;
+}
+
+pre {
+  background-color: #f5f5f5;
+  padding: 15px;
+}
+
+.color_button {
+  border: transparent;
+  background: linear-gradient(#9d3292, #4435a6);
+}
+
+.header_calendar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.text{
+  font-size: 19px;
+  font-weight: 600;
+}

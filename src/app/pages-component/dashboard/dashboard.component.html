@@ -1,0 +1,1089 @@
+<div  class="main-wrapper padding-general-x">
+  <div class="page">
+    <!--div class="page__path subtitle" *ngxPermissionsOnly="['Manager']">
+        Superadmin Dashboard
+      </div>
+      <div class="page__path subtitle" *ngxPermissionsOnly="['Coordinator']">
+        Coordinator Dashboard
+      </div>
+      <div class="page__path subtitle" *ngxPermissionsOnly="['Supplier']">
+        Supplier Dashboard
+      </div-->
+    <div class="page__path subtitle">
+      {{userData.role.role}} Dashboard
+    </div>
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <!-- Dashboard Cards ----------------------------------------------- -->
+    <div class="page__title title">
+      My Dashboard
+    </div>
+    <!-- manager supplier -->
+    <div class="page__section" *ngxPermissionsOnly="['1', '3', '19', '20', '21']">
+      <div class="dash">
+        <div class="dash__block" (click)="openCalendar()">
+          <div class="dash__card cursor-pointer">
+            <span class="dash__card--flag index-pink"></span>
+            <div class="dash__card-bTitl">Calendar</div>
+            <img src="../../../assets/icons/dash-calendar.svg" class="dash__card-bIcon" />
+            <div class="dash__card-bNumb">
+              {{ __todaydate__.getDate() }}
+            </div>
+            <div class="dash__card-bSmal">
+              {{ __months__[__todaydate__.getMonth()] + __todaydate__.getFullYear() }}
+            </div>
+            <span class="dash__card-sMini" style="right: 10px; top: 85%;">
+              <span>{{counts?.calendar}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="dash__cell">
+          <div class="dash__card dash__card--up cursor-pointer" (click)="goToPage('actionItems')">
+            <span class="dash__card--flag index-lemon"></span>
+            <div class="dash__card-sTitl">Action Items</div>
+            <img src="../../../assets/icons/dash-activity.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.activityItems}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" (click)="openReminders()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-orange"></span>
+            <div class="dash__card-sTitl">Reminders</div>
+            <img src="../../../assets/icons/dash-reminders.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.reminders}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" (click)="openArraivals()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-aqua"></span>
+            <div class="dash__card-sTitl">Arrivals</div>
+            <img src="../../../assets/icons/dash-arraivals.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.arrivals}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" *ngxPermissionsOnly="['1', '19','20', '21']" (click)="openFollowers()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-yellow"></span>
+            <div class="dash__card-sTitl">Following</div>
+            <img src="../../../assets/icons/dash-following.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.following}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" *ngxPermissionsOnly="['3']" (click)="openAvailavility()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-pinky"></span>
+            <div class="dash__card-sTitl">Availability</div>
+            <img src="../../../assets/icons/dash-avaibility.svg" class="dash__card-sIcon" />
+          </div>
+        </div>
+        <div class="dash__cell" (click)="openNotification()">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-blue"></span>
+            <div class="dash__card-sTitl">Notifications</div>
+            <img src="../../../assets/icons/dash-notifications.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.notifications}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" (click)="openEscalation()">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-orangered"></span>
+            <div class="dash__card-sTitl">Escalations</div>
+            <img src="../../../assets/icons/dash-escalations.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.escalation}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" (click)="openCall()">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-sky"></span>
+            <div class="dash__card-sTitl">Calls</div>
+            <img src="../../../assets/icons/dash-calls.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.calls}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" *ngxPermissionsOnly="['1', '19', '20', '21']">
+          <div class="dash__card dash__card--down cursor-pointer" (click)="openDialogCoordinadors()">
+            <span class="dash__card--flag index-purple"></span>
+            <div class="dash__card-sTitl">Coordinators</div>
+            <img src="../../../assets/icons/dash-coordinators.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.coordinators}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell" *ngxPermissionsOnly="['3']">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-demon"></span>
+            <div class="dash__card-sTitl">Experience</div>
+            <span class="dash__card-sNumb">40.00%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- coordinador -->
+    <div class="page__section" *ngxPermissionsOnly="['2']">
+      <div class="dash dash--80">
+        <div class="dash__block dash__block--25" (click)="openCalendar()">
+          <div class="dash__card cursor-pointer">
+            <span class="dash__card--flag index-pink"></span>
+            <div class="dash__card-bTitl">Calendar</div>
+            <img src="../../../assets/icons/dash-calendar.svg" class="dash__card-bIcon" />
+            <div class="dash__card-bNumb">
+              {{ __todaydate__.getDate() }}
+            </div>
+            <div class="dash__card-bSmal">
+              {{ __months__[__todaydate__.getMonth()] + __todaydate__.getFullYear() }}
+            </div>
+            <span class="dash__card-bMini">
+              <span>{{counts?.calendar}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="dash__cell dash__cell--25">
+          <div class="dash__card dash__card--up cursor-pointer" (click)="goToPage('actionItems')">
+            <span class="dash__card--flag index-lemon"></span>
+            <div class="dash__card-sTitl">Action Items</div>
+            <img src="../../../assets/icons/dash-activity.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.activityItems}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell dash__cell--25" (click)="openReminders()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-orange"></span>
+            <div class="dash__card-sTitl">Reminders</div>
+            <img src="../../../assets/icons/dash-reminders.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.reminders}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell dash__cell--25" (click)="openArraivals()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-aqua"></span>
+            <div class="dash__card-sTitl">Arrivals</div>
+            <img src="../../../assets/icons/dash-arraivals.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.arrivals}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell dash__cell--25" (click)="openNotification()">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-blue"></span>
+            <div class="dash__card-sTitl">Notifications</div>
+            <img src="../../../assets/icons/dash-notifications.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.notifications}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell dash__cell--25" (click)="openEscalation()">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-orangered"></span>
+            <div class="dash__card-sTitl">Escalations</div>
+            <img src="../../../assets/icons/dash-escalations.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.escalation}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash__cell dash__cell--25" (click)="openCall()">
+          <div class="dash__card dash__card--down cursor-pointer">
+            <span class="dash__card--flag index-sky"></span>
+            <div class="dash__card-sTitl">Calls</div>
+            <img src="../../../assets/icons/dash-calls.svg" class="dash__card-sIcon" />
+            <div class="dash__card-sMini">
+              <span>{{counts?.calls}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dash dash--20">
+        <div class="dash__block dash__block--x">
+          <div class="dash__card cursor-pointer">
+            <span class="dash__card--flag index-demon"></span>
+            <div class="dash__card-bTitl">Experience</div>
+            <div class="dash__card-bNumb dash__card-bNumb--fbig">
+              77.77&nbsp;%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <!-- Markers + Service Line Filter ----------------------------------------------- -->
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Service Records
+      </div>
+    </div>
+    <mat-grid-list cols="5" rowHeight="70px" *ngxPermissionsOnly="['1', '19','20','21']">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service Line</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.serviceLine"
+            (ngModelChange)="updateDashboardData(); getSupplierPartner(); getCoordinatorImmigration();">
+            <mat-option selected disabled value="">Service Line</mat-option>
+            <mat-option *ngFor="let item of serviceline_catalogue" [value]="item.id">
+              {{ item.serviceLine }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="5" rowHeight="105px" class="margin-bottom-min"
+      *ngxPermissionsOnly="['1','2', '19', '20', '21']">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+        <div class="filterCard">
+          <div class="filterCard__label"></div>
+          <div class="filterCard__card cursor-pointer" id="act_filter_card" (click)="filterTableByCard('act')">
+            <div class="filterCard__card-text">Active</div>
+            <div class="filterCard__card-numb">
+              {{ dash_data.active }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+        <div class="filterCard">
+          <div class="filterCard__label"></div>
+          <div class="filterCard__card cursor-pointer" id="inp_filter_card" (click)="filterTableByCard('inp')">
+            <div class="filterCard__card-text">In Progress</div>
+            <div class="filterCard__card-numb">
+              {{ dash_data.inprogress }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+        <div class="filterCard">
+          <div class="filterCard__label"></div>
+          <div class="filterCard__card cursor-pointer" id="onh_filter_card" (click)="filterTableByCard('onh')">
+            <div class="filterCard__card-text">On Hold</div>
+            <div class="filterCard__card-numb">
+              {{ dash_data.onHold }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+        <div class="filterCard">
+          <div class="filterCard__label"></div>
+          <div class="filterCard__card cursor-pointer" id="vip_filter_card" (click)="filterTableByCard('vip')">
+            <div class="filterCard__card-text">VIP</div>
+            <div class="filterCard__card-numb">
+              {{ dash_data.vip }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+        <div class="filterCard">
+          <div class="filterCard__label"></div>
+          <div class="filterCard__card cursor-pointer" id="pen_filter_card" (click)="filterTableByCard('pen')">
+            <div class="filterCard__card-text">Pending Acceptance</div>
+            <div class="filterCard__card-numb">
+              {{ dash_data.pendngAcceptance }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <!-- Table Filters ----------------------------------------------------------- -->
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central_half">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="serchFilter($event)" placeholder="Search" type="text" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Status</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.status" (selectionChange)="updateDashboardData()">
+
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>status</mat-label>
+              <input matInput placeholder="status" [(ngModel)]="filterStatus.status">
+            </mat-form-field>
+
+            <mat-option *ngFor="let item of status_catalogue | filterBy: filterStatus" [value]="item.id">
+              {{ item.status }}
+            </mat-option>
+            <mat-option disabled *ngIf="(status_catalogue | filterBy: filterStatus).length === 0">No matching elements
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Country</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.country"
+            (selectionChange)="ableCityField(); updateDashboardData(); getSupplierPartner();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Country</mat-label>
+              <input matInput placeholder="country" [(ngModel)]="filterCountry.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of country_catalogue | filterBy: filterCountry" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(country_catalogue | filterBy: filterCountry).length === 0">No matching elements
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>City</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.city"
+            (selectionChange)="updateDashboardData(); getCoordinatorImmigration(); getSupplierPartner();"
+            [disabled]="!able_city_filter">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>city</mat-label>
+              <input matInput placeholder="city" [(ngModel)]="filterCity.city ">
+            </mat-form-field>
+            <!-- <mat-option selected  value="">City</mat-option> -->
+            <mat-option *ngFor="let item of city_catalogue | filterBy: filterCity" [value]="item.id">
+              {{ item.city }}
+            </mat-option>
+            <mat-option disabled *ngIf="(city_catalogue | filterBy: filterCity).length === 0">No matching elements
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date" autocomplete="off" />
+            <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="end" autocomplete="off"
+              placeholder="End date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Partner</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.partner"
+            (selectionChange)="updateDashboardData(); getClient();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Partner</mat-label>
+              <input matInput placeholder="Partner" [(ngModel)]="filterPartner.coordinator">
+            </mat-form-field>
+            <mat-option selected value="">Partner</mat-option>
+            <mat-option *ngFor="let item of parther_catalogue | filterBy: filterPartner" [value]="item.id">
+              {{ item.coordinator }}
+            </mat-option>
+            <mat-option disabled *ngIf="(parther_catalogue | filterBy: filterPartner).length === 0">No matching elements
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Client</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.client"
+            (selectionChange)="updateDashboardData(); getCoordinatorImmigration();"
+            [disabled]="client_catalogue.length == 0">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>client</mat-label>
+              <input matInput placeholder="client" [(ngModel)]="filterClient.name">
+            </mat-form-field>
+            <mat-option selected value="">Client</mat-option>
+            <mat-option *ngFor="let item of client_catalogue | filterBy: filterClient" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(client_catalogue | filterBy: filterClient).length === 0">No matching elements
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['1','3', '19','20', '21']">
+        <div style="width: 100%; display: flex;">
+          <mat-form-field appearance="fill" class="input_central_half">
+            <mat-label>Coordinator</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filter_data.coordinator" (selectionChange)="updateDashboardData()"
+              [disabled]="coordinator_catalogue.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Coordinator</mat-label>
+                <input matInput placeholder="Coordinator" [(ngModel)]="filterCoordinator.coordinator">
+              </mat-form-field>
+              <mat-option selected value="">Coordinator</mat-option>
+              <mat-option *ngFor="let item of coordinator_catalogue | filterBy: filterCoordinator" [value]="item.id">
+                {{ item.coordinator }}
+              </mat-option>
+              <mat-option disabled *ngIf="(coordinator_catalogue | filterBy: filterCoordinator).length === 0">No
+                matching elements</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button *ngxPermissionsOnly="['3']" (click)="resetDashboardTableFilters()" mat-icon-button color="primary"
+            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear filter">
+            <mat-icon>cached</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['1','2','19','20','21']">
+        <div style="width: 100%; display: flex;">
+          <mat-form-field appearance="fill" class="input_central_half">
+            <mat-label>Supplier</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filter_data.supplier" (selectionChange)="updateDashboardData()"
+              [disabled]="supplier_catalogue.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Supplier</mat-label>
+                <input matInput placeholder="Supplier" [(ngModel)]="filterSupplier.comercialName">
+              </mat-form-field>
+              <!-- <mat-option selected disabled value="">Supplier</mat-option> -->
+              <mat-option *ngFor="let item of supplier_catalogue | filterBy: filterSupplier" [value]="item.id">
+                {{ item.comercialName }}
+              </mat-option>
+              <mat-option disabled *ngIf="(supplier_catalogue | filterBy: filterSupplier).length === 0">No matching
+                elements</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="resetDashboardTableFilters()" mat-icon-button color="primary"
+            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear filter">
+            <mat-icon>cached</mat-icon>
+          </button>
+          <button (click)="get_Notification();" id="dashboard" mat-icon-button color="primary" hidden
+            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear filter">
+            <mat-icon>cached</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['2','3']"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc">
+          <button *ngxPermissionsOnly="['1','19','20','21']" (click)="showExportDialog('m')"
+            class="button-icon button-icon--export">
+            Export
+          </button>
+          <button *ngxPermissionsOnly="['2']" (click)="showExportDialog('c')" class="button-icon button-icon--export">
+            Export
+          </button>
+          <!--button *ngxPermissionsOnly="['3']" (click)="showExportDialog('s')" class="button-icon button-icon--export">
+            Export
+          </button-->
+          <!-- button
+                (click)="exporter.exportTable('xls')"
+                id="excel" style="display: none;"
+                class="button-icon button-icon--adder">
+                Export
+              </button -->
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-- Table -------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------- -->
+    <!--TABLAS PARA ACEPTAR LA SR CON LAS COLUMNAS ACEPTAR Y RECHAZAR-->
+    <div class="page__section" id="export" *ngIf="!show_table">
+
+
+      <table *ngxPermissionsOnly="['1','19','20','21']" mat-table matSort matTableExporter
+        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
+        <ng-container matColumnDef="col_0">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
+            {{ element.numberServiceRecord }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.status }}">
+              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.initialAutho | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+        <!--ng-container matColumnDef="col_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.hostCountry }}
+          </td>
+        </ng-container-->
+        <ng-container matColumnDef="col_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
+          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
+          (click)="viewCity(element)"  style="cursor: pointer">
+            {{ element.hostCity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="name">Partner</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.name }}">
+              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.client }}">
+              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.assigneeName }}">
+              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container>
+
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div>
+            <span *ngFor="let item of SR_WO">
+              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+            </span>
+          </div>
+        </mat-menu>
+
+
+        <ng-container matColumnDef="col_10">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Coordinator</th>
+          <td mat-cell *matCellDef="let element" class="text-center" mat-sort-header="coordinator">
+            <span title="{{ element.coordinator }}">
+              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_11">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Supplier<br />Consultant
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.supplier }}">
+              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_12">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Accept
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="Accept" *ngIf="element.aceptar != null" style="cursor: pointer;" (click)="accept(element)">
+              <mat-icon style="color: #9d3292;">done</mat-icon>
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_13">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Reject
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="Rejected" *ngIf="element.rechazar != null" style="cursor: pointer;" (click)="decline(element)">
+              <mat-icon style="color: #9d3292;">not_interested</mat-icon>
+            </span>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="service_records_colums"></tr>
+        <tr mat-row *matRowDef="let row; columns: service_records_colums;"></tr>
+      </table>
+
+
+
+      <table *ngxPermissionsOnly="['3','2']" mat-table matSort matTableExporter
+        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
+        <ng-container matColumnDef="col_0">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
+            {{ element.numberServiceRecord }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.status }}">
+              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.initialAutho | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+        <!--ng-container matColumnDef="col_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.hostCountry }}
+          </td>
+        </ng-container-->
+        <ng-container matColumnDef="col_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
+          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
+          (click)="viewCity(element)"  style="cursor: pointer">
+            {{ element.hostCity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="partner">Partner</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.name }}">
+              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.client }}">
+              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.assigneeName }}">
+              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container>
+
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div>
+            <span *ngFor="let item of SR_WO">
+              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+            </span>
+          </div>
+        </mat-menu>
+
+
+        <ng-container matColumnDef="col_10">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">
+            <span *ngxPermissionsOnly="['3']">Coordinator</span>
+            <span *ngxPermissionsOnly="['2']">
+              Supplier<br />Consultant
+            </span>
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span *ngxPermissionsOnly="['3']" title="{{ element.coordinator }}">
+              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
+            </span>
+            <span *ngxPermissionsOnly="['2']" title="{{ element.supplier }}">
+              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_11">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Accept
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center" >
+            <span title="Accept" *ngIf="element.aceptar != null" style="cursor: pointer;" (click)="accept(element)">
+              <mat-icon style="color: #9d3292;">done</mat-icon>
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_12">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Reject
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center" >
+            <span title="Rejected" *ngIf="element.rechazar != null" style="cursor: pointer;" (click)="decline(element)">
+              <mat-icon style="color: #9d3292;">not_interested</mat-icon>
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="service_records_colums_x"></tr>
+        <tr mat-row *matRowDef="let row; columns: service_records_colums_x;"></tr>
+      </table>
+
+    </div>
+
+
+    <!--TABLAS SIN LAS COLUMNAS ACEPTAR Y RECHAZAR-->
+    <div class="page__section" id="export" *ngIf="show_table">
+
+
+      <table *ngxPermissionsOnly="['1','19','20','21']" mat-table matSort matTableExporter
+        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
+        <ng-container matColumnDef="col_0">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
+            {{ element.numberServiceRecord }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.status }}">
+              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.initialAutho | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+        <!--ng-container matColumnDef="col_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.hostCountry }}
+          </td>
+        </ng-container-->
+        <ng-container matColumnDef="col_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
+          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
+          (click)="viewCity(element)"  style="cursor: pointer">
+            {{ element.hostCity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="name">Partner</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.partner }}">
+              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.client }}">
+              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.assigneeName }}">
+              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container>
+
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div>
+            <span *ngFor="let item of SR_WO">
+              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+            </span>
+          </div>
+        </mat-menu>
+
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div>
+            <span *ngFor="let item of SR_WO">
+              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+            </span>
+          </div>
+        </mat-menu>
+
+
+        <ng-container matColumnDef="col_10">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Coordinator</th>
+          <td mat-cell *matCellDef="let element" class="text-center" mat-sort-header="coordinator">
+            <span title="{{ element.coordinator }}">
+              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_11">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Supplier<br />Consultant
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.supplier }}">
+              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
+            </span>
+          </td>
+        </ng-container>
+
+        
+        <tr mat-header-row *matHeaderRowDef="service_records_colums_"></tr>
+        <tr mat-row *matRowDef="let row; columns: service_records_colums_;"></tr>
+      </table>
+
+
+
+      <table *ngxPermissionsOnly="['3','2']" mat-table matSort matTableExporter
+        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
+        <ng-container matColumnDef="col_0">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
+            {{ element.numberServiceRecord }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.status }}">
+              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.initialAutho | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+        <!--ng-container matColumnDef="col_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.hostCountry }}
+          </td>
+        </ng-container-->
+        <ng-container matColumnDef="col_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
+          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
+          (click)="viewCity(element)"  style="cursor: pointer">
+            {{ element.hostCity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="partner">Partner</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.name }}">
+              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.client }}">
+              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="col_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.assigneeName }}">
+              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
+            <span class="font-purple-dark cursor-pointer">
+              {{ element.bundled?.length + element.standalone.length }}
+            </span>
+          </td>
+        </ng-container>
+
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div>
+            <span *ngFor="let item of SR_WO">
+              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+            </span>
+          </div>
+        </mat-menu>
+        
+
+        <ng-container matColumnDef="col_10">
+          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">
+            <span *ngxPermissionsOnly="['3']">Coordinator</span>
+            <span *ngxPermissionsOnly="['2']">
+              Supplier<br />Consultant
+            </span>
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span *ngxPermissionsOnly="['3']" title="{{ element.coordinator }}">
+              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
+            </span>
+            <span *ngxPermissionsOnly="['2']" title="{{ element.supplier }}">
+              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="service_records_colums_x_"></tr>
+        <tr mat-row *matRowDef="let row; columns: service_records_colums_x_;"></tr>
+      </table>
+
+    </div>
+
+
+
+
+    <div class="page__section text-center paginator">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+      <!-- <mat-paginator
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator #paginatorElement class="pagall" [pageSizeOptions]="[10, 20, 2147483647]" showFirstLastButtons>
+      </mat-paginator> -->
+    </div>
+  </div>
+</div>
+
+
+<mat-menu #country="matMenu" xPosition="before">
+  <div class="bg"></div>
+  <div class="assigned_services">
+    <div class="data" style="padding: 10px;">
+      <span style="font-size: 10px;"><b>Country:</b> {{info_country.country}}</span>
+      <!--br-->
+      <!--span style="font-size: 10px;"><b>City:</b> {{info_country.city}}</span--->
+    </div>
+  </div>
+</mat-menu>

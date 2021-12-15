@@ -1,0 +1,112 @@
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Edit Columns</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography margin-bottom-m">
+  <mat-grid-list cols="2" rowHeight="70px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Report Type</mat-label>
+        <mat-select matNativeControl [(ngModel)]="report.filter1">
+          <mat-option *ngFor="let item of ca_report" [value]="item.id">{{item.report}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="report.filter1 == 1">
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select matNativeControl [(ngModel)]="report.value">
+          <mat-option *ngFor="let item of status" [value]="item.id">{{item.status}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="report.filter1 == 2">
+      <mat-form-field appearance="fill">
+        <mat-label>Invoce Status</mat-label>
+        <mat-select matNativeControl [(ngModel)]="report.value">
+          <mat-option *ngFor="let item of ca_invoice" [value]="item.id">{{item.status}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="report.filter1 == 9">
+      <mat-form-field>
+        <mat-label>Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="pickersfilters">
+          <input matStartDate placeholder="Start date" [(ngModel)]="report.firstDate" autocomplete="off" />
+          <input matEndDate autocomplete="off" [(ngModel)]="report.secondDate" placeholder="End date" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="pickersfilters"></mat-datepicker-toggle>
+        <mat-date-range-picker #pickersfilters></mat-date-range-picker>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="report.filter1 == 3">
+      <mat-form-field appearance="fill">
+        <mat-label>Supplier Invoice</mat-label>
+        <mat-select matNativeControl [(ngModel)]="report.value">
+          <mat-option *ngFor="let item of ca_invoice" [value]="item.id">{{item.status}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="report.filter1 == 5">
+      <mat-form-field appearance="fill">
+        <mat-label>Invoice-Supplier Invoice</mat-label>
+        <mat-select matNativeControl [(ngModel)]="report.value">
+          <mat-option *ngFor="let item of ca_invoice" [value]="item.id">{{item.status}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <div *ngIf="report.filter1 == 4">
+    <mat-grid-list cols="2" rowHeight="70px" *ngFor="let item of filtersT">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea">
+          <mat-checkbox [(ngModel)]="item.filter1">{{item.name}}</mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" *ngIf="item.id == 7">
+          <mat-label>Status</mat-label>
+          <mat-select matNativeControl [(ngModel)]="item.value">
+            <mat-option *ngFor="let item of status" [value]="item.id">{{item.status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="item.id == 8 || item.id == 10">
+          <mat-label>Status</mat-label>
+          <mat-select matNativeControl [(ngModel)]="item.value">
+            <mat-option *ngFor="let item of ca_invoice" [value]="item.id">{{item.status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="item.id == 9">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="pickersfilters">
+            <input matStartDate placeholder="Start date" [(ngModel)]="item.firstDate" autocomplete="off" />
+            <input matEndDate autocomplete="off" [(ngModel)]="item.secondDate" placeholder="End date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="pickersfilters"></mat-datepicker-toggle>
+          <mat-date-range-picker #pickersfilters></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

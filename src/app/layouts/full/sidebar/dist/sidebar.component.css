@@ -1,0 +1,109 @@
+input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+/* Accordion styles */
+.tabs {
+  border-radius: 8px;
+  overflow: hidden;
+  margin: -10px;
+  padding-top: 20px;
+  width: 185px;
+}
+
+.tab {
+  width: 100%;
+  overflow: hidden;
+}
+.tab-label {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+.tab-content {
+  max-height: 0;
+  padding-left: 45px !important;
+  color: white;
+  background: transparent;
+  transition: all 0.35s;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+input:checked ~ .tab-content {
+  max-height: 100%;
+  padding: 1em;
+}
+
+.active {
+  background-color: #4435a6;
+  top: 0;
+  left: -50px;
+  z-index: -1;
+}
+
+.active-collapse {
+  background-color: #4435a6;
+}
+
+.small {
+  animation: rezise-small 2s;
+}
+
+.big {
+  animation: rezise-big 2s;
+}
+
+.opacity-small {
+  animation: opa-big 2s;
+}
+
+.opacity-big {
+  animation: opa-big 2s;
+}
+
+@keyframes rezise-small {
+  0% {
+    width: 170px;
+  }
+  100% {
+    width: 60px;
+  }
+}
+@keyframes rezise-big {
+  0% {
+    width: 60px;
+  }
+  100% {
+    width: 170px;
+  }
+}
+@keyframes opa-big {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes opa-small {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.cursor {
+  cursor: pointer !important;
+}

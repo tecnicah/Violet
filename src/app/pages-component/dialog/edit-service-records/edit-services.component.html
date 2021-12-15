@@ -1,0 +1,128 @@
+
+  <div fxLayout="row" fxLayoutGap="10px">
+
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">Edit Services</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+
+  <mat-dialog-content class="mat-typography">
+  <div class="modal-form__subtitle margin-bottom-mini">
+    Work Orders
+  </div>
+  <div class="modal-form__content">
+    To add Services to an existing Work Order, press edit. To add a New Work Order press the New Work Order button.
+  </div>
+  <div class="page__section margin-top-min" [class.display-none]="!is_any_so">
+    <table mat-table mat-sort [dataSource]="so_gotted" style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_0">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Work Order
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.serviceOrderId }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_1">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Status
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.status }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_2">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Service Line
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.servicesLine }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_3">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Services
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center link" [matMenuTriggerFor]="servicios" (click)="servicios_sr = element.servicesData">
+          {{ element.servicesData.length }}
+        </td>
+      </ng-container>
+
+      <mat-menu #servicios="matMenu" xPosition="before">
+        <!--div class="bg"></div>
+        <div class="assigned_services">
+          <p class="services" *ngFor="let item of servicios_sr" style="font-size: 10px !important; color: #000000DE !important;">
+            {{item.service}} / {{item.numberWorkOrder}} / {{item.serviceNumber}}
+          </p>
+        </div-->
+
+        <div>
+          <span *ngFor="let item of servicios_sr">
+            <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+              >{{item.service}} / {{item.numberWorkOrder}} / {{item.serviceNumber}}</button>
+          </span>
+        </div>
+
+      </mat-menu>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_4">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Autho Date
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ dateWorker( element.autho ) | date:'dd MMM yyy' }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_5">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          %Complete
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.complete }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cam_6">
+        <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <!-- <div class="table-row__check"> -->
+            <img style="width: 18px; cursor: pointer;" (click)="performServiceRecord( element.id )" class="cursor-pointer"
+              src="../../../../assets/icons/pencil.png" />
+            <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteService(element.id)" >
+          <!-- </div> -->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <div class="page__section" [class.display-none]="!is_any_so">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+  </div>
+  <div class="modal-form__content text-center font-purple-dark margin-tb-min" [class.display-none]="is_any_so">
+    No Services found.
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="performServiceRecord()">New Work Order</button>
+  </div>
+</mat-dialog-actions>

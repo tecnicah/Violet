@@ -1,0 +1,86 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add Element</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <div class="principal_div">
+    <div class="basics" *ngFor="let item of element;let op = index" (click)="addElement(item, op)">
+      <div class="title title__bold__" [ngClass]="{'active_': active == op}">
+        Be
+      </div>
+      <div class="footer">
+        {{item.element}}
+      </div>
+    </div>
+    <!--
+    <div class="basics">
+      <div class="title title__none_bold__">
+        Be
+      </div>
+      <div class="footer">
+        Subtitle
+      </div>
+    </div>
+
+    <div class="basics">
+      <div class="title title__paragraph__">
+        Lorem ipsum dolor sit <br> amet,consectetur <br> adipiscing elit. Praesent at <br> lectus et velit varius <br>
+        vulputate. Donec laoreet a <br> odio non egestas.
+      </div>
+      <div class="footer">
+        Paragraph
+      </div>
+    </div>
+
+    <div class="basics">
+      <div class="title">
+        <div class="title__space__"></div>
+      </div>
+      <div class="footer">
+        Space
+      </div>
+    </div>
+
+    <div class="basics">
+      <div class="title">
+        <div class="title__space__"></div>
+      </div>
+      <div class="footer">
+        Image
+      </div>
+    </div>
+
+    <div class="basics">
+      <div class="title">
+        <div class="title__space__"></div>
+      </div>
+      <div class="footer">
+        Video
+      </div>
+    </div>
+
+    <div class="basics">
+      <div class="title">
+        <div class="title__space__"></div>
+      </div>
+      <div class="footer">
+        Document
+      </div>
+    </div>
+  -->
+
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

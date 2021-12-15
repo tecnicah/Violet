@@ -1,0 +1,55 @@
+<!-----------------------------------OPEN HEADER-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Cost Savings</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------CLOSE HEADER-------------------------------------->
+
+<!---------------------------------OPEN CONTENT--------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Cost Type</mat-label>
+          <input matInput required placeholder="Cost Type" type="text" [(ngModel)]="data.costType"  #message_type maxlength="500">
+          <mat-hint align="end">{{message_type.value.length}} / 500</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Cost Savings</mat-label>
+          <input matInput required placeholder="Cost Savings" type="text" [(ngModel)]="data.costSavings" #message maxlength="500">
+          <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Cost Savings Currency</mat-label>
+          <mat-select [(ngModel)]="data.currency">
+            <mat-option *ngFor="let data of ca_currency" [value]="data.id">{{data.currency}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</mat-dialog-content>
+<!--------------------------------CLOSE CONTENT--------------------------------------->
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save_data()">Save</button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,89 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">
+      <span>Operations / Reports / All Active Services</span>
+      <button class="page__path--closeButton" [routerLink]="['/activity']">Back</button>
+    </div>
+    <mat-grid-list cols="3" rowHeight="60px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__title title">
+          All Active Services
+        </div>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Pre Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filter.country" (ngModelChange)="getData()">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_country | filterBy: filterCountry" [value]="data.id">{{data.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_country | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+          (click)="clearFilter()">
+          <mat-icon [ngClass]="{'refresh': filterdos}">cached</mat-icon>
+        </button>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="textarea" style="text-align: end;">
+          <button class="btnr btnr--export" (click)="showExportDialog()" matRipple
+            matRippleColor="rgba(157, 50, 146, 0.5)">
+            Export
+          </button>
+        </div>
+        <button (click)="exporter.exportTable('xls')" id="excel" style="display: none;"
+          class="button-icon button-icon--adder">
+          Export
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <table mat-table [dataSource]="datasource" class="textarea mat-elevation-z8" #immi #immisort='matSort' matSort
+      matTableExporter #exporter="matTableExporter">
+
+      <ng-container matColumnDef="Country">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Country </th>
+        <td mat-cell *matCellDef="let element" class="browser" (click)="Redirect(element.name)"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Immigration">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="immigration">Immigration </th>
+        <td mat-cell *matCellDef="let element"> {{element.immigration}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Relocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="relocation"> Relocation </th>
+        <td mat-cell *matCellDef="let element"> {{element.relocation}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="total"> Total </th>
+        <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <br>
+    <div class="page__section text-center paginator">
+      <mat-paginator style="width: max-content;" #immipag [pageSizeOptions]="[10,20, 40, 60, 100]" showFirstLastButtons>
+      </mat-paginator>
+    </div>
+
+  </div>
+</div>

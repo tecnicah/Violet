@@ -1,0 +1,258 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h2 mat-dialog-title class="modal-form__title">
+          Edit Escalation
+        </h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon (click)="hideModal()" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+
+    <!-- Header Data ----------------------------------------------------- -->
+    <!-- Header Data ----------------------------------------------------- -->
+    <!-- Header Data ----------------------------------------------------- -->
+    <!-- Header Data ----------------------------------------------------- -->
+    <!-- Header Data ----------------------------------------------------- -->
+    <!-- Header Data ----------------------------------------------------- -->
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">From</span><br />
+              {{ escalation_data.userFrom }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">To</span><br />
+              {{ escalation_data.to }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+                <mat-label>Status</mat-label>
+                <mat-select
+                  matNativeControl
+                  [(ngModel)]="escalation_data.status">
+                  <mat-option selected disabled value="">Status</mat-option>
+                  <mat-option [value]=true>Active</mat-option>
+                  <mat-option [disabled]="coordinadorLevel5" [value]=false>Closed</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Escalation Date</span><br />
+              {{ escalation_data.escalation | date:'dd MMM yyy' }}
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Escalation Level</span><br />
+              {{ escalation_data.escalationLevel }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Service Line</span><br />
+              {{ escalation_data.serviceLine }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Work Order</span><br />
+              {{ escalation_data.numberWorkOrder }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Service ID</span><br />
+              SN - {{ escalation_data.serviceId }}
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Closed Date</span><br />
+            {{ escalation_data.closedDate | date:'dd MMM yyy' }}
+          </div>
+
+            <!--mat-form-field appearance="fill" class="input_central">
+                <mat-label>Closed Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="serv_date"
+                  [(ngModel)]="escalation_data.closedDate" />
+                <mat-datepicker-toggle matSuffix [for]="serv_date"></mat-datepicker-toggle>
+                <mat-datepicker #serv_date></mat-datepicker>
+              </mat-form-field-->
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- Documents ----------------------------------------------------- -->
+    <!-- Documents ----------------------------------------------------- -->
+    <!-- Documents ----------------------------------------------------- -->
+    <!-- Documents ----------------------------------------------------- -->
+    <!-- Documents ----------------------------------------------------- -->
+    <!-- Documents ----------------------------------------------------- -->
+    <!-- Documents ----------------------------------------------------- -->
+    <mat-grid-list cols="1">
+        <div class="page__section margin-top-min">
+            <div class="page__title">
+                Service Documents
+            </div>
+            <div class="page__section" *ngIf="escalation_data.scalateDocuments.length != 0">
+                <div class="page__section-input page__section-input--x">
+                    <span class="documents__index documents__index--task">
+                        Document Name
+                    </span>
+                </div>
+            </div>
+            <div class="page__section documents__ascard" *ngFor="let document of escalation_data.scalateDocuments, index as index;">
+                <button
+                  (click)="deleteDocument( document, index )"
+                  class="page__section--card-closeButton">
+                </button>
+                <div class="page__section-input page__section-input--x documents__ascard--task">
+                  {{ document.fileName == null ? 'Document has No Name' : document.fileName }}
+                </div>
+            </div>
+        </div>
+    </mat-grid-list>
+    <mat-grid-list cols="1">
+        <div class="page__section margin-top-mini">
+          <div class="page__section-name"></div>
+          <div class="page__section-button page__section-button--bigger">
+            <input
+                type="file"
+                name="input-file"
+                id="input-file"
+                class="display-none"
+                (change)="addNewDocument( $event.target )" />
+            <label
+              class="button-icon button-icon--adder"
+              for="input-file">
+              Add New Document
+            </label>
+          </div>
+        </div>
+    </mat-grid-list>
+
+    <!-- Comment ------------------------------------------------------------ -->
+    <!-- Comment ------------------------------------------------------------ -->
+    <!-- Comment ------------------------------------------------------------ -->
+    <!-- Comment ------------------------------------------------------------ -->
+    <!-- Comment ------------------------------------------------------------ -->
+    <!-- Comment ------------------------------------------------------------ -->
+    <mat-grid-list cols="1">
+        <div class="page__section margin-top-m margin-bottom-mini">
+          <div class="page__section-name">Comments</div>
+        </div>
+    </mat-grid-list>
+    <mat-grid-list cols="1" *ngFor="let comment of escalation_data.scalateComments;">
+        <div class="page__section">
+          <div class="page__section-input--60px">
+            <div class="page__section-dataImg">
+              <img
+                src="{{ image_path + comment.avatar_user }}"
+                class="page__section-dataImg-img" />
+            </div>
+          </div>
+          <div class="page__section-input--25">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Name</span><br />
+              {{ comment.name_user }}
+            </div>
+          </div>
+          <div class="page__section-input--25">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Job Title</span><br />
+              {{ comment.tittle_user }}
+            </div>
+          </div>
+          <div class="page__section-input--25">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Date</span><br />
+              {{ comment.date | date:'dd/MMM/yyy' }}
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+            <div class="page__section-input page__section-input--x page__section-input--no-padding">
+              <div class="comment">
+                {{ comment.comments }}
+              </div>
+            </div>
+          </div>
+        </div>
+    </mat-grid-list>
+    <mat-grid-list cols="1">
+        <div class="page__section margin-top-min">
+          <div class="page__section-input--60px">
+            <div class="page__section-dataImg">
+              <img
+                src="{{ image_path + user_data.avatar }}"
+                class="page__section-dataImg-img" />
+            </div>
+          </div>
+          <div class="page__section-input--25">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Name</span><br />
+              {{ user_data.name }} {{ user_data.lastName }}
+            </div>
+          </div>
+          <div class="page__section-input--25">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Job Title</span><br />
+              {{user_data.role.role}}
+            </div>
+          </div>
+          <div class="page__section-input--25">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Date</span><br />
+              {{ today_date | date:'dd MMM yyy' }}
+            </div>
+          </div>
+        </div>
+    </mat-grid-list>
+    <mat-grid-list cols="1">
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div class="page__section-input no-padding" style="flex: 100%;">
+              <p *ngIf="escalation_data.scalateComments.length == 0">Comment</p>
+              <p *ngIf="escalation_data.scalateComments.length != 0">Reply</p>
+              <mat-form-field appearance="outline" style="width: 100% !important">
+                <textarea
+                  matInput
+                  id="replay-comment"
+                  class="comment-in"
+                  [(ngModel)]="comment_string.comment"
+                  placeholder=""></textarea>
+              </mat-form-field>
+          </div>
+        </div>
+    </mat-grid-list>
+    <mat-grid-list cols="1">
+        <div class="page__section margin-bottom-m">
+          <div class="page__section-name"></div>
+          <div class="page__section-button">
+            <button class="button-icon button-icon--adder" (click)="addNewComment()">
+              <span *ngIf="escalation_data.scalateComments.length != 0">Add Reply</span>
+              <span *ngIf="escalation_data.scalateComments.length == 0">Add Comment</span>
+            </button>
+          </div>
+        </div>
+    </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="updateEscalationData()">Save</button>
+    </div>
+</mat-dialog-actions>

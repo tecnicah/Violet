@@ -1,0 +1,35 @@
+.note {
+  background-color: white;
+  /* position: relative; */
+  /* box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); */
+  margin-bottom: 1em;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.note_toolbar {
+  background: #9d3292;
+  border-radius: 8px 8px 0px 0px;
+  /* margin-top: 15px; */
+}
+
+.close {
+  top: 5px;
+  cursor:pointer;
+  color: white;
+  position: relative;
+}
+
+.content {
+  padding: 8px;
+  height: 8rem;
+  width: 100%;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-size: x-large;
+  outline: none;
+}

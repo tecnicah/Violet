@@ -1,0 +1,221 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+  integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+  integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Calendar</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="5" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+            [(ngModel)]="data_calendar.filter" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Country</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.country" (ngModelChange)="getCity(); searchData();">
+            <mat-option *ngFor="let data of ca_country" [value]="data.id">{{data.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.city" (ngModelChange)="searchData()">
+            <mat-option *ngFor="let data of ca_city" [value]="data.id">{{data.city}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Service Line</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.serviceLine" (ngModelChange)="searchData()">
+            <mat-option *ngFor="let data of ca_serviceLine" [value]="data.id">{{data.serviceLine}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Date range</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+          <input matStartDate formControlName="rangeDate1" placeholder="Start date" autocomplete="off" />
+          <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="rangeDate2" autocomplete="off"
+            placeholder="End date" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Partner</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.partner" (ngModelChange)="searchData()">
+            <mat-option *ngFor="let data of ca_partner" [value]="data.id">{{data.partner}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Client</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.client" (ngModelChange)="searchData()">
+            <mat-option *ngFor="let data of ca_cliente" [value]="data.id">{{data.client}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Coordinator</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.coordinator" (ngModelChange)="searchData()">
+            <mat-option *ngFor="let data of ca_coordinator" [value]="data.id">{{data.coordinator}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Supplier Partner</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_calendar.supplier" (ngModelChange)="searchData()">
+            <mat-option *ngFor="let data of supplier_catalogue" [value]="data.id">{{data.supplier}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+      <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+        (click)="cleanFilter()">
+          <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+        </button>
+      </div>
+
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <br>
+  <br>
+  <!--START CALENDAR-->
+  <!----------------------------------------------------------------------------------------->
+  <div class="mat-elevation-z5" style="padding: 10px 10px 10px 10px;">
+    <div class="row text-center">
+      <div class=" header_calendar">
+        <div style="text-align: initial; margin: auto 0 auto 15px;">
+          <div class="btn-group">
+            <div class="btn btn-primary color_button" (click)="setView(CalendarView.Month)"
+              [class.active]="view === CalendarView.Month">
+              Month
+            </div>
+            <div class="btn btn-primary color_button" (click)="setView(CalendarView.Week)"
+              [class.active]="view === CalendarView.Week">
+              Week
+            </div>
+            <div class="btn btn-primary color_button" (click)="setView(CalendarView.Day)"
+              [class.active]="view === CalendarView.Day">
+              Day
+            </div>
+          </div>
+        </div>
+
+
+        <div style="display: flex; margin: auto;">
+          <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <mat-icon style="color:#9d3292;" class="browser">arrow_back_ios</mat-icon>
+          </div>
+
+          <h3 class="text">{{ viewDate | date: 'EEEE, MMM yyy' }}</h3>
+
+          <div mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <mat-icon style="color:#9d3292;" class="browser">arrow_forward_ios</mat-icon>
+          </div>
+        </div>
+
+        <div style="text-align: end; margin-right: 15px;">
+          <ul style="list-style:none">
+            <li>
+              8:00 am - 12:00 pm
+              <img src="../../../../assets/icons/morning.svg" alt="">
+            </li>
+            <li>
+              12:00 pm -16:00 pm
+              <img src="../../../../assets/icons/midday.svg" alt="">
+            </li>
+            <li>
+              16:00 pm - 20:00 pm
+              <img src="../../../../assets/icons/afternoon.svg" alt="">
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <br />
+
+    <div [ngSwitch]="view">
+      <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+        [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+        [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
+        [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-day-view>
+    </div>
+    <br>
+    <br>
+  </div>
+</mat-dialog-content>

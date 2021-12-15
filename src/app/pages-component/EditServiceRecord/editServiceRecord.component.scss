@@ -1,0 +1,345 @@
+.dot {
+
+  width: 9px;
+  height: 9px;
+  border-radius: 100%;
+
+  &--absolute {
+    position: absolute;
+    top: 40px;
+    left: 7.5px;
+  }
+
+  &__green {
+    background: #009577;
+  }
+
+  &__yellow {
+    background: #fbb03b;
+  }
+
+  &__red {
+    background: #ff5858;
+  }
+}
+
+.link {
+  color: #9d3292;
+  cursor: pointer;
+}
+
+.acot {
+  display: flex;
+  width: 120px;
+  height: 10px;
+  opacity: 0.8;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.text_end {
+  justify-content: flex-end;
+}
+
+.assigned_services {
+    border-radius: 4px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);
+    background-color: #ffffff;
+    padding: 15px;
+
+  .services {
+    font-family: Lato;
+    font-size: 10px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #9d3292;
+  }
+
+  img{
+      //width: 60px;
+      //height: 60px;
+      border-radius: 100%;
+
+  }
+  .foto{
+    // object-fit: cover !important;
+  }
+
+  .perfil{
+      width: 250px;
+      display: flex;
+      align-content: space-between;
+
+      div{
+        width: 100%;
+        text-align: end;
+        margin-top: 10px;
+      }
+  }
+
+  .title{
+    font-size: 8px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.5);
+
+    img{
+        width: 16px;
+        height: 16px;
+    }
+  }
+
+  .data{
+      max-width: 250px;
+      p{
+          font-size: 12px;
+          color: black;
+      }
+  }
+
+  .pie{
+      width: 250px;
+      display: flex;
+      justify-content: space-between;
+      color: #9d3292;
+      font-size: 12px;
+      font-weight: 800;
+
+      span{
+          cursor: pointer;
+      }
+  }
+
+}
+
+.bg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+.mat-menu-panel{
+    margin-right: -100px;
+}
+
+
+th.mat-header-cell {
+    text-align: center !important;
+}
+
+.cdiv{
+  width: 100%;
+}
+
+.contenedor {
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+  margin: 15px 0 15px 0;
+  padding: 20px;
+
+  div{
+    width: 100%;
+  }
+}
+
+.refresh{
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}
+
+.table_position{
+ position: relative;
+}
+
+.table_dot{
+  position: absolute;
+  top: 20px;
+}
+mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
+	width: 65px !important;
+}
+
+.avatares {
+  width: 30%;
+  border-radius: 100%;
+  padding-top: 30%;
+  /// 1:1 Aspect Ratio
+  position: relative;
+  /* If you want text inside of it */
+  /*width: 100%;
+  border-radius: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  */
+
+  .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 100%;
+      transform: translateX(0);
+      overflow: hidden;
+      box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+
+
+      .img {
+          /*height: 100%;
+          width: 100%;
+          border-radius: 100%;*/
+          max-height: 100%;
+          max-width: 100%;
+          top: 50%;
+          left: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+      }
+
+  }
+}
+.check{
+  margin-top: .5rem;
+  margin-left: -3rem !important;
+}
+
+
+// diseño para avatar en secciond e comentarios en servicios
+.pageAvatarChat {
+
+  flex: 0 1 100%;
+  flex-wrap: wrap;
+  // estilos de carlos para
+  &__section {
+
+    flex: 1 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    &-inputs {
+      flex-wrap: wrap;
+    }
+
+    &-input {
+
+      flex: 0 1 28%;
+    //  padding-right: 20px;
+      &--x {
+        flex: 0 1 100%;
+      }
+      &--no-padding {
+        padding-right: 0;
+      }
+    }
+
+    &--card {
+      border-radius: 5px;
+      padding: 25px;
+      box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+      position: relative;
+      flex-direction: column;
+    }
+  }
+}
+.no-padding-tbAvatarChat {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.inputAvatarChat {
+
+  &__image {
+
+    width: 100%;
+    // height: 150px;
+    position: relative;
+
+    &-label {
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      cursor: pointer;
+
+      &--ass {
+        position: absolute;
+        top: -40px;
+        left: 35%;
+        transform: translateX(-50%);
+        height: 170px;
+        width: 170px;
+        border-radius: 50%;
+        box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+       //  object-fit: cover;
+      }
+
+      &--card {
+
+        position: absolute;
+        top: 0px;
+        //  left: 37.5%;
+        left: 6.5%;
+        transform: translateX(-50%);
+        // height: 145px;
+        // width: 145px;
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+
+       & > img {
+         max-width: 100%;
+         max-height: 100%;
+         top: 50%;
+         left: 50%;
+         position: absolute;
+         transform: translate(-50%, -50%);
+         // object-fit: cover;
+       }
+
+     }
+      &--cardSpan {
+       position: absolute;
+       bottom: -60px;
+       left: 17.5%;
+       width: 100%;
+       text-align: left;
+       font-size: 14px;
+       font-weight: bold;
+       color: #56004e;
+      }
+    }
+
+  }
+
+}

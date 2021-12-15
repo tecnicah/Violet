@@ -1,0 +1,1205 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin center / {{tableCatalog}}</div>
+    <br>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <!-- Title dependiendo del catalogo seleccionado -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Select Catalog</mat-label>
+          <mat-select
+            matNativeControl
+            [(ngModel)]="tableCatalog"
+            (ngModelChange)="get_catalogos()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Catalog</mat-label>
+              <input matInput placeholder="Catalog" [(ngModel)]="filterCatalog.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of selectCatalogs  | orderBy: 'name' | filterBy: filterCatalog" [value]="item.value">
+                {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(selectCatalogs | filterBy: filterCatalog).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- search -->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <!-- inicio Botones para agregar dependiendo el catalogo -->
+      <!-- currency -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'currencies'">
+        <div class="page__section-butuonc" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+            *ngIf="permission_write || permission_edit" (click)="addCurrencies(0)">
+            Add Currency
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Language -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'languajes'">
+        <div class="page__section-butuonc" id="languajes" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addLenguage(0)">
+            Add Language
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- sex -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'sex'">
+        <div class="page__section-butuonc" id="sex" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addSex(0)">
+            Add Sex
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- jobtitle  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'jobTitles'">
+        <div class="page__section-butuonc" id="jobTitles" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addTitle(0)">
+            Add Title
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- lifeCicles  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'lifeCicles'">
+        <div class="page__section-butuonc" id="lifeCicles" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addCicles(0)">
+            Add Cicle
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- petType  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Pet type'">
+        <div class="page__section-butuonc" id="petType" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addPet(0)">
+            Add Pet
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- vehicle type  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Vehicle type'">
+      <div class="page__section-butuonc" id="vehicleType" style="margin-top: -30px;">
+        <button class="button-icon button-icon--more"
+        *ngIf="permission_write || permission_edit" (click)="addVehicle(0)">
+          Add Vehicle
+        </button>
+        </div>
+      </mat-grid-tile>
+      <!-- proficiency  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'proficiency'">
+        <div class="page__section-butuonc" id="proficiency" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addProficiency(0)">
+            Add Proficiency
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- education level  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Education level'">
+        <div class="page__section-butuonc" id="educationLevel" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addEducation(0)">
+            Add Education
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- tax  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Tax percentage'">
+        <div class="page__section-butuonc" id="taxPercentage" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addTaxPercentage(0)">
+            Add Tax
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- company type  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Company type'">
+        <div class="page__section-butuonc" id="companyType" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addCompanyType(0)">
+            Add Company
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- relationship  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'relationship'">
+        <div class="page__section-butuonc" id="relationship" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addRelationship(0)">
+            Add Relationship
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- visa category  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'privacy'">
+        <div class="page__section-butuonc" id="privacy" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addPrivacy(0)">
+            Add Privacy
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Policy type  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Policy type'">
+        <div class="page__section-butuonc" id="policytype" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addPolicy(0)">
+            Add Policy
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Payment responsibility  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Payment Responsibility'">
+        <div class="page__section-butuonc" id="payment" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addPayment(0)">
+            Add Payment
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Partner status  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Partner status'">
+        <div class="page__section-butuonc" id="partner" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addPartner(0)">
+            Add Partner
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- coverage  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Coverage type'">
+        <div class="page__section-butuonc" id="coverage" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addCoverage(0)">
+            Add Coverage
+          </button>
+        </div>
+      </mat-grid-tile>
+
+      <!-- transport  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Transport Type'">
+        <div class="page__section-butuonc" id="transport" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addTransport(0)">
+            Add Transport
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- coordinator  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Coordinator Type'">
+        <div class="page__section-butuonc" id="coordinator" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addCoordinator(0)">
+            Add Coordinator
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- notification  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Notification Type'">
+        <div class="page__section-butuonc" id="notification" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addNotification(0)">
+            Add Notification
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- document  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Document Type'">
+        <div class="page__section-butuonc" id="document" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addDocument(0)">
+            Add Document
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- contact  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Contact Type'">
+        <div class="page__section-butuonc" id="contact" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addContact(0)">
+            Add Contact
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- supplier  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Supplier Type'">
+        <div class="page__section-butuonc" id="supplier" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addSupplier(0)">
+            Add Supplier
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- responsability  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Responsible'">
+        <div class="page__section-butuonc" id="responsible" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addResponsibility(0)">
+            Add Responsible
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- referral -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Referral'">
+        <div class="page__section-butuonc" id="Referral" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addReferral(0)">
+            Add Referral
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- contract -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Contract'">
+        <div class="page__section-butuonc" id="Contract" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addContract(0)">
+            Add Contract
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- desired  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Desired'">
+        <div class="page__section-butuonc" id="Desired" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addDesired(0)">
+            Add Desired
+          </button>
+        </div>
+      </mat-grid-tile>
+       <!-- Emergency  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Emergency Contact'">
+        <div class="page__section-butuonc" id="Emergency" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addEmergencyContact(0)">
+            Add Emergency
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- pricing  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Pricing'">
+        <div class="page__section-butuonc" id="Pricing" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addPricing(0)">
+            Add Pricing
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Account type  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Account'">
+        <div class="page__section-butuonc" id="Account" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addAccount(0)">
+            Add Account
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- Account type  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="tableCatalog === 'Office type'">
+        <div class="page__section-butuonc" id="Account" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more"
+          *ngIf="permission_write || permission_edit" (click)="addOffice(0)">
+            Add Office type
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- fin Botones para agregar dependiendo el catalogo -->
+    </mat-grid-list>
+    <!-- tabla cuurenci -->
+    <table *ngIf="tableCatalog === 'currencies'"  class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCurrencies" #curren #sortcurren='matSort' matSort>
+      <!-- style="top:0;" -->
+      <!-- Name Currency -->
+      <ng-container matColumnDef="Currency">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="currency"> Currency </th>
+        <td mat-cell *matCellDef="let curren"> {{curren.currency}} </td>
+      </ng-container>
+      <!-- Name Abbreviation -->
+      <ng-container matColumnDef="Abbreviation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="abbreviation"> Abbreviation </th>
+        <td mat-cell *matCellDef="let curren"> {{curren.abbreviation}} </td>
+      </ng-container>
+      <!-- Symbol  -->
+      <ng-container matColumnDef="Symbol">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="symbol"> Symbol </th>
+        <td mat-cell *matCellDef="let curren"> {{curren.symbol}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let curren; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addCurrencies(curren.id)">
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteCurrency(curren.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsCurrencies"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsCurrencies;"></tr>
+    </table>
+
+    <div *ngIf="tableCatalog === 'currencies'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagcurren (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+      #paginator #paginatorElement
+      [pageSizeOptions]="[10, 20, 2147483647]"
+      showFirstLastButtons
+      >
+      </mat-paginator> -->
+    </div>
+    <!-- languajes -->
+    <table  *ngIf="tableCatalog === 'languajes'"  class="mat-elevation-z8 textarea" mat-table [dataSource]="dataLanguages" #lang #sortlang='matSort' matSort>
+      <!-- Language -->
+      <ng-container matColumnDef="Language">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Language </th>
+        <td mat-cell *matCellDef="let lang"> {{lang.name}} </td>
+      </ng-container>
+      <!-- Name Abbreviation -->
+      <ng-container matColumnDef="Abbreviation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="abbreviation"> Abbreviation </th>
+        <td mat-cell *matCellDef="let lang"> {{lang.abbreviation}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let lang">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addLenguage(lang.id)" >
+          <!-- (click)="editPayment(lang)" -->
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteLenguage(lang.id)" >
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsLanguages"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsLanguages;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'languajes'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #paglang
+      (page)="paginatorlengHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+      #paginator
+      #paginatorlengElement
+      [pageSizeOptions]="[10, 20, 2147483647]"
+      showFirstLastButtons
+      >
+      </mat-paginator> -->
+    </div>
+    <!-- sex -->
+    <table *ngIf="tableCatalog === 'sex'"   class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCatalogSex" #sex #sortSex='matSort' matSort>
+      <!-- style="top:0;" -->
+      <!-- sex -->
+      <ng-container matColumnDef="Sex">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="sex"> Sex </th>
+        <td mat-cell *matCellDef="let sex"> {{sex.sex}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let sex">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addSex(sex.id)" >
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteSex(sex.id)" >
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsSex"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsSex;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'sex'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagSex (page)="paginatorsexHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorsexElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons>
+      </mat-paginator> -->
+    </div>
+    <!-- job -->
+    <table  *ngIf="tableCatalog === 'jobTitles'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataTitles" #title #sorttitle='matSort' matSort>
+      <ng-container matColumnDef="Office">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="office"> Office </th>
+        <td mat-cell *matCellDef="let office"> {{office.office}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Section">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="section"> Department </th>
+        <td mat-cell *matCellDef="let office"> {{office.section}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Job Title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="title"> Job Title </th>
+        <td mat-cell *matCellDef="let office"> {{office.title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let office">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addTitle(office.id)" >
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteTitle(office.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsTitles"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsTitles;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'jobTitles'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagtitle (page)="paginatortitleHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatortitleElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- life -->
+    <table *ngIf="tableCatalog === 'lifeCicles'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCicles" #cicles #sortcicles='matSort' matSort >
+      <ng-container matColumnDef="Life Cicle">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="lifeCircle1"> Life Cicle </th>
+        <td mat-cell *matCellDef="let cicle"> {{cicle.lifeCircle1}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let cicle">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;"  (click)="addCicles(cicle.id)">
+          <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteCicles(cicle.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsCicles"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsCicles;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'lifeCicles'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagcicles (page)="paginatorcicleHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcicleElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- pet -->
+    <table *ngIf="tableCatalog === 'Pet type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCatalogPetType" #pettype #sortPetType='matSort' matSort>
+        <!-- type catalog -->
+      <ng-container matColumnDef="petType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="petType"> Pet type </th>
+        <td mat-cell *matCellDef="let petType"> {{petType.petType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let petType; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addPet(petType.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deletePet(petType.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsPetType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsPetType;"></tr>
+    </table>
+
+    <div *ngIf="tableCatalog === 'Pet type'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagPetType (page)="paginatorpetHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorpetElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+
+    </div>
+       <!-- vehicle -->
+    <table  *ngIf="tableCatalog === 'Vehicle type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCatalogVehicle" #vehicle #sortVehicle='matSort' matSort>
+      <ng-container matColumnDef="Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> Type </th>
+        <td mat-cell *matCellDef="let vehicle"> {{vehicle.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let vehicle; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addVehicle(vehicle.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteVehicle(vehicle.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsVehicle"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsVehicle;"></tr>
+    </table>
+
+    <div *ngIf="tableCatalog === 'Vehicle type'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagVehicle (page)="paginatorvehicleHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorvehicleElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- profici -->
+    <table *ngIf="tableCatalog === 'proficiency'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCatalogProficiency"  #proficiency #sortProficiency='matSort' matSort>
+      <ng-container matColumnDef="Proficiency">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="proficiency"> Proficiency </th>
+        <td mat-cell *matCellDef="let proficiency"> {{proficiency.proficiency}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let proficiency; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addProficiency(proficiency.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteProficiency(proficiency.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsProficiency"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsProficiency;"></tr>
+    </table>
+
+    <div *ngIf="tableCatalog === 'proficiency'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagProficiency (page)="paginatorproficiencyHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorproficiencyElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- education -->
+    <table *ngIf="tableCatalog === 'Education level'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCatalogEducation"  #education #sortEducation='matSort' matSort >
+      <ng-container matColumnDef="Education level">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="highestLevelEducation"> Education level </th>
+        <td mat-cell *matCellDef="let education"> {{education.highestLevelEducation}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let education; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addEducation(education.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteEducation(education.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsEducation"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsEducation;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Education level'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagEducation (page)="paginatoreducationHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatoreducationElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+
+    </div>
+    <!-- tax -->
+    <table *ngIf="tableCatalog === 'Tax percentage'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCatalogTaxes" #taxes #sortTaxes='matSort' matSort >
+      <!-- Name -->
+      <ng-container matColumnDef="Taxe">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="taxe"> Taxes Percentage </th>
+        <td mat-cell *matCellDef="let tax"> {{tax.taxe}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let tax; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addTaxPercentage(tax.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteTaxPercentage(tax.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsTaxes"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsTaxes;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Tax percentage'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagTaxes (page)="paginatortaxesHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatortaxesElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- company -->
+    <table *ngIf="tableCatalog === 'Company type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCompanyType" #company  #sortCompanyType='matSort' matSort >
+      <ng-container matColumnDef="Company Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="companyType1"> Company Type </th>
+        <td mat-cell *matCellDef="let company"> {{company.companyType1}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let company; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addCompanyType(company.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteCompanyType(company.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsCompanyType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsCompanyType;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Company type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagCompanyType (page)="paginatorcompanyHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcompanyElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- relation -->
+
+    <table class="mat-elevation-z8 textarea" *ngIf="tableCatalog === 'relationship'"  mat-table [dataSource]="dataRelationship" #relationship #sortRelationship='matSort' matSort >
+      <ng-container matColumnDef="Relationship">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="relationship"> Relationship </th>
+        <td mat-cell *matCellDef="let relationship"> {{relationship.relationship}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let relationship; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addRelationship(relationship.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteRelationship(relationship.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsRelationship"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsRelationship;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'relationship'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagRelationship (page)="paginatorrelationshipHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorrelationshipElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- privacy -->
+    <table class="mat-elevation-z8 textarea" *ngIf="tableCatalog === 'privacy'" mat-table [dataSource]="dataPrivacy" #privacy #sortprivacy='matSort' matSort >
+      <ng-container matColumnDef="Privacy type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="privacy"> Privacy type </th>
+        <td mat-cell *matCellDef="let privacy"> {{privacy.privacy}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let privacy; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addPrivacy(privacy.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deletePrivacy(privacy.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsPrivacy"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsPrivacy;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'privacy'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagprivacy (page)="paginatorprivacyHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorprivacyElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+
+    </div>
+    <!-- policy -->
+    <table *ngIf="tableCatalog === 'Policy type'"  class="mat-elevation-z8 textarea" mat-table [dataSource]="dataPolicy" #policy  #sortpolicy='matSort' matSort >
+      <ng-container matColumnDef="Policy type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="policyType"> Policy type </th>
+        <td mat-cell *matCellDef="let policy"> {{policy.policyType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let policy; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addPolicy(policy.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deletePolicy(policy.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsPolicy"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsPolicy;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Policy type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagpolicy (page)="paginatorpolicyHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorpolicyElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- payment -->
+    <table *ngIf="tableCatalog === 'Payment Responsibility'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataPayment" #payment #sortpayment='matSort' matSort >
+      <ng-container matColumnDef="Responsible Payment">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="responsable"> Responsible Payment </th>
+        <td mat-cell *matCellDef="let payment"> {{payment.responsable}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let payment; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addPayment(payment.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deletePayment(payment.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Payment Responsibility'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagpayment (page)="paginatorpaymentHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorpaymentElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- partner -->
+    <table *ngIf="tableCatalog === 'Partner status'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataPartner" #partner #sortpartner='matSort' matSort >
+      <ng-container matColumnDef="Partner status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> Partner status </th>
+        <td mat-cell *matCellDef="let partner"> {{partner.status}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let partner; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addPartner(partner.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deletePartner(partner.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsPartner"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsPartner;"></tr>
+    </table>
+    <div  *ngIf="tableCatalog === 'Partner status'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagpartner (page)="paginatorpartnerHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorpartnerElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- coverage -->
+    <table *ngIf="tableCatalog === 'Coverage type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCoverage"  #coverage #sortcoverage='matSort' matSort >
+      <ng-container matColumnDef="Coverage type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> Coverage type </th>
+        <td mat-cell *matCellDef="let coverage"> {{coverage.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let coverage; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addCoverage(coverage.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteCoverage(coverage.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsCoverage"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsCoverage;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Coverage type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagcoverage (page)="paginatorcoverageHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcoverageElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- service -->
+    <table  *ngIf="tableCatalog === 'Service type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataServiceType" #serviceType #sortserviceType='matSort' matSort >
+      <ng-container matColumnDef="Service">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="service"> Service </th>
+        <td mat-cell *matCellDef="let service"> {{service.service}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let service; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addServiceType(service.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteServiceType(service.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsServiceType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsServiceType;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Service type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #pagserviceType (page)="paginatorserviceHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorserviceElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- transport -->
+    <table  *ngIf="tableCatalog === 'Transport Type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataTransportType"   #transport #sorttransporttype='matSort' matSort >
+      <ng-container matColumnDef="Transport type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="transportType"> Transport type </th>
+        <td mat-cell *matCellDef="let transport"> {{transport.transportType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let transport; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addTransport(transport.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteTransport(transport.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsTransportType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsTransportType;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Transport Type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagtransporttype (page)="paginatortransportHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatortransportElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- coordinator -->
+    <table *ngIf="tableCatalog === 'Coordinator Type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataCoordinator" #coordinator  #sortcoordinator='matSort' matSort >
+      <ng-container matColumnDef="Coordinator type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="coordinatorType"> Coordinator type </th>
+        <td mat-cell *matCellDef="let coordinator"> {{coordinator.coordinatorType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let coordinator; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addCoordinator(coordinator.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteCoordinator(coordinator.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsCoordinator"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsCoordinator;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Coordinator Type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagcoordinator (page)="paginatorcoordinatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcoordinatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- notification -->
+    <table *ngIf="tableCatalog === 'Notification Type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataNotification" #notification #sortnotification='matSort' matSort >
+      <ng-container matColumnDef="Notification type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="notification"> Notification type </th>
+        <td mat-cell *matCellDef="let notification"> {{notification.notification}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let notification; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addNotification(notification.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteNotification(notification.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsNotification"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsNotification;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Notification Type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagnotification (page)="paginatornotificationHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatornotificationElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+
+    </div>
+    <!-- document -->
+    <table *ngIf="tableCatalog === 'Document Type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataDocument" #document #sortdocument='matSort' matSort >
+      <ng-container matColumnDef="Document type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="documentType"> Document type </th>
+        <td mat-cell *matCellDef="let document"> {{document.documentType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="type">  Type </th>
+        <td mat-cell *matCellDef="let document"> {{nameType(document.type)}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let document; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addDocument(document.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteDocument(document.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsDocument"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsDocument;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Document Type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagdocument (page)="paginatordocumentHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatordocumentElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- contact -->
+    <table *ngIf="tableCatalog === 'Contact Type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataContact" #contact  #sortcontact='matSort' matSort >
+      <ng-container matColumnDef="Contact type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> Contact type </th>
+        <td mat-cell *matCellDef="let contact"> {{contact.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let contact; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addContact(contact.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteContact(contact.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsContact"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsContact;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Contact Type'"  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator  #pagcontact (page)="paginatorcontactHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcontactElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- supplier -->
+    <table *ngIf="tableCatalog === 'Supplier Type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataSupplier" #supplier #sortsupplier='matSort' matSort >
+      <ng-container matColumnDef="Supplier type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="supplierType"> Supplier type </th>
+        <td mat-cell *matCellDef="let supplier"> {{supplier.supplierType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let supplier; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addSupplier(supplier.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteSupplier(supplier.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsSupplier"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsSupplier;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Supplier Type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagsupplier (page)="paginatorsupplierHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorsupplierElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- responsible -->
+    <table *ngIf="tableCatalog === 'Responsible'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataREsponsible"  #sortresponsible='matSort' matSort >
+      <ng-container matColumnDef="Responsible">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="Responsible"> Responsible Premier Office </th>
+        <td mat-cell *matCellDef="let data"> {{data.responsiblePremierOffice1}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addResponsibility(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteResponsibility(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsResponsible"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsResponsible;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Responsible'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagresponsible (page)="paginatorresponsibleHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorresponsibleElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- referral -->
+    <table *ngIf="tableCatalog === 'Referral'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataReferral"  #sortreferral='matSort' matSort >
+      <ng-container matColumnDef="Referral fee">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="ReferralFee1"> Type Referral fee </th>
+        <td mat-cell *matCellDef="let data"> {{data.referralFee1}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addReferral(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteReferral(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsReferral"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsReferral;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Referral'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagreferral (page)="paginatorreferralHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorreferralElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+    <!-- Contract -->
+    <table *ngIf="tableCatalog === 'Contract'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataContract"  #sortcontract='matSort' matSort >
+      <ng-container matColumnDef="Contract type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractType"> Contract type </th>
+        <td mat-cell *matCellDef="let data"> {{data.contractType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addContract(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteContract(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsContractType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsContractType;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Contract'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagcontract (page)="paginatorcontractHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatorcontractElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <!-- Desired -->
+    <table *ngIf="tableCatalog === 'Desired'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataDesired"  #sortdesired='matSort' matSort >
+      <ng-container matColumnDef="Desired property type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="propertyType"> Desired property type </th>
+        <td mat-cell *matCellDef="let data"> {{data.propertyType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addDesired(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteDesired(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsDesired"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsDesired;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Desired'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagdesired (page)="paginatordesiredHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatordesiredElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+    <!-- Emergency contact -->
+    <table *ngIf="tableCatalog === 'Emergency Contact'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataEmergencyContact"  #sortemergencycontact='matSort' matSort >
+      <ng-container matColumnDef="Relationship Contact">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="relationship"> Relationship </th>
+        <td mat-cell *matCellDef="let data"> {{data.relationship}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addEmergencyContact(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteEmergencyContact(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsEmergencyContact"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsEmergencyContact;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Emergency Contact'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagemergencycontact (page)="paginatoremergencycontactHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatoremergencycontactElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+    <!-- Pricing -->
+    <table *ngIf="tableCatalog === 'Pricing'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataPricing"  #sortpricing='matSort' matSort >
+      <ng-container matColumnDef="Pricing Schedule">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="relationship"> Pricing Schedule </th>
+        <td mat-cell *matCellDef="let data"> {{data.pricingSchedule1}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addPricing(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deletePricing(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsPricing"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsPricing;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Pricing'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagemergencycontact (page)="paginatoremergencycontactHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatoremergencycontactElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+     <!-- Account Type -->
+     <table *ngIf="tableCatalog === 'Account'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataAccountType"  #sortaccounttype='matSort' matSort >
+      <ng-container matColumnDef="Account Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="accountType"> Account Type </th>
+        <td mat-cell *matCellDef="let data"> {{data.accountType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addAccount(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteAccount(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsAccountType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsAccountType;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Account'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator   #pagemergencycontact (page)="paginatoremergencycontactHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator
+        #paginatoremergencycontactElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+
+     <!-- office type -->
+     <table *ngIf="tableCatalog === 'Office type'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataofficetype"  #sortaccounttype='matSort' matSort >
+      <ng-container matColumnDef="Office Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> Office Type </th>
+        <td mat-cell *matCellDef="let data"> {{data.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let data; let i = index">
+          <img src="assets\icons\pencil.png" *ngIf="permission_write || permission_edit" style="width: 18px; cursor: pointer;" (click)="addOffice(data.id)">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" *ngIf="permission_delete" style="width: 18px; cursor: pointer;" (click)="deleteOfficeType(data.id)" >
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedContactType"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedContactType;"></tr>
+    </table>
+    <div *ngIf="tableCatalog === 'Office type'" class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+  </div>
+</div>

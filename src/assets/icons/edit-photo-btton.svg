@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="86" height="22" viewBox="0 0 86 22">
+    <defs>
+        <linearGradient id="oy18tb8xxc" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#9D3292"/>
+            <stop offset="100%" stop-color="#4435A6"/>
+        </linearGradient>
+        <filter id="abph8vl8pa" width="123.3%" height="190.9%" x="-11.6%" y="-36.4%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="3"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+        </filter>
+        <rect id="bawcxp1qlb" width="86" height="22" x="0" y="0" rx="11"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-203 -332) translate(203 332)">
+                    <use fill="#000" filter="url(#abph8vl8pa)" xlink:href="#bawcxp1qlb"/>
+                    <use fill="#FFF" xlink:href="#bawcxp1qlb"/>
+                </g>
+                <g>
+                    <g>
+                        <text fill="#9D3292" font-family="Lato-Bold, Lato" font-size="10" font-weight="bold" transform="translate(-203 -332) translate(203 332) translate(8 3)">
+                            <tspan x=".89" y="11">Edit Photo</tspan>
+                        </text>
+                        <path fill="url(#oy18tb8xxc)" d="M8 16c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-4-5.666V12h1.666l4.915-4.915L8.915 5.42 4 10.334zm7.87-4.538c.173-.173.173-.453 0-.626l-1.04-1.04c-.173-.173-.453-.173-.626 0l-.814.813 1.667 1.667.813-.814z" transform="translate(-203 -332) translate(203 332) translate(8 3) translate(54)"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

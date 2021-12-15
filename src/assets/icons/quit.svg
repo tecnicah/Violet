@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13">
+    <defs>
+        <linearGradient id="zv1k696raa" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#9D3292"/>
+            <stop offset="100%" stop-color="#4435A6"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g fill="url(#zv1k696raa)" transform="translate(-870 -901)">
+            <g>
+                <g>
+                    <g>
+                        <g>
+                            <path d="M9 15c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6zm.502-6.496V5.536h-1v2.968H5.484v1h3.018v3.032h1V9.504h2.982v-1H9.502z" transform="translate(112 104) translate(24 701) translate(0 91) translate(731 3) rotate(-45 9 9)"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

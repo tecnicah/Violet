@@ -1,0 +1,212 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin Center / Training</div>
+    <div class="page__title title">
+      Trainings
+    </div>
+
+    <mat-grid-list cols="5" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="!show_group">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+              [(ngModel)]="userFilter.name" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="show_group">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+              [(ngModel)]="userGroup.name" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Training Type</mat-label>
+            <mat-select matNativeControl [(ngModel)]="search.type" (ngModelChange)="searchData();">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Training</mat-label>
+                <input matInput placeholder="Training" [(ngModel)]="filterTraining.type">
+              </mat-form-field>
+              <mat-option *ngFor="let item of ca_training_type | filterBy: filterTraining" [value]="item.id">{{item.type}}</mat-option>
+              <mat-option disabled *ngIf="(ca_training_type | filterBy: filterTraining).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="addPropperty" style="flex-basis: 90%;" *ngIf="!show_group">
+          <div class="page__section-button page__section-button--big" style="flex: 0 1 180px !important; left: -6;">
+            <button class="button-icon button-icon--more"
+            *ngIf="permission_write" style="width: 120px;" (click)="addTraining();">
+              Add Training
+            </button>
+          </div>
+        </div>
+
+        <div class="addPropperty" style="flex-basis: 90%;" *ngIf="show_group">
+          <div class="page__section-button page__section-button--big" style="flex: 0 1 180px !important; left: -6;">
+            <button  *ngIf="permission_write"
+            class="button-icon button-icon--more" style="width: 120px;" (click)="addGroup()">
+              Add Groups
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central" style="margin-top:0px;">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker" style="margin-top: 0px;">
+            <input matStartDate formControlName="startDate" placeholder="Start date" autocomplete="off" />
+            <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="endDate" autocomplete="off"
+              placeholder="End date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="div_grupo">
+          <p class="subtitle" style="font-size: 11px; margin: 0;">Groups</p>
+          <mat-checkbox class="example-margin" (change)="showGroups($event)" [(ngModel)]="search.groups"
+            (ngModelChange)="searchData();">
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuon div_grupo_" style="text-align: end;">
+          <button mat-icon-button color="primary" matTooltip="Clear filter" (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!--------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------->
+    <!--TRANING INDIVIDUALES-->
+    <div *ngIf="!show_group && show_no_registros_individuales">
+      <div>
+        <mat-grid-list cols="5" rowHeight="70px">
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Training Name</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Training Type</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Creation Date</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Description</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+
+      <div
+        *ngFor="let item of global_training_individual | filterBy: userFilter | paginate: { itemsPerPage: 4, currentPage: p } ">
+        <div class="mat-elevation-z4 pointer" style="margin-bottom: 15px;" *ngIf="item.groups == false">
+          <mat-grid-list cols="5" rowHeight="70px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1" (click)="editTraining(item.id)">
+              <span class="type_text">{{item.name}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" (click)="editTraining(item.id)">
+              <span class="type_text">{{item.type}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" (click)="editTraining(item.id)">
+              <span class="type_text">{{item.creationDate | date: 'dd MMM yyyy'}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" (click)="editTraining(item.id)">
+              <span class="type_text">
+                {{(item.description.length>15) ?  (item.description | slice:0:15)+'..': item.description}}
+              </span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div align="end" class="flex_">
+                <img src="assets/icons/icon-perfil-activo.svg" style="margin-right: 15px;"
+                  (click)="addParticipante(item)" *ngIf="permission_write || permission_edit">
+                <img src="assets/icons/quit.svg" *ngIf="permission_delete" (click)="deleteCurso(item.id)">
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div class="nodata" *ngIf="!show_group && !show_no_registros_individuales">
+      No data training
+    </div>
+    <!--------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------->
+    <div *ngIf="show_group">
+
+      <div *ngFor="let item of global_training_grupal | filterBy: userGroup | paginate: { itemsPerPage: 4, currentPage: c }">
+        <br>
+        <br>
+        <div class="flex">
+          <span class="type_text_header_group">{{item.name}}</span>
+          <img src="assets/icons/icon-perfil-activo.svg" *ngIf="permission_write || permission_edit" (click)="addParticipante(item)">
+        </div>
+
+        <br>
+        <br>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="flex">
+                <span class="type_text_header">Training Name</span>
+                <span class="type_text_header">Training Type</span>
+                <span class="type_text_header">Creation Date</span>
+                <span class="type_text_header">Description</span>
+                <span class="type_text_header">&nbsp;</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="flex mat-elevation-z4 card" *ngFor="let couse of item.training">
+            <span class="type_text" (click)="editTraining(item.id)">{{couse.name}}</span>
+            <span class="type_text" (click)="editTraining(item.id)">{{couse.type}}</span>
+            <span class="type_text" (click)="editTraining(item.id)">{{couse.creationDate | date: 'dd MMM yyyy'}}</span>
+            <span class="type_text" (click)="editTraining(item.id)">
+              {{(couse.description.length>15) ?  (couse.description | slice:0:15)+'..': couse.description}}</span>
+            <span align="end">
+              <img src="assets/icons/quit.svg" class="delete_" *ngIf="permission_delete" (click)="deleteCurso(couse.id)">
+            </span>
+          </div>
+        </mat-expansion-panel>
+      </div>
+
+      <pagination-controls (pageChange)="c = $event"></pagination-controls>
+    </div>
+
+    <div class="nodata" *ngIf="show_group && !show_no_registros_grupales">
+      No data training
+    </div>
+    <!--------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------->
+  </div>
+</div>

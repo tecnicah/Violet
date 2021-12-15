@@ -1,0 +1,18 @@
+mat-card{
+    padding: 15px!important;
+    margin: 15px 0 15px 0!important;
+}
+
+.addPropperty{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+div{
+    width: 100%;
+}
+
+.page__section-button--big {
+    flex: 0 1 140px;
+}

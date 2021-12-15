@@ -1,0 +1,203 @@
+.font {
+  font-size: 20px;
+  color: gray;
+}
+
+.chat-container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  height: 500px;
+}
+.chat-container .contacts {
+  flex-basis: 40%;
+}
+.chat-container .contacts .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.chat-container .contacts .header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+.chat-container .contacts .recients {
+  max-height: 230px;
+  overflow-y: scroll;
+}
+.chat-container .contacts .recients .user_chats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+.chat-container .contacts .recients .user_chats img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+.chat-container .contacts .recients .user_chats .dot {
+  width: 10px;
+  height: 10px;
+  background: #00dc81;
+  border-radius: 100%;
+}
+.chat-container .contacts .recients .user_chats .red {
+  background: #ff5858;
+}
+.chat-container .chats {
+  padding: 20px 60px 20px 60px;
+  width: 100%;
+}
+.chat-container .chats mat-card {
+  border-radius: 15px;
+  margin: auto;
+  box-shadow: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12) !important;
+}
+.chat-container .chats mat-card mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chat-container .chats mat-card mat-card-header div {
+  display: flex;
+  align-items: center;
+}
+.chat-container .chats mat-card mat-card-header div mat-icon {
+  color: #9d3292;
+}
+.chat-container .chats mat-card mat-card-header div .avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+}
+.chat-container .chats mat-card mat-card-content {
+  background: #f9f9f9;
+  height: 200px;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.chat-container .chats mat-card mat-card-content .to {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+.chat-container .chats mat-card mat-card-content .to .messages-senders {
+  background: rgba(148, 148, 148, 0.1);
+}
+.chat-container .chats mat-card mat-card-content .from {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.chat-container .chats mat-card mat-card-content .from .messages-senders {
+  background: #dbe5ff;
+}
+.chat-container .chats mat-card mat-card-content .messages-senders {
+  flex-basis: 60%;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0 20px 0;
+  position: relative;
+}
+.chat-container .chats mat-card mat-card-content .messages-senders .header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.chat-container .chats mat-card mat-card-content .messages-senders .header span {
+  margin-left: 10px;
+}
+.chat-container .chats mat-card mat-card-content .messages-senders .header img {
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+.chat-container .chats mat-card mat-card-content .messages-senders .time {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+}
+.chat-container .chats mat-card-actions {
+  padding: 0;
+}
+.chat-container .chats mat-card-actions .texting {
+  margin: 0 20px;
+}
+.chat-container .chats mat-card-actions .texting .icons {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.chat-container .chats mat-card-actions .texting .icon-send {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.chat-container .chats mat-card-actions .texting .icon-send button {
+  width: 100%;
+}
+
+.active_convertation {
+  background-color: #4435a6;
+  color: #ffffff;
+}
+
+/* --------------------------
+  SVG Styles
+--------------------------- */
+#upload * {
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+
+.a {
+  -webkit-animation: fillChange 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+  animation: fillChange 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.background {
+  -webkit-animation: scaleAnimation 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+  animation: scaleAnimation 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.arrow {
+  -webkit-animation: arrowAnimation 2 1s;
+  animation: arrowAnimation 2 1s;
+}
+
+.progressLoader {
+  -webkit-animation: progressLoader 1s;
+  animation: progressLoader 1s;
+}
+
+.arrow,
+.progressLoader {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+
+.dribbble {
+  position: fixed;
+  display: block;
+  right: 30px;
+  bottom: 30px;
+}
+.dribbble img {
+  display: block;
+  height: 25px;
+}
+
+.sending {
+  display: flex;
+  justify-content: center;
+}

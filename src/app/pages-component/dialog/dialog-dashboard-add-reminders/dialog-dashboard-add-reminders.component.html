@@ -1,0 +1,268 @@
+<div *ngIf = "data == 0">
+
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Add Reminder</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <span class="reminder">Reminder {{date | date: 'dd MMM yyyy'}}</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="data_reminder.reminderDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <!-- service line -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service Line</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_reminder.sl">
+            <mat-option *ngFor="let data of serviceLine" [value]="data.id">
+              {{data.serviceLine}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      <!-- service record -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service Record</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_reminder.sr" (ngModelChange)="getWO();">
+            <mat-option *ngFor="let data of ca_service_record" [value]="data.id">
+              {{data.numberServiceRecord}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- work order -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Work Order</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_reminder.wo" (ngModelChange)="getService();">
+            <mat-option *ngFor="let data of wo" [value]="data.id">
+              {{data.numberWorkOrder}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Service</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_reminder.service" (ngModelChange)="getDataService();">
+            <mat-option *ngFor="let data of servicios" [value]="data.id">
+              {{data.serviceNumber}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <!--mat-form-field appearance="fill" class="input_central">
+          <mat-label>City</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_reminder.city">
+            <mat-option *ngFor="let data of city_select" [value]="data.id">{{data.city}}</mat-option>
+          </mat-select>
+        </mat-form-field-->
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Assignee</span><br />
+            {{data_info.assignee}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Partner</span><br />
+            {{data_info.partner}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Client</span><br />
+            {{data_info.client}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Supplier </span><br />
+            {{data_info.supplier}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="130px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p>Comment</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput #message maxlength="500" [(ngModel)]="data_reminder.comment"></textarea>
+            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save();">Save</button>
+    </div>
+  </mat-dialog-actions>
+</div>
+<!-------------------------------------------------------------------------------------------------->
+<div *ngIf = "data != 0">
+
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Reminder</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <span class="reminder">Reminder {{data.date | date: 'dd MMM yyyy'}}</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Assignee</span><br />
+            {{data.assignee}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Partner</span><br />
+            {{data.partner}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Client</span><br />
+            {{data.client}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Supplier </span><br />
+            {{data.supplier}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Service Record</span><br />
+            {{data.serviceRecord}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Service Line</span><br />
+            {{data.serviceLine}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Work Order</span><br />
+            {{data.workOrder}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">Service ID</span><br />
+            {{data.serviceId}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
+          <div>
+            <span class="text-mini gray_05">City</span><br />
+            {{data.city}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+
+    <mat-grid-list cols="4" rowHeight="130px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p>Comment</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput #message maxlength="500" disabled>{{data.comment}}</textarea>
+            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+
+  </mat-dialog-content>
+</div>

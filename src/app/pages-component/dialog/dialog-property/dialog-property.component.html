@@ -1,0 +1,982 @@
+<!----------------------------------OPEN HEADER-------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Property Management</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!-----------------------------------END HEADER-------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <!-----------------------------------primera seccion-------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Autho Date</mat-label>
+          <input matInput required [matDatepicker]="picker" placeholder="Autho Date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Autho Acceptance Date</mat-label>
+          <input matInput required [matDatepicker]="pickerdos" placeholder="Autho Acceptance Date">
+          <mat-datepicker-toggle matSuffix [for]="pickerdos"></mat-datepicker-toggle>
+          <mat-datepicker #pickerdos></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final">
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select>
+            <mat-option> status </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final">
+        <mat-form-field appearance="fill">
+          <mat-label>Service Completion Date</mat-label>
+          <input matInput required [matDatepicker]="pickertres" placeholder="Service Completion Date">
+          <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+          <mat-datepicker #pickertres></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Extensions</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!----------------------------Table EXTENSION------------------------------->
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 textarea">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="Requested By">
+      <th mat-header-cell *matHeaderCellDef>Requested By</th>
+      <td mat-cell *matCellDef="let element"> {{element.uno}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Authorized By">
+      <th mat-header-cell *matHeaderCellDef> Authorized By </th>
+      <td mat-cell *matCellDef="let element"> {{element.dos}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Autho Date">
+      <th mat-header-cell *matHeaderCellDef> Autho Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.tres}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Autho Acceptance Date">
+      <th mat-header-cell *matHeaderCellDef> Autho Acceptance Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.cuatro}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Time">
+      <th mat-header-cell *matHeaderCellDef> Time </th>
+      <td mat-cell *matCellDef="let element"> {{element.cinco}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <br><br>
+  <!----------------------------Close Table Extension------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="secundary_title">Property</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Property Address</mat-label>
+          <input matInput required placeholder="Property Address">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final">
+        <mat-form-field appearance="fill">
+          <mat-label>Library</mat-label>
+          <mat-select>
+            <mat-option> Library </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <p class="secundary_title" style="width: 100%;">Vacant</p>
+        <mat-slide-toggle></mat-slide-toggle>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <p class="secundary_title" style="width: 100%;">Rented</p>
+        <mat-slide-toggle></mat-slide-toggle>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="secundary_title">Property Inspections</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Last Property Inspection</mat-label>
+          <input matInput required [matDatepicker]="pickerProperty_Inspection" placeholder="Last Property Inspection">
+          <mat-datepicker-toggle matSuffix [for]="pickerProperty_Inspection"></mat-datepicker-toggle>
+          <mat-datepicker #pickerProperty_Inspection></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Report</mat-label>
+          <input matInput required placeholder="Last Property Inspection">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Photos</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px">
+    <!--SECCION PARA LAS FOTOS-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+    <!--CIERRE SECCION PARA LAS FOTOS-->
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="    left: 6px; flex: 0 1 156px;">
+          <button class="button-icon button-icon--more">
+            Add Photos
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Next Property Inspection</mat-label>
+          <input matInput required [matDatepicker]="pickerNextPropertyInspection"
+            placeholder="Next Property Inspection">
+          <mat-datepicker-toggle matSuffix [for]="pickerNextPropertyInspection"></mat-datepicker-toggle>
+          <mat-datepicker #pickerNextPropertyInspection></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <br>
+        <p class="subtitle">Reminders</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!------------------------------------------------------------------------------------------------------>
+  <!--OPEN REMINDERS-->
+  <mat-card>
+    <div align="end">
+      <img src="assets/icons/quit.svg" class="delete">
+    </div>
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Reminder Date</mat-label>
+            <input matInput required [matDatepicker]="pickerocho" placeholder="Reminder Date">
+            <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+            <mat-datepicker #pickerocho></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Reminder Comments</mat-label>
+            <input matInput required placeholder="Reminder Comments">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+  <!--CLOSE REMINDER CARD-->
+  <!------------------------------------------------------------------------------------------------------>
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="    left: 6px; flex: 0 1 156px;">
+          <button class="button-icon button-icon--more">
+            Add Reminder
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <br>
+        <p class="secundary_title">On Going Maintenance</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Item</mat-label>
+          <mat-select>
+            <mat-option> Item </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Provider Visit (Frequency)</mat-label>
+          <mat-select>
+            <mat-option> Provider Visit (Frequency) </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Provider Payment (Frequency)</mat-label>
+          <mat-select>
+            <mat-option> Provider Payment (Frequency) </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <br>
+        <p class="secundary_title">Bills</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Bill Type</mat-label>
+          <input matInput required placeholder="Bill Type">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Photos</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px">
+    <!--SECCION PARA LAS FOTOS-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+    <!--CIERRE SECCION PARA LAS FOTOS-->
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="    left: 6px; flex: 0 1 156px;">
+          <button class="button-icon button-icon--more">
+            Add Photos
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Comments</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="100px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel rutrum libero, a suscipit lectus. Integer aliquam iaculis nisl et imperdiet. Sed accumsan ullamcorper dolor, a tristique mi facilisis id. Aliquam finibus eu erat nec iaculis. Nulla egestas turpis at ligula pulvinar, sed convallis risus imperdiet. Fusce ac ligula at dolor fermentum maximus a sit amet lacus. 
+      </textarea>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Provider Payment (Frequency)</mat-label>
+          <mat-select>
+            <mat-option> Provider Payment (Frequency) </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="secundary_title">Mail</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Photos</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="100px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" id="doc" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Comments</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="100px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel rutrum libero, a suscipit lectus. Integer aliquam iaculis nisl et imperdiet. Sed accumsan ullamcorper dolor, a tristique mi facilisis id. Aliquam finibus eu erat nec iaculis. Nulla egestas turpis at ligula pulvinar, sed convallis risus imperdiet. Fusce ac ligula at dolor fermentum maximus a sit amet lacus. 
+      </textarea>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="secundary_title">Report An Issue</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Severity</mat-label>
+          <mat-select>
+            <mat-option> Severity </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput required placeholder="Description">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select>
+            <mat-option> Status </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Photos</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px">
+    <!--SECCION PARA LAS FOTOS-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <div class="Rectangle"></div>
+      </div>
+    </mat-grid-tile>
+    <!--CIERRE SECCION PARA LAS FOTOS-->
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="    left: 6px; flex: 0 1 156px;">
+          <button class="button-icon button-icon--more">
+            Add Photos
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Quote Approval</mat-label>
+          <input matInput required [matDatepicker]="pickerQuote_Approval" placeholder="Quote Approval">
+          <mat-datepicker-toggle matSuffix [for]="pickerQuote_Approval"></mat-datepicker-toggle>
+          <mat-datepicker #pickerQuote_Approval></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="4" rowHeight="100px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Upload Receipts</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" id="doc" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <br>
+  <br>
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <p class="subtitle">Requested Payments</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="flex: 0 1 152px; left: 6px">
+          <button class="button-icon button-icon--money">
+            Request Payment
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--START TABLE PAYMENT-->
+  <table mat-table [dataSource]=" dataSourcePayment" class="mat-elevation-z8 textarea">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="Invoice No.">
+      <th mat-header-cell *matHeaderCellDef> Invoice No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.uno}} </td>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="Description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.dos}} </td>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Invoice Date">
+      <th mat-header-cell *matHeaderCellDef> Invoice Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.tres}} </td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Due Date">
+      <th mat-header-cell *matHeaderCellDef> Due Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.cuatro}} </td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Amount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let element"> {{element.cinco}} </td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.seis}} </td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element">
+        <img src="assets\icons\pencil.png" style="width: 20px;">
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;"></tr>
+  </table>
+  <br><br>
+  <!--CLOSE TABLE PAYMENT-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="10" rowHeight="80px">
+    <mat-grid-tile [colspan]="10" [rowspan]="1">
+      <div>
+        <p class="subtitle">Comments</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="comments">
+    <mat-grid-list cols="10" rowHeight="80px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <img class="avatar" src="assets/images/users/avatar.png" alt="">
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div>
+          <p class="subtitle">Name</p>
+          <p class="title">Lorem ipsum</p>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div>
+          <div>
+            <p class="subtitle">Title</p>
+            <p class="title">Lorem ipsum</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div style="display: flex;">
+          <div>
+            <p class="subtitle">Date</p>
+            <p class="title">20 Sep 2020</p>
+          </div>
+
+          <div>
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="130px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p style="font-size: 10px;">Comments</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel rutrum libero, a suscipit lectus. Integer aliquam iaculis nisl et imperdiet. Sed accumsan ullamcorper dolor, a tristique mi facilisis id. Aliquam finibus eu erat nec iaculis. Nulla egestas turpis at ligula pulvinar, sed convallis risus imperdiet. Fusce ac ligula at dolor fermentum maximus a sit amet lacus. 
+              </textarea>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <!--END COMMENT-->
+  <!---------------------------------------------------------------------------------------------------->
+  <!--COMMENTS REPLY-->
+  <div class="comments">
+    <mat-grid-list cols="10" rowHeight="80px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <img class="avatar" src="assets/images/users/avatar.png" alt="">
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div>
+          <p class="subtitle">Name</p>
+          <p class="title">Lorem ipsum</p>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div>
+          <div>
+            <p class="subtitle">Title</p>
+            <p class="title">Lorem ipsum</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div style="display: flex;">
+          <div>
+            <p class="subtitle">Date</p>
+            <p class="title">20 Sep 2020</p>
+          </div>
+
+          <div>
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="130px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <br><br>
+          <p style="font-size: 10px;">Reply</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel rutrum libero, a suscipit lectus. Integer aliquam iaculis nisl et imperdiet. Sed accumsan ullamcorper dolor, a tristique mi facilisis id. Aliquam finibus eu erat nec iaculis. Nulla egestas turpis at ligula pulvinar, sed convallis risus imperdiet. Fusce ac ligula at dolor fermentum maximus a sit amet lacus. 
+                </textarea>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <!--END COMMENTS REPLY-->
+  <!---------------------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 20px;">
+          <button class="button-icon button-icon--more">
+            Add Reply
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitledos">Upload Documents</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="30px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div style="display: flex; justify-content: space-between;">
+        <p class="subtitle" style="font-size: 12px;">Documents</p>
+        <p class="subtitle" style="font-size: 12px;">Uploaded Date</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-card>
+    <div align="end">
+      <img src="assets/icons/quit.svg" class="delete">
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span>
+            <p class="subtitle" style="font-size: 12px;">Document Name</p>
+            <p class="title" style="font-size: 12px;">Lorem Ipsum Dolor</p>
+          </span>
+          <span>
+            <p class="title" style="font-size: 12px;">20 Sep 2020</p>
+          </span>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big"
+          style="flex: 0 1 180px !important; left: 14px !important;">
+          <button class="button-icon button-icon--more">
+            Add New Document
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!---------------------------------------reminders----------------------------------------->
+  <mat-grid-list cols="4" rowHeight="50px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <br>
+        <p class="subtitle">Reminders</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-card>
+
+    <div align="end">
+      <img src="assets/icons/quit.svg" class="delete">
+    </div>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Reminder Date</mat-label>
+            <input matInput required [matDatepicker]="pickerocho" placeholder="Reminder Date">
+            <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+            <mat-datepicker #pickerocho></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Reminder Comments</mat-label>
+            <input matInput required placeholder="Reminder Comments">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </mat-card>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 10px;">
+          <button class="button-icon button-icon--more">
+            Add Reminder
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button>Save</button>
+  </div>
+</mat-dialog-actions>

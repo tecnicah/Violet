@@ -1,0 +1,667 @@
+<div *ngIf="show">
+  <div fxLayout="row" fxLayoutGap="10px">
+
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">Work Permit</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+
+  <mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="80px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Autho Date</span><br />
+            {{ entryVisa.authoDate | date:'dd MMM yyy' }}
+          </div>
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div *ngIf="entryVisa.authoAcceptanceDate !== '0001-01-01T00:00:00'">
+            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+            {{ entryVisa.authoAcceptanceDate | date:'dd MMM yyy' }}
+          </div>
+          <div *ngIf="entryVisa.authoAcceptanceDate === '0001-01-01T00:00:00'">
+            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+            &nbsp;
+          </div>
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final">
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="entryVisa.statusId" required>
+              <mat-option value="texto" *ngFor="let item of cestatus" [value]="item.id"> {{item.status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central">
+          <span class="text-mini gray_05">Deliver To</span><br />
+          {{entryVisa.relationship}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central">
+          <span class="text-mini gray_05">Name</span><br />
+          {{entryVisa.applicantName}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <!--div class="input_final">
+          <mat-form-field appearance="fill">
+            <mat-label>Completion Date</mat-label>
+            <input matInput [matDatepicker]="pickertres" [(ngModel)]="entryVisa.serviceCompletionDate">
+            <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+            <mat-datepicker #pickertres></mat-datepicker>
+          </mat-form-field>
+        </div-->
+        <div class="page__section-data font-size-12 comments input_final" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Completion Date</span><br />
+            {{ entryVisa.serviceCompletionDate | date:'dd MMM yyy' }}
+          </div>
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central">
+          <span class="text-mini gray_05">Country</span><br />
+          {{data.country_city.home_contry_name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central">
+          <span class="text-mini gray_05">City</span><br />
+          {{data.country_city.home_city_name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="wid" style="height: 90%;">
+          <span class="text-mini gray_05"> Consular Service </span><br>
+          <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [checked]="entryVisa.consularServiceId === 1"
+            (change)="$event.checked ? entryVisa.consularServiceId =1 : entryVisa.consularServiceId = 2"></mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="entryVisa.consularServiceId == 1">
+
+         <mat-form-field appearance="fill">
+              <mat-label>City</mat-label>
+              <input matInput  [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.city" type="text" required>
+         </mat-form-field>
+
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Visa Type</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.visaTypeId" type="text" required>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="entryVisa.consularServiceId != 1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+
+
+    <mat-grid-list cols="4" rowHeight="80px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Collection - Start Date</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.documentCollectionStartDate" [min]="yesterday_today" required [matDatepicker]="pickercuatro">
+            <mat-datepicker-toggle matSuffix [for]="pickercuatro"></mat-datepicker-toggle>
+            <mat-datepicker #pickercuatro></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Delivery Date (If Needed)</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.documentDeliveryDate" [min]="yesterday_today" required [matDatepicker]="pickercinco">
+            <mat-datepicker-toggle matSuffix [for]="pickercinco"></mat-datepicker-toggle>
+            <mat-datepicker #pickercinco></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Expiration Date</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.documentExpirationDate" [min]="yesterday_today" required [matDatepicker]="pickerseis">
+            <mat-datepicker-toggle matSuffix [for]="pickerseis"></mat-datepicker-toggle>
+            <mat-datepicker #pickerseis></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Appointment Date ( If Needed)</mat-label>
+            <input matInput [disabled]="user.role.id == 3" required [matDatepicker]="pickerseisi" [min]="yesterday_today" [(ngModel)]="entryVisa.appointmentDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerseisi"></mat-datepicker-toggle>
+            <mat-datepicker #pickerseisi></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Collection - Completion Date</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.documentCollectionCompletionDate" required
+              [matDatepicker]="pickersiete" [min]="yesterday_today">
+            <mat-datepicker-toggle matSuffix [for]="pickersiete"></mat-datepicker-toggle>
+            <mat-datepicker #pickersiete></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Application - Submission Date</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.applicationSubmissionDate" [min]="yesterday_today" required [matDatepicker]="pickerocho">
+            <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+            <mat-datepicker #pickerocho></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Application - Approval Date</mat-label>
+            <input matInput [disabled]="user.role.id == 3" [(ngModel)]="entryVisa.applicationApprovalDate" [min]="yesterday_today" required [matDatepicker]="pickernueve">
+            <mat-datepicker-toggle matSuffix [for]="pickernueve"></mat-datepicker-toggle>
+            <mat-datepicker #pickernueve></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+
+    <mat-grid-list cols="1">
+      <div class="page__section margin-top-min">
+        <div class="subtitledos">
+          Service Documents
+        </div>
+        <div *ngIf="entryVisa.documentWorkPermits.length != 0 || temporalDocument.length != 0" class="page__section">
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Document Type
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Uploaded Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Issue Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Expiration Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Issuing Authority
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Country of Origin
+            </span>
+          </div>
+        </div>
+        <div class="page__section documents__ascard" *ngFor="let item of entryVisa.documentWorkPermits">
+          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;" (click)="DeleteOnline(item.id)" [disabled]="user.role.id == 3"  style="right: 40px;">
+          <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)">
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{documentType(item.documentType)}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.createdDate | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.issueDate | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.expirationDate | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.issuingAuthority}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{countryOrigin(item.countryOrigin)}}
+          </div>
+        </div>
+
+        <div class="page__section documents__ascard" *ngFor="let item of temporalDocument; let i = index">
+          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;" (click)="DeleteOnlineof(i)" [disabled]="user.role.id == 3">
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{documentType(item.documentType)}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.createdDate | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.issueDate | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.expirationDate | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.issuingAuthority}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{countryOrigin(item.countryOrigin)}}
+          </div>
+        </div>
+      </div>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big"
+            style="flex: 0 1 180px !important; left: 6px !important;">
+            <button class="button-icon button-icon--more" [disabled]="user.role.id == 3" (click)="addDocument()">
+              Add New Document
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+
+    <mat-grid-list cols="4" rowHeight="40px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="wid">
+          <p class="subtitledos">Requested Payments</p>
+        </div>
+      </mat-grid-tile>
+
+      <!--mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="rp_header">
+          <span>Sub Total: {{calculo.ammountSubTotal  | currency}}</span>
+          <span>Management Fee: {{calculo.managementFeeSubTotal | currency}}</span>
+          <span>Wire Fee: {{calculo.wireFeeSubTotal | currency}}</span>
+          <span>Advance Fee: {{calculo.advanceFeeSubTotal | currency}}</span>
+        </div>
+      </mat-grid-tile-->
+    </mat-grid-list>
+
+    <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
+
+      <ng-container matColumnDef="Payment">
+        <th mat-header-cell *matHeaderCellDef> Payment </th>
+        <td mat-cell *matCellDef="let element">
+
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="Amount">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="ManagementFee">
+        <th mat-header-cell *matHeaderCellDef> Management Fee </th>
+        <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="WireFee">
+        <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
+        <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="AdvanceFee">
+        <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
+        <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Service">
+        <th mat-header-cell *matHeaderCellDef> Total </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Recurrence">
+        <th mat-header-cell *matHeaderCellDef> Recurrence </th>
+        <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
+          <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="requestPayment(element)" [disabled]="user.role.id == 3">
+          <span>&nbsp;</span>
+          <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;"
+            (click)="deletePaymentConcept(element)" [disabled]="user.role.id == 3">
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'urgente': row.urgent == true}"></tr>
+    </table>
+    <br><br>
+
+    <mat-grid-list cols="4" rowHeight="30px">
+
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div>
+            <div class="acot">
+              <div class="dot"></div>&nbsp;Urgent
+            </div>
+            <!--span class="browser">TOTAL: {{calculo.total | currency}}</span-->
+          </div>
+          <div class="page__section-butuonc" style="left: 6px;">
+            <button class="button-icon button-icon--money" [disabled]="user.role.id == 3" (click)="requestPayment(null)">Request Payment</button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="10" rowHeight="80px">
+      <mat-grid-tile [colspan]="10" [rowspan]="1">
+        <div class="wid">
+          <p class="subtitledos">Comments</p>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="comments" *ngFor="let item of entryVisa.commentsWorkPermits; let i = index">
+      <mat-grid-list cols="10" rowHeight="80px">
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="pageAvatarServicio__section pageAvatarServicio__section-inputs no-padding-tbAvatarServicio">
+            <div class="pageAvatarServicio__section pageAvatarServicio__section-inputs no-padding-tbAvatarServicio">
+              <div class="pageAvatarServicio__section pageAvatarServicio__section-input--x no-padding-tbAvatarServicio">
+                <div class="inputAvatarServicio__image">
+                  <div class="inputAvatarServicio__image-label--card cursor-pointer">
+                    <img [src]="_services.url_images+item.user.avatar" *ngIf="item.user.avatar != null">
+                    <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="item.user.avatar === null"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div>
+            <img class="avatar" src="{{_services.url_images}}{{item.user.avatar}}" alt=""
+              *ngIf="item.user.avatar != null">
+            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="item.user.avatar === null"></div>
+          </div> -->
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Name</span><br />
+            {{item.user.name}} {{item.user.lastName}} {{item.user.motherLastName}}
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Title</span><br />
+            <span> {{item.user.role.role}} </span>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Date</span><br />
+              {{item.createdDate | date:'dd MMM yyy'}}
+            </div>
+            <div style="text-align:end; width: auto !important;">
+              <mat-icon class="calendar">calendar_today</mat-icon>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="160px">
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <div class="textarea">
+            <br><br>
+            <p *ngIf="i == 0">Comment</p>
+            <p *ngIf="i > 0">Reply</p>
+            <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+              <textarea matInput (change)="item.reply = $event.target.value" #message maxlength="500"
+                [disabled]="item.id > 0">{{item.reply}}</textarea>
+              <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button class="button-icon button-icon--more" (click)="addReply()"
+              *ngIf="entryVisa.commentsWorkPermits.length > 0" [disabled]="user.role.id == 3">
+              Add {{cr}}
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <!---------------------------------------reminders----------------------------------------->
+    <mat-grid-list cols="4" rowHeight="50px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="wid">
+          <br>
+          <p class="subtitledos">Reminders</p>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-card *ngFor="let item of entryVisa.reminderWorkPermits; let i = index">
+      <div align="end">
+        <img src="assets/icons/quit.svg" class="delete" (click)="removeReminder(i, item.id)">
+      </div>
+      <mat-grid-list cols="4" rowHeight="70px">
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central wid">
+            <mat-form-field appearance="fill">
+              <mat-label>Reminder Date {{item.reminderDate}}</mat-label>
+              <input matInput required [matDatepicker]="pickerdiez" [(ngModel)]="item.reminderDate"
+                (dateInput)="item.reminderDate = $event.target.value"
+                (dateChange)="item.reminderDate = $event.target.value">
+              <mat-datepicker-toggle matSuffix [for]="pickerdiez"></mat-datepicker-toggle>
+              <mat-datepicker #pickerdiez></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+          <div class="input_central wid">
+            <mat-form-field appearance="fill">
+              <mat-label>Reminder Comments</mat-label>
+              <input matInput required placeholder="Reminder Comments" [(ngModel)]="item.reminderComments" #a
+                maxlength="500">
+              <mat-hint align="end">{{a.value.length || 0}} / 500</mat-hint>
+              <mat-error *ngIf="a.value.length == 0">This field is mandatory.</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button class="button-icon button-icon--more" [disabled]="user.role.id == 3" (click)="addReminders()">
+              Add Reminder
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <!--mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitledos">Partner & Client Service Documents</p>
+      </div>
+    </mat-grid-tile-->
+    </mat-grid-list>
+
+    <!----------------------------------------documentos--------------------------------------------------
+
+  <mat-grid-list cols="7" rowHeight="70px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Document Type
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Relationship
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Issue Date
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Expiration Date
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Issuing Authority
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Country of Origin
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      Comment
+    </mat-grid-tile>
+  </mat-grid-list-->
+  <!--  Service Client Documents -->
+  <mat-grid-list cols="1" *ngIf="serviceScope">
+    <div class="page__section margin-top-min">
+      <div class="subtitledos">
+        Scope Client Service
+      </div>
+      <br><br>
+
+      <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
+        <div class="page__section-input page__section-input--6_1-local">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1-local">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1-local">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+
+      </div>
+      <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
+        <!-- (click)="DeleteOnline(item.id)" -->
+        <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
+        style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
+        <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          {{item.documentType}}
+        </div>
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          {{item.status}}
+        </div>
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          {{item.privacy}}
+        </div>
+      </div>
+    </div>
+  </mat-grid-list>
+  <!-- Scope Client Service -->
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="wid">
+        <p class="subtitledos">Client Service Scope</p>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
+      <div class="textarea">
+        <p [innerHTML]="serviceScope.scopeDescription"></p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <br><br>
+
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save()">Save</button>
+    </div>
+  </mat-dialog-actions>
+</div>

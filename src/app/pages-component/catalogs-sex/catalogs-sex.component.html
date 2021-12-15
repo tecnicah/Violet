@@ -1,0 +1,49 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Operations / Report</div>
+    <div class="page__title title">
+      Sex
+    </div>
+    <mat-grid-list cols="4"rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more" (click)="addSex(0)">
+            Add Sex
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="page__section">
+      <table mat-table [dataSource]="dataCatalogSex" #sortSex='matSort' matSort class="mat-elevation-z8 textarea">
+        <!-- type catalog -->
+        <ng-container matColumnDef="Sex">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Sex"> Sex </th>
+          <td mat-cell *matCellDef="let catalog"> {{catalog.sex}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let catalog; let i = index">
+            <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="addSex(catalog.id)">
+            <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteSex(catalog.id)" >
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsSex"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsSex;"></tr>
+      </table>
+    </div>
+    <div  class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator #pagSex [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

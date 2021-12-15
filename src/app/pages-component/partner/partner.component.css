@@ -1,0 +1,17 @@
+mat-datepicker-toggle{
+    color:  #9d3292;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+    text-align: center;
+}
+/* ::ng-deep mat-option:last-child:before{
+  content: 'View all';
+}
+::ng-deep mat-option:last-child .mat-option-text{
+  display: none;
+} */
+
+mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
+	width: 65px !important;
+}

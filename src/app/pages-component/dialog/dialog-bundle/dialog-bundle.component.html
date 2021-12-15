@@ -1,0 +1,120 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Bundle</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!-----------------------------------content-------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <!-----------------------------------primera seccion-------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Service Line</span><br />
+          {{services_bundle[0]?.serviceLine}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Work Order</span><br />
+          {{services_bundle[0]?.numberWorkOrder}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Global Projected Fee</span><br />
+          {{services_bundle[0]?.projectedFee | currency}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Global Time</span><br />
+          {{services_bundle[0]?.totalTime}}
+        </div>
+      </div>
+    </mat-grid-tile>
+    
+    
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Remaining Time</span><br />
+          {{services_bundle[0]?.remainignTime}}
+        </div>
+      </div>
+    </mat-grid-tile>
+
+</mat-grid-list>
+
+<div class="aling">
+        <mat-grid-list cols="7" rowHeight="70px">
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Status</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Service</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Service ID</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Autho Time</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Time Spent</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Remaining Time</span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <span class="type_text_header">Requested Extra Time</span>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+
+      <div>
+        <div class="mat-elevation-z4 pointer" style="margin-bottom: 15px;" *ngFor="let item of services_bundle[0]?.services" (click)="showService(item)">
+          <mat-grid-list cols="7" rowHeight="70px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.status}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.serviceName}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.serviceNumber}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.autho| date:'hh:mm'}} </span>
+            </mat-grid-tile>
+             <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.timeSpent}}</span>
+            </mat-grid-tile>
+             <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.remainingTime}}</span>
+            </mat-grid-tile>
+             <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <span class="type_text">{{item.requestedExtraTime}}</span>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+
+
+
+</mat-dialog-content>

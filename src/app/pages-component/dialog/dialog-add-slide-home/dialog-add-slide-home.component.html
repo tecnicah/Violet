@@ -1,0 +1,44 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id == 0">Add slide</h2>
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id != 0">Update slide</h2>
+
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="2" rowHeight="70px">
+    <!-- foto -->
+    <mat-grid-tile [colspan]="2" [rowspan]="2">
+      <!-- <div class="flex-img"> -->
+        <div>
+          <img src="assets/images/users/avatar.png" id="lead_client_avatar" class="avatar">
+        </div>
+        <!-- <div style="height: 10px;">&nbsp;</div> -->
+
+      <!-- </div> -->
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <input class="btnr btnr--pencil input_final" hidden type="file" id="file" accept="image/*" (change)="img($event)">
+      <button onclick="document.getElementById('file').click()" class="btnr btnr--pencil" matRipple
+        matRippleColor="rgba(157, 50, 146, 0.5)">
+        Edit Photo
+      </button>
+    </mat-grid-tile>
+    <!-- inputs -->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Phrase</mat-label>
+        <input matInput placeholder="phrase" [(ngModel)]="data.phrase">
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

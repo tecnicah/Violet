@@ -1,0 +1,41 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Eliminate Payment</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <!-----------------------------------primera seccion-------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05"></span><br />
+          Also eliminate all Future Payments?
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <mat-radio-group [(ngModel)]="data_check.type"aria-label="Select an option" style="display: flex; justify-content: space-between; width: 64%; margin-left: 10px;">
+          <mat-radio-button [value]=true>Yes</mat-radio-button>
+          <mat-radio-button [value]=false>No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save();" style="width: 70px;">Save</button>
+  </div>
+</mat-dialog-actions>

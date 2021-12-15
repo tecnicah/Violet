@@ -1,0 +1,100 @@
+<div fxLayout="row" fxLayoutGap="10px">
+
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Request Invoice</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <div class="modal-form__subtitle margin-bottom-mini">
+    Service Orders
+  </div>
+  <div class="modal-form__content">
+    Select one or more Service Orders to request invoice
+  </div>
+  <div class="page__section margin-top-min">
+    <table mat-table mat-sort [dataSource]="invoice_lines_table"
+      style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_0">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Service Order ID
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.serviceOrderId }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_1">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Service Line
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.servicesLine }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_2">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Services
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.services }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_3">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Autho Date
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ dateWorker( element.autho ) }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_4">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          % Complete
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.complete }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_5">
+        <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <div class="table-row__check">
+            <span class="table-row__check--radio" (click)="selectThisLine( element )"
+              [class.table-row__check--radio-on]="element.selected">
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="request_table_colums"></tr>
+      <tr mat-row *matRowDef="let row; columns: request_table_colums;"></tr>
+    </table>
+  </div>
+  <div class="page__section">
+    <mat-paginator [pageSizeOptions]="[10,20,50,100]"></mat-paginator>
+  </div>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="continueToRequestInvoice()">
+      Continue
+    </button>
+  </div>
+</mat-dialog-actions>

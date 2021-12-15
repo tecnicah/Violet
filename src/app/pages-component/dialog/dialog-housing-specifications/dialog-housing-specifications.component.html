@@ -1,0 +1,385 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Housing Specifications</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <!--
+  <div class="contenedor">
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Areas of Interest</p>
+            <p class="title">{{housing_specs.areaInterest}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Contract Type</p>
+            <p class="title">{{housing_specs.contractType.contractType}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Desired Property Type</p>
+            <p class="title">{{housing_specs.propertyType.propertyType}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Bedrooms</p>
+            <p class="title">{{housing_specs.bedroom}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Bathrooms</p>
+            <p class="title">{{housing_specs.bathroom}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Budget</p>
+            <p class="title">{{housing_specs.budget}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Currency</p>
+            <p class="title">{{housing_specs.currency.currency}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Size</p>
+            <p class="title">{{housing_specs.size.size}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Metrics</p>
+            <p class="title">{{housing_specs.metric.metric}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Desired Commute Time</p>
+            <p class="title">{{housing_specs.desiredCommuteTime}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Intended Start Date</p>
+            <p class="title">{{housing_specs.intendedStartDate | date: 'dd MMM yyyy'}}</p>
+          </div>
+
+          <div style="text-align: end; width: auto !important">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Parking Spaces</p>
+            <p class="title">{{housing_specs.parkingSpace}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div>
+          <p class="subtitle">Amenities</p>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let item of caAmenity">
+        <div>
+          <mat-checkbox class="example-margin" [checked]="item.checked">
+            <span class="subtitle" style="font-size: 12px;"> {{item.amenitie}} </span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="comments" style="display: flex;">
+          <div>
+            <p class="subtitle">Additional Comments</p>
+            <p class="title">{{housing_specs.additionalComments}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+  </div>
+-->
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central comments" style="display: flex;">
+        <div>
+          <p class="subtitle">Work Order</p>
+          <p class="title">{{data.numberWorkOrder}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central comments" style="display: flex;">
+        <div>
+          <p class="subtitle">Service ID</p>
+          <p class="title">{{data.serviceID}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final comments" style="display: flex;">
+        <div>
+          <p class="subtitle">Service</p>
+          <p class="title">{{data.serviceName}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Areas of Interest</mat-label>
+          <input matInput placeholder="Areas of Interest" [(ngModel)]='housing_specs.areaInterest'>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Contract Type</mat-label>
+          <mat-select [(ngModel)]='housing_specs.contractTypeId'>
+            <mat-option *ngFor="let data of contract_Type" [value]="data.id">{{data.contractType}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Desired Property Type</mat-label>
+          <mat-select [(ngModel)]='housing_specs.propertyTypeId'>
+            <mat-option *ngFor="let data of ca_property" [value]="data.id">{{data.propertyType}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Bedrooms</mat-label>
+          <mat-select [(ngModel)]='housing_specs.bedroom'>
+            <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Bathrooms</mat-label>
+          <mat-select [(ngModel)]='housing_specs.bathroom'>
+            <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!--
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Budget</mat-label>
+          <mat-select [(ngModel)]='data_specification.budget'>
+            <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    -->
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Budget</mat-label>
+          <input matInput placeholder="Budget" type="number" [(ngModel)]='housing_specs.budget'>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Currency</mat-label>
+          <mat-select [(ngModel)]='housing_specs.currencyId'>
+            <mat-option *ngFor="let data of ca_currency" [value]="data.id">{{data.currency}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!--
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Size</mat-label>
+          <mat-select [(ngModel)]='data_specification.sizeId'>
+            <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    -->
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Size</mat-label>
+          <input matInput placeholder="Size" [(ngModel)]='housing_specs.size'>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Metrics</mat-label>
+          <mat-select [(ngModel)]='housing_specs.metricId'>
+            <mat-option *ngFor="let data of ca_metric" [value]="data.id">{{data.metric}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!--<mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Desired Commute Time</mat-label>
+          <mat-select [(ngModel)]='data_specification.desiredCommuteTime'>
+            <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>-->
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Desired Commute Time</mat-label>
+          <input matInput placeholder="Desired Commute Time" [(ngModel)]='housing_specs.desiredCommuteTime'>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Intended Start Date</mat-label>
+          <input matInput [matDatepicker]="pickertres" placeholder="Intended Start Date"
+            [(ngModel)]='housing_specs.intendedStartDate'>
+          <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+          <mat-datepicker #pickertres></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Parking Spaces</mat-label>
+          <mat-select [(ngModel)]='housing_specs.parkingSpace'>
+            <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <p class="subtitle">Amenities</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let item of caAmenity">
+      <div>
+        <mat-checkbox class="example-margin" [checked]="item.checked" (change)='addAmenitie($event, item)'>
+          <span class="subtitle" style="font-size: 12px;"> {{item.amenitie}} </span>
+        </mat-checkbox>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Additional Comments</mat-label>
+          <input matInput placeholder="Additional Comments" [(ngModel)]='housing_specs.additionalComments'>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)='save();'>Save</button>
+  </div>
+</mat-dialog-actions>

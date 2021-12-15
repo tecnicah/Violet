@@ -1,0 +1,131 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">
+      <span>Operations / Full sistem Contacts</span>
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="page__title title">
+          Full Sistem Contacts
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1" >
+        <div class="textarea">
+          <button class="btnr btnr--add" (click)="addTable()" *ngIf="permission_write || permission_edit"
+          matRipple matRippleColor="rgba(157, 50, 146, 0.5)">
+            New Table
+          </button>
+
+          <button class="btnr btnr--export" onclick="document.getElementById('export').click()" matRipple
+            matRippleColor="rgba(157, 50, 146, 0.5)">
+            Export
+          </button>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!-- rango de fechas -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="datepicker" [(ngModel)]="dateR.i" (ngModelChange)="applyFilterdr()">
+          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker>
+          </mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" id="languajes" style="margin-top: -30px;">
+          <button class="button-icon button-icon--pencil" *ngIf="permission_write || permission_edit" (click)="addFilter(0)">
+            Edit Filters
+          </button>
+        </div>
+        <div class="page__section-butuonc" id="languajes" style="margin-top: -30px;">
+          <button class="button-icon button-icon--pencil" *ngIf="permission_write || permission_edit" (click)="addColumns(0)">
+            Edit Columns
+          </button>
+        </div>
+      </mat-grid-tile>
+      <!-- inicio del reporte -->
+    </mat-grid-list>
+    <!-- la variable dataReport contiene la informacion de la tabla del reporte -->
+    <div class="scrolly">
+      <nav mat-tab-nav-bar class="textarea">
+        <a  mat-tab-link *ngFor="let item of taps; let i = index"
+           (click)="changeTab(item);activeLink = i"
+          [active]="activeLink == i"> {{item.name}}
+          <span (click)="deleteReport(item.id)" class="eliminar">x</span>
+        </a>
+      </nav>
+    </div>
+    <div class="scrolly" *ngIf="taps">
+      <button id="export" class="btnr btnr--export" style="display: none;" (click)="exporter.exportTable('xls')"
+        matRipple matRippleColor="rgba(157, 50, 146, 0.5)">
+        Export
+      </button>
+      <table mat-table matTableExporter [dataSource]="datasource" class="textarea mat-elevation-z8" #immi
+      #immisort='matSort' matSort #exporter="matTableExporter">
+          <ng-container matColumnDef="Contact Name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Contact Name" > Contact Name </th>
+            <td mat-cell  *matCellDef="let element"> {{element.user}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Title" > Title </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Company">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Company" > Company </th>
+            <td mat-cell *matCellDef="let element" class="browser"> {{element.company}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Office">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Office" >Office </th>
+            <td mat-cell *matCellDef="let element"> {{element.office}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Country">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Country"> Country </th>
+            <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="City">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="City"> City </th>
+            <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Phone"> Phone </th>
+            <td mat-cell *matCellDef="let element"> {{element.phone  | mask: '(000) 000-0000'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="E-mail">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="E-mail"> E-mail </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Experience">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Experience"> Experience </th>
+            <td mat-cell *matCellDef="let element"> {{element.user_id}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      </table>
+    </div>
+    <br>
+    <div class="page__section text-center paginator" *ngIf="taps">
+      <mat-paginator style="width: max-content;" #immipag [pageSizeOptions]="[10,20, 40, 60, 100]" showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </div>
+</div>

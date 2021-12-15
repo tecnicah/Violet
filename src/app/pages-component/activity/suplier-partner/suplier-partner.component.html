@@ -1,0 +1,252 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path">
+      Operations / Reports / {{rutaActiva.snapshot.params.name}}
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="page__title title">
+          {{rutaActiva.snapshot.params.name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let item of dataR">
+        <div class="textarea" style="text-align: start;">
+          <div style="height: 100%; text-align: center; width: fit-content;">
+            <span class="totalSR">{{item.name}}</span><br>
+            <b class="totalSRnumber">{{item.services}}</b>
+          </div>
+          <span style="font-size: 10px;" class="totalSR">Number of Services</span>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="5" rowHeight="60px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="rutaActiva.snapshot.params.partner == undefined">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Partner</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.partner" (ngModelChange)="getData()"
+              (selectionChange)="getClient($event.value)">
+              <mat-option *ngFor="let data of ca_P" [value]="data.id">{{data.coordinator}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Client</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.client" (ngModelChange)="getData()">
+              <mat-option *ngFor="let data of ca_client" [value]="data.id">{{data.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Consultant</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.consultant" (ngModelChange)="getData()">
+              <mat-option *ngFor="let data of ca_SP" [value]="data.id">{{data.comercialName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="pickers">
+            <input matStartDate placeholder="Start date" autocomplete="off" [(ngModel)]="filterData.range1"
+            (ngModelChange)="getData()"/>
+            <input matEndDate autocomplete="off" placeholder="End date" [(ngModel)]="filterData.range2"
+              (ngModelChange)="getData()" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+          <mat-date-range-picker #pickers></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.status" (ngModelChange)="getData()">
+              <mat-option *ngFor="let data of ca_status" [value]="data.id">{{data.status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Line</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.serviceLine" (ngModelChange)="getData()">
+              <mat-option *ngFor="let data of ca_SL" [value]="data.id">{{data.serviceLine}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Category</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.serviceCategory" (ngModelChange)="getData()">
+              <mat-option *ngFor="let data of ca_service" [value]="data.id">{{data.category}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.country" (ngModelChange)="getData()"
+              (selectionChange)="getCity($event.value)">
+              <mat-option *ngFor="let data of ca_country" [value]="data.id">{{data.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filterData.city" (ngModelChange)="getData()">
+              <mat-option *ngFor="let data of ca_city" [value]="data.id">{{data.city}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+          (click)="clearFilterParner()">
+          <mat-icon [ngClass]="{'refresh': filterdos}">cached</mat-icon>
+        </button>
+        <div class="textarea" style="text-align: end;">
+            <button class="btnr btnr--export" (click)="showExportDialog()" matRipple
+              matRippleColor="rgba(157, 50, 146, 0.5)">
+              Export
+            </button>
+          </div>
+          <button (click)="exporter.exportTable('xls')" id="excel" style="display: none;"
+            class="button-icon button-icon--adder">
+            Export
+          </button>
+      </mat-grid-tile>
+
+
+    </mat-grid-list>
+
+    <table mat-table [dataSource]="datasource" class="textarea mat-elevation-z8" #ii #iisort='matSort' matSort
+      matTableExporter #exporter="matTableExporter">
+
+      <ng-container matColumnDef="numberServiceRecord">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Record </th>
+        <td mat-cell *matCellDef="let element"> {{element.numberServiceRecord}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vip">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> vip </th>
+        <td mat-cell *matCellDef="let element" class="browser">
+          <div class="table-row__check">
+            <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+            <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="serviceLine">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Line </th>
+        <td mat-cell *matCellDef="let element"> {{element.serviceLine}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="initialAutho">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Autho Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.initialAutho | date: 'dd MMM yyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="country">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+        <td mat-cell *matCellDef="let element"> {{element.countryHome}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+        <td mat-cell *matCellDef="let element"> {{element.cityHome}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="partner">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Partner </th>
+        <td mat-cell *matCellDef="let element"> {{element.partner}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Client </th>
+        <td mat-cell *matCellDef="let element"> {{element.client}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="assigneeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Assignee Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.assigneeName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="services">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Services </th>
+        <td mat-cell *matCellDef="let element" class="browser">
+          <button mat-button [matMenuTriggerFor]="menu" class="browser">{{element.services.length}} </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let item of element.services">{{item.service}} / {{item.serviceNumber}} /
+              {{item.numberWorkOrder}} / {{item.autho | date : 'dd MMM yyy'}}</button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="coordinator">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Coordinator </th>
+        <td mat-cell *matCellDef="let element" class="browser">
+          <button mat-button [matMenuTriggerFor]="menudos" class="browser">{{element.coordinator.length}}</button>
+          <mat-menu #menudos="matMenu">
+            <button mat-menu-item *ngFor="let item of element.coordinator">{{item.name}}</button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <br>
+    <div class="page__section text-center paginator">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+      <!-- <mat-paginator style="width: max-content;" #pag  (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons>
+      </mat-paginator> -->
+    </div>
+  </div>
+</div>

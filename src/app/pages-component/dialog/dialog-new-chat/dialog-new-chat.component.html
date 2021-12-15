@@ -1,0 +1,355 @@
+<!--div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">
+      Messages
+    </h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer; color: #9d3292;" id="close">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="2" rowHeight="60px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Country</mat-label>
+          <mat-select name="food">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country name</mat-label>
+                <input matInput placeholder="Country name" [(ngModel)]="filterC.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of caCountry | filterBy: filterC" [value]="item.id" (click)="getUsersInvite(item.id)">
+              {{item.name}}
+            </mat-option>
+            <mat-option disabled *ngIf="(caCountry | filterBy: filterC).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Invite</mat-label>
+          <mat-select name="food">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Invite name</mat-label>
+                <input matInput placeholder="Country name" [(ngModel)]="filterU.user">
+            </mat-form-field>
+            <mat-option *ngFor="let item of caUsers | filterBy: filterU" [value]="item.id" (click)="selectUser(item.id)">
+              {{item.user}}
+            </mat-option>
+            <mat-option disabled *ngIf="(caUsers | filterBy: filterU).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <br>
+
+  <mat-grid-list cols="1">
+    <mat-chip-list class="chips" cdkDropListOrientation="horizontal">
+      <mat-chip *ngFor="let item of newMessageToSend.userList; let i = index">
+        {{getName(item)}}
+        <mat-icon matChipRemove (click)="deleteUser(i)">cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-grid-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="texting" *ngIf="!sending">
+    <mat-grid-list cols="12" rowHeight="20px">
+      <mat-grid-tile [colspan]="7" [rowspan]="1">
+        <div class="textarea">
+          <p style="color: gray; font-size: 12px;">Write Here</p>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <button mat-icon-button (click)="filesUpload('images_only_new')">
+          <img src="/assets/icons/photo.svg" alt="photo">
+        </button>
+        <button mat-icon-button (click)="filesUpload('all_documents_new')">
+          <img src="/assets/icons/document.svg" alt="document">
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="12" rowHeight="100px">
+      <mat-grid-tile [colspan]="10" [rowspan]="1" style="text-align: end;">
+        <mat-form-field appearance="outline" class="textarea">
+          <textarea matInput [(ngModel)]="newMessageToSend.message" (keyup)="onKey($event)" #input maxlength="250"> </textarea>
+          <mat-hint align="end">{{input.value?.length || 0}}/250</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="textarea" style="height: 100%; margin-top: 40px; margin-left: 40%;">
+          <button mat-icon-button [disabled]='input.value.length == 0' (click)="send()">
+            <img src="/assets/icons/send.svg" alt="send" style="width: 30px;">
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <div class="sending textarea" *ngIf="sending">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" id="upload" height="120" width="120">
+
+      <defs>
+            <style>.a{fill:#f7f7f7;}.b{fill:#e1e5ff;}.c{fill:#476bd4;}.d{fill:#fff;}.e{fill:#29cbae;}</style>
+      </defs>
+
+      <title>iconUpload</title>
+      <g class="background" data-animator-group="true" data-animator-type="2">
+          <circle class="a" cx="19.9" cy="19.9" r="19.9"/>
+      </g>
+
+      <polygon class="b progress" points="29.34 15 23.91 9.07 23.91 15 29.34 15"/>
+
+      <path  class="c" d="M24.06,8.19H13.76A2.85,2.85,0,0,0,10.89,11V29a2.85,2.85,0,0,0,2.87,2.82H27.11A2.85,2.85,0,0,0,30,29V14.69Zm.21,1.38,4.45,4.88H24.27Z"/>
+
+      <path class="d"  d="M29.2,29A2.08,2.08,0,0,1,27.11,31H13.76A2.08,2.08,0,0,1,11.67,29V11A2.08,2.08,0,0,1,13.76,9h9.73v6.26H29.2Z"/>
+
+      <g class="arrow" data-animator-group="true" data-animator-type="0">
+
+          <path class="c" d="M23.32,17.5a4.06,4.06,0,1,0,0,5.74,4,4,0,0,0,0-5.74Zm-2.87,5.82a.64.64,0,0,1-.64-.64V19.6l-.76.76a.64.64,0,0,1-.91-.91L20,17.6l.1-.08,0,0,.06,0,.07,0,.05,0h.25l.06,0,.06,0,.07,0,0,0,.1.08,1.85,1.85a.64.64,0,0,1-.91.91l-.76-.76v3.09a.64.64,0,0,1-.64.64Z"/>
+      </g>
+
+      <g class="progressLoader" data-animator-group="true" data-animator-type="2">
+        <polygon class="e" points="15 28 15 27 26 27 26 28 15 28"/>
+      </g>
+
+    </svg>
+</div>
+
+  <ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+    Drag and Drop or
+    <p class="browser" id="all_documents_new" (click)="openFileSelector()">Browse File</p>
+  </ng-template>
+</ngx-file-drop>
+
+<ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"  accept="image/*" [multiple]="false">
+  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+    Drag and Drop or
+    <p class="browser" id="images_only_new" (click)="openFileSelector()">Browse File</p>
+  </ng-template>
+</ngx-file-drop>
+</mat-dialog-actions-->
+
+
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">
+      Messages
+    </h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer; color: #9d3292;" id="close">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <br>
+  <div style="display: flex; justify-content: space-between;">
+    <mat-form-field class="example-full-width" style="flex-basis: 100%;">
+      <mat-label>Group Name</mat-label>
+      <input matInput placeholder="Enter name" [(ngModel)]="newMessageToSend.groupName">
+    </mat-form-field>
+  </div>
+
+  <div style="display: flex; justify-content: space-between;">
+    <mat-form-field class="example-full-width" style="flex-basis: 30%;">
+      <mat-label>Name Contact</mat-label>
+      <input matInput placeholder="Enter name" [(ngModel)]="contact.user">
+    </mat-form-field>
+
+
+    <h4 style="flex-basis: 60%;" *ngIf="newMessageToSend.userList.length > 0">Users Selected</h4>
+  </div>
+
+  <div style="display: flex; justify-content: space-between;">
+    <div class="recients" style="flex-basis: 30%;">
+
+      <table>
+        <tr *ngFor="let element of caUsers | filterBy: contact">
+          <td style="width:50px; padding: 10px 0">
+            <div class="avatares">
+              <div class="content">
+                <img [src]="_services.url_images+element.avatar" alt="" class="img" *ngIf="element.avatar != null">
+                <img src="./assets/avatar.svg" alt="" class="img" *ngIf="element.avatar == null">
+              </div>
+            </div>
+          </td>
+          <td class="user_chats" matRipple matRippleColor="rgba(158, 53, 149, 0.5)" (click)="selectUser(element.id)">
+            <span>{{element?.user}}</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+
+    <mat-grid-list cols="1" style="flex-basis: 60%;">
+
+      <mat-chip-list class="chips" cdkDropListOrientation="horizontal">
+        <mat-chip *ngFor="let item of newMessageToSend.userList; let i = index">
+          {{getName(item)}}
+          <mat-icon matChipRemove (click)="deleteUser(i)">cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </mat-grid-list>
+
+  </div>
+
+
+
+
+
+  <!--mat-grid-list cols="2" rowHeight="60px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Invite</mat-label>
+          <mat-select name="food">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Invite name</mat-label>
+                <input matInput placeholder="Country name" [(ngModel)]="filterU.user">
+            </mat-form-field>
+            <mat-option *ngFor="let item of caUsers | filterBy: filterU" [value]="item.id" (click)="selectUser(item.id)">
+              {{item.user}}
+            </mat-option>
+            <mat-option disabled *ngIf="(caUsers | filterBy: filterU).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list-->
+
+  <br>
+  <br>
+  <br>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="texting" *ngIf="!sending">
+    <mat-grid-list cols="12" rowHeight="20px">
+      <mat-grid-tile [colspan]="7" [rowspan]="1">
+        <div class="textarea">
+          <p style="color: gray; font-size: 12px;">Write Here</p>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <button mat-icon-button (click)="filesUpload('images_only_new')">
+          <img src="/assets/icons/photo.svg" alt="photo">
+        </button>
+        <button mat-icon-button (click)="filesUpload('all_documents_new')">
+          <img src="/assets/icons/document.svg" alt="document">
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="12" rowHeight="100px">
+      <mat-grid-tile [colspan]="10" [rowspan]="1" style="text-align: end;">
+        <mat-form-field appearance="outline" class="textarea">
+          <textarea matInput [(ngModel)]="newMessageToSend.message" (keyup)="onKey($event)" #input
+            maxlength="250"> </textarea>
+          <mat-hint align="end">{{input.value?.length || 0}}/250</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="textarea" style="height: 100%; margin-top: 40px; margin-left: 40%;">
+          <button mat-icon-button [disabled]='input.value.length == 0' (click)="send()">
+            <img src="/assets/icons/send.svg" alt="send" style="width: 30px;">
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <span style="color: gray; font-size: 12px;" *ngIf="newMessageToSend.file && newMessageToSend.file!= ''">Uploaded
+      documents: 1</span>
+  </div>
+
+  <div class="sending textarea" *ngIf="sending">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" id="upload" height="120" width="120">
+
+      <defs>
+        <style>
+          .a {
+            fill: #f7f7f7;
+          }
+
+          .b {
+            fill: #e1e5ff;
+          }
+
+          .c {
+            fill: #476bd4;
+          }
+
+          .d {
+            fill: #fff;
+          }
+
+          .e {
+            fill: #29cbae;
+          }
+
+        </style>
+      </defs>
+
+      <title>iconUpload</title>
+      <g class="background" data-animator-group="true" data-animator-type="2">
+        <circle class="a" cx="19.9" cy="19.9" r="19.9" />
+      </g>
+
+      <polygon class="b progress" points="29.34 15 23.91 9.07 23.91 15 29.34 15" />
+
+      <path class="c"
+        d="M24.06,8.19H13.76A2.85,2.85,0,0,0,10.89,11V29a2.85,2.85,0,0,0,2.87,2.82H27.11A2.85,2.85,0,0,0,30,29V14.69Zm.21,1.38,4.45,4.88H24.27Z" />
+
+      <path class="d"
+        d="M29.2,29A2.08,2.08,0,0,1,27.11,31H13.76A2.08,2.08,0,0,1,11.67,29V11A2.08,2.08,0,0,1,13.76,9h9.73v6.26H29.2Z" />
+
+      <g class="arrow" data-animator-group="true" data-animator-type="0">
+
+        <path class="c"
+          d="M23.32,17.5a4.06,4.06,0,1,0,0,5.74,4,4,0,0,0,0-5.74Zm-2.87,5.82a.64.64,0,0,1-.64-.64V19.6l-.76.76a.64.64,0,0,1-.91-.91L20,17.6l.1-.08,0,0,.06,0,.07,0,.05,0h.25l.06,0,.06,0,.07,0,0,0,.1.08,1.85,1.85a.64.64,0,0,1-.91.91l-.76-.76v3.09a.64.64,0,0,1-.64.64Z" />
+      </g>
+
+      <g class="progressLoader" data-animator-group="true" data-animator-type="2">
+        <polygon class="e" points="15 28 15 27 26 27 26 28 15 28" />
+      </g>
+
+    </svg>
+  </div>
+
+  <ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+      Drag and Drop or
+      <p class="browser" id="all_documents_new" (click)="openFileSelector()">Browse File</p>
+    </ng-template>
+  </ngx-file-drop>
+
+  <ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept="image/*" [multiple]="false">
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+      Drag and Drop or
+      <p class="browser" id="images_only_new" (click)="openFileSelector()">Browse File</p>
+    </ng-template>
+  </ngx-file-drop>
+</mat-dialog-actions>

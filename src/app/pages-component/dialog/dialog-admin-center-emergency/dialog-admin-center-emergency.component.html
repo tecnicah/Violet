@@ -1,0 +1,148 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Add Info</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+
+  <mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="90px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Creation Date</span><br />
+            {{authoDate | date:'dd MMM yyy'}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">City</span><br />
+            {{data.ciudadName}}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="6" rowHeight="150px">
+      <mat-grid-tile [colspan]="6" [rowspan]="1">
+        <div class="textarea" style="margin-bottom: 30px;">
+          <p>Photo</p>
+          <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 1)"
+            (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false" accept="image/*">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+              Drag and Drop or
+              <p class="browser" id="doc1" (click)="openFileSelector()">Browse File</p>
+            </ng-template>
+          </ngx-file-drop>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="60px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Title" [(ngModel)]="data_.name">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_final textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Phone Number</mat-label>
+            <input matInput prefix="+" mask="(000) 000-0000000000" (keydown)="validaNumericos($event)" type="tel" placeholder="Subtitle" [(ngModel)]="data_.phoneNumber">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="150px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea" style="height: 100%;">
+          <br>
+          <p>Description</p>
+          <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+            <textarea matInput #message maxlength="500" [(ngModel)]="data_.description"></textarea>
+            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" *ngIf="data_.photoCityEmergencies && data_.photoCityEmergencies?.length > 0">
+        <div class="page__section margin-top-min">
+          <div class="page__section-name">
+            Photo City About
+          </div>
+          <div
+            class="page__section">
+            <div class="page__section-input page__section-input--6_1">
+              <span class="documents__index documents__index--task">
+                Document Name
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--6_1">
+              <span class="documents__index documents__index--task">
+
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--6_1">
+              <span class="documents__index documents__index--task">
+
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--6_1">
+              <span class="documents__index documents__index--task">
+
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--6_1">
+              <span class="documents__index documents__index--task">
+
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--6_1">
+              <span class="documents__index documents__index--task">
+
+              </span>
+            </div>
+          </div>
+
+          <div class="page__section documents__ascard" *ngFor="let item of data_.photoCityEmergencies; let i = index">
+            <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+              style="background: transparent!important;" (click)="deletePhotoEmergency(item, i)">
+            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+              {{item.fileName}}
+            </div>
+            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            </div>
+            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            </div>
+            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            </div>
+            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            </div>
+            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            </div>
+          </div>
+        </div>
+      </mat-grid-list>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save();">Save</button>
+    </div>
+  </mat-dialog-actions>

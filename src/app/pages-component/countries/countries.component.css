@@ -1,0 +1,6 @@
+th.mat-header-cell {
+    text-align: center !important;
+}
+mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
+  width: 65px !important;
+}

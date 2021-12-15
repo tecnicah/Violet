@@ -1,0 +1,655 @@
+<!--div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path">
+      Operations / Service Records / Assignee Name / All Services
+      <button class="page__path--closeButton" (click)="goToPage( 'editServiceRecord' )">Back</button>
+    </div>
+    <div class="page__title margin-bottom-m">
+      All Services
+    </div>
+    <div class="page__section no-padding">
+      <div class="page__section-tabs" id="tabs">
+        <div class="page__section-tab page__section-tab--active"
+             (click)="showTabSelected('imm', $event)">
+          Immigration
+        </div>
+        <div class="page__section-tab"
+             (click)="showTabSelected('rel', $event)">
+          Relocation
+        </div>
+      </div>
+    </div>
+    <div class="page__section no-padding">
+      <form [formGroup]="Immigration" class="page__section-form" id="tab_imm">
+        <div class="page__section">
+          <div class="page__section-name">
+            Immigration
+          </div>
+          <div class="page__section-button">
+            <button (click)="showExportDialog()"  class="button-icon button-icon--adder">
+              Export
+            </button>
+
+            <button id="excel" (click)="exporter.exportTable('csv')" style="display: none;"></button>
+          </div>
+          <div class="page__section-button">
+            <button (click)="clearFilters_()"
+                    class="button-icon button-icon--adder">
+              Clear filters
+            </button>
+          </div>
+        </div>
+        <div class="page__section page__section-inputs">
+          <div class="page__section-input">
+            <mat-form-field appearance="fill">
+              <mat-label>Service Type</mat-label>
+              <mat-select formControlName="serviceType" (selectionChange)="search();">
+                <mat-option *ngFor="let serviceType of service_type_catalog; let i = index" [attr.data-index]="i" [value]="serviceType.id">
+                  {{ serviceType.service }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" (selectionChange)="search();">
+                <mat-option *ngFor="let status of status_catalog; let i = index" [attr.data-index]="i" [value]="status.id">
+                  {{ status.status }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input" style="padding:0;">
+            <mat-form-field appearance="fill">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate
+                       formControlName="start" />
+                <input matEndDate
+                       (dateChange)="search()"
+                       formControlName="end" />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="page__section" id="export">
+
+            <mat-table matTableExporter [dataSource]="data_services" #exporter="matTableExporter" style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);" class="main-table">
+
+              <ng-container matColumnDef="campo_0">
+                <mat-header-cell *matHeaderCellDef class="text-center">Service Order Id</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_1">
+                <mat-header-cell *matHeaderCellDef class="text-center">Service / <br />Service No. </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.service}} / {{element.serviceNumber}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_2">
+                <mat-header-cell *matHeaderCellDef class="text-center">Location</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.location}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_3">
+                <mat-header-cell *matHeaderCellDef class="text-center">Times Used</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">0</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_4">
+                <mat-header-cell *matHeaderCellDef class="text-center">Autho Date</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.autho | date: 'dd MM yyyy'}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_5">
+                <mat-header-cell *matHeaderCellDef class="text-center">Status</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.status}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_6">
+                <mat-header-cell *matHeaderCellDef class="text-center">Coordinator</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.coordinator}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="campo_7">
+                <mat-header-cell *matHeaderCellDef class="text-center">Service fee <br /> Partner</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee}}</mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="table_columns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: table_columns;"></mat-row>
+            </mat-table>
+        </div>
+        <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+          <mat-paginator #DataFollow [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </form>
+
+      <form [formGroup]="Relocation" class="page__section-form display-none" id="tab_rel">
+        <div class="page__section">
+          <div class="page__section-name">
+            Relocation
+          </div>
+          <div class="page__section-button">
+            <button (click)="showExportDialog()"
+                    class="button-icon button-icon--adder">
+              Export
+            </button>
+          </div>
+          <div class="page__section-button">
+            <button (click)="clearFilters_()"
+                    class="button-icon button-icon--adder">
+              Clear filters
+            </button>
+          </div>
+        </div>
+        <div class="page__section page__section-inputs">
+          <div class="page__section-input">
+            <mat-form-field appearance="fill">
+              <mat-label>Service Type</mat-label>
+              <mat-select formControlName="serviceType" (selectionChange)="search();">
+                <mat-option *ngFor="let serviceType of service_type_catalog; let i = index" [attr.data-index]="i" [value]="serviceType.id">
+                  {{ serviceType.service }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" (selectionChange)="search();">
+                <mat-option *ngFor="let status of status_catalog; let i = index" [attr.data-index]="i" [value]="status.id">
+                  {{ status.status }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input" style="padding:0;">
+            <mat-form-field appearance="fill">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [rangePicker]="picker_relocation">
+                <input matStartDate
+                       formControlName="start" />
+                <input matEndDate
+                       (dateChange)="search()"
+                       formControlName="end" />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker_relocation"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker_relocation></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="page__section">
+          <table mat-table mat-sort [dataSource]="data_services" style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1); font-size: 14px !important;" class="main-table">
+
+            <ng-container matColumnDef="campo_0">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Service Order Id</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.numberWorkOrder}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_1">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Service / <br />Service No. </th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.service}} / {{element.serviceNumber}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_2">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Location</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.location}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_3">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Times Used</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">0</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_4">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Autho Date</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.autho | date: 'dd MM yyyy'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_5">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Status</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.status}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_6">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Coordinator</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.coordinator}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="campo_7">
+              <th mat-header-cell *matHeaderCellDef class="text-center" style="font-size: 14px !important;">Service fee <br /> Partner</th>
+              <td mat-cell *matCellDef="let element" class="text-center" style="font-size: 14px !important;">{{element.projectedFee}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="table_columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: table_columns;"></tr>
+          </table>
+        </div>
+        <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+          <mat-paginator #DataFollowS [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </form>
+    </div>
+  </div>
+</div-->
+
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path">Operations / Service Records / Assignee Name / All Services</div>
+    <button class="page__path--closeButton" style="    margin-top: 25px; margin-right: 17px;" (click)="goBack()">Back</button>
+    <div class="page__title title">
+      All Services
+    </div>
+
+    <mat-tab-group class="margin_table mat-elevation-z8" (selectedTabChange)="Line($event)">
+      <mat-tab label="Immigration" id="tab1" (click)="Line(1)" style="padding: 20px;">
+        <div style="padding: 20px; width:100%">
+          <div class="page__section-name">
+            Immigration
+          </div>
+
+          <mat-grid-list cols="4" rowHeight="70px">
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="input_central textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Search</mat-label>
+                  <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+                    [(ngModel)]="filter_data.filter" />
+                  <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="input_central textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Service Type</mat-label>
+                  <mat-select matNativeControl [(ngModel)]="filter_data.service_type_id" (ngModelChange)="searchData()">
+                    <mat-option *ngFor="let serviceType of service_type_catalog; let i = index"
+                      [value]="serviceType.id">
+                      {{ serviceType.service }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="input_central textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Status</mat-label>
+                  <mat-select matNativeControl [(ngModel)]="filter_data.status_id" (ngModelChange)="searchData()">
+                    <mat-option *ngFor="let status of status_catalog; let i = index" [value]="status.id">
+                      {{ status.status }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central">
+                <mat-label>Date Range</mat-label>
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                  <input matStartDate formControlName="start" placeholder="Start date" autocomplete="off" />
+                  <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="end"
+                    autocomplete="off" placeholder="End date" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <button mat-icon-button color="primary" style="margin-top: -28px;" matTooltip="Clear filter"
+                (click)="cleanFilter()">
+                <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+              </button>
+              <div class="page__section-butuonc" style="margin-top: -30px;">
+                <button class="button-icon button-icon--export" (click)="showExportDialog()">
+                  Export
+                </button>
+              </div>
+            </mat-grid-tile>
+
+          </mat-grid-list>
+
+          <button (click)="exporter.exportTable('xls')" id="excel" style="display: none;"
+            class="button-icon button-icon--adder">
+            Export
+          </button>
+
+          <!-------------------------------------------------------------------------------------------------------------->
+          <!--OPEN TABLE IMMIGRATION-->
+          <div class="page__section" id="exportReport">
+            <table mat-table [dataSource]="data_services" matTableExporter #exporter="matTableExporter"
+              class="mat-elevation-z8 textarea">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="campo_0">
+                <th mat-header-cell *matHeaderCellDef>Work Order</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.numberWorkOrder}}
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="campo_1">
+                <th mat-header-cell *matHeaderCellDef>Service</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.service}}
+                </td>
+              </ng-container>
+
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_2">
+                <th mat-header-cell *matHeaderCellDef> Service ID </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.serviceNumber}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_3">
+                <th mat-header-cell *matHeaderCellDef>Program</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.program}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_5">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.location}}
+                </td>
+              </ng-container>
+
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_6">
+                <th mat-header-cell *matHeaderCellDef>Delivered To</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.deliveredTo}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_7">
+                <th mat-header-cell *matHeaderCellDef>Autho Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.autho | date: 'dd MMM yyyy'}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_8">
+                <th mat-header-cell *matHeaderCellDef>Completion Date</th>
+                <td mat-cell *matCellDef="let element">
+
+                </td>
+              </ng-container>
+
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_9">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.status}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_10">
+                <th mat-header-cell *matHeaderCellDef>Coordinator</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.coordinator}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_11">
+                <th mat-header-cell *matHeaderCellDef>Supplier Partner</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.supplier}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_12">
+                <th mat-header-cell *matHeaderCellDef>Service Fee</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.projectedFee}}
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="table_columns"></tr>
+              <tr mat-row *matRowDef="let row; columns: table_columns;"></tr>
+            </table>
+          </div>
+
+          <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+            <mat-paginator #DataFollow [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+          <br><br>
+          <!--CLOSE TABLE IMMIGRATION-->
+        </div>
+
+      </mat-tab>
+
+      <mat-tab label="Relocation" id="tab2" (click)="Line(2)">
+        <div style="padding: 20px; width:100%">
+          <div class="page__section-name">
+            Relocation
+          </div>
+
+          <mat-grid-list cols="4" rowHeight="70px">
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="input_central textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Search</mat-label>
+                  <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+                    [(ngModel)]="filter_data.filter" />
+                  <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="input_central textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Service Type</mat-label>
+                  <mat-select matNativeControl [(ngModel)]="filter_data.service_type_id" (ngModelChange)="searchData()">
+                    <mat-option *ngFor="let serviceType of service_type_catalog; let i = index"
+                      [value]="serviceType.id">
+                      {{ serviceType.service }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="input_central textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Status</mat-label>
+                  <mat-select matNativeControl [(ngModel)]="filter_data.status_id" (ngModelChange)="searchData()">
+                    <mat-option *ngFor="let status of status_catalog; let i = index" [value]="status.id">
+                      {{ status.status }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central">
+                <mat-label>Date Range</mat-label>
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                  <input matStartDate formControlName="start" placeholder="Start date" autocomplete="off" />
+                  <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="end"
+                    autocomplete="off" placeholder="End date" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <button mat-icon-button color="primary" style="margin-top: -28px;" matTooltip="Clear filter"
+                (click)="cleanFilter()">
+                <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+              </button>
+              <div class="page__section-butuonc" style="margin-top: -30px;">
+                <button class="button-icon button-icon--export" (click)="showExportDialog()">
+                  Export
+                </button>
+              </div>
+            </mat-grid-tile>
+
+
+          </mat-grid-list>
+
+          <button (click)="exporter.exportTable('xls')" id="excel" style="display: none;"
+            class="button-icon button-icon--adder">
+            Export
+          </button>
+
+          <!-------------------------------------------------------------------------------------------------------------->
+          <!--OPEN TABLE RELOCATION-->
+          <div class="page__section" id="exportReport">
+            <table mat-table [dataSource]="data_services" matTableExporter #exporter="matTableExporter"
+              class="mat-elevation-z8 textarea">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="campo_0">
+                <th mat-header-cell *matHeaderCellDef>Work Order</th>
+                <td mat-cell *matCellDef="let element">
+
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="campo_1">
+                <th mat-header-cell *matHeaderCellDef>Service</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.service}}
+                </td>
+              </ng-container>
+
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_2">
+                <th mat-header-cell *matHeaderCellDef> Service ID </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.serviceNumber}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_3">
+                <th mat-header-cell *matHeaderCellDef>Program</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.program}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_4">
+                <th mat-header-cell *matHeaderCellDef>Category</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.category}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_5">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.location}}
+                </td>
+              </ng-container>
+
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_6">
+                <th mat-header-cell *matHeaderCellDef>Delivered To</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.deliveredTo}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_7">
+                <th mat-header-cell *matHeaderCellDef>Autho Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.autho | date: 'dd MMM yyyy'}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_8">
+                <th mat-header-cell *matHeaderCellDef>Completion Date</th>
+                <td mat-cell *matCellDef="let element">
+
+                </td>
+              </ng-container>
+
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_9">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.status}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_10">
+                <th mat-header-cell *matHeaderCellDef>Coordinator</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.coordinator}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_11">
+                <th mat-header-cell *matHeaderCellDef>Supplier Partner</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.supplier}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="campo_12">
+                <th mat-header-cell *matHeaderCellDef>Service Fee</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.projectedFee}}
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="table_columns"></tr>
+              <tr mat-row *matRowDef="let row; columns: table_columns;"></tr>
+            </table>
+          </div>
+
+          <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+            <mat-paginator #DataFollowS [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+          <br><br>
+          <!--CLOSE TABLE RELOCATION-->
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
+</div>

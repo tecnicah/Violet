@@ -1,0 +1,64 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add Payment Type</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!-----------------------------------content-------------------------------------->
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="3" rowHeight="70px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Payment Type</mat-label>
+          <mat-select [(ngModel)]="data.paymentType">
+            <mat-option *ngFor='let data_ of ca_payment_Type' [value]='data_.id'>{{data_.paymentType}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Responsible</mat-label>
+          <mat-select [(ngModel)]="data.responsible">
+            <mat-option *ngFor="let item of ca_responsible" [value]="item.id">{{item.responsable}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput placeholder="Description" [(ngModel)]="data.description">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Comment</mat-label>
+          <input matInput placeholder="Comment" [(ngModel)]="data.comment">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <div class="page__section-buttong">
+    <button (click)="save_data();">Save</button>
+  </div>
+
+</mat-dialog-actions>

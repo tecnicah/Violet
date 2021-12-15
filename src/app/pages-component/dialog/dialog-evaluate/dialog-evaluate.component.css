@@ -1,0 +1,23 @@
+div{
+    width: 100%;
+}
+
+.rating{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.rating div{
+    width: auto;
+}
+
+.ratingcenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ratingcenter div{
+    width: auto;
+}

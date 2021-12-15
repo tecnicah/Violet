@@ -1,0 +1,1109 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">
+      <span *ngIf="partnert">Partner & Clients / Partner - Client</span>
+      <span *ngIf="lead">Partner & Clients / Lead</span>
+      <button class="page__path--closeButton" (click)="goBack()" *ngIf="partnert">Back</button>
+      <button class="page__path--closeButton"(click)="goBack()" *ngIf="lead">Back</button>
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__title title" *ngIf="partnert">
+          Partner - Client Profile
+        </div>
+        <div class="page__title title" *ngIf="lead">
+          Lead
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea" style="display: flex; flex-direction: column; height: 100%;">
+          <div class="textarea">
+            <mat-label *ngIf="!type" style="font-size: 12px; color:rgba(0, 0, 0, 0.6);">Type*</mat-label>
+            <mat-label style="color: #e91e63; font-size: 12px;" *ngIf="type">Type*</mat-label>
+          </div>
+          <div class="textarea">
+            <mat-radio-group style="display: flex;" [(ngModel)]="lead_client.idTypePartnerClientProfile"
+              (ngModelChange)="type = false">
+              <mat-radio-button [value]="1" style="font-size: 12px; color:rgba(0, 0, 0, 0.6); padding: 0 7px;">Partner
+              </mat-radio-button>
+              <mat-radio-button [value]="2" style="font-size: 12px; color:rgba(0, 0, 0, 0.6);">Client</mat-radio-button>
+            </mat-radio-group>
+            <mat-error *ngIf="type" style="font-size: 12px;">
+              Field is required
+            </mat-error>
+          </div>
+        </div>
+      </mat-grid-tile> -->
+      <!-- *ngIf="lead_client.idTypePartnerClientProfile == 2" -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead_client.idCompanyType == 2">
+        <mat-form-field class="input_final">
+          <mat-label [ngClass]="{'required': belongs}">Belongs to Partner</mat-label>
+          <mat-select required [(ngModel)]="lead_client.belongsToPartner">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Name" [(ngModel)]="filterC.name">
+            </mat-form-field>
+            <mat-option (ngModelChange)="belongs = false" *ngFor="let item of caCliente | filterBy: filterC" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+            <mat-option disabled *ngIf="(caCliente | filterBy: filterC).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint *ngIf="belongs" style="color: #e91e63;">Field is required</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="3">
+        <!-- actual -->
+        <!-- <div class="flex-img">
+          <div>
+            <img src="/assets/images/users/avatar.png" id="lead_client_avatar" class="avatar">
+          </div>
+          <div style="height: 10px;">&nbsp;</div>
+          <input class="btnr btnr--pencil" hidden type="file" id="file" accept="image/*" (change)="img($event)">
+          <button onclick="document.getElementById('file').click()" class="btnr btnr--pencil" matRipple
+            matRippleColor="rgba(157, 50, 146, 0.5)">
+            Edit Photo
+          </button>
+        </div> -->
+        <div class="page__section page__section-inputs no-padding-tb">
+          <div class="page__section page__section-inputs no-padding-tb">
+            <div class="page__section page__section-input--x no-padding-tb">
+
+              <input type="file" id="file" name="file"
+                class="display-none"
+                (change)="img( $event)" />
+
+              <div class="input__image">
+                <label for="file" class="input__image-label">
+                  <div class="input__image-label--card" style="top: -30px !important;">
+                    <img id="lead_client_avatar" src="assets/images/users/avatar.png" />
+                  </div>
+                  <span style="top: 115px;" class="input__image-label--cardSpan">Edit Photo</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label [ngClass]="{'required': name}">Name</mat-label>
+          <input matInput placeholder="Name" type="text" required [(ngModel)]="lead_client.name"
+            (ngModelChange)="name = false" />
+          <mat-error>Field is required</mat-error>
+          <mat-hint *ngIf="name" style="color: #e91e63;">Field is required</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label [ngClass]="{'required': comType}">Company Type</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="lead_client.idCompanyType" (ngModelChange)="comType = false">
+            <mat-option [value]="1">Partner</mat-option>
+            <mat-option [value]="2">Client</mat-option>
+
+          </mat-select>
+          <!-- <mat-select matNativeControl required [(ngModel)]="lead_client.idCompanyType" (ngModelChange)="comType = false">
+            <mat-option *ngFor="let item of caCompanyType" [value]='item.id'>{{item.companyType1}}</mat-option>
+          </mat-select> -->
+          <mat-error>Field is required</mat-error>
+          <mat-hint *ngIf="comType" style="color: #e91e63;">Field is required</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!----------------------lead--------------------------------->
+
+      <!--mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field class="input_final">
+          <mat-label>Industry</mat-label>
+          <input matInput placeholder="Industry" type="text" [(ngModel)]="lead_client.industry" />
+        </mat-form-field>
+      </mat-grid-tile-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Industry</mat-label>
+          <mat-select matNativeControl required [(ngModel)]="lead_client.industry">
+            <mat-option *ngFor="let item of ca_industry" [value]='item.id'>{{item.industry}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <div class="textarea input_central text-calendar">
+          <div>
+            <span class="titles">Partner/Client Since</span>
+            <span class="text">{{lead_client.partnerClientSince | date : 'dd MMM yyy'}}</span>
+          </div>
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Partner/Client Since</mat-label>
+          <input matInput [matDatepicker]="partner_i_date" autocomplete="off"
+
+            [(ngModel)]="lead_client.partnerClientSince" />
+          <mat-datepicker-toggle matSuffix [for]="partner_i_date"></mat-datepicker-toggle>
+          <mat-datepicker #partner_i_date></mat-datepicker>
+
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Approval from</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="lead_client.approvalFrom" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Responsible Premier Office</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idResponsiblePremierOffice">
+            <mat-option *ngFor="let item of caResponsiblePremierOffice" [value]="item.id">
+              {{item.responsiblePremierOffice1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Assigned To</mat-label>
+          <mat-select matNativeControl  [(ngModel)]="lead_client.assignedTo">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Assigned To</mat-label>
+              <input matInput placeholder="Assigned" [(ngModel)]="filterAssignedLead.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of _assigned| filterBy: filterAssignedLead" [value]='item.userId'>{{item.name}} / {{item.role}}</mat-option>
+            <mat-option disabled *ngIf="(_assigned | filterBy: filterAssignedLead).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Life Circle</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idLifeCircle">
+            <mat-option *ngFor="let item of caLifeCircle" [value]="item.id">{{item.lifeCircle1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="lead">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Success Probability</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idSuccessProbability">
+            <mat-option *ngFor="let item of caSuccessProbability" [value]="item.id">{{item.successProbability1}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <!--------------------------Partner-------------------------------------->
+
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <div class="textarea input_final text-calendar">
+          <div>
+            <span class="titles">Partner/Client Since</span>
+            <span class="text">{{lead_client.partnerClientSince | date: 'dd MMM yyy'}}</span>
+          </div>
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+      </mat-grid-tile> -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Partner/Client Since</mat-label>
+          <input matInput [matDatepicker]="partner2_i_date" autocomplete="off"
+
+            [(ngModel)]="lead_client.partnerClientSince" />
+          <mat-datepicker-toggle matSuffix [for]="partner2_i_date"></mat-datepicker-toggle>
+          <mat-datepicker #partner2_i_date></mat-datepicker>
+
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Responsible Premier Office</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idResponsiblePremierOffice">
+            <mat-option *ngFor="let item of caResponsiblePremierOffice" [value]="item.id">
+              {{item.responsiblePremierOffice1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Assigned To</mat-label>
+          <mat-select matNativeControl  [(ngModel)]="lead_client.assignedTo">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Assigned To</mat-label>
+              <input matInput placeholder="Assigned" [(ngModel)]="filterAssignedPartner.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of _assigned | filterBy: filterAssignedPartner" [value]='item.userId'>{{item.name}} / {{item.role}}</mat-option>
+            <mat-option disabled *ngIf="(_assigned | filterBy: filterAssignedPartner).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Referral Fee</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idReferralFee">
+            <mat-option *ngFor="let item of caReferrelFee" [value]="item.id">{{item.referralFee1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Payment Recurrence</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idPaymentRecurrence">
+            <mat-option *ngFor="let item of caDuration" [value]="item.id">{{item.paymentRecurrence1}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="partnert">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Pricing Type</mat-label>
+          <mat-select matNativeControl [(ngModel)]="lead_client.idPricingType">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Pricing</mat-label>
+              <input matInput placeholder="Pricing" [(ngModel)]="filterPricingPartner.currency">
+            </mat-form-field>
+            <mat-option *ngFor="let item of caCurrency | filterBy: filterPricingPartner" [value]="item.id">{{item.currency}}</mat-option>
+            <mat-option disabled *ngIf="(caCurrency | filterBy: filterPricingPartner).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-------------lead & partnert----------------------->
+    <mat-grid-list cols="4" rowHeight="100px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field>
+          <mat-label>About</mat-label>
+          <textarea matInput #input maxlength="500" matInput placeholder="About" type="text"
+            [(ngModel)]="lead_client.about"></textarea>
+          <mat-hint align="end">{{input.value?.length || 0}}/500</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <span style="font-size: 16px;" class="title">General Contract & Pricing Info</span>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+
+    <table mat-table [dataSource]="generalContractPricingInfos" matSort class="mat-elevation-z8 margin_table">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="uno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractEffectiveDate"> Contract Effective Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.contractEffectiveDate | date : 'dd MMM yyy'}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="dos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractExpirationDate"> Contract Expiration Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.contractExpirationDate | date : 'dd MMM yyy'}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="tres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idPricingSchedule"> Pricing Schedule </th>
+        <td mat-cell *matCellDef="let element"> {{element.pricingSchedule1}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cuatro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="paymentRecurrence"> Payment Recurrence </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.paymentRecurrence1}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cinco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="referralFee"> Referral Fee </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.referralFee}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="seis">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <img src="/assets/icons/pencil.png" (click)="contractDialog(element, i)" *ngIf="permission_write || permission_edit" style="width: 20px;">
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="seis"></tr>
+      <tr mat-row *matRowDef="let row; columns: seis;"></tr>
+    </table>
+
+    <div class="textarea" style="text-align: end;">
+      <button (click)="contractDialog(null, 0)" class="btnr btnr--add" matRipple *ngIf="permission_write || permission_edit"
+        matRippleColor="rgba(157, 50, 146, 0.5)">
+        Add Contract & Pricing
+      </button>
+    </div>
+
+    <p class="title margin_table" style="font-size: 16px;">Offices</p>
+    <!--div *ngFor="let item of this.lead_client.officeInformations; let i = index">
+      <div class="mat-elevation-z8 offices margin_table" *ngIf="item.idTypeOffice == 1">
+        <mat-grid-list cols="4" rowHeight="60px">
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="textarea">
+              <span style="color: rgba(0, 0, 0, 0.7);">Headquarter Office</span>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Type</mat-label>
+              <mat-select matNativeControl [(ngModel)]="item.idTypeOffice">
+                <mat-option *ngFor="let items of caTypeOffice" [value]="items.id">{{items.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>Commercial Name</mat-label>
+              <input matInput placeholder="Commercial Name" type="text" [(ngModel)]="item.commercialName" />
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>Legal Name</mat-label>
+              <input matInput placeholder="Legal Name" type="text" [(ngModel)]="item.legalName" />
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_final textarea">
+              <mat-form-field appearance="fill">
+                <mat-label>Country</mat-label>
+                <mat-select [(ngModel)]="item.idCountry" (selectionChange)="getcity(item)">
+                  <mat-option *ngFor="let items of caCountry" [value]="items.id"> {{items.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central textarea">
+              <mat-form-field appearance="fill">
+                <mat-label>City</mat-label>
+                <mat-select [(ngModel)]="item.idCity">
+                  <mat-option *ngFor="let items of ccity" [value]="items.id"> {{items.city}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <mat-form-field class="input_central">
+              <mat-label>Current Address</mat-label>
+              <input matInput placeholder="Current Address" type="text" [(ngModel)]="item.currentAddress" />
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="input_final">
+              <mat-label>Zip Code</mat-label>
+              <input matInput placeholder="Zip Code" type="number" [(ngModel)]="item.zipCode" />
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="textarea" style="text-align: end;">
+              <span class="browser" style="font-size: 12px;" (click)="dialogOfficeInformation(item, i)">View Office
+                Details</span>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </div>
+    </div>
+    <p class="title margin_table" style="font-size: 14px;">Offices</p-->
+
+    <table mat-table [dataSource]="officeInformations" matSort class="mat-elevation-z8 margin_table">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="uno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idTypeOffice"> Type </th>
+        <td mat-cell *matCellDef="let element"> {{officeType(element.idTypeOffice)}} </td>
+        <!-- {{officeType(element.idTypeOffice)}} -->
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="dos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idCountry"> Country </th>
+        <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="tres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idCity"> City </th>
+        <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+        <!-- {{getcity(element.idCity)}}  -->
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="cuatro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="commercialName"> Commercial Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.commercialName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cinco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="legalName"> Legal Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.legalName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="seis">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element let i = index">
+          <img src="/assets/icons/pencil.png" (click)="dialogOfficeInformation(element, i)"  *ngIf="permission_write || permission_edit"  style="width: 20px;">
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="seis"></tr>
+      <tr mat-row *matRowDef="let row; columns: seis;"></tr>
+    </table>
+
+    <div class="textarea" style="text-align: end;">
+      <button class="btnr btnr--add" (click)="dialogOfficeInformation(null, 0)" matRipple
+        matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+        Add Office
+      </button>
+    </div>
+
+    <p class="title margin_table" style="font-size: 14px;">Contacts</p>
+
+    <!-- <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" (keyup)="applyFilter($event)" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list> -->
+
+
+    <table mat-table [dataSource]="dataContacts" matSort class="mat-elevation-z8 margin_table">
+
+    <!-- <table mat-table *ngFor="let item of lead_client.officeInformations" [dataSource]="item.officeContacts" matSort class="mat-elevation-z8 margin_table"> -->
+
+      <!-- Position Column -->
+      <!-- <ng-container matColumnDef="uno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idOfficeInformation"> Office </th>
+        <td mat-cell *matCellDef="let element"> {{element.idOfficeInformation}} </td>
+      </ng-container> -->
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="uno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idContactType"> Contact Type </th>
+        <td mat-cell *matCellDef="let element"> {{get_contacType(element.idContactType)}} </td>
+        <!-- {{get_contacType(element.idContactType)}} -->
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="dos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contactName"> Contact Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="tres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="tittle"> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.tittle}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cuatro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="phoneNumber"> Phone Number </th>
+
+        <td mat-cell *matCellDef="let element"> {{element.phoneNumber | mask: '(000) 000-0000'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cinco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> E-mail </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="seis">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idCity"> City </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- {{get_nameCity(element.city)}} -->
+          {{element.city}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="siete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <img src="/assets/icons/pencil.png"
+           *ngIf="permission_write || permission_edit" (click)="editcontact(element)" style="width: 20px;">
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="siete"></tr>
+      <tr mat-row *matRowDef="let row; columns: siete;"></tr>
+    </table>
+
+    <!--------------------------partnerts-------------------------------------->
+
+    <div *ngIf="partnert">
+      <div *ngIf="lead_client.idCompanyType == 1 && lead_client.id != 0">
+        <p class="margin_table title" style="font-size: 16px;" *ngIf="lead_client.idCompanyType == 1">
+          Clients</p>
+        <table mat-table [dataSource]="client" matSort class="mat-elevation-z8 margin_table">
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="uno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Clients </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{element.name}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="dos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
+            <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+          </ng-container>
+
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="tres">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="pricingType"> Pricing Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.pricingType}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cuatro">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="referralFee"> Referral </th>
+            <td mat-cell *matCellDef="let element"> {{element.referralFee}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cinco">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <img src="/assets/icons/delete.png" (click)="deletecliente(element.id, i)" *ngIf="permission_delete" style="width: 20px;">
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="cinco"></tr>
+          <tr mat-row *matRowDef="let row; columns: cinco;"></tr>
+        </table>
+
+        <div class="textarea" style="text-align: end;">
+          <button class="btnr btnr--add" (click)="dialogaddClient()" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+            Add Client
+          </button>
+        </div>
+      </div>
+
+   
+
+
+      <p class="margin_table title" style="font-size: 16px;">Service Locations</p>
+      <mat-tab-group class="margin_table mat-elevation-z8" (selectedTabChange)="Line($event)">
+        <mat-tab label="Immigration" id="tab1" (click)="Line(1)">
+          <table mat-table [dataSource]="serviceLocationsimmi" matSort>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="uno">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Service </th>
+              <td mat-cell *matCellDef="let element">
+                <p *ngIf="element.id == 0">
+                  {{get_nameService(element.idService)}}
+                </p>
+                <p *ngIf="element.id != 0">
+                  {{element.servicesName}}
+
+                </p>
+
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="dos">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nick Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.nickName}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="tres">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Countries </th>
+              <td  mat-cell *matCellDef="let element" >
+                <div *ngIf="element.id == 0">
+                  <span>
+                  {{ element.servicelocationcountries[0].countries.length }}
+                  </span>
+                </div>
+                <div *ngIf="element.id != 0" (click)="paises(element)" [matMenuTriggerFor]="country">
+                  {{ element.country_total }}
+                </div> 
+              </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="cuatro">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <img  src="/assets/icons/pencil.png" (click)="element.idServiceLine = 1;dialogService(element,i)"
+                  style="width: 20px;" *ngIf="(permission_edit || permission_write)  &&  (element.id != 0) ">
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="cuatro"></tr>
+            <tr mat-row *matRowDef="let row; columns: cuatro;"></tr>
+          </table>
+        </mat-tab>
+
+        <mat-tab label="Relocation" id="tab2" (click)="Line(2)">
+          <table mat-table [dataSource]="serviceLocationsrelo" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="uno">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Service </th>
+              <td mat-cell *matCellDef="let element"> {{element.servicesName}} </td>
+              <!-- <td mat-cell *matCellDef="let element"> {{element.id}} </td> -->
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="dos">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nick Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.nickName}} </td>
+            </ng-container>
+            <!-- Weight Column -->
+            <ng-container matColumnDef="tres">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Countries </th>
+              <td mat-cell *matCellDef="let element">
+                <!--
+                {{element.serviceLocationCountries ? element.serviceLocationCountries.length : element.country_total}}
+                <span  matTooltip="{{ element.serviceLocationCountries.name }}" class="font-purple-dark cursor-pointer">
+                  {{element.serviceLocationCountries.name}}
+                </span>
+              -->
+              <div *ngIf="element.id == 0">
+                <span>
+                {{ element.servicelocationcountries[0].countries.length }}
+                </span>
+              </div>
+              <div *ngIf="element.id != 0" (click)="paises_(element)" [matMenuTriggerFor]="country">
+                {{ element.country_total }}
+              </div> 
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cuatro">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <img src="/assets/icons/pencil.png" *ngIf="permission_edit || permission_write " (click)="element.idServiceLine = 2;dialogService(element,i)"
+                  style="width: 20px;">
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="cuatro"></tr>
+            <tr mat-row *matRowDef="let row; columns: cuatro;"></tr>
+          </table>
+        </mat-tab>
+      </mat-tab-group>
+      <!-- boton service location -->
+      <div class="textarea margin_table" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="dialogService(null, 0)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+          Add New Service
+        </button>
+      </div>
+
+      <mat-grid-list cols="1">
+        <div class="page__section margin-top-min">
+          <div class="page__section-name">
+            Documents
+          </div>
+          <div class="page__section">
+            <div class="page__section-input page__section-input--25">
+              <span class="documents__index documents__index--task">
+                Document Type
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--25">
+              <span class="documents__index documents__index--task">
+                Uploaded Date
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--25">
+              <span class="documents__index documents__index--task">
+                Description
+              </span>
+            </div>
+            <div class="page__section-input page__section-input--25">
+              <span class="documents__index documents__index--task">
+                Privacy
+              </span>
+            </div>
+          </div>
+
+          <div class="page__section documents__ascard" *ngFor="let item of lead_client.documents; let i = index">
+            <img src="assets/icons/quit.svg" (click)="deleteDocument(item.id, i)" *ngIf="permission_delete"
+              class="page__section--card-closeButton delete" style="background: transparent!important;">
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{ item.documentType}}
+            </div>
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.uploadDate| date:'dd MMM yyy'}}
+            </div>
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.description}}
+            </div>
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.privacy}}
+            </div>
+          </div>
+
+          <div class="page__section documents__ascard"
+            *ngFor="let item of lead_client.documentClientPartnerProfiles; let i = index">
+            <img src="assets/icons/quit.svg" (click)="deleteDocument(item.id, i)"
+              class="page__section--card-closeButton delete" style="background: transparent!important;">
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{ item.idDocumentTypeName}}
+            </div>
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.updateDate| date:'dd MMM yyy'}}
+            </div>
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.description}}
+            </div>
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.privacyName}}
+            </div>
+          </div>
+
+        </div>
+      </mat-grid-list>
+
+      <div class="textarea margin_table" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="DialogDocumentsLeadClientComponent(null)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+          Add New Document
+        </button>
+      </div>
+
+      <p class="margin_table title" style="font-size: 16px;">Service Score & Awards</p>
+
+      <table mat-table [dataSource]="serviceScoreAwards" matSort class="mat-elevation-z8 margin_table">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="uno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="idType"> Type </th>
+          <td mat-cell *matCellDef="let element"> Type {{element.idType}} {{element.type ? element.type.length : ''}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="dos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="description"> Title </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="tres">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="idServiceLine"> Service Line </th>
+          <td mat-cell *matCellDef="let element">
+            <p *ngIf="element.serviceLine.length != 0">
+              {{(element.serviceLine)}}
+            </p>
+            <p *ngIf="element.serviceLine.length == 0">
+              {{serScoreType(element.idServiceLine)}}
+            </p>
+          </td>
+
+          <!-- serviceLine -->
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="cuatro">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="year"> Year </th>
+          <td mat-cell *matCellDef="let element"> {{element.year | date: 'yyy'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="cuatro"></tr>
+        <tr mat-row *matRowDef="let row; columns: cuatro;"></tr>
+      </table>
+
+      <div class="textarea margin_table" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="DialogScoreAwards(null,0)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+          Add New
+        </button>
+      </div>
+
+      <p *ngIf="lead_client.id != 0" class="margin_table title" style="font-size: 16px;">Experience Team</p>
+
+      <p *ngIf="lead_client.id != 0" class="margin_table title" style="font-size: 14px; color: gray;">Immigration</p>
+
+      <mat-grid-list  cols="3" rowHeight="100px" *ngIf="( lead_client.id != 0 ) && ((immi.length > 0 ) || (immiTemp.length > 0))">
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let item of immi; let i = index">
+          <span style="padding: 20px; width: 100%; margin-top: 6px;">
+            <div class="cart_teamm mat-elevation-z8" (click)="openProfile(item)" style="cursor:pointer">
+              <!-- <img src="{{_services.url_images}}{{item.avatar}}" class="avatar"> -->
+              <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
+                <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
+                  <div class="pageCard__section pageCard__section-input--x no-padding-tbCard">
+                    <div class="inputCard__image">
+                      <div class="inputCard__image-label--card cursor-pointer">
+                        <img [src]="item.avatar == '' || item.avatar == null ? 'assets/images/users/avatar.png' : _services.url_images + item.avatar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- nuevo -->
+              <div class="divtext">
+                <span class="title_card">{{item.name}}</span> <br>
+                <span class="text_card">{{item.title}}</span>
+              </div>
+            </div>
+            <div class="btn-delete">
+              <img src="/assets/icons/delete.png" class="delete_tem" (click)="deletExperienceTeam(item.id,0, 1)" class="img-delete">
+            </div>
+          </span>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1" class="carts_team_container"
+          *ngFor="let item of immiTemp; let i = index">
+          <span style="padding: 20px; width: 100%;">
+            <div class="cart_team mat-elevation-z8">
+              <img src="/assets/images/users/avatar.png" class="avatar">
+              <div>
+                <span class="title_card">{{getName(item.userId)}}</span>
+                <span class="text_card">Contact</span>
+              </div>
+            <!-- </div>
+            <div class="btn-delete"> -->
+              <img src="/assets/icons/delete.png" class="delete_tem" (click)="deletExperienceTeam(item.id, i, 1)" >
+            </div>
+          </span>
+        </mat-grid-tile>
+
+
+
+      </mat-grid-list>
+
+      <div *ngIf="lead_client.id != 0" class="textarea margin_table" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="dialogExperienceTeam(1)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+          Add New
+        </button>
+      </div>
+
+      <p *ngIf="lead_client.id != 0" class="margin_table title" style="font-size: 14px; color: gray;">Relocation</p>
+
+      <mat-grid-list cols="3" rowHeight="100px" *ngIf="( lead_client.id != 0 ) && ((relo.length > 0 ) || (reloTemp.length > 0))">
+        <mat-grid-tile [colspan]="1" [rowspan]="1"
+          *ngFor="let item of relo; let i = index">
+          <span style="padding: 20px; width: 100%; margin-top: 6px;">
+            <div class="cart_teamm mat-elevation-z8" (click)="openProfile(item)" style="cursor:pointer">
+              <!-- <img src="{{_services.url_images}}{{item.avatar}}" class="avatar"> -->
+              <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
+                <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
+                  <div class="pageCard__section pageCard__section-input--x no-padding-tbCard">
+                    <div class="inputCard__image">
+                      <div class="inputCard__image-label--card cursor-pointer">
+                        <img [src]="item.avatar == '' || item.avatar == null ? 'assets/images/users/avatar.png' : _services.url_images + item.avatar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="divtext">
+                <span class="title_card">{{item.name}}</span> <br>
+                <span class="text_card">{{item.title}}</span>
+              </div>
+            </div>
+            <div class="btn-delete">
+              <img src="/assets/icons/delete.png" class="delete_tem" (click)="deletExperienceTeam(item.id,0, 1)" class="img-delete">
+            </div>
+          </span>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1" class="carts_team_container"
+          *ngFor="let item of reloTemp; let i = index">
+          <span style="padding: 20px; width: 100%;">
+            <div class="cart_team mat-elevation-z8">
+              <img src="/assets/images/users/avatar.png" class="avatar">
+              <div>
+                <span class="title_card">{{getName(item.userId)}}</span>
+                <span class="text_card">Contact</span>
+              </div>
+              <img src="/assets/icons/delete.png" class="delete_tem" (click)="deletExperienceTeam(item.id, i, 1)">
+            </div>
+          </span>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+      <div *ngIf="lead_client.id != 0" class="textarea margin_table" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="dialogExperienceTeam(2)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)">
+          Add New
+        </button>
+      </div>
+
+    </div>
+
+    <!--------------------------leads-------------------------------------->
+
+    <div *ngIf="lead">
+
+      <p class="title margin_table" style="font-size: 14px;">Activity Log</p>
+
+      <table mat-table [dataSource]="activityLogs" matSort class="mat-elevation-z8 margin_table">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="uno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="premierSalesForce"> Premier Sales Force </th>
+          <td mat-cell *matCellDef="let element"> {{element.premierSalesForce}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="dos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="activity"> Activitie </th>
+          <td mat-cell *matCellDef="let element"> {{element.activity}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="tres">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.date | date : 'dd MMM yyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cuatro">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <img src="/assets/icons/pencil.png" (click)="activityLogDialog(element,i)" *ngIf="permission_write || permission_edit" style="width: 20px;">
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="cuatro"></tr>
+        <tr mat-row *matRowDef="let row; columns: cuatro;"></tr>
+      </table>
+
+      <div class="textarea" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="activityLogDialog(null,0)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+          Add Activity Log
+        </button>
+      </div>
+
+      <p class="title margin_table" style="font-size: 14px;">Terms of the Deal</p>
+
+      <table mat-table [dataSource]="termsDeals" matSort class="mat-elevation-z8 margin_table">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="uno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="idPrice"> Prices </th>
+          <td mat-cell *matCellDef="let element"> {{(element.idPrice == 1) ? 'Partner' : 'Individual'}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="dos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="valume"> Volume </th>
+          <td mat-cell *matCellDef="let element"> {{element.volume}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="tres">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="services"> Services </th>
+          <td mat-cell *matCellDef="let element"> {{element.services}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="cuatro">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="amount"> Amount </th>
+          <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="cinco">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="fixed"> Fixed Bid / Per Day </th>
+          <td mat-cell *matCellDef="let element"> {{element.fixed}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="seis">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="bussinesUnit"> Business Unit </th>
+          <td mat-cell *matCellDef="let element"> {{element.bussinesUnit}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="siete">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <img src="/assets/icons/pencil.png" *ngIf="permission_write || permission_edit" (click)="dealogTermsoftheDeal(element, i)" style="width: 20px;">
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="siete"></tr>
+        <tr mat-row *matRowDef="let row; columns: siete;"></tr>
+      </table>
+
+      <div class="textarea" style="text-align: end;">
+        <button class="btnr btnr--add" (click)="dealogTermsoftheDeal(null, 0)" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="permission_write || permission_edit">
+          Add Terms of the Deal
+        </button>
+      </div>
+
+    </div>
+
+    <div class="margin_table">
+      <div class="page__section-buttong" style="text-align: center;" *ngIf="permission_write || permission_edit">
+        <button style="width: 160px;" (click)="save()">
+          Save
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<mat-menu #country="matMenu" xPosition="before">
+  <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Countries:</b> <span *ngFor="let item of countriesImm"> {{item.name}} </span></span>
+          <br>
+        </div>
+      </div>
+  <!--div>
+    <span *ngFor="let item of countriesImm">
+      <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+        >{{item.name}}</button>
+    </span>
+  </div-->
+
+  <!--div class="bg"></div>
+  <div class="assigned_services">
+    <div class="data" style="padding: 10px;">
+      <span style="font-size: 10px;" *ngFor="let item of countriesImm">{{item.name}} <br></span>
+    </div>
+  </div-->
+</mat-menu>

@@ -1,0 +1,42 @@
+.app {
+  overflow: auto;
+  /* margin-bottom: 50px; */
+  width: 100%;
+}
+.toolbar {
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height:55px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  border: 10px solid gray;
+  border-bottom: 0;
+  color: gray;
+  font-size: -webkit-xxx-large;
+  font-weight: bold;
+}
+textarea {
+  resize: none;
+}
+.record {
+float: right;
+}
+.tarjetas{
+  border-top: #9d3292 5px solid;
+  margin-top: 0px;
+  border-radius: 4%;
+}
+.tarjetas p{
+  color: white;
+}
+.delete{
+  background-color: #9d3292;
+  text-align: end;
+  padding-right: 10px;
+  color: white;
+  position: inherit;
+  width: 100%;
+}

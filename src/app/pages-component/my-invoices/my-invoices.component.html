@@ -1,0 +1,194 @@
+<div class="main-wrapper padding-general-x">
+    <div class="page">
+      <div class="page__path subtitle">Operations / My Invoices</div>
+      <div class="page__title title">
+        My Invoices
+      </div>
+  
+      <mat-grid-list cols="5" rowHeight="70px">
+  
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Search</mat-label>
+              <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)" [(ngModel)]="data.filter"/>
+              <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field class="input_central">
+            <mat-label>Date Range</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+              <input matStartDate formControlName="renge1" placeholder="Start date" autocomplete="off" />
+              <input matEndDate (dateChange)="filteringServiceRecordTable()" formControlName="range2"
+                autocomplete="off" placeholder="End date" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Partner</mat-label>
+              <mat-select matNativeControl [(ngModel)]="data.partner" (ngModelChange)="getCliente(); searchData();">
+                <mat-option *ngFor="let item of ca_partner" [value]="item.id">{{item.coordinator}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Client</mat-label>
+              <mat-select matNativeControl [(ngModel)]="data.client" (ngModelChange)="searchData();">
+                <mat-option *ngFor="let item of ca_cliente" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select matNativeControl [(ngModel)]="data.status" (ngModelChange)="searchData();">
+                <mat-option *ngFor="let item of ca_status" [value]="item.id">{{item.status}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-butuon" style=" width: 70%; height: 100%; text-align: center;">
+            <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: 1px;" matTooltip="Clear filter"
+            (click)="cleanFilter()">
+              <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+            </button>
+          </div>
+        </mat-grid-tile>
+  
+  
+      </mat-grid-list>
+  
+      <!-------------------------------------------------------------------------------------------------------------->
+      <!--OPEN TABLE REQUEST CENTER-->
+      <div class="page__section" id="exportReport">
+        <table mat-table [dataSource]="dataSource" matTableExporter #exporter="matTableExporter"
+          class="mat-elevation-z8 textarea">
+  
+          <!-- Position Column -->
+          <ng-container matColumnDef="Service Record">
+            <th mat-header-cell *matHeaderCellDef>Service Record</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.serviceRecord}}
+            </td>
+          </ng-container>
+  
+          <!-- Name Column -->
+          <ng-container matColumnDef="Assignee">
+            <th mat-header-cell *matHeaderCellDef>Assignee</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.asignee}}
+            </td>
+          </ng-container>
+  
+          <!-- Weight Column -->
+          <ng-container matColumnDef="Client">
+            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.client}}
+            </td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Invoice No.">
+            <th mat-header-cell *matHeaderCellDef> Invoice No. </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.cuatro}}
+            </td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Invoice Date">
+            <th mat-header-cell *matHeaderCellDef>Invoice Date</th>
+            <td mat-cell *matCellDef="let element">{{element.cinco}}</td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td mat-cell *matCellDef="let element">{{element.amount | currency}}</td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Currency">
+            <th mat-header-cell *matHeaderCellDef>Currency</th>
+            <td mat-cell *matCellDef="let element">{{element.siete}}</td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Due Date">
+            <th mat-header-cell *matHeaderCellDef>Due Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.dueDate | date: 'dd MMM yyyy'}}
+            </td>
+          </ng-container>
+
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.status}}
+            </td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Accion">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <div>
+                <img src="assets\icons\pencil.png" style="width: 17px;" (click)="editarInvoice(element)">
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+  
+      <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+        <mat-paginator #DataFollow [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+  
+      <!--
+          <mat-menu #supplier="matMenu" xPosition="before">
+            <div class="bg"></div>
+            <div class="assigned_services">
+              <div class="data" style="padding: 10px;">
+                <span style="font-size: 10px;"><b>Assignee:</b> {{data_registro.assinee}}</span>
+                <br>
+                <span style="font-size: 10px;"><b>Partner:</b> {{data_registro.partner}}</span>
+                <br>
+                <span style="font-size: 10px;"><b>Client:</b> {{data_registro.client}}</span>
+                <br>
+                <span style="font-size: 10px;"><b>Coordinator:</b> {{data_registro.coordinator}}</span>
+              </div>
+            </div>
+          </mat-menu>
+          -->
+  
+      <br><br>
+    </div>
+  </div>
+  

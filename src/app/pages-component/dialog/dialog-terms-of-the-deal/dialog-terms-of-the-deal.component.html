@@ -1,0 +1,78 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Terms of the Deal</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="3" rowHeight="60px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea">
+        <span>Type</span><br>
+        <mat-radio-group [(ngModel)]="data.idPrice">
+          <mat-radio-button *ngFor="let item of caPriceTerm" [value]="item.id">{{item.price}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Volume</mat-label>
+        <input matInput [(ngModel)]="data.volume" />
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" >
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Services</mat-label>
+          <input matInput [(ngModel)]="data.services" type="number" min="1"/>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Amount</mat-label>
+          <input matInput [(ngModel)]="data.amount" type="number" min="1"/>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea input_central">
+            <mat-form-field appearance="fill">
+              <mat-label>Currency </mat-label>
+              <mat-select [(ngModel)]="data.idCurrency">
+                <mat-option *ngFor="let item of caCurrency" [value]="item.id"> {{item.currency}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Fixed Bid / Per Day</mat-label>
+          <input matInput [(ngModel)]="data.fixed"/>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central">
+          <mat-label>Business Unit</mat-label>
+          <input matInput [(ngModel)]="data.bussinesUnit"/>
+        </mat-form-field>
+      </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

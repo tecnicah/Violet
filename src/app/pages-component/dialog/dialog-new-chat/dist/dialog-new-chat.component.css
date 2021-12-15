@@ -1,0 +1,104 @@
+.chips mat-chip {
+  background: #ffe0e0;
+}
+.chips mat-chip mat-icon {
+  color: #9d3292;
+}
+
+.texting {
+  width: 100%;
+}
+.texting .icons {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.texting .icon-send {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.texting .icon-send button {
+  width: 100%;
+}
+
+/* --------------------------
+  SVG Styles
+--------------------------- */
+#upload * {
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+
+.a {
+  -webkit-animation: fillChange 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+  animation: fillChange 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.background {
+  -webkit-animation: scaleAnimation 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+  animation: scaleAnimation 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.arrow {
+  -webkit-animation: arrowAnimation 2 1s;
+  animation: arrowAnimation 2 1s;
+}
+
+.progressLoader {
+  -webkit-animation: progressLoader 1s;
+  animation: progressLoader 1s;
+}
+
+.arrow,
+.progressLoader {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+
+.dribbble {
+  position: fixed;
+  display: block;
+  right: 30px;
+  bottom: 30px;
+}
+.dribbble img {
+  display: block;
+  height: 25px;
+}
+
+.sending {
+  display: flex;
+  justify-content: center;
+}
+
+.recients {
+  max-height: 250px;
+  max-width: 270px;
+  overflow-y: scroll;
+}
+.recients .user_chats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+.recients .user_chats img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+.recients .user_chats .dot {
+  width: 10px;
+  height: 10px;
+  background: #00dc81;
+  border-radius: 100%;
+}
+.recients .user_chats .red {
+  background: #ff5858;
+}

@@ -1,0 +1,174 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Directory</div>
+    <div class="page__title title">
+      Directory
+    </div>
+
+    <mat-grid-list cols="5" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
+              [(ngModel)]="data_directory.filter" />
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Title</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_directory.title" (ngModelChange)="searchData()">
+              <mat-option *ngFor="let data of ca_title" [value]="data.id">{{data.title}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_directory.country"
+              (ngModelChange)="getCity(); searchData();">
+              <mat-option *ngFor="let data of ca_country" [value]="data.id">{{data.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_directory.city" (ngModelChange)="searchData()">
+              <mat-option *ngFor="let data of ca_city" [value]="data.id">{{data.city}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Company</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_directory.company" (ngModelChange)="searchData()">
+              <mat-option *ngFor="let data of ca_company" [value]="data.id">{{data.comercialName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Office</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_directory.office" (ngModelChange)="searchData()">
+              <mat-option *ngFor="let data of ca_office" [value]="data.id">{{data.office}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuon" style=" width: 70%; height: 100%; text-align: center;">
+          <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: 1px;"
+            matTooltip="Clear filter" (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-------------------------------------------------------------------------------------------------------------->
+    <!--OPEN TABLE SUPPLIER-->
+    <div class="page__section" id="exportReport">
+      <table mat-table [dataSource]="dataSource" matTableExporter #exporter="matTableExporter"
+        class="mat-elevation-z8 textarea">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="ContactName">
+          <th mat-header-cell *matHeaderCellDef>Contact Name</th>
+          <td mat-cell *matCellDef="let element" (click)="openProfile(element)">
+            <p class="browser" style="font-size: 12px;">{{element.user}}</p>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.title}}
+          </td>
+        </ng-container>
+
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Office">
+          <th mat-header-cell *matHeaderCellDef> Office </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.office}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Country">
+          <th mat-header-cell *matHeaderCellDef>Country</th>
+          <td mat-cell *matCellDef="let element">{{element.country}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="City">
+          <th mat-header-cell *matHeaderCellDef>City</th>
+          <td mat-cell *matCellDef="let element">{{element.city}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Phone">
+          <th mat-header-cell *matHeaderCellDef>Phone</th>
+          <td mat-cell *matCellDef="let element">{{element.phoneNumber| mask: '(000) 000-0000'}}</td>
+        </ng-container>
+
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="E-mail">
+          <th mat-header-cell *matHeaderCellDef>E-mail</th>
+          <td mat-cell *matCellDef="let element">
+            {{(element.email.length>15) ?  (element.email | slice:0:15)+'..': element.email}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Contact">
+          <th mat-header-cell *matHeaderCellDef>Contact</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="browser">
+              <img src="assets/email.png" style="height: 30px; cursor: pointer;" (click)="sendMessage(element)"/>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator #DataFollow (page)="paginatorHtmlElement.nativeElement.  querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons></mat-paginator> -->
+    </div>
+    <br><br>
+    <!--CLOSE TABLE SUPPLIER-->
+  </div>
+</div>

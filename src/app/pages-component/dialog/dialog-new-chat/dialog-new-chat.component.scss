@@ -1,0 +1,165 @@
+.chips{
+    mat-chip{
+        background: #ffe0e0;
+        mat-icon{
+            color: #9d3292;
+        }
+    }
+}
+
+.texting {
+    width: 100%;
+
+    .icons {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .icon-send {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+
+/* --------------------------
+  SVG Styles
+--------------------------- */
+
+#upload * {
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+
+.a {
+  -webkit-animation: fillChange 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+  animation: fillChange 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.background {
+  -webkit-animation: scaleAnimation 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+  animation: scaleAnimation 1 2s cubic-bezier(0.42, 0, 0.58, 1);
+
+}
+
+.arrow {
+  -webkit-animation: arrowAnimation 2 1s;
+  animation: arrowAnimation 2 1s;
+}
+
+.progressLoader {
+  -webkit-animation: progressLoader 1s;
+  animation: progressLoader 1s;
+
+}
+
+.arrow,
+.progressLoader {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+
+.dribbble {
+  position: fixed;
+  display: block;
+  right: 30px;
+  bottom: 30px;
+
+  img {
+      display: block;
+      height: 25px;
+  }
+
+
+}
+
+.sending{
+  display: flex;
+  justify-content: center;
+}
+
+
+.recients {
+  max-height: 250px;
+  max-width: 270px;
+  overflow-y: scroll;
+
+  .user_chats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      // object-fit: cover;
+
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: #00dc81;
+      border-radius: 100%;
+    }
+
+    .red {
+      background: #ff5858;
+    }
+  }
+}
+
+.avatares {
+  width: 100%;
+  border-radius: 100%;
+  padding-top: 100%;
+  /// 1:1 Aspect Ratio 
+  position: relative;
+  /* If you want text inside of it */
+  /*width: 100%;
+  border-radius: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  */
+
+  .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 100%;
+      transform: translateX(0);
+      overflow: hidden;
+      box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+
+
+      .img {
+          /*height: 100%;
+          width: 100%;
+          border-radius: 100%;*/
+          max-height: 100%;
+          max-width: 100%;
+          top: 50%;
+          left: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+      }
+
+  }
+}

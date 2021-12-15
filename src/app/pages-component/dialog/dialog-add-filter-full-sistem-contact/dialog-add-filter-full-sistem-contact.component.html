@@ -1,0 +1,89 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Edit Filters</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="2" rowHeight="80px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <h4 class="Title-filter"> Filters </h4>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <!-- seccion de checkbox -->
+    <mat-grid-tile [colspan]="1" [rowspan]="6">
+      <table>
+        <tr *ngFor="let filter of dataFilters; let i = index" style="height: 55px;">
+          <td>
+            <mat-checkbox (change)="changeStatus($event, filter, i)" [(ngModel)]="filter.check">
+              {{filter.name}}
+            </mat-checkbox>
+          </td>
+        </tr>
+        <tr *ngIf="(dataFilters).length === 0" style="height: 55px;">
+          <td>
+            <p>No matching elements</p>
+          </td>
+        </tr>
+      </table>
+    </mat-grid-tile>
+
+    <!-- seccion de selects -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <mat-select [(ngModel)]="filTitle" [disabled]="!eventos.title">
+          <mat-option *ngFor="let item of caTitle" [value]="item.id">{{item.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Country</mat-label>
+        <mat-select [(ngModel)]="filCountry" [disabled]="!eventos.country">
+          <mat-option *ngFor="let country of caCountry" [value]="country.id">{{country.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>City</mat-label>
+        <mat-select [(ngModel)]="filCity" [disabled]="!eventos.city">
+          <mat-option *ngFor="let city of caCity" [value]="city.id">{{city.city}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Company</mat-label>
+        <mat-select [(ngModel)]="filCompany" [disabled]="!eventos.company">
+          <mat-option *ngFor="let company of caCompany" [value]="company.id">{{company.comercialName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Office</mat-label>
+        <mat-select [(ngModel)]="filOffice" [disabled]="!eventos.office">
+          <mat-option *ngFor="let office of caOffice" [value]="office.id">{{office.office}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Report Type</mat-label>
+        <mat-select [(ngModel)]="filReportType" [disabled]="!eventos.report">
+          <mat-option *ngFor="let reportType of caReportType" [value]="reportType.id">{{reportType.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

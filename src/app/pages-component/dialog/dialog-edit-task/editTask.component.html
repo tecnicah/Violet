@@ -1,0 +1,412 @@
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Action Item</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon (click)="hideModal()" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+
+  <!-- Header ---------------------------------------- -->
+  <!-- Header ---------------------------------------- -->
+  <!-- Header ---------------------------------------- -->
+  <!-- Header ---------------------------------------- -->
+  <!-- Header ---------------------------------------- -->
+  <!-- Header ---------------------------------------- -->
+  <!-- Header ---------------------------------------- -->
+  <mat-grid-list cols="4" rowHeight="80px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Action Title</span><br />
+        {{ action_item_data?.actionTitle }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central_half">
+        <mat-label>Status</mat-label>
+        <mat-select matNativeControl [(ngModel)]="action_item_data.statusId">
+          <mat-option selected disabled value="">Status</mat-option>
+          <mat-option *ngFor="let item of statustask_catalogue.value" [value]="item.id">
+            {{ item.status }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12" style="height:100% !important">
+        <span class="text-mini gray_05">Creation Date</span><br />
+        {{ action_item_data.assignedDate | date:'dd MMM yyy' }}
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- Description ---------------------------------------- -->
+  <!-- Description ---------------------------------------- -->
+  <!-- Description ---------------------------------------- -->
+  <!-- Description ---------------------------------------- -->
+  <!-- Description ---------------------------------------- -->
+  <!-- Description ---------------------------------------- -->
+  <!-- Description ---------------------------------------- -->
+  <mat-grid-list cols="1">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <div class="page__section-input no-padding" style="flex: 100%;">
+        <p class="text-mini gray_05">Description</p>
+        <span>{{ action_item_data.taskDescription }}</span>
+        <!--mat-form-field appearance="outline" style="width: 100% !important">
+          <textarea matInput id="replay-comment" class="comment-in" [(ngModel)]="action_item_data.taskDescription"
+            maxlength="500"></textarea>
+          <mat-hint align="end">Caracteres</mat-hint>
+          
+        </mat-form-field-->
+      </div>
+    </div>
+  </mat-grid-list>
+
+
+  <!-- Fields ---------------------------------------- -->
+  <!-- Fields ---------------------------------------- -->
+  <!-- Fields ---------------------------------------- -->
+  <!-- Fields ---------------------------------------- -->
+  <!-- Fields ---------------------------------------- -->
+  <!-- Fields ---------------------------------------- -->
+  <!-- Fields ---------------------------------------- -->
+  <mat-grid-list cols="4" rowHeight="80px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">From</span><br />
+        <span class="text-bold font-purple-dark">
+          {{ action_item_data?.taskFromNavigation?.name }} {{ action_item_data?.taskFromNavigation?.lastName }}
+        </span>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">To</span><br />
+        <span class="text-bold font-purple-dark">
+          {{ action_item_data?.taskToNavigation?.name }} {{ action_item_data?.taskToNavigation?.lastName }}
+        </span>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="80px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Due Date</span><br />
+        {{ action_item_data?.dueDate | date:'dd/MMM/yyy' }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Completed Date</span><br />
+        {{ action_item_data?.completedDate | date:'dd/MMM/yyy' }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Action Type</span><br />
+        {{ name_section_active }}
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="80px" class="margin-bottom-m" *ngIf="show_departament_section">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Department</span><br />
+        {{ action_item_data?.departmentNavigation?.department }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Colaborators</span><br />
+        {{ getCollaborators( action_item_data.colaboratorMembers ) }}
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="80px" class="margin-bottom-m" *ngIf="show_sr_section">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Service Record</span><br />
+        {{ action_item_data?.serviceRecord?.numberServiceRecord }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Work Order</span><br />
+        {{ action_item_data?.workOrder?.numberWorkOrder }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Service</span><br />
+        {{ action_item_data?.serviceName }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12">
+        <span class="text-mini gray_05">Collaborators</span><br />
+        <div *ngFor="let item_ of action_item_data.colaboratorMembers">
+          {{ item_?.colaboratorNavigation?.name }} {{ item_?.colaboratorNavigation?.lastName }}
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- Comments ------------------------------------------------------- -->
+  <!-- Comments ------------------------------------------------------- -->
+  <!-- Comments ------------------------------------------------------- -->
+  <!-- Comments ------------------------------------------------------- -->
+  <!-- Comments ------------------------------------------------------- -->
+  <!-- Comments ------------------------------------------------------- -->
+  <!-- Comments ------------------------------------------------------- -->
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div class="page__section">
+      <div class="page__section-name">Comments</div>
+      <div class="page__section-button page__section-button--big"></div>
+    </div>
+  </div>
+  <div *ngFor="let chat of action_item_data.taskReplies;" fxLayout="row" fxLayoutGap="10px"
+    class="page__section--column">
+    <div *ngIf="chat.id != 0">
+      <div class="page__section margin-top-min">
+        <div class="page__section-input--60px">
+          <div class="page__section-dataImg">
+            <img src="{{ image_path }}{{ chat.createdByNavigation?.avatar }}" class="page__section-dataImg-img" />
+          </div>
+        </div>
+        <div class="page__section-input--25">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Name</span><br />
+            {{ chat.createdByNavigation?.name }} {{ chat.createdByNavigation?.lastName }}
+            {{ chat.createdByNavigation?.motherLastName }}
+          </div>
+        </div>
+        <div class="page__section-input--25">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Title</span><br />
+            {{ chat.createdByNavigation?.userType.type }}
+          </div>
+        </div>
+        <div class="page__section-input--25">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Reply Date</span><br />
+            {{ chat.createdDate | date:'dd MMM yyy' }}
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+          <div class="page__section-input page__section-input--x page__section-input--no-padding">
+            <div class="comment">
+              {{ chat.reply }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let chat of action_item_data.taskReplies;" fxLayout="row" fxLayoutGap="10px"
+    class="page__section--column">
+    <div *ngIf="chat.id == 0">
+      <div class="page__section margin-top-min">
+        <div class="page__section-input--60px">
+          <div class="page__section-dataImg">
+            <img src="{{ image_path }}{{ chat.avatar }}" class="page__section-dataImg-img" />
+          </div>
+        </div>
+        <div class="page__section-input--25">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Name</span><br />
+            {{ chat.user_name }}
+          </div>
+        </div>
+        <div class="page__section-input--25">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Title</span><br />
+            -
+          </div>
+        </div>
+        <div class="page__section-input--25">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Reply Date</span><br />
+            {{ chat.createdDate | date:'dd MMM yyy' }}
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+          <div class="page__section-input page__section-input--x page__section-input--no-padding">
+            <div class="comment">
+              {{ chat.reply }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" class="page__section--column margin-top-min">
+    <div class="page__section">
+      <div class="page__section-input--60px">
+        <div class="page__section-dataImg">
+          <img src="{{ image_path + user_data.avatar }}" class="page__section-dataImg-img" />
+        </div>
+      </div>
+      <div class="page__section-input--25">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Name</span><br />
+          {{ user_data.name }} {{ user_data.lastName }}
+        </div>
+      </div>
+      <div class="page__section-input--25">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Title</span><br />
+          -
+        </div>
+      </div>
+      <div class="page__section-input--25">
+        <div class="page__section-data font-size-12">
+          <span class="text-mini gray_05">Reply Date</span><br />
+          {{ today_date | date:'dd MMM yyy' }}
+        </div>
+      </div>
+    </div>
+    <div class="page__section-input no-padding" style="flex: 100%;">
+      <p>Reply</p>
+      <mat-form-field appearance="outline" style="width: 100% !important">
+        <textarea matInput id="replay-comment" class="comment-in" [(ngModel)]="reply_model.reply"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div class="page__section margin-bottom-min">
+      <div class="page__section-name"></div>
+      <div class="page__section-button">
+        <button (click)="addNewReply()" class="button-icon button-icon--adder">
+          Reply
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents ------------------------------------------------------ -->
+  <!-- Documents ------------------------------------------------------ -->
+  <!-- Documents ------------------------------------------------------ -->
+  <!-- Documents ------------------------------------------------------ -->
+  <!-- Documents ------------------------------------------------------ -->
+  <!-- Documents ------------------------------------------------------ -->
+  <!-- Documents ------------------------------------------------------ -->
+
+  <!-- add documents para department -->
+  <div fxLayout="row" fxLayoutGap="10px" [class.display-none]="!show_departament_section">
+    <div class="page__section">
+      <div class="page__title">
+        Documents
+      </div>
+      <div *ngIf="action_item_data.taskDocuments.length != 0" class="page__section margin-top-mini">
+        <div class="page__section-input page__section-input--33">
+          <span class="documents__index documents__index--task">
+            Document Name
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--33">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--33">
+          <span class="documents__index documents__index--task">
+            Comment
+          </span>
+        </div>
+      </div>
+      <div *ngFor="let document of action_item_data.taskDocuments, index as index"
+        class="page__section documents__ascard">
+        <button (click)="deleteDocument( document ,index )" class="page__section--card-closeButton">x
+        </button>
+        <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+          *ngIf="document.id != 0" style="background: transparent!important; margin-right: 25px; background: none;"
+          (click)="showDocumentDialogDetails(document)">
+        <div class="page__section-input page__section-input--33 documents__ascard--task">
+          {{ document.nameFile }}
+        </div>
+        <div class="page__section-input page__section-input--33 documents__ascard--task">
+          {{ document.createdDate | date:'dd/MMM/yyy' }}
+        </div>
+        <div class="page__section-input page__section-input--33 documents__ascard--task">
+          {{ document.comment }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" class="margin-top-min" [class.display-none]="!show_departament_section">
+    <div class="page__section margin-bottom-m">
+      <div class="page__section-name"></div>
+      <div class="page__section-button page__section-button--bigger">
+        <button (click)="AddDocumentOffice(null)" class="button-icon button-icon--adder">
+          Add New Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- add document para service record -->
+  <div fxLayout="row" fxLayoutGap="10px" [class.display-none]="!show_sr_section">
+    <div class="page__section">
+      <div class="page__title">
+        Documents
+      </div>
+      <div class="page__section margin-top-mini" *ngIf="action_item_data.taskDocuments.length != 0">
+        <div class="page__section-input page__section-input--33">
+          <span class="documents__index documents__index--task">
+            Document Name
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--33">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--33">
+          <span class="documents__index documents__index--task">
+            Comment
+          </span>
+        </div>
+      </div>
+      <div *ngFor="let document of action_item_data.taskDocuments, index as index"
+        class="page__section documents__ascard">
+        <button (click)="deleteDocument( document ,index )" class="page__section--card-closeButton">
+        </button>
+        <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+          *ngIf="document.id != 0" style="background: transparent!important; margin-right: 25px; background: none;"
+          (click)="showDocumentDialogDetails(document)">
+        <div class="page__section-input page__section-input--33 documents__ascard--task">
+          {{ document.nameFile }}
+        </div>
+        <div class="page__section-input page__section-input--33 documents__ascard--task">
+          {{ document.createdDate | date:'dd/MMM/yyy' }}
+        </div>
+        <div class="page__section-input page__section-input--33 documents__ascard--task">
+          {{ document.comment }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" class="margin-top-min" [class.display-none]="!show_sr_section">
+    <div class="page__section margin-bottom-m">
+      <div class="page__section-name"></div>
+      <div class="page__section-button page__section-button--bigger">
+        <button (click)="addNewDocument()" class="button-icon button-icon--adder">
+          Add New Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="updateActionItemRequest()">Save</button>
+  </div>
+</mat-dialog-actions>

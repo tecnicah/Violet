@@ -1,0 +1,85 @@
+.contenedot_principal {
+  &__paragraph {
+    font-size: 12px;
+    text-align: justify;
+  }
+}
+
+.ancho{
+  width: 100% !important;
+  display: flex;
+  cursor: pointer;
+}
+
+.contenedor_detalles {
+  margin-left: 30px;
+  width: 100%;
+}
+
+.detalle_curso {
+  display: flex;
+  margin-top: 40px;
+  &__img {
+    width: 20%;
+  }
+
+  &__title {
+    font-size: 14px;
+    color: #9d3292;
+    font-weight: bold;
+  }
+
+  &__text_curso {
+    margin-top: 30px;
+    font-size: 12px;
+    text-align: justify;
+  }
+
+  &__informacion_curso {
+    display: flex;
+    align-items: center;
+  }
+
+  &__fecha {
+    display: flex;
+    flex-basis: 21%;
+    width: 100%;
+  }
+
+  &__basicsEstatus {
+    flex-basis: 18%;
+  }
+
+  &__basicsProgress {
+    flex-basis: 25%;
+  }
+
+  &__anchoProgress {
+    width: 60% !important;
+    height: 10px;
+    border-radius: 10px 10px;
+    margin-left: 10px;
+  }
+
+  &__basicsScore {
+    flex-basis: 18%;
+  }
+}
+
+.line_heigth{
+    line-height: 20px !important;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.width60{
+  width: 60%;
+}
+
+.margin{
+  margin-top: 20px;
+}

@@ -1,0 +1,392 @@
+<!-- ============================================================== -->
+<!-- sidebar -->
+<!-- ============================================================== -->
+<div class="user-profile" style="background: url(assets\images\users\avatar.png) no-repeat;">
+  <!-- User profile image -->
+  <!--div class="profile-img"> <img src="assets/images/users/profile.png" alt="user"> </div -->
+  <!-- User profile text-->
+  <!-- ============================================================== -->
+  <!-- Profile - style you can find in header.scss -->
+  <!-- ============================================================== -->
+  <!-- div class="profile-text"><a [matMenuTriggerFor]="sdprofile" class=""> <b> Luis Doe </b><i class="ti-angle-down font-12 m-l-5"></i></a></div -->
+  <mat-menu #sdprofile="matMenu" class="mymegamenu">
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon> Settings
+    </button>
+    <button mat-menu-item>
+      <mat-icon>account_box</mat-icon> Profile
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon> Disable notifications
+    </button>
+    <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon> Sign Out
+    </button>
+  </mat-menu>
+</div>
+
+<div class="menu-side" [ngClass]="{'big': menu.big, 'small': menu.small}">
+  <div class="tabs" *ngIf="menu.menu">
+    <div class="tab" *ngFor="let item of menu_structure | orderBy: 'id'; let i = index">
+      <input type="radio" [attr.id]="i" name="rd">
+      <label class="tab-label cursor" [attr.for]="i" *ngIf="item.show">
+        <img src="{{item.icon}}" style="width: 22.5px; height: 22.5px;" />
+        <span class="menu-side__opc-text" [ngClass]="{'opacity-big': menu.big, 'opacity-small': menu.small}">
+          {{item.name}}
+        </span>
+      </label>
+
+      <div *ngFor="let submenu_ of item.subMenu | orderBy: 'id_subMenu'" [hidden]='!submenu_.reading' class="tab-content cursor"
+        routerLink="{{submenu_?.ruta}}" (click)="parametrosPermisos(item.id, submenu_.id_subMenu)"
+        routerLinkActive="active" style="cursor: pointer;">
+        {{submenu_.nameSubMenu}}
+      </div>
+    </div>
+    <!--------------------------Big menu----------------------------->
+    <!--
+  <div class="tabs" *ngIf="menu.menu">
+    <div class="tab">
+      <input type="radio" id="1" name="rd">
+      <label class="tab-label" for="1">
+        <img src="./assets/operations-icon.png" style="width: 22.5px; height: 22.5px;" />
+        <span class="menu-side__opc-text" [ngClass]="{'opacity-big': menu.big, 'opacity-small': menu.small}">
+          Operations
+        </span>
+      </label>
+
+      <div class="tab-content" routerLink="/dashboard" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator', 'Human Resources']">
+        My Dashboard
+      </div>
+
+      <div class="tab-content" style="cursor: pointer; margin-top: -3px; margin-bottom: -3px;"
+        *ngxPermissionsOnly="['Manager','Coordinator', 'Human Resources']">
+        <div class="tab">
+          <input type="checkbox" id="6" name="rd">
+          <label style="padding: 0;" class="tab-label" for="6">
+            <span style="font-size: 12px;">
+              Reports
+            </span>
+          </label>
+          <div class="tab-content" style="cursor: pointer; margin-left: -37px;" routerLink="/reports"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator', 'Human Resources']" routerLinkActive="active">
+            Operational Reports
+          </div>
+
+          <div class="tab-content" style="cursor: pointer; margin-left: -37px;" routerLink="/full-sistem-contacts"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator', 'Human Resources']" routerLinkActive="active">
+            Full Sistem Contacts
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" routerLink="/activity" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager','Coordinator', 'Human Resources']">
+        Activity
+      </div>
+
+      <div class="tab-content" routerLink="/serviceRecord" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+        Service Records
+      </div>
+
+      <div class="tab-content" routerLink="/PendingAuthorizations" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager','Human Resources']">
+        Pending Authorizations
+      </div>
+
+      <div class="tab-content" routerLink="/serviceCalendar" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager','Coordinator', 'Human Resources']">
+        Service Calendar
+      </div>
+
+      <div class="tab-content" routerLink="/experienceSurveys" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager','Human Resources']">
+        Experience Surveys
+      </div>
+
+      <div class="tab-content" routerLink="/supplierPartners" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager','Human Resources']">
+        Supplier Partners
+      </div>
+
+      <div class="tab-content" routerLink="/myInvoices" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Supplier','Human Resources']">
+        My Invoices
+      </div>
+
+
+      <div class="tab-content" routerLink="/training" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+          My Training
+      </div>
+    </div>
+
+    <div class="tab">
+      <input type="radio" id="2" name="rd">
+      <label class="tab-label" for="2">
+        <img src="./assets/partner-client-icon.png" style="width: 22.5px; height: 22.5px;" />
+        <span class="menu-side__opc-text" [ngClass]="{'opacity-big': menu.big, 'opacity-small': menu.small}">
+          Partners & Clients
+        </span>
+      </label>
+
+      <div class="tab-content" [routerLink]="['/partner']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator', 'Human Resources']">
+        Partners & Clients
+      </div>
+
+      <div class="tab-content" [routerLink]="['/leads']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+        Leads
+      </div>
+    </div>
+
+    <div class="tab"  *ngxPermissionsOnly="['Manager', 'Finance']">
+      <input type="radio" id="3" name="rd">
+      <label class="tab-label" for="3">
+        <img src="./assets/finance-icon.png" style="width: 22.5px; height: 22.5px;" />
+        <span class="menu-side__opc-text" [ngClass]="{'opacity-big': menu.big, 'opacity-small': menu.small}">
+          Finance
+        </span>
+      </label>
+
+
+      <div class="tab-content" [routerLink]="['/requestcenter']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Finance']">
+        Request Center
+      </div>
+
+      <div class="tab-content" [routerLink]="['/invoicesService']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Finance']">
+        Invoices Service
+      </div>
+
+      <div class="tab-content" [routerLink]="['/invoicesSupplier']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Finance']">
+        Invoices Supplier
+      </div>
+
+      <div class="tab-content" [routerLink]="['/thirdPartyExpenses']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Finance']">
+        Third Party Expenses
+      </div>
+
+    </div>
+
+    <div class="tab">
+      <input type="radio" id="4" name="rd">
+      <label class="tab-label" for="4">
+        <img src="./assets/admin-center.png" style="width: 22.5px; height: 22.5px;" />
+        <span class="menu-side__opc-text" [ngClass]="{'opacity-big': menu.big, 'opacity-small': menu.small}">
+          Admin Center
+        </span>
+      </label>
+
+      <div class="tab-content" [routerLink]="['/admin-center/users']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator']">
+        Users
+      </div>
+
+      <div class="tab-content" [routerLink]="['/catalogs']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator']">
+        Catalogs
+      </div>
+
+      <div class="tab-content" [routerLink]="['/admin-trainig']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator']">
+        Training Courses
+      </div>
+
+      <div class="tab-content" [routerLink]="['/admin-center/system-configuration']" routerLinkActive="active" style="cursor: pointer;"
+        *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator']">
+         System Configuration
+      </div>
+
+      <div class="tab-content" [routerLink]="['/countries']" routerLinkActive="active" style="cursor: pointer;"
+      *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator']">
+       VIOLET App Configuration
+      </div>
+
+    </div>
+  </div>
+   -->
+  </div>
+  <!------------------------small menu----------------------------->
+  <!--div *ngIf="!menu.menu">
+    <div>
+      <button mat-icon-button aria-label="Example icon-button with a menu" matTooltip="Operations">
+        <img src="./assets/operations-icon.png" [matMenuTriggerFor]="menu" style="width: 22.5px; height: 22.5px;" />
+      </button>
+      <br>
+
+      <mat-menu #menu="matMenu">
+        <div style="background: #5a0352;">
+          <button mat-menu-item routerLink="/dashboard" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            My Dashboard
+          </button>
+
+          <button mat-menu-item routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager','Coordinator','Human Resources']" [matMenuTriggerFor]="reports">
+            Reports
+          </button>
+
+          <button mat-menu-item routerLink="/activity" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager','Coordinator','Human Resources']">
+            Activity
+          </button>
+
+          <button mat-menu-item routerLink="/serviceRecord" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Service Records
+          </button>
+
+          <button mat-menu-item routerLink="/PendingAuthorizations" routerLinkActive="active-collapse"
+            style="color:white;" *ngxPermissionsOnly="['Manager','Human Resources']">
+            Pending Authorizations
+          </button>
+
+          <button mat-menu-item routerLink="/serviceCalendar" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager','Coordinator','Human Resources']">
+            Service Calendar
+          </button>
+
+          <button mat-menu-item routerLink="/experienceSurveys" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager','Human Resources']">
+            Experience Surveys
+          </button>
+
+          <button mat-menu-item routerLink="/supplierPartners" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager','Human Resources']">
+            Supplier Partners
+          </button>
+
+          <button mat-menu-item routerLink="/myInvoices" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Supplier','Human Resources']">
+            My Invoices
+          </button>
+
+          <button mat-menu-item routerLink="/training" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            My Training
+          </button>
+        </div>
+      </mat-menu>
+
+      <button mat-icon-button aria-label="Example icon-button with a menu" matTooltip="Partners & Clients">
+        <img src="./assets/partner-client-icon.png" style="width: 22.5px; height: 22.5px;"
+          [matMenuTriggerFor]="menuDos">
+      </button>
+
+      <mat-menu #menuDos="matMenu">
+        <div style="background: #5a0352;">
+          <button mat-menu-item routerLink="/partner" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Partners & Clients
+          </button>
+
+          <button mat-menu-item routerLink="/leads" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Leads
+          </button>
+        </div>
+      </mat-menu>
+
+      <mat-menu #reports="matMenu">
+        <div style="background: #5a0352;">
+
+          <button mat-menu-item routerLink="/reports" routerLinkActive="active-collapse" style="color:white;"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Operational Reports
+          </button>
+
+          <button mat-menu-item routerLink="/full-sistem-contacts" routerLinkActive="active-collapse"
+            style="color:white;" *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Full Sistem Contacts
+          </button>
+        </div>
+      </mat-menu>
+      <br>
+
+      <button mat-icon-button aria-label="Example icon-button with a menu" matTooltip="Finance" *ngxPermissionsOnly="['Manager', 'Finance']">
+        <img src="./assets/finance-icon.png" style="width: 22.5px; height: 22.5px;" [matMenuTriggerFor]="menuFinance"
+          routerLinkActive="active">
+      </button>
+
+      <mat-menu #menuFinance="matMenu">
+        <div style="background: #5a0352;">
+          <button mat-menu-item style="color:white;" [routerLink]="['/requestcenter']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Finance','Human Resources']">
+            Request Center
+          </button>
+
+          <button mat-menu-item style="color:white;" [routerLink]="['/invoicesService']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Finance','Human Resources']">
+            Invoices Service
+          </button>
+
+          <button mat-menu-item style="color:white;" [routerLink]="['/invoicesSupplier']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Finance','Human Resources']">
+            Invoices Supplier
+          </button>
+
+          <button mat-menu-item style="color:white;" [routerLink]="['/thirdPartyExpenses']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Finance','Human Resources']">
+            Third Party Expenses
+          </button>
+        </div>
+      </mat-menu>
+      <br>
+
+      <button mat-icon-button aria-label="Example icon-button with a menu" matTooltip="Admin Center">
+        <img src="./assets/admin-center.png" style="width: 22.5px; height: 22.5px;" [matMenuTriggerFor]="menuTres">
+      </button>
+
+      <mat-menu #menuTres="matMenu">
+        <div style="background: #5a0352;">
+          <button mat-menu-item style="color:white;" [routerLink]="['/admin-center/users']" routerLinkActive="active-collapse"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Users
+          </button>
+
+          <button mat-menu-item style="color:white;" [routerLink]="['/catalogs']" routerLinkActive="active-collapse"
+            *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Catalogs
+          </button>
+
+          <button mat-menu-item style="color:white;" [routerLink]="['/admin-trainig']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            Training Courses
+          </button>
+
+          <button mat-menu-item style="color:white;" [routerLink]="['/admin-center/system-configuration']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            System Configuration
+          </button>
+          <button mat-menu-item style="color:white;" [routerLink]="['/countries']"
+            routerLinkActive="active-collapse" *ngxPermissionsOnly="['Manager', 'Supplier','Coordinator','Human Resources']">
+            VIOLET App Configuration
+          </button>
+        </div>
+      </mat-menu>
+    </div>
+  </div-->
+  <div *ngIf='!menu.menu' id="div_small">
+    <div *ngFor="let item of menu_structure | orderBy: 'id'; let i = index;" [hidden]='!item.show'>
+      <button mat-icon-button aria-label="Example icon-button with a menu" matTooltip="{{item.name}}" class="cursor">
+        <img src="{{item.icon}}" [matMenuTriggerFor]="menu" style="width: 22.5px; height: 22.5px;" />
+      </button>
+      <br>
+
+
+      <mat-menu #menu="matMenu">
+        <div style="background: #5a0352;" class="cursor" *ngFor="let data_sub of item.subMenu | orderBy: 'id_subMenu'" [hidden]='!data_sub.reading'>
+          <button mat-menu-item routerLink="{{data_sub.ruta}}" routerLinkActive="active-collapse" style="color:white;">
+            {{data_sub.nameSubMenu}}
+          </button>
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+</div>

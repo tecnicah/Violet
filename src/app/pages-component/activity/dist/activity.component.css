@@ -1,0 +1,71 @@
+.divfilter {
+  width: 85%;
+  height: 85%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.divfilter:hover {
+  border: solid 1px #88358f;
+  /*background-image: linear-gradient(to bottom, #9d3292, #4435a6);
+
+  .titlefilter {
+    color: white;
+    opacity: 0.75;
+    font-size: 12px;
+  }
+
+  .numberfilter {
+    color: white;
+    opacity: 0.8;
+    font-size: 18px;
+  }*/
+}
+.divfilter .titlefilter {
+  opacity: 0.75;
+  font-size: 12px;
+}
+.divfilter .numberfilter {
+  opacity: 0.8;
+  font-size: 18px;
+}
+
+.tables {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.tables .tableuno {
+  flex-basis: 48%;
+}
+.tables .tabledos {
+  flex-basis: 48%;
+}
+
+.paginators {
+  display: flex;
+  justify-content: center;
+}
+
+.browser {
+  font-weight: bold;
+}
+
+.refresh {
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

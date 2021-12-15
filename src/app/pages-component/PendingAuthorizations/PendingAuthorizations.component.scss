@@ -1,0 +1,54 @@
+.activeFilter{
+    background-image: linear-gradient(to bottom, #9d3292, #4435a6);
+    padding: 10px;
+    span{
+        color: white !important;
+    }
+}
+mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
+	width: 65px !important;
+}
+
+// ::ng-deep mat-option:last-child {
+//   &:before {
+//     content: 'View all';
+//   }
+
+//   .mat-option-text {
+//     display: none;
+//   }
+// }
+.paginator mat-option:last-child {
+  &:before {
+    content: 'View all' !important;
+    float: left;
+    text-transform: none;
+    top: 4px;
+    position: relative;
+  }
+
+  .mat-option-text {
+    display: none;
+    position: relative;
+  }
+}
+
+.urgent{
+  background: #ffe0e0 !important;
+}
+
+.pendingAuth{
+  background: #fff7d3 !important;
+}
+
+.aceptado{
+  color: #009577;
+}
+
+.pendiente{
+  color: #fbb03b;
+}
+
+.rechazado{
+  color: #ff5858;
+}

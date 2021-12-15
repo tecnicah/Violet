@@ -1,0 +1,233 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle"></div>
+    <div class="page__title title flex__ flex_basics">
+      <span class="bisics">Message Center</span>
+      <div class="page__section-butuonc bisics" style="width: 120px; margin: 10px 0;">
+        <button class="button-icon button-icon--send ng-star-inserted cc_pointer" (click)="newMessage()">New
+          Message</button>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <div class="contacts">
+        <!--div class="header">
+          <img [src]="_services.url_images+userData.avatar" alt="">
+          <span>{{userData.name}} {{userData.lastName}} {{userData.motherLastName}}</span>
+        </div>
+        <b>Conversations</b><br>
+        <div class="page__section-butuonc" style="width: 120px; margin: 10px 0;">
+          <button class="button-icon button-icon--send ng-star-inserted cc_pointer" (click)="newMessage()">New
+            Message</button>
+        </div-->
+
+        <div>
+          <mat-form-field class="example-full-width">
+            <mat-label>Name Contact</mat-label>
+            <input matInput placeholder="Enter name" [(ngModel)]="contact.name">
+          </mat-form-field>
+        </div>
+
+        <div class="recients">
+          <table style="border-collapse: collapse;">
+            <tr *ngFor="let element of table_contacts | orderBy: 'lastMessageTime' | filterBy: contact" 
+            [ngClass]="{'active_convertation': (element.conversationId == actual_user.conversationId)}">
+              <td style="width:50px; padding: 10px 0; cursor: pointer;"
+                (click)="getConversation(element.conversationId,element.unreadMessages); actual_user = element;">
+                <span></span>
+                <div class="avatares">
+                  <div class="content">
+                    <img [src]="_services.url_images+element.photo"  alt="" class="img" *ngIf="element.photo != null">
+                    <img src="./assets/avatar.svg" alt="" class="img"  *ngIf="element.photo == null">
+                  </div>
+                </div>
+              </td>
+              <td   class="user_chats" matRipple matRippleColor="rgba(158, 53, 149, 0.5)" (click)="getConversation(element.conversationId, element.unreadMessages); actual_user = element;" style="height: 70px; cursor: pointer;">
+                <div style="display: flex; align-items: center; width: 100%;">
+                  <span *ngIf="element.groups == true"  style="margin-left: 19px;"> {{element.groupName}} </span>
+                  <span *ngIf="element.groups == false"  style="margin-left: 19px;">{{element.name}}
+                    {{element.lastname}}</span>
+                </div>
+              </td>
+              <td  style="cursor: pointer;" (click)="getConversation(element.conversationId, element.unreadMessages); actual_user = element;">
+                <span *ngIf="element.unreadMessages == 0"></span>
+                <mat-icon matBadge="{{element.unreadMessages}}" *ngIf="element.unreadMessages != 0">mail</mat-icon>
+                &nbsp;
+                &nbsp;
+              </td>
+              <td style="cursor: pointer;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                  <div class="dot" [ngClass]="{'red': element.unreadMessages > 0}"
+                    (click)="getConversation(element.conversationId, element.unreadMessages); actual_user = element;"></div>
+                  <mat-icon class="material-icons-outlined" (click)="deleteConversation(element)"
+                    style="cursor: pointer !important;">close</mat-icon>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="chats">
+        <mat-card class="mat-elevation-z10">
+          <mat-card-header>
+            <mat-card-title style="font-size: 16px; font-weight: bold;">{{actual_user.name}} {{actual_user.lastname}}
+            </mat-card-title>
+            <div align="end" >
+              <div class="avatares" style="width: 50px" *ngIf="conversationId != 0">
+                <div class="content" *ngIf="conversationId != 0">
+                  <img [src]="_services.url_images+actual_user.photo" *ngIf="actual_user.photo!=null" alt="" class="img" >
+                  <img src="./assets/avatar.svg" *ngIf="actual_user.photo==null" alt="" class="img" >
+                </div>
+              </div>
+              <!--img class="avatar" [src]="_services.url_images+actual_user.photo" *ngIf="conversationId != 0"-->
+              <!--span>&nbsp;&nbsp;&nbsp;</span>
+              <mat-icon>menu</mat-icon-->
+            </div>
+          </mat-card-header>
+          <mat-card-content id="texting">
+            <div *ngFor="let item of chat"
+              [ngClass]="{'to': item.userId != userData.id, 'from': item.userId == userData.id}"
+              (click)="openProfile(item);">
+              <div class="messages-senders">
+                <div class="header">
+                  <!--img [src]="_services.url_images+item.avatar"-->
+                  <h4 style="font-size: 14px; font-weight: bold; cursor: pointer !important; padding: 0;
+                  margin: 0; color: #9d3292"><b>{{item.user}}</b></h4>
+                  <mat-icon class="material-icons-outlined font" (click)="deleteMenssage(item)"
+                    style="cursor: pointer !important; position: absolute;
+                    right: 0; top: 10px;" *ngIf="item.userId == userData.id">close</mat-icon>
+                </div>
+
+                <span style="color: #505050;">
+                  {{item.message1}}
+                  <br>
+                  <mat-icon style="color: #9d3292;
+                                   position: absolute;
+                                   bottom: -6px;
+                                   right: 0px;
+                                   font-size: 17px;" *ngIf="item.userId == userData.id && item.unreadMessages == 0" >done_all</mat-icon>
+                  <br>
+                  <a *ngFor="let doc of item.documentMessages" href="{{this._services.url_images+doc.filePath}}"
+                    target="_black">&nbsp;&nbsp;&nbsp;
+                    <img [src]="pat(doc.filePath)" style="width: 60px;">
+                  </a>
+                </span>
+                <span class="time">{{item.time | date: 'dd MMM yyy hh:mm'}}</span>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="texting" *ngIf="!sending">
+              <mat-grid-list cols="12" rowHeight="20px">
+                <mat-grid-tile [colspan]="7" [rowspan]="1">
+                  <div class="textarea">
+                    <p style="color: gray; font-size: 12px;">Write Here</p>
+                  </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="3" [rowspan]="1">
+                  <button mat-icon-button (click)="filesUpload('images_only')" [disabled]="conversationId == 0">
+                    <img src="/assets/icons/photo.svg" alt="photo">
+                  </button>
+                  <button mat-icon-button (click)="filesUpload('all_documents')" [disabled]="conversationId == 0">
+                    <img src="/assets/icons/document.svg" alt="document">
+                  </button>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+              <mat-grid-list cols="12" rowHeight="100px">
+                <mat-grid-tile [colspan]="10" [rowspan]="1" style="text-align: end;">
+                  <mat-form-field appearance="outline" class="textarea">
+                    <textarea matInput [(ngModel)]="continuemesage.message" [disabled]="conversationId == 0"
+                      (keyup)="onKey($event)" #input maxlength="250"></textarea>
+                    <mat-hint align="end">{{input.value?.length || 0}}/250</mat-hint>
+                  </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2" [rowspan]="1">
+                  <div class="textarea" style="height: 100%; margin-top: 40px; margin-left: 50%;">
+                    <button mat-icon-button (click)="sendMessage()">
+                      <img src="/assets/icons/send.svg" alt="send" style="width: 30px;">
+                    </button>
+                    <!--[disabled] = "input.value?.length == 0"-->
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+              <span style="color: gray; font-size: 12px;" *ngIf="temporalDocument.length > 0">Uploaded documents
+                {{temporalDocument.length}}</span>
+              <br>
+            </div>
+            <div class="sending" *ngIf="sending">
+
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" id="upload" height="120" width="120">
+
+                <defs>
+                  <style>
+                    .a {
+                      fill: #f7f7f7;
+                    }
+
+                    .b {
+                      fill: #e1e5ff;
+                    }
+
+                    .c {
+                      fill: #476bd4;
+                    }
+
+                    .d {
+                      fill: #fff;
+                    }
+
+                    .e {
+                      fill: #29cbae;
+                    }
+
+                  </style>
+                </defs>
+
+                <title>iconUpload</title>
+                <g class="background" data-animator-group="true" data-animator-type="2">
+                  <circle class="a" cx="19.9" cy="19.9" r="19.9" />
+                </g>
+
+                <polygon class="b progress" points="29.34 15 23.91 9.07 23.91 15 29.34 15" />
+
+                <path class="c"
+                  d="M24.06,8.19H13.76A2.85,2.85,0,0,0,10.89,11V29a2.85,2.85,0,0,0,2.87,2.82H27.11A2.85,2.85,0,0,0,30,29V14.69Zm.21,1.38,4.45,4.88H24.27Z" />
+
+                <path class="d"
+                  d="M29.2,29A2.08,2.08,0,0,1,27.11,31H13.76A2.08,2.08,0,0,1,11.67,29V11A2.08,2.08,0,0,1,13.76,9h9.73v6.26H29.2Z" />
+
+                <g class="arrow" data-animator-group="true" data-animator-type="0">
+
+                  <path class="c"
+                    d="M23.32,17.5a4.06,4.06,0,1,0,0,5.74,4,4,0,0,0,0-5.74Zm-2.87,5.82a.64.64,0,0,1-.64-.64V19.6l-.76.76a.64.64,0,0,1-.91-.91L20,17.6l.1-.08,0,0,.06,0,.07,0,.05,0h.25l.06,0,.06,0,.07,0,0,0,.1.08,1.85,1.85a.64.64,0,0,1-.91.91l-.76-.76v3.09a.64.64,0,0,1-.64.64Z" />
+                </g>
+
+                <g class="progressLoader" data-animator-group="true" data-animator-type="2">
+                  <polygon class="e" points="15 28 15 27 26 27 26 28 15 28" />
+                </g>
+
+              </svg>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+    Drag and Drop or
+    <p class="browser" id="all_documents" (click)="openFileSelector()">Browse File</p>
+  </ng-template>
+</ngx-file-drop>
+
+<ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept="image/*" [multiple]="false">
+  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+    Drag and Drop or
+    <p class="browser" id="images_only" (click)="openFileSelector()">Browse File</p>
+  </ng-template>
+</ngx-file-drop>

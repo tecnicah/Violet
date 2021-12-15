@@ -1,0 +1,334 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Operations / Pending Authorizations</div>
+    <div class="page__title title">
+      Pending Authorizations
+    </div>
+    <!-- Filters ----------------------------------- -->
+    <!-- Filters ----------------------------------- -->
+    <!-- Filters ----------------------------------- -->
+    <!-- Filters ----------------------------------- -->
+    <!-- Filters ----------------------------------- -->
+    <!-- Filters ----------------------------------- -->
+    <!-- Filters ----------------------------------- -->
+    <mat-grid-list cols="5" rowHeight="60px" *ngIf="pending_autho_obj">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" [ngClass]="{'activeFilter': pendingAssignments}"
+          style="cursor: pointer;" (click)="filterByPendingAssingments();">
+          <span class="text-mini gray_05">Pending Assignments</span><br />
+          <span class="text-bold font-18 font-purple-dark">
+            {{ pending_autho_obj.pendingAssignments }}
+          </span>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12" [ngClass]="{'activeFilter': pendingAcceptance}"
+          style="cursor: pointer;" (click)="filterByPendingAcceptance();">
+          <span class="text-mini gray_05">Pending Acceptance</span><br />
+          <span class="text-bold font-18 font-purple-dark">
+            {{ pending_autho_obj.pendingAcceptance }}
+          </span>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central_half">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" id="pending_serch_text" type="text" (keyup)="serchByText( $event )" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <button (click)="resetPendingAuthoTableFilter()" mat-icon-button color="primary" style="margin-left: 60px;"
+            matTooltip="Clear filter">
+            <mat-icon>cached</mat-icon>
+          </button>
+        </div>
+        <div class="page__section-butuonc">
+          <button (click)="showExportDialog()" class="button-icon button-icon--export" *ngIf="__userlog__.role.id != 3">
+            Export
+          </button>
+          <button class="button-icon button-icon--adder display-none" (click)="exporter.exportTable('xls')" id="excel">
+            Export
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Country</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.country"
+            (selectionChange)="ableCityField(); updatePendingAuthoTableData();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Country</mat-label>
+              <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of country_catalogue | filterBy: filterCountry" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+            <mat-option disabled *ngIf="(country_catalogue | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>City</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.city" [disabled]="!able_city_filter"
+            (selectionChange)="updatePendingAuthoTableData();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>City</mat-label>
+              <input matInput placeholder="City" [(ngModel)]="filterCity.city">
+            </mat-form-field>
+            <mat-option *ngFor="let item of city_catalogue | filterBy: filterCity" [value]="item.id">
+              {{ item.city }}
+            </mat-option>
+            <mat-option disabled *ngIf="(city_catalogue | filterBy: filterCity).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="position-relative">
+        <div style="width: 100%; display: flex;">
+          <mat-form-field appearance="fill" class="input_central_half">
+            <mat-label>Service Line</mat-label>
+            <mat-select matNativeControl [(ngModel)]="filter_data.service_line"
+              (selectionChange)="updatePendingAuthoTableData();">
+              <mat-option selected disabled value="">Service Line</mat-option>
+              <mat-option *ngFor="let item of serviceline_catalogue" [value]="item.id">
+                {{ item.serviceLine }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Service Record</mat-label>
+          <mat-select matNativeControl [(ngModel)]="filter_data.sr"
+            (selectionChange)="ableCityField(); updatePendingAuthoTableData();">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Service Record</mat-label>
+              <input matInput placeholder="Service Record" [(ngModel)]="filterServiceRecord.numberServiceRecord">
+            </mat-form-field>
+            <mat-option *ngFor="let item of service_record| filterBy: filterServiceRecord" [value]="item.id">
+              {{ item.numberServiceRecord }}
+            </mat-option>
+            <mat-option disabled *ngIf="(service_record | filterBy: filterServiceRecord).length === 0">No matching elements</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-- Table -------------------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------------------- -->
+    <!-- Table -------------------------------------------------------------------- -->
+    <div class="page__section" id="export">
+      <table mat-table #sortpending='matSort' matSort matTableExporter [dataSource]="pending_table_data"
+        #exporter="matTableExporter" class="main-table">
+        <ng-container matColumnDef="c1">
+          <th mat-sort-header="c1" mat-header-cell *matHeaderCellDef mat-sort-header="numberServiceRecord"
+            class="text-center">Service <br> Record</th>
+          <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
+            {{ element.numberServiceRecord }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="c2">
+          <th mat-sort-header="c2" mat-header-cell *matHeaderCellDef mat-sort-header="vip" class="text-center">VIP</th>
+          <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
+            <div class="table-row__check">
+              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="c3">
+          <th mat-sort-header="c3" mat-header-cell *matHeaderCellDef mat-sort-header="inithialAuthoAcceptance"
+            class="text-center">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
+            {{ element.inithialAuthoAcceptance | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c4">
+          <th mat-sort-header="c4" mat-header-cell *matHeaderCellDef mat-sort-header="serviceLine" class="text-center">
+            Service<br />Line</th>
+          <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
+            <!--{{ element.serviceLine }}-->
+
+            <span (click)="navigateTo('editServiceRecord/'+element.id, element)" class="font-purple-dark cursor-pointer"
+              title="{{ element.serviceLineName }}" *ngIf="element.serviceLine=='Relocation'">
+              R
+            </span>
+
+            <span (click)="navigateTo('editServiceRecord/'+element.id, element)" class="font-purple-dark cursor-pointer"
+              title="{{ element.serviceLineName }}" *ngIf="element.serviceLine=='Immigration'">
+              I
+            </span>
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c5">
+          <th mat-sort-header="c5" mat-header-cell *matHeaderCellDef mat-sort-header="country" class="text-center">
+            City</th>
+          <td mat-cell *matCellDef="let element" class="text-center"  [matMenuTriggerFor]="country"
+          (click)="viewCity(element)"  style="cursor: pointer">
+          <span  matTooltip="{{element.country}}">
+            {{ element.city }}
+           </span>
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="c6">
+          <th mat-sort-header="c6" mat-header-cell *matHeaderCellDef mat-sort-header="city" class="text-center">City
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.city }}" (click)="goToSR(element)">
+              {{ element.city?.length > 12 ? ( element.city | slice:0:12 ) + '...' : element.city }}
+            </span>
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="c7">
+          <th mat-sort-header="c7" mat-header-cell *matHeaderCellDef mat-sort-header="partner" class="text-center">
+            Partner</th>
+          <td mat-cell *matCellDef="let element" class="text-center" [matMenuTriggerFor]="partner" (click)="viewPartner(element)">
+            <span title="{{ element.partner }}">
+              {{ element.partner?.length > 12 ? ( element.partner | slice:0:12 ) + '...' : element.partner }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="c8">
+          <th mat-sort-header="c8" mat-header-cell *matHeaderCellDef mat-sort-header="client" class="text-center">Client
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
+            <span title="{{ element.client }}">
+              {{ element.client?.length > 12 ? ( element.client | slice:0:12 ) + '...' : element.client }}
+            </span>
+          </td>
+        </ng-container-->
+
+        <ng-container matColumnDef="c9">
+          <th mat-sort-header="c9" mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">
+            Assignee<br />Name</th>
+          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer" [matMenuTriggerFor]="supplier" (click)="viewData(element)">
+            <span matTooltip="{{element.assigneeName}}">
+              <!--{{ element.assigneeName?.length > 12 ? ( element.assigneeName | slice:0:12 ) + '...' : element.assigneeName }}-->
+              {{element.assigneeName}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="c10">
+          <th mat-sort-header="c10" mat-header-cell *matHeaderCellDef class="text-center"
+            mat-sort-header="initialArrival">Arrival Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
+            {{ element.initialArrival | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c11">
+          <th mat-sort-header="c11" mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="services">
+            Services</th>
+          <td mat-cell *matCellDef="let element" class="text-center link" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
+            {{ element.services }}
+          </td>
+        </ng-container>
+
+
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div>
+            <span *ngFor="let item of SR_WO">
+              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
+            </span>
+          </div>
+        </mat-menu>
+
+        <ng-container matColumnDef="c12">
+          <th mat-sort-header="c12" mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">
+            Coordinator</th>
+          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer" [matMenuTriggerFor]="supplier" (click)="viewData(element)">
+            <span  matTooltip="{{element.coordinator}}" [ngClass]="{'aceptado': element.coordinatorStatus == 1, 'pendiente': element.coordinatorStatus == 2, 'rechazado': element.coordinatorStatus == 3}" >
+             <!--{{ element.coordinator?.length > 12 ? ( element.coordinator | slice:0:12 ) + '...' : element.coordinator }}-->
+             {{element.coordinator}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="c13">
+          <th mat-sort-header="c13" mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">
+            Consultant</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span title="{{ element.supplier }}" [ngClass]="{'aceptado': element.consultantStatus == 1, 'pendiente': element.consultantStatus == 2, 'rechazado': element.consultantStatus == 3}">
+              <!--{{ element.supplier?.length > 12 ? ( element.supplier | slice:0:12 ) + '...' : element.supplier }}-->
+              {{element.supplier}}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="pending_table_colums"></tr>
+        <tr mat-row *matRowDef="let row; columns: pending_table_colums;"  style="cursor: pointer;" [ngClass]="{'urgent': row.urgent == true}">
+        </tr>
+      </table>
+    </div>
+    <div class="page__section margin-top-mini">
+      <div class="page__section-name no-padding">
+        <span class="page__section-lblRed">Urgent</span>
+        <!--span class="page__section-lblYellow">Pending Assignments</span-->
+      </div>
+    </div>
+    <div class="page__section text-center paginator">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+      <!-- <mat-paginator
+        class="paginator"
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        showFirstLastButtons
+      ></mat-paginator> -->
+    </div>
+
+    <mat-menu #supplier="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Assignee:</b> {{info_row.assignee}}</span>
+          <br>
+          <span style="font-size: 10px;"><b>Coordinator:</b> {{info_row.coordinator}}</span>
+        </div>
+      </div>
+    </mat-menu>
+
+    <mat-menu #country="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Country:</b> {{info_country.country}}</span>
+          <!--br-->
+          <!--span style="font-size: 10px;"><b>City:</b> {{info_country.city}}</span--->
+        </div>
+      </div>
+    </mat-menu>
+
+    <mat-menu #partner="matMenu" xPosition="before">
+      <div class="bg"></div>
+      <div class="assigned_services">
+        <div class="data" style="padding: 10px;">
+          <span style="font-size: 10px;"><b>Partner:</b> {{info_partner.partner}}</span>
+          <br>
+          <span style="font-size: 10px;"><b>Client:</b> {{info_partner.client}}</span>
+        </div>
+      </div>
+    </mat-menu>
+
+  </div>
+</div>

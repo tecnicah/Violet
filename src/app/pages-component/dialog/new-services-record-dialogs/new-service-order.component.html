@@ -1,0 +1,666 @@
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="!is_editing">
+      New Work Order
+    </h2>
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="is_editing">
+      Edit Work Order
+    </h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon (click)="hideModal()" style="cursor:pointer" *ngIf="data.close">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <div class="page__section page__section-inputs margin-top-min">
+    <div *ngIf="is_editing" class="page__section-data font-size-12 comments input_central" style="display: flex;">
+      <div>
+        <span class="text-mini gray_05">Work Order Id</span><br />
+        {{ work_order.numberWorkOrder }}
+      </div>
+    </div>
+    <!-- fecha para la edicion -->
+    <div *ngIf="is_editing" class="page__section-data font-size-12 comments input_central" style="display: flex;">
+      <div>
+        <span class="text-mini gray_05">Creation date</span><br />
+        {{work_order.createdDate | date:'dd MMM yyy'}}
+      </div>
+      <div style="text-align:end; width: auto !important;">
+        <mat-icon class="calendar">calendar_today</mat-icon>
+      </div>
+    </div>
+    <!-- fecha para la creacion -->
+    <div class="page__section-input" *ngIf="!is_editing">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Creation date</mat-label>
+        <input matInput [matDatepicker]="nso_iniDate" onkeydown="return false" [(ngModel)]="work_order.createdDate"
+          (dateChange)="
+            removeErrorLabel( $event.target.value, {handler: main_data_form, field: 'no_date'} );
+            validatingMainFields()" (change)="
+            removeErrorLabel( $event.target.value, {handler: main_data_form, field: 'no_date'} );
+            validatingMainFields()" />
+        <mat-datepicker-toggle matSuffix [for]="nso_iniDate"></mat-datepicker-toggle>
+        <mat-datepicker #nso_iniDate></mat-datepicker>
+        <span class="label-error" *ngIf="main_data_form.no_date">
+          Field is required
+        </span>
+      </mat-form-field>
+    </div>
+    <!-- selvice line  -->
+    <div *ngIf="!is_editing"  class="page__section-input">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Service line</mat-label>
+        <mat-select [disabled]="disblableFuntion()" matNativeControl [(ngModel)]="work_order.serviceLineId" (selectionChange)="
+              requestCatalogueCategory( $event.value );
+              validatingMainFields();
+              setDeliverToFixed();
+              removeErrorLabel( $event.value, {handler: main_data_form, field: 'no_line'} );"
+          (ngModelChange)="getCategory(); getCategory_()">
+          <mat-option disabled selected value="">Service line</mat-option>
+          <mat-option *ngFor="let item of serviceline_catalogue;" [value]="item.id">
+            {{ item.serviceLine }}
+          </mat-option>
+        </mat-select>
+        <span class="label-error" *ngIf="main_data_form.no_line">
+          Field is required
+        </span>
+      </mat-form-field>
+    </div>
+    <!-- service line si es editar  -->
+    <div *ngIf="is_editing" class="page__section-data font-size-12 comments input_central" style="display: flex;">
+      <div>
+        <span class="text-mini gray_05">Service line</span><br />
+        {{getNameServiceLine(work_order.serviceLineId) }}
+      </div>
+    </div>
+  </div>
+
+  <div [class.display-none]="!main_fields_fill">
+    <div class="page__section margin-tb-min">
+      <div class="modal-form__subtitle">
+        Standalone Services
+      </div>
+    </div>
+    <!-- tabla de standalone -->
+    <div class="page__section" [style.display]="(work_order?.standaloneServiceWorkOrders?.length == 0) ? 'none' : 'initial' ">
+      <table mat-table mat-sort [dataSource]="wo_standalone_table"
+        style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Delivered To</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ (element.deliverToText.length > 7) ? ( element.deliverToText | slice:0:7 ) + '...' : element.deliverToText }}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Delivering In</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <!-- {{ (element.deliverInText.length > 7) ? ( element.deliverInText | slice:0:7 ) + '...' : element.deliverInText }} -->
+            {{getDeliverIn(element.deliveringIn)}}
+
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span *ngIf="is_editing">{{ element.serviceNumber }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ (element.nickname.length > 10) ? ( element.nickname | slice:0:10 ) + '...' : element.nickname }}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Autho<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.autho | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance<br />Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.acceptance | date:'dd MMM yyy' }}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Coordination</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img (click)="updateSOCoordination( element )" src="assets/table-icons/check.png"
+                *ngIf="element.coordination" />
+              <img (click)="updateSOCoordination( element )" src="assets/table-icons/uncheck.png"
+                *ngIf="!element.coordination" />
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Autho Time</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span *ngIf="!is_editing">{{ element.authoTime }}</span>
+            <input *ngIf="is_editing" value="{{ element.authoTime }}" type="text" style="width: 110px;"
+              class="text-center" [readonly]="element.coordination" min="0"
+              (change)="element.authoTime = $event.target.value" />
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span *ngIf="!is_editing">{{ element.projectedFee | currency }}</span>
+            <input *ngIf="is_editing" class="text-center" style="width: 110px;"
+              value="{{ element.projectedFee | currency }}" type="text"
+              (change)="element.projectedFee = $event.target.value" />
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_10">
+          <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div class="table-row__check">
+              <img src="/assets/icons/delete.png" (click)="deleteThisServiceConfirmation( element.temp_id, element )" />
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="standalone_table_columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: standalone_table_columns;"></tr>
+      </table>
+    </div>
+    <div class="page__section display-none">
+      <mat-paginator class="paginator" [pageSizeOptions]="[99999, 10, 20]"></mat-paginator>
+    </div>
+    <div class="page__section margin-tb-min" *ngIf="!show_standalone">
+      <div class="page__section-name"></div>
+      <div class="page__section-button">
+        <button (click)="showStandAlone()" class="button-icon button-icon--adder">
+          Add Services
+        </button>
+      </div>
+    </div>
+    <div class="margin-top-min" *ngIf="show_standalone">
+      <div class="page__section page__section--card margin-bottom-min">
+        <button (click)="showStandAlone()" class="page__section--card-closeButton">
+        </button>
+        <div class="page__section page__section-inputs">
+          <div class="page__section-input" *ngIf="work_order.serviceLineId == '1'">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Deliver To</mat-label>
+              <mat-select matNativeControl [(ngModel)]="standalone_work.deliveredTo"
+                (selectionChange)="[(removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_deto'} ))]">
+                <mat-option disabled selected value="">Deliver To</mat-option>
+                <mat-option *ngFor="let item of deliverto_catalogue;" [value]="item.dependentId">
+                  {{item.name}} / {{ item.relationship }}
+                </mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="salon_form_valdator.no_deto">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input" *ngIf="work_order.serviceLineId == '2'">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Deliver To</mat-label>
+              <mat-select matNativeControl disabled [(ngModel)]="standalone_work.deliveredTo"
+                (selectionChange)="[(removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_deto'} ))]">
+                <mat-option disabled selected value="">Deliver To</mat-option>
+                <mat-option *ngFor="let item of deliverto_catalogue;" [value]="item.dependentId">
+                  {{item.name}} / {{ item.relationship }}
+                </mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="salon_form_valdator.no_deto">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Deliver In</mat-label>
+              <!-- getCategory_();  getService(); -->
+              <mat-select matNativeControl
+                [(ngModel)]="standalone_work.deliveringIn"
+                (ngModelChange)="getLocationWork(); getServiceStandAlone();"
+                (selectionChange)="(removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_dein'} ))">
+                <mat-option disabled selected value="">Deliver In</mat-option>
+                <mat-option *ngFor="let item of deliverin;" [value]="item.idCountryHome">{{ item.countryHomeName }}
+                </mat-option>
+                <mat-option *ngFor="let item of deliverin;" [value]="item.idCountryHost">{{ item.countryHostName }}
+                </mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="salon_form_valdator.no_dein">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Service</mat-label>
+              <mat-select matNativeControl required [disabled]="catalogService.length == 0"
+                [(ngModel)]="standalone_work.serviceId"
+                (selectionChange)="removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_serv'} );">
+                <mat-option disabled selected value="">Service</mat-option>
+                <mat-option *ngFor="let item of catalogService;" [value]="item.id" (click)="standalone_work.nickname = item.service">
+                  {{ item.service }}
+                </mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="salon_form_valdator.no_serv">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field class="example-full-width input_central" >
+              <mat-label>Projected Fee</mat-label>
+              <input matInput placeholder="Projected Fee" type="number" min="0"
+                [(ngModel)]="standalone_work.projectedFee" required
+                (change)="removeErrorLabel( $event.target.value, {handler: salon_form_valdator, field: 'no_prof'} );" />
+              <span class="label-error" *ngIf="salon_form_valdator.no_prof">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input" style="width: 100%; height: 100%;" >
+            <!-- style="flex: 0 1 25%;" -->
+            <mat-checkbox class="example-margin textarea" [(ngModel)]="standalone_work.coordination"
+              (change)="cordination($event, standalone_work)" [disabled]="work_order.serviceLineId == 2">
+              Coordination
+            </mat-checkbox>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field class="example-full-width" class="input_central">
+              <mat-label>Autho Time</mat-label>
+              <input type="number" matInput placeholder="Autho Time" [disabled]="standalone_work.coordination == true" [(ngModel)]="standalone_work.authoTime"
+             />
+              <span class="label-error" *ngIf="salon_form_valdator.no_auto">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+
+          <div class="page__section-input">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Location</mat-label>
+              <mat-select [(ngModel)]="standalone_work.location"
+              (change)="removeErrorLabel( $event.target.value, {handler: salon_form_valdator, field: 'no_loca'} );"
+              [disabled]='location_cityWork.length == 0'>
+                <mat-option *ngFor="let data of location_cityWork" [value]="data.city">{{data.city}}</mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="salon_form_valdator.no_loca">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field appearance="fill" class="input_central">
+              <mat-label>Autho date</mat-label>
+              <input onkeydown="return false" [min]="yesterday_today" required matInput [(ngModel)]="standalone_work.autho" [matDatepicker]="creation_date_sta" />
+              <mat-datepicker-toggle matSuffix [for]="creation_date_sta"></mat-datepicker-toggle>
+              <mat-datepicker #creation_date_sta></mat-datepicker>
+              <span class="label-error" *ngIf="salon_form_valdator.no_auto">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="page__section margin-top-min page__section--justify-end">
+          <div class="page__section-buttong">
+            <button (click)="addServiceToOrder('alone')">
+              Add Service
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Section 2 -->
+    <div class="page__section margin-top-m margin-bottom-min">
+      <div class="modal-form__subtitle">
+        Bundle Services
+        <div class="page__section-button">
+          <button style="margin-top: -10px;" (click)="addNewBundle()"
+            class="button-icon button-icon--adder page__section-button--lineButtons">
+            Add Bundle
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page__section page__section--card margin-bottom-min" *ngFor="let bundle of work_order.bundledServicesWorkOrders, index as index">
+      <button (click)="deleteBundle(index)" class="page__section--card-closeButton"></button>
+      <div class="page__section margin-bottom-min">
+        <!-- inputs de bundle -->
+        <div class="page__section page__section-inputs">
+          <div class="page__section-input">
+            <!-- total time -->
+            <mat-form-field class="example-full-width" class="input_central">
+              <mat-label>Total Time</mat-label>
+              <input matInput type="number" min="0" placeholder="Total Time" [(ngModel)]="bundle.totalTime" />
+              <span class="label-error" *ngIf="bundle.totalTime == '' && show_bundle_error">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input">
+            <mat-form-field class="example-full-width" class="input_central">
+              <mat-label>Total Projected Fee</mat-label>
+              <input matInput type="number" min="0" placeholder="Total Projected Fee"
+                [(ngModel)]="bundle.projectedFee" />
+              <span class="label-error" *ngIf="bundle.projectedFee == ''&& show_bundle_error">
+                Field is required
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="page__section-input padding-top-x">
+            <mat-checkbox class="example-margin" [(ngModel)]="bundle.package">
+              Package
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="page__section">
+        <table mat-table mat-sort [dataSource]="tables_for_bundles[index]"
+          style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_0">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Delivered To</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              {{ (element.deliverToText.length > 10) ? ( element.deliverToText | slice:0:10 ) + '...' : element.deliverToText }}
+            </td>
+
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_1">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Delivering In</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <!-- <div  *ngIf="element.deliverInText != ''">
+                {{ (element.deliverInText.length > 10) ? ( element.deliverInText | slice:0:10 ) + '...' : element.deliverInText }}
+              </div> -->
+
+                {{getDeliverIn(element.deliveringIn)}}
+            </td>
+          </ng-container>
+
+          <!--  this.deliverin -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_2">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <span *ngIf="is_editing">{{ element.serviceNumber }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_3">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              {{ (element.nickname.length > 10) ? ( element.nickname | slice:0:10 ) + '...' : element.nickname }}
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_4">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              {{ (element.location.length > 10) ? ( element.location | slice:0:10 ) + '...' : element.location }}
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_5">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Autho Date</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              {{ element.autho | date : 'dd MMM yyy'  }}
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_6">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance Date</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              {{ element.authoTime | date : 'dd MMM yyy'}}
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="campo_7">
+            <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <div class="table-row__check">
+                <img src="assets/icons/delete.png" (click)="deleteThisBundleConfirmation( bundle, element, index )" />
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="package_services"></tr>
+          <tr mat-row *matRowDef="let row; columns: package_services; let i = index;"></tr>
+        </table>
+      </div>
+      <div class="page__section margin-tb-min bundle_container_b" id="bundle_button_{{ index }}">
+        <div class="page__section-name"></div>
+        <div class="page__section-button">
+          <button (click)="showPackagesServices( index )" class="button-icon button-icon--adder">
+            Add Services
+          </button>
+        </div>
+      </div>
+      <div class="display-none margin-top-min bunble_container_p" id="bundle_container_{{ index }}">
+        <div class="page__section page__section--card margin-bottom-min">
+          <button (click)="showPackagesServices()" class="page__section--card-closeButton">
+          </button>
+          <mat-grid-list cols="4" rowHeight="60px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="work_order.serviceLineId == '1'">
+              <!-- deliver to -->
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Deliver To</mat-label>
+                <mat-select matNativeControl [(ngModel)]="service_bundle.deliveredTo" (selectionChange)="removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_deto'} )"
+                  >
+                  <!-- (selectionChange)="removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_deto'} )" -->
+                  <mat-option disabled selected value="">Deliver To</mat-option>
+                  <mat-option *ngFor="let item of deliverto_catalogue;" [value]="item.dependentId">
+                    {{item.name}} / {{ item.relationship }}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="service_bundle.deliveredTo == '' && (show_bundle_error || show_bform_errors)">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="work_order.serviceLineId == '2'">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Deliver To</mat-label>
+                <mat-select matNativeControl  [(ngModel)]="service_bundle.deliveredTo" (selectionChange)="removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_deto'} )"
+                  >
+                  <!-- (selectionChange)="removeErrorLabel( $event.value, {handler: salon_form_valdator, field: 'no_deto'} )" -->
+                  <mat-option disabled selected value="">Deliver To</mat-option>
+                  <mat-option *ngFor="let item of deliverto_catalogue;" [value]="item.dependentId">
+                    {{item.name}} / {{ item.relationship }}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="service_bundle.deliveredTo == '' && (show_bundle_error || show_bform_errors)">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Deliver In</mat-label>
+                <mat-select matNativeControl
+                  [(ngModel)]="service_bundle.deliveringIn"
+                  (ngModelChange)="getLocation(); getServiceBundle();"
+                  (selectionChange)="(removeErrorLabel( $event.value, {handler: package_general_form, field: 'no_dein'}))">
+                  <mat-option disabled selected value="">Deliver In</mat-option>
+                  <mat-option *ngFor="let item of deliverin;" [value]="item.idCountryHome">{{ item.countryHomeName }}
+                  </mat-option>
+                  <mat-option *ngFor="let item of deliverin;" [value]="item.idCountryHost">{{ item.countryHostName }}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="service_bundle.deliveringIn == '' && (show_bundle_error || show_bform_errors)">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Service</mat-label>
+                <mat-select matNativeControl required [disabled]="catalogServiceBundle.length == 0"
+                  [(ngModel)]="service_bundle.serviceId"
+                  (selectionChange)="removeErrorLabel( $event.value, {handler: package_general_form, field: 'no_serv'} ); ">
+                  <mat-option disabled selected value="">Service</mat-option>
+                  <mat-option *ngFor="let item of catalogServiceBundle;" [value]="item.id" (click)="service_bundle.nickname = item.service">
+                    {{ item.service }}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="(service_bundle.serviceId == '') && (show_bundle_error || show_bform_errors)">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list cols="4" rowHeight="60px">
+            <!-- location -->
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field class="input_central_half" appearance="fill">
+                <mat-label>Location</mat-label>
+                <mat-select [(ngModel)]="service_bundle.location" [disabled]='location_city.length == 0'>
+                  <mat-option *ngFor="let data of location_city" [value]="data.city">{{data.city}}</mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="service_bundle.location == '' && (show_bundle_error || show_bform_errors)">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Autho date</mat-label>
+                <input onkeydown="return false" [min]="yesterday_today" matInput [(ngModel)]="service_bundle.autho" [matDatepicker]="service_bundle_auto" />
+                <mat-datepicker-toggle matSuffix [for]="service_bundle_auto"></mat-datepicker-toggle>
+                <mat-datepicker #service_bundle_auto></mat-datepicker>
+                <span class="label-error" *ngIf="service_bundle.autho == '' && (show_bundle_error || show_bform_errors)">
+                  Field is required
+                </span>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <div class="page__section margin-top-min page__section--justify-end">
+            <div class="page__section-buttong">
+              <button (click)="addServiceToBundle( bundle )" *ngIf="!bundle.package">
+                Add Service
+              </button>
+              <button (click)="addServiceToBundle( bundle )" *ngIf="bundle.package">
+                Add Package
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Summary Section -->
+    <div class="page__section margin-top-m margin-bottom-min">
+      <div class="modal-form__subtitle">
+        Summary
+      </div>
+    </div>
+    <div class="page__section page__section--nowrap">
+      <div class="column-grid-25">
+        <span class="page__section-name page__section-name--gray">
+          Total Services
+        </span>
+        <div class="page__section margin-top-mini">
+          <table mat-table mat-sort [dataSource]="summary_table_data"
+            style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+            <!-- Position Column -->
+            <ng-container matColumnDef="cam_0">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Total Services</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.total_services }}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="summary_total"></tr>
+            <tr mat-row *matRowDef="let row; columns: summary_total;" style="background-color: rgba(0, 0, 0, 0.07);">
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="column-grid-05"></div>
+      <div class="column-grid-70">
+        <span class="page__section-name page__section-name--gray">
+          Projected Fee
+        </span>
+        <div class="page__section margin-top-mini">
+          <table mat-table mat-sort [dataSource]="summary_table_data"
+            style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+            <!-- Position Column -->
+            <ng-container matColumnDef="cam_0">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Standalone</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.standalone | currency }}
+              </td>
+            </ng-container>
+            <!-- Position Column -->
+            <ng-container matColumnDef="cam_1">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Bundled</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.bundled | currency }}
+              </td>
+            </ng-container>
+            <!-- Position Column -->
+            <ng-container matColumnDef="cam_2">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Global Fee</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                {{ element.global_fee | currency }}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="summary_fee"></tr>
+            <tr mat-row *matRowDef="let row; columns: summary_fee;" style="background-color: rgba(0, 0, 0, 0.04);"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="page__section margin-top-m page__section--justify-end">
+
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" >
+
+  <div class="page__section-buttong">
+  <button style="background-color: #4435a6;" (click)="hideModal()">Cancel</button>
+  </div>
+  &nbsp;
+  <div class="page__section-buttong" *ngIf="atleast_one_service">
+    <button
+    [disabled]="disabledNewService == true" *ngIf="!is_editing && !is_new_sr" (click)="sendServiceRecordData()">Save</button>
+
+    <button [disabled]="disabledEditService == true"  *ngIf="is_editing && !is_new_sr" (click)="editServiceRecordData()">Save</button>
+
+    <button *ngIf="is_new_sr" (click)="servicesSelectedNSR()">Done</button>
+
+  </div>
+</mat-dialog-actions>

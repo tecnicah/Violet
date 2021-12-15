@@ -1,0 +1,295 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path">
+      Operations / Activity
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="page__title title">
+          Activity
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-------------------------------Filters activities-------------------------------->
+    <mat-grid-list cols="5" rowHeight="60px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Service Line</mat-label>
+            <mat-select matNativeControl [(ngModel)]="activitieFilter.serviceLine" (ngModelChange)="getActivities()">
+              <mat-option *ngFor="let data of ca_SL" [value]="data.id">{{data.serviceLine}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select matNativeControl [(ngModel)]="activitieFilter.status" (ngModelChange)="getActivities()">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>status</mat-label>
+                <input matInput placeholder="status" [(ngModel)]="filterStatus.actionType">
+              </mat-form-field>
+
+              <mat-option *ngFor="let data of ca_status | filterBy: filterStatus" [value]="data.id">{{data.actionType}}</mat-option>
+              <mat-option disabled *ngIf="(ca_status | filterBy: filterStatus).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date" [(ngModel)]="activitieFilter.range1">
+            <input matEndDate placeholder="End date" [(ngModel)]="activitieFilter.range2" (dateChange)="filteringServiceRecordTable()">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Office</mat-label>
+            <mat-select matNativeControl [(ngModel)]="activitieFilter.office" (ngModelChange)="getActivities()">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Office</mat-label>
+                <input matInput placeholder="Office" [(ngModel)]="filterOffice.office">
+              </mat-form-field>
+
+              <mat-option *ngFor="let data of ca_office| filterBy: filterOffice" [value]="data.id">{{data.office}}</mat-option>
+              <mat-option disabled *ngIf="(ca_office | filterBy: filterOffice).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+          (click)="cleanFilter()">
+          <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+        </button>
+        <div class="input_final textarea" style="text-align: end; height: 100%;">
+          <b class="browser" style="font-size: 12px;" [routerLink]="['/reports/all-active-services']">
+            View All
+          </b>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-------------------------------Activities-------------------------------->
+    <mat-grid-list cols="7" rowHeight="90px">
+
+      <mat-grid-tile *ngFor="let item of activities.countries" [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reports/{{item.name}}/{{item.id}}'>
+          <span class="titlefilter">{{item.name}}</span>
+          <b class="numberfilter">{{item.servicesRecords}}</b>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="7" rowHeight="90px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter"  matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/PendingAuthorizations'>
+          <span class="titlefilter">Services Pending Assignment</span>
+          <b *ngIf="activities?.pendingAssignment?.count" class="numberfilter">{{activities.pendingAssignment.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reportsBystatus/{{activities?.active?.id}}/Services Active'>
+          <span class="titlefilter">Services Active</span>
+          <b class="numberfilter">{{activities?.active?.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reportsBystatus/{{activities?.inProgress?.id}}/Services In Progress'>
+          <span class="titlefilter">Services In Progress</span>
+          <b class="numberfilter" >{{activities?.inProgress?.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reportsBystatus/{{activities?.onHold?.id}}/Services On Hold'>
+          <span class="titlefilter">Services On Hold</span>
+          <b class="numberfilter">{{activities?.onHold?.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reportsBystatus/{{activities?.invoiced?.id}}/Services Invoiced'>
+          <span class="titlefilter">Services Invoiced</span>
+          <b class="numberfilter">{{activities?.invoiced?.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reportsBystatus/{{activities?.canceled?.id}}/Services Canceled'>
+          <span class="titlefilter">Services Canceled</span>
+          <b class="numberfilter">{{activities?.canceled?.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="divfilter" matRipple matRippleColor="rgba(157, 50, 146, 0.5)" routerLink='/reportsBystatus/{{activities?.closed?.id}}/Services Closed'>
+          <span class="titlefilter">Services Closed</span>
+          <b class="numberfilter">{{activities?.closed?.count}}</b>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-------------------------------Supplier Partners Active filters-------------------------------->
+    <p class="subtitledos">Supplier Partners Active</p>
+
+    <mat-grid-list cols="5" rowHeight="60px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="pickers">
+            <input matStartDate placeholder="Start date" autocomplete="off" [(ngModel)]="PartnerFilters.range1"/>
+            <input matEndDate autocomplete="off" placeholder="End date" [(ngModel)]="PartnerFilters.range2" (dateChange)="filteringServiceRecordTable()"/>
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+          <mat-date-range-picker #pickers></mat-date-range-picker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Supplier Partner</mat-label>
+            <mat-select matNativeControl [(ngModel)]="PartnerFilters.supplierPartner" (ngModelChange)="getPartner()">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Supplier Partner</mat-label>
+                <input matInput placeholder="Supplier Partner" [(ngModel)]="filterSupplierPartner.comercialName">
+              </mat-form-field>
+              <mat-option [value]="">All</mat-option>
+              <mat-option *ngFor="let data of ca_SP | filterBy: filterSupplierPartner" [value]="data.id">{{data.comercialName}}</mat-option>
+              <mat-option disabled *ngIf="(ca_SP | filterBy: filterSupplierPartner).length === 0">No matching elements</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="PartnerFilters.country" (ngModelChange)="getPartner()" (selectionChange)="getCity($event.value)">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+              </mat-form-field>
+              <mat-option [value]="">All</mat-option>
+              <mat-option *ngFor="let data of ca_country | filterBy: filterCountry" [value]="data.id">{{data.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_country | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <mat-select matNativeControl [(ngModel)]="PartnerFilters.city" (ngModelChange)="getPartner()" [disabled]="ca_city.length == 0">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="City" [(ngModel)]="filterCity.city">
+              </mat-form-field>
+              <mat-option [value]="">All</mat-option>
+              <mat-option *ngFor="let data of ca_city| filterBy: filterCity" [value]="data.id">{{data.city}}</mat-option>
+              <mat-option disabled *ngIf="(ca_city | filterBy: filterCity).length === 0">No matching elements</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+        (click)="clearFilterParner()">
+        <mat-icon [ngClass]="{'refresh': filterdos}">cached</mat-icon>
+      </button>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-------------------------------Supplier Partners Active table---------------------------------->
+    <table mat-table [dataSource]="datasource" class="textarea mat-elevation-z8" #immi #immisort='matSort' matSort
+      matTableExporter #exporter="matTableExporter">
+
+      <ng-container matColumnDef="Country">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
+        <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="City">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="city"> City </th>
+        <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Supplier Partner">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="supplierPartner"> Supplier Partner </th>
+        <td mat-cell *matCellDef="let element" class="browser" routerLink='/reportsBySuplier/{{element.id}}/{{element.supplierPartner}}'> {{element.supplierPartner}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Immigration">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="immigration">Immigration </th>
+        <td mat-cell *matCellDef="let element"> {{element.immigration}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Relocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="relocation"> Relocation </th>
+        <td mat-cell *matCellDef="let element"> {{element.relocation}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="total"> Total Services </th>
+        <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <br>
+    <div class="page__section text-center paginator">
+      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+      <!-- <mat-paginator
+        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
+        #paginator #paginatorElement #MatPaginator
+        [pageSizeOptions]="[10, 20, 2147483647]"
+        [pageIndex]="0"
+        [pageSize]="10"
+        showFirstLastButtons
+      >
+      </mat-paginator> -->
+    </div>
+
+  </div>
+</div>

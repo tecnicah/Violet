@@ -1,0 +1,120 @@
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Documents</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+    <div class="page__section-form no-padding page__section-form--no-shadow">
+        <div class="page__section font-purple-dark text-center" *ngIf="documents_request_data.length == 0">
+          Any Work Order has been found.
+        </div>
+        <div *ngFor="let item of documents_request_data, index as index;">
+          <mat-grid-list cols="4" rowHeight="40px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12">
+                <span class="text-mini gray_05">Work Order</span><br />
+                {{ item.numberWorkOrder }}
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12">
+                <span class="text-mini gray_05">Service</span><br />
+                {{ item.service }}
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12">
+                <span class="text-mini gray_05">Service ID</span><br />
+                {{ item.serviceNumber }}
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="page__section-data font-size-12 input_final"></div>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list cols="1" *ngIf="item.documents.length == 0">
+            <div class="page__section">
+              <div class="page__section" *ngIf="item.document.length == 0">
+                <span class="font-purple-dark">
+                  This Work Order has not documents.
+                </span>
+              </div>
+            </div>
+          </mat-grid-list>
+          <mat-grid-list cols="1" *ngIf="item.documents.length != 0">
+            <div class="page__section margin-top-min">
+              <div class="page__section">
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task font-black-bold">
+                    Document Type
+                  </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task font-black-bold">
+                    Uploaded Date
+                  </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task font-black-bold">
+                    Issue Date
+                  </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task font-black-bold">
+                    Expiration Date
+                  </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task font-black-bold">
+                    Issuing Authority
+                  </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task font-black-bold">
+                    Country of Origin
+                  </span>
+                </div>
+              </div>
+              <div 
+                *ngFor="let document of item.documents, index as index;"
+                class="page__section documents__ascard">
+                <button 
+                  (click)="showDocumentDetail( document )"
+                  class="page__section--card-viewButton">
+                </button>
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{ document.document_type }}
+                </div>
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{ document.upload_date | date:'dd MMM yyy' }} 
+                </div>
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{ document.issueDate | date:'dd MMM yyy' }} 
+                </div>
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{ document.expirationDate | date:'dd MMM yyy' }} 
+                </div>
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{ document.issuingAuthority }} 
+                </div>
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{ document.name }} 
+                </div>
+              </div>
+            </div>
+          </mat-grid-list>
+        </div>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="hideModal()">Close</button>
+    </div>
+</mat-dialog-actions>

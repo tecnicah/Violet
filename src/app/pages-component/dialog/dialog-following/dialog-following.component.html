@@ -1,0 +1,222 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Following</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <!-----------------------------------primera seccion-------------------------------------->
+  <mat-grid-list cols="5" rowHeight="70px">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search" (keyup)="applyFilter($event)" [(ngModel)]="data_filter.filter"
+            type="text" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Service Record</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_filter.sr" (ngModelChange)="searchData()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Service Record</mat-label>
+              <input matInput placeholder="Service Record" [(ngModel)]="filterServiceRecord.numberServiceRecord">
+            </mat-form-field>
+            <mat-option *ngFor="let data of ca_service_record | filterBy: filterServiceRecord" [value]="data.id">
+              {{data.numberServiceRecord}}
+            </mat-option>
+            <mat-option disabled *ngIf="(ca_service_record | filterBy: filterServiceRecord).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Coordinator</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_filter.coordinator" (ngModelChange)="searchData()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Coordinator</mat-label>
+              <input matInput placeholder="Coordinator" [(ngModel)]="filterCoordinator.coordinator">
+            </mat-form-field>
+            <mat-option *ngFor="let data of ca_coordinator | filterBy: filterCoordinator" [value]="data.id">
+              {{data.coordinator}}
+            </mat-option>
+            <mat-option disabled *ngIf="(ca_coordinator | filterBy: filterCoordinator).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+          (click)="cleanFilter()">
+          <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+        </button>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <br>
+  <!-------------------------------------------------------------------------------------------------------------->
+  <!--OPEN TABLE FOLLOW-->
+  <div class="page__section">
+    <table mat-table [dataSource]="data_table" class="mat-elevation-z8 textarea" #sortFollowing='matSort' matSort>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="ServiceRecord">
+        <th mat-sort-header="numberServiceRecord" mat-header-cell *matHeaderCellDef>Service <br> Record</th>
+        <td mat-cell *matCellDef="let element" (click)="goToSR(element)" style="cursor: pointer !important;">
+          <span class="browser" style="font-size: 12px;">
+            {{element.numberServiceRecord}}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="VIP">
+        <th mat-sort-header="vip" mat-header-cell *matHeaderCellDef> VIP </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="table-row__check">
+            <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+            <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="status">
+        <th mat-sort-header="status" mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+        <td mat-cell *matCellDef="let element" class="text-center position-relative">
+          <span title="{{ element.status }}">
+
+            {{ ( element.status?.length > 12 )? ( element.status | slice:0:12 )+ '...' : ( element.status) }}
+          </span>
+        </td>
+      </ng-container>
+
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="AuthoDate">
+        <th mat-sort-header="initialAutho" mat-header-cell *matHeaderCellDef> Autho <br> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.initialAutho | date: 'dd MMM yyyy'}} </td>
+      </ng-container>
+
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Partner">
+        <th mat-sort-header="name" mat-header-cell *matHeaderCellDef> Partner </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Client">
+        <th mat-sort-header="client" mat-header-cell *matHeaderCellDef> Client </th>
+        <td mat-cell *matCellDef="let element">
+          <span title="{{ element.client }}">
+            {{ ( element.client?.length > 12 )? ( element.client | slice:0:12 )+ '...' : ( element.client) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Coordinator">
+        <th mat-sort-header="coordinator" mat-header-cell *matHeaderCellDef> Coordinator </th>
+        <td mat-cell *matCellDef="let element">
+          <span class="browser" style="font-size: 12px;">
+            {{element.coordinator}}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="AssigneeName">
+        <th mat-sort-header="assigneeName" mat-header-cell *matHeaderCellDef> Assignee <br> Name </th>
+        <td mat-cell *matCellDef="let element">
+          <span title="{{ element.assigneeName }}">
+            {{ ( element.assigneeName?.length > 10 )? ( element.assigneeName | slice:0:10 )+ '...' : ( element.assigneeName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Services">
+        <th mat-sort-header="services" mat-header-cell *matHeaderCellDef> Services </th>
+        <td mat-cell *matCellDef="let element" [matMenuTriggerFor]="servicioslist" (click)="getServices(element)">
+          <!--span class="browser" style="font-size: 12px;" (click)="viewList(element)">
+            {{element.services}}
+          </span-->
+          <button mat-button class="browser" >
+            {{element.services}}
+          </button>
+
+          <div class="bg"></div>
+
+          <mat-menu #servicioslist="matMenu">
+            <div>
+              <span *ngFor="let item of services_consult">
+                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                  (click)="determinaModal(item)">{{item.service_name}} / {{item.numberWorkOrder}} /
+                  {{item.number_server}}</button>
+                <!--button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                  (click)="openmodal(item, edit_sr_model.assigneeInformations[0].homeCountryId)">{{item.service_name}}
+                  / {{item.numberWorkOrder}} / {{item.number_server}}</button-->
+              </span>
+            </div>
+          </mat-menu>
+
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Unfollow">
+        <th mat-sort-header="Unfollow" mat-header-cell *matHeaderCellDef> Unfollow </th>
+        <td mat-cell *matCellDef="let element">
+          <img src="/assets/icons/quit.svg" class="delete_f" (click)="delete_follow(element);" *ngIf="permission_delete">
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-menu #supplier="matMenu" xPosition="before">
+    <!--div class="bg"></div>
+    <div class="assigned_services" style="padding: 20px; font-size: 10px; max-height: 300px;">
+      <p *ngFor="let item of services_List">{{item.serviceNumber}} - {{item.category}}  - Location {{item.location}}</p>
+    </div-->
+
+    <div>
+      <span *ngFor="let item of services_List">
+        <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+          >{{item.serviceNumber}} - {{item.category}}  - Location {{item.location}}</button>
+      </span>
+    </div>
+  </mat-menu>
+
+  <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+    <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+    <!-- <mat-paginator
+      (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+      [pageSizeOptions]="[10, 20, 2147483647]"
+      showFirstLastButtons
+    >
+    </mat-paginator> -->
+  </div>
+  <br><br>
+  <!--CLOSE TABLE FOLLOW-->
+</mat-dialog-content>
+<!----------------------------------------------------------------------->

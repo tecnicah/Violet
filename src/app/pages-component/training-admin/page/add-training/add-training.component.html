@@ -1,0 +1,128 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin Center / Training / New Training</div>
+    <div class="page__title title">
+      New Trainings
+      <button class="page__path--closeButton" (click)="goBack()">Back</button>
+    </div>
+
+    <mat-grid-list cols="5" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="3">
+        <div class="flex-img">
+          <div>
+            <img src="/assets/images/users/avatar.png" id="lead_client_avatar" class="avatar">
+          </div>
+          <div style="height: 10px;">&nbsp;</div>
+          <input class="btnr btnr--pencil" hidden type="file" id="file" accept="image/*" (change)="img($event)">
+          <button onclick="document.getElementById('file').click()" class="btnr btnr--pencil" matRipple
+            matRippleColor="rgba(157, 50, 146, 0.5)"
+            *ngIf="permission_edit || permission_write">
+            Edit Photo
+          </button>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="input_central">
+          <mat-label>Training Name</mat-label>
+          <input matInput placeholder="Training Name" [(ngModel)]="training_data.name" />
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Training Type</mat-label>
+            <mat-select matNativeControl [(ngModel)]="training_data.type">
+              <mat-option *ngFor="let item of ca_training_type" [value]="item.id">{{item.type}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="margin: 0; height: 100%;"
+          *ngIf="id == 0">
+          <span class="text-mini gray_05">Creation Date</span><br />
+          {{fecha | date:'dd MMM yyyy'}}
+        </div>
+
+        <div class="page__section-data font-size-12 comments input_central" style="margin: 0; height: 100%;"
+          *ngIf="id != 0">
+          <span class="text-mini gray_05">Creation Date</span><br />
+          {{training_data.creationDate | date:'dd MMM yyyy'}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div style="height: 90%; width: 100%;">
+          <span class="text-mini gray_05">Groups</span><br>
+          <mat-checkbox class="example-margin" [(ngModel)]="training_data.groups"></mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="training_data.groups">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Training Group</mat-label>
+            <mat-select matNativeControl [(ngModel)]="training_data.trainingGroup">
+              <mat-option *ngFor="let item of ca_training_group" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput placeholder="Description" #postalCode maxlength="50" [(ngModel)]="training_data.description">
+          <mat-hint align="end">{{postalCode.value.length}} / 50</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="5" [rowspan]="1">
+        <div class="flex_">
+          <span class="title">Content</span>
+          <div class="addPropperty" style="flex-basis: 50%;">
+            <div class="page__section-button page__section-button--big" style="flex: 0 1 180px !important; left: -6;">
+              <button class="button-icon button-icon--more" 
+              *ngIf="permission_edit || permission_write" style="width: 120px;" (click)="addContent();">
+                Add Content
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <div class="colums">
+      <div [dndList] [dndModel]="simpleList">
+        <div *ngFor="let item of simpleList; let i = index" [dndType]="'item'" class="targets mat-elevation-z4 columnas_"
+          style="margin-bottom: 20px;" (dndMoved)="removeItem(item, simpleList, i)" [dndDraggable] [dndObject]="item">
+          <span class="name" style="flex-basis: 20%;" (click)="editContent(item, i)">{{item.title}}</span>
+          <span class="name" style="flex-basis: 70%;">{{item.createdDate | date: 'dd MMM yyyy'}}</span>
+          <span class="up-down" style="flex-basis: 5%;">
+            <img src="/assets/icons/arrow-up.svg" alt="">
+            <img src="/assets/icons/arrow-down.svg" alt="">
+          </span>
+          <img src="/assets/icons/delete.png" *ngIf="permission_delete" class="img_booton_">
+          <input type="text" style="display: none;" value="{{i}}" [(ngModel)]="item.order">
+        </div>
+      </div>
+    </div>
+
+    <div class="page__section margin-top-mini page__section--justify-end">
+      <div class="page__section-buttong" *ngIf="permission_edit || permission_write">
+        <button (click)="save()">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>

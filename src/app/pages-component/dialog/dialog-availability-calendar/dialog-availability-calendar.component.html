@@ -1,0 +1,96 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Availability Calendar</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div style="width: 100%;">
+        <span class="Section-Name">Availability</span> <br><br>
+        <span class="To-add-an-available">To add an available hour, click on the cell; double click for select an
+          unavailable hour</span>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <br>
+
+  <table class="mat-elevation-z8 textarea mat-table">
+    <tr class="mat-header-row" style="text-align: center;">
+      <th class="mat-header-cell" style="text-align: center;"></th>
+      <th class="mat-header-cell" style="text-align: center;" *ngFor="let data of ca_day" (click)='addHours(data);'>
+        {{data.day}}</th>
+    </tr>
+    <tr class="mat-row" *ngFor="let data of ca_hours; let i = index">
+      <td class="mat-cell" style="text-align: center; height: 60%;">{{data.hora}}:00</td>
+      <td class="mat-cell" style="text-align: center; height: 60%;" *ngFor="let data_dia of ca_day; let j = index"
+        (click)="asignaHorario(data, data_dia, i, j)">
+        <span *ngFor="let item of dataGet; let a = index">
+          <div *ngIf="view(item.day, data_dia.id, item.hourStart, item.hourEnd, data.hora)"
+            [ngClass]="item.available ? 'enabled' : 'disabled'">
+            <!--{{item.hourStart}} / {{item.hourEnd}}-->
+          </div>
+        </span>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <div class="page__section-name no-padding">
+    <span class="page__section-lblBlue">Available</span>
+    <span class="page__section-lblRed">Not available</span>
+  </div>
+
+  <br>
+  <br>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Not Available Days</mat-label>
+          <mat-select [(ngModel)]='_data.notAvailable' (ngModelChange)="saveNotAvailable()">
+            <mat-option *ngFor="let data of ca_day" [value]="data.id">{{data.day}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <mat-form-field class="example-chip-list">
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <mat-chip *ngFor="let item of dia_laborable" [selectable]="selectable" [removable]="removable"
+            style="background: #c7fff6;" (removed)="remove(item)">
+            {{item.dia}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <mat-form-field class="example-chip-list">
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <mat-chip *ngFor="let item of dia_no_laborable" [selectable]="selectable" [removable]="removable"
+            style="background: #ffe0e0;" (removed)="remove(item)">
+            {{item.dia}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-form-field>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>

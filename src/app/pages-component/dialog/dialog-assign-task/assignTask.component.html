@@ -1,0 +1,414 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h2 mat-dialog-title class="modal-form__title">Assign Action</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon (click)="hideModal()" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+
+    <!-- Header ------------------------------------------------------ -->
+    <!-- Header ------------------------------------------------------ -->
+    <!-- Header ------------------------------------------------------ -->
+    <!-- Header ------------------------------------------------------ -->
+    <!-- Header ------------------------------------------------------ -->
+    <!-- Header ------------------------------------------------------ -->
+    <!-- Header ------------------------------------------------------ -->
+
+    <!-- action type -->
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!is_sr_detected">
+            <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Action Type</mat-label>
+                <mat-select
+                  matNativeControl
+                  [(ngModel)]="action_item_model.actionType"
+                  (selectionChange)="actionTypeSelected()">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>Action Type</mat-label>
+                    <input matInput placeholder="Action Type" [(ngModel)]="typeAction.actionType">
+                  </mat-form-field>
+                  <mat-option *ngFor="let item of actiontype_catalogue | filterBy: typeAction" [value]="item.id">
+                    {{ item.actionType }}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="action_item_model.actionType == '' && show_create_errors">
+                    Field is required
+                </span>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="is_sr_detected">
+            <div class="page__section-data font-size-12 input_central_half" style="height: 100%;">
+                <span class="text-mini gray_05">Action Type</span><br />
+                Service Record
+            </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="!is_sr_detected"></mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="is_sr_detected"></mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!-- Departament ------------------------------------------ -->
+    <mat-grid-list cols="4" rowHeight="80px" [class.display-none]="!show_departament_section">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field appearance="fill" class="input_central_half">
+              <mat-label>Department</mat-label>
+              <mat-select
+                matNativeControl
+                [(ngModel)]="action_item_model.department" (ngModelChange)="getUserCollaborator()">
+                <mat-option selected disabled value="">Department</mat-option>
+                <mat-option *ngFor="let item of departament_catalogue;" [value]="item.id">
+                  {{ item.department }}
+                </mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="action_item_model.department == '' && show_create_errors">
+                  Field is required
+              </span>
+          </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field appearance="fill" class="input_central_half">
+              <mat-label>Collaborators</mat-label>
+              <mat-select
+                matNativeControl
+                multiple
+                [(ngModel)]="action_item_model.colaboratorMembers">
+                <mat-option *ngFor="let item of userto_catalogue;" [value]="item.id">
+                  {{ item.name }}
+                </mat-option>
+              </mat-select>
+              <span class="label-error" *ngIf="action_item_model.colaboratorMembers.length == 0 && show_create_errors">
+                  Field is required
+              </span>
+          </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- Service ----------------------------------------------- -->
+    <mat-grid-list cols="4" rowHeight="80px" [class.display-none]="!show_service_section">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!is_sr_detected">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Service Record</mat-label>
+          <mat-select
+            matNativeControl
+            (selectionChange)="ableWOField(); getUserSR();"
+            [(ngModel)]="action_item_model.serviceRecordId">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Service Record</mat-label>
+              <input matInput placeholder="Service Record" [(ngModel)]="filterSR.numberServiceRecord">
+            </mat-form-field>
+            <mat-option *ngFor="let item of servicerecord_catalogue | filterBy: filterSR" [value]="item.id">
+              {{ item.numberServiceRecord }} / {{item.assigneeName}}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="action_item_model.serviceRecordId == '' && show_create_errors">
+              Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="is_sr_detected">
+        <div class="page__section-data font-size-12" style="height: 100%;">
+            <span class="text-mini gray_05">Service Record</span><br />
+            {{ action_item_model.serviceRecordId }}
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Work Order</mat-label>
+          <mat-select
+            matNativeControl
+            [disabled]="!wo_field_disabled"
+            (selectionChange)="ableServiceField()"
+            [(ngModel)]="action_item_model.workOrderId"
+            (ngModelChange)="detectServiceLine()">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Work Order</mat-label>
+              <input matInput placeholder="Work Order" [(ngModel)]="typeWork.numberWorkOrder">
+            </mat-form-field>
+            <mat-option *ngFor="let item of wo_catalogue | filterBy: typeWork" [value]="item.id">
+              {{ item.numberWorkOrder }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="action_item_model.workOrderId == '' && show_create_errors">
+              Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central_half">
+          <mat-label>Service ID</mat-label>
+          <mat-select
+            matNativeControl
+            [disabled]="!service_field_unable"
+            [(ngModel)]="action_item_model.serviceId">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Service ID</mat-label>
+              <input matInput placeholder="Service ID" [(ngModel)]="typeService.serviceNumber">
+            </mat-form-field>
+            <mat-option *ngFor="let item of service_catalogue | filterBy: typeService" [value]="item.workOrderServiceId">
+              {{ item.serviceNumber }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="action_item_model.serviceId == '' && show_create_errors">
+              Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_final_half">
+          <mat-label>Collaborators</mat-label>
+          <mat-select
+            matNativeControl
+            multiple
+            [(ngModel)]="action_item_model.colaboratorMembers">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Collaborators</mat-label>
+              <input matInput placeholder="Collaborators" [(ngModel)]="typeC.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of userto_sr | filterBy: typeC" [value]="item.userId">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+          <span class="label-error" *ngIf="action_item_model.colaboratorMembers.length == 0 && show_create_errors">
+              Field is required
+          </span>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- action title -->
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Action Title</mat-label>
+                <input
+                  matInput
+                  placeholder="Action Title"
+                  type="text"
+                  max="40"
+                  [(ngModel)]="action_item_model.actionTitle" />
+                <mat-hint align="end">Max 40 characters</mat-hint>
+            </mat-form-field>
+            <span class="label-error" style="bottom: 6px;" *ngIf="action_item_model.actionTitle == '' && show_create_errors">
+                Field is required
+            </span>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Status</span><br />
+              Pending
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12">
+              <span class="text-mini gray_05">Creation Date</span><br />
+              {{ today_date | date:'dd MMM yyy' }}
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- Description ------------------------------------------------- -->
+    <!-- Description ------------------------------------------------- -->
+    <!-- Description ------------------------------------------------- -->
+    <!-- Description ------------------------------------------------- -->
+    <!-- Description ------------------------------------------------- -->
+    <!-- Description ------------------------------------------------- -->
+    <!-- Description ------------------------------------------------- -->
+    <mat-grid-list cols="1">
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div class="page__section-input no-padding" style="flex: 100%;">
+              <p>Description</p>
+              <mat-form-field appearance="outline" style="width: 100% !important">
+                <textarea
+                  matInput
+                  id="replay-comment"
+                  class="comment-in"
+                  [(ngModel)]="action_item_model.taskDescription"
+                  maxlength="500"></textarea>
+                  <mat-hint align="end">{{ action_item_model.taskDescription?.length }}/500</mat-hint>
+                  <span class="label-error" *ngIf="action_item_model.taskDescription == '' && show_create_errors">
+                    Field is required
+                  </span>
+              </mat-form-field>
+          </div>
+        </div>
+    </mat-grid-list>
+
+    <!-- Fields ----------------------------------------------------- -->
+    <!-- Fields ----------------------------------------------------- -->
+    <!-- Fields ----------------------------------------------------- -->
+    <!-- Fields ----------------------------------------------------- -->
+    <!-- Fields ----------------------------------------------------- -->
+    <!-- Fields ----------------------------------------------------- -->
+    <!-- Fields ----------------------------------------------------- -->
+    <mat-grid-list cols="4" rowHeight="80px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="page__section-data font-size-12" style="height: 100%;">
+              <span class="text-mini gray_05">From</span><br />
+              {{ user_data.name + ' ' + user_data.lastName }}
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>To</mat-label>
+                <mat-select
+                  matNativeControl
+                  multiple
+                  [(ngModel)]="action_item_model.to">
+                  <mat-form-field appearance="outline" style="padding: 5px;">
+                    <mat-label>To</mat-label>
+                    <input matInput placeholder="Name" [(ngModel)]="typeTo.name">
+                  </mat-form-field>
+                  <mat-option *ngFor="let item of collaborator_catalogue | filterBy: typeTo" [value]="item.id">
+                    {{ item.name }}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="action_item_model.to.length == 0 && show_create_errors">
+                    Field is required
+                </span>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field appearance="fill" class="input_central_half">
+                <mat-label>Due Date</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="action_item_model.dueDate"
+                  [matDatepicker]="due_date_new" />
+                <mat-datepicker-toggle matSuffix [for]="due_date_new"></mat-datepicker-toggle>
+                <mat-datepicker #due_date_new></mat-datepicker>
+                <span class="label-error" *ngIf="action_item_model.dueDate == '' && show_create_errors">
+                    Field is required
+                </span>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- Documents --------------------------------------------------------------- -->
+    <!-- boton de add document department -->
+    <div fxLayout="row" fxLayoutGap="10px" [class.display-none]="!show_departament_section">
+        <div class="page__section">
+            <div class="page__title">
+                Documents
+            </div>
+            <div *ngIf="action_item_model.taskDocuments.length != 0"
+                class="page__section margin-top-mini">
+                <div class="page__section-input page__section-input--33">
+                    <span class="documents__index documents__index--task">
+                        Document Name
+                    </span>
+                </div>
+                <div class="page__section-input page__section-input--33">
+                    <span class="documents__index documents__index--task">
+                        Uploaded Date
+                    </span>
+                </div>
+                <div class="page__section-input page__section-input--33">
+                    <span class="documents__index documents__index--task">
+                        Comment
+                    </span>
+                </div>
+            </div>
+            <div *ngFor="let document of action_item_model.taskDocuments, index as index;"
+                class="page__section documents__ascard">
+                <button
+                    (click)="deleteItemActionDocument( index )"
+                    class="page__section--card-closeButton">x
+                </button>
+                <div class="page__section-input page__section-input--33 documents__ascard--task">
+                    {{ document.nameFile }}
+                </div>
+                <div class="page__section-input page__section-input--33 documents__ascard--task">
+                    {{ document.createdDate | date:'dd/MMM/yyy' }}
+                </div>
+                <div class="page__section-input page__section-input--33 documents__ascard--task">
+                    {{ document.comment }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="10px" class="margin-top-min" [class.display-none]="!show_departament_section">
+      <div class="page__section margin-bottom-m">
+        <div class="page__section-name"></div>
+        <div class="page__section-button page__section-button--bigger">
+            <button
+                (click)="AddDocumentOffice(null)"
+                class="button-icon button-icon--adder">
+                Add New Document
+            </button>
+        </div>
+      </div>
+    </div>
+    <!-- boton add service record -->
+    <div fxLayout="row" fxLayoutGap="10px" [class.display-none]="!show_service_section">
+      <div class="page__section">
+          <div class="page__title">
+              Documents
+          </div>
+          <div *ngIf="action_item_model.taskDocuments.length != 0"
+              class="page__section margin-top-mini">
+              <div class="page__section-input page__section-input--33">
+                  <span class="documents__index documents__index--task">
+                      Document Name
+                  </span>
+              </div>
+              <div class="page__section-input page__section-input--33">
+                  <span class="documents__index documents__index--task">
+                      Uploaded Date
+                  </span>
+              </div>
+              <div class="page__section-input page__section-input--33">
+                  <span class="documents__index documents__index--task">
+                      Comment
+                  </span>
+              </div>
+          </div>
+          <div *ngFor="let document of action_item_model.taskDocuments, index as index;"
+              class="page__section documents__ascard">
+              <button
+                  (click)="deleteItemActionDocument( index )"
+                  class="page__section--card-closeButton">x
+              </button>
+              <div class="page__section-input page__section-input--33 documents__ascard--task">
+                  {{ document.nameFile }}
+              </div>
+              <div class="page__section-input page__section-input--33 documents__ascard--task">
+                  {{ document.createdDate | date:'dd/MMM/yyy' }}
+              </div>
+              <div class="page__section-input page__section-input--33 documents__ascard--task">
+                  {{ document.comment }}
+              </div>
+          </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="10px" class="margin-top-min" [class.display-none]="!show_service_section">
+        <div class="page__section margin-bottom-m">
+        <div class="page__section-name"></div>
+        <div class="page__section-button page__section-button--bigger">
+            <button
+                (click)="addNewDocument()"
+                class="button-icon button-icon--adder">
+                Add New Document
+            </button>
+        </div>
+        </div>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="createNewActionItem()">Save</button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,266 @@
+<div>
+  <!------------------------------------OPEN HEADER------------------------------------------>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title" *ngIf="this.data.id == 0">Add Country</h2>
+      <h2 mat-dialog-title class="primary_title" *ngIf="this.data.id != 0">Update Country</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flow-root;">
+          <p class="text-mini gray_05">Creation Date</p>
+          <span *ngIf="data.id == 0">{{authoDate | date:'dd MMM yyy'}}</span>
+          <span *ngIf="data.id!=0">{{data_.createdDate | date:'dd MMM yyy'}}</span>
+        </div>
+      </mat-grid-tile>
+
+       <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
+            <mat-select [(ngModel)]="ddlCountry" required>
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+              </mat-form-field>
+              <mat-option *ngFor="let item of catalogoCountry| filterBy: filterCountry" [value]="item"> {{item.name}}</mat-option>
+              <mat-option disabled *ngIf="(catalogoCountry | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+            </mat-select>
+            <mat-error>Field is required</mat-error>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="fill">
+            <mat-label>Country Name</mat-label>
+            <input matInput placeholder="Country Name" [(ngModel)]="data_.name" [disabled]="data.origin == 'violetApp'">
+          </mat-form-field> -->
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="Description" [(ngModel)]="data_.description" [disabled]="data.origin == 'violetApp'">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Currency</mat-label>
+            <mat-select [(ngModel)]="data_.idCurrency" [disabled]="data.origin == 'violetApp'">
+              <mat-option *ngFor="let item of ca_currency" [value]="item.id">{{item.currency}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Principal Language</mat-label>
+            <mat-select [(ngModel)]="data_.idLenguage" [disabled]="data.origin == 'violetApp'">
+              <mat-option *ngFor="let item of ca_language" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="data.origin != 'violetApp'">
+        <div class="textarea">
+          <p class="page__section-name">Country Leaders</p>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <!----------------------------------------------------------------------------------------->
+     <!-- inicio seccion country leaders -->
+
+     <!--START TABLE  country leaders-->
+    <table class="mat-elevation-z8 textarea mat-table" *ngIf="data.origin != 'violetApp'">
+      <tr class="mat-header-row">
+        <th class="mat-header-cell">Profile</th>
+        <th class="mat-header-cell">Name</th>
+        <th class="mat-header-cell"></th>
+      </tr>
+      <tr class="mat-row" *ngFor="let item of data_.countryLeaders; let i = index">
+        <td class="mat-cell">{{item.profile}}</td>
+        <td class="mat-cell">{{(item.name)}}</td>
+
+        <td class="mat-cell">
+          <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteLeader(item.leader)">
+        </td>
+      </tr>
+    </table>
+    <!--CLOSE TABLE country leaders-->
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="data.origin != 'violetApp'">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button class="button-icon button-icon--more" (click)="addLeader()">
+              Add Leader
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <p class="page__section-name">Cities</p>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-- fin seccion country leaders -->
+    <!--START TABLE CITY-->
+
+    <table class="mat-elevation-z8 textarea mat-table">
+      <tr class="mat-header-row">
+        <th class="mat-header-cell">City</th>
+        <th class="mat-header-cell">Time Zone</th>
+        <th class="mat-header-cell">Creation Date</th>
+        <!-- <th class="mat-header-cell">Resources Guide</th> -->
+        <th class="mat-header-cell"></th>
+      </tr>
+      <tr class="mat-row" *ngFor="let item of data_.catCities; let i = index">
+        <td class="mat-cell">{{item.city}}</td>
+        <td class="mat-cell">{{getTimeZone(item.idTimeZone)}}</td>
+        <!-- <td class="mat-cell" *ngIf="item.createdDate">{{item.createdDate | date: 'dd MMM yyyy'}}</td> -->
+        <td class="mat-cell">{{item.createDate | date: 'dd MMM yyyy'}}</td>
+        <!-- <td class="mat-cell">{{item.resource_guide}}</td> -->
+        <td class="mat-cell">
+          <img src="assets/icons/pencil.png" style="width: 20px; margin-right: 10px;" (click)="editRegistro(item, i)">
+          <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteCity(i, item)">
+        </td>
+      </tr>
+    </table>
+    <!--CLOSE TABLE CITY-->
+    <!----------------------------------------------------------------------------------------->
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="data.origin != 'violetApp'">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button class="button-icon button-icon--more" (click)="addCity()">
+              Add City
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <br>
+    <!----------------------------------------------------------------------------------------->
+    <!--INICIA DOCUMENTOS-->
+    <mat-grid-list cols="1" *ngIf="data.origin != 'violetApp'">
+      <div class="page__section margin-top-min">
+        <div class="page__section-name">
+          Working Documents
+        </div>
+        <div class="page__section" *ngIf="data_.countryDocuments.length > 0 || document.length > 0">
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Document Type
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Uploaded Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Expiration Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Location
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Status
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Privacy
+            </span>
+          </div>
+        </div>
+
+        <div class="page__section documents__ascard" *ngFor="let item of data_.countryDocuments">
+          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;" (click)="deleteDocumentCountry(item)">
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+             {{getName(item.idDocumentType)}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.uploadDate | date: 'dd MMM yyyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.expirationDate | date: 'dd MMM yyyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.location}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{getStatus(item.idStatus)}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{getPrivacy(item.idPrivacy)}}
+          </div>
+        </div>
+
+        <div class="page__section documents__ascard" *ngFor="let item of document;let i = index">
+          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;" (click)="deleteTemporal(i)">
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+              {{getName(item.idDocumentType)}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.uploadDate | date: 'dd MMM yyyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.expirationDate | date: 'dd MMM yyyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{item.location}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{getStatus(item.idStatus)}}
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            {{getPrivacy(item.idPrivacy)}}
+          </div>
+        </div>
+
+      </div>
+    </mat-grid-list>
+    <!--TERMINA DOCUMENTOS-->
+    <!----------------------------------------------------------------------------------------->
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="data.origin != 'violetApp'">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button class="button-icon button-icon--more" (click)="addDocument()">
+              Add New Document
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save()">Save</button>
+    </div>
+  </mat-dialog-actions>
+</div>

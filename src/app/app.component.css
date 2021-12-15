@@ -1,0 +1,6 @@
+.primary-bg {
+    color: mat-color($your-primary-variable);
+  }
+  .accent-bg {
+    color: mat-color($your-accent-variable);
+  }

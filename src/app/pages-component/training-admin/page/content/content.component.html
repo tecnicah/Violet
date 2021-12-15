@@ -1,0 +1,379 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Admin Center / Training / New Training / Content</div>
+    <div class="page__title title">
+      Theme
+      <button class="page__path--closeButton" (click)="goBack()">Back</button>
+    </div>
+
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="Search" type="text" [(ngModel)]="data_content.title" />
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="flex_" style="width: 100%;">
+          <div class="addPropperty" style="flex-basis: 50%;">
+            <div class="page__section-button page__section-button--big" style="flex: 0 1 180px !important; left: -6;">
+              <button class="button-icon button-icon--more"
+              *ngIf="permission_edit || permission_write" style="width: 120px;" (click)="addElement();">
+                Add Element
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="mat-elevation-z4" style="padding:15px;"
+      *ngIf="data_content.type == 1 && data_content.themes.length > 0">
+      <div class="colums">
+        <div [dndList] [dndModel]="data_content.themes">
+          <div *ngFor="let item of data_content.themes; let i = index" [dndType]="'item'" class="targets  columnas"
+            (dndMoved)="removeItem(item, data_content.themes)" [dndDraggable] [dndObject]="item">
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA IMAGEN-->
+            <div class='flex-img' *ngIf="item.element == 5">
+              <div>
+                <img src='/assets/images/users/avatar.png' id='lead_client_avatar{{i}}' class='avatar'>
+                <input class='btnr btnr--pencil' hidden type='file' id='file{{i}}' accept='image/*'
+                  (change)='img($event, i)'>
+              </div>
+              <div style="height: 10px;">&nbsp;</div>
+              <span (click)='takephoto(i)' class='btnr btnr--pencil' matRipple matRippleColor='rgba(157, 50, 146, 0.5)'>
+                Edit Photo </span>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA TITLE-->
+            <div class="title_c" *ngIf="item.element == 1">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__input__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Title</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.text" />
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA SUBTITLE-->
+            <div class="title_c" *ngIf="item.element == 2">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__input__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Subtitle</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.text" />
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA PARAGRAPH-->
+            <div class="title_c altura_paragrapf" *ngIf="item.element == 3">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__textarea__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Paragraph</mat-label>
+                  <textarea matInput rows="5" [(ngModel)]="item.text"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--SPACE-->
+            <div class="section__space__" *ngIf="item.element == 4">
+              Space
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA VIDEO-->
+            <div class="title_c" *ngIf="item.element == 6">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__input__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Video</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.url" />
+                  <!--video id="video" autoplay="false" muted="muted" loop width="320">
+                  <source src="{{item.url}}" allow="autoplay" type="video/mp4">
+                </video-->
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA DOCUMENTO-->
+            <div class='flex-img' style="width: 80%;" *ngIf="item.element == 7">
+              <div class="mat-elevation-z4 textarea">
+                <p>Document Name</p>
+                <!--img src='/assets/images/users/avatar.png' id='lead_client_avatar{{i}}' class='avatar'-->
+                <input class='btnr btnr--pencil' hidden type='file' id='file{{i}}' accept='image/*'
+                  (change)='img($event, i)'>
+              </div>
+              <div style="height: 10px;">&nbsp;</div>
+              <span (click)='takephoto(i)' class='btnr btnr--pencil' matRipple matRippleColor='rgba(157, 50, 146, 0.5)'>
+                Add Document </span>
+            </div>
+
+            <img src="/assets/icons/delete.png" *ngIf="permission_delete" class="img_booton_" (click)="deleteSection(item, i)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mat-elevation-z4" style="padding:15px;"
+      *ngIf="data_content.type == 2 && data_content.evaluations.length > 0">
+      <div class="colums">
+        <div [dndList] [dndModel]="data_content.evaluations">
+          <div *ngFor="let item of data_content.evaluations; let i = index" [dndType]="'item'" class="targets  columnas"
+            (dndMoved)="removeItem(item, data_content.evaluations)" [dndDraggable] [dndObject]="item">
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA TITLE-->
+            <div class="title_c" *ngIf="item.element == 1">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__input__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Title</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.text" />
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA SUBTITLE-->
+            <div class="title_c" *ngIf="item.element == 2">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__input__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Subtitle</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.text" />
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA PARAGRAPH-->
+            <div class="title_c altura_paragrapf" *ngIf="item.element == 3">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__textarea__">
+                <mat-form-field appearance="fill">
+                  <mat-label>Paragraph</mat-label>
+                  <textarea matInput rows="5" [(ngModel)]="item.text"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--SPACE-->
+            <div class="section__space__" *ngIf="item.element == 4">
+              Space
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA OPCION MULTIPLE-->
+            <div *ngIf="item.element == 8" class="textarea">
+              <div class="title_c alto">
+                <span class="basics__title">Multiple Option</span>
+                <div class="basics__secundary">
+                  <span class="basics__terceary required">Required</span>
+                  <mat-slide-toggle class="basics__terceary" [(ngModel)]="item.required"></mat-slide-toggle>
+                  <span class="basics__terceary browser text_size" (click)="addOption(i)">Add Option</span>
+                  <span class="basics__caption browser text_size">Add Caption Other</span>
+                </div>
+              </div>
+              <div class="title_c__input__ margen">
+                <mat-form-field appearance="fill">
+                  <mat-label>Question</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.question" />
+                </mat-form-field>
+              </div>
+
+              <mat-grid-list cols="5" rowHeight="30px">
+                <mat-grid-tile [colspan]="1" [rowspan]="3" *ngFor="let opc of item.answers; let j = index">
+                  <div class="page__section position-relative">
+                    <span class="fixed-label">Option {{j+1}}</span>
+                    <div>
+                      <mat-radio-button value="1">
+                        <input matInput placeholder="Answer" [(ngModel)]="opc.answer1" />
+                      </mat-radio-button>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+              <mat-grid-list cols="3" rowHeight="40px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                  <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Other</mat-label>
+                      <input matInput placeholder="Other" [(ngModel)]="item.text" />
+                    </mat-form-field>
+                  </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                  <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Correct Option</mat-label>
+                      <mat-select matNativeControl>
+                        <mat-option *ngFor="let op of item.answers; let o = index"
+                          (click)="changeTrue(item, o, i, $event)" [value]=item.correct>{{op.answer1}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA DROP DOWN-->
+            <div *ngIf="item.element == 9" class="textarea">
+              <div class="title_c alto">
+                <span class="basics__title">Drop Down</span>
+                <div class="basics__secundary">
+                  <span class="basics__terceary required">Required</span>
+                  <mat-slide-toggle class="basics__terceary" [(ngModel)]="item.required"></mat-slide-toggle>
+                  <span class="basics__terceary browser text_size" (click)="addOption(i)">Add Option</span>
+                </div>
+              </div>
+              <div class="title_c__input__ margen">
+                <mat-form-field appearance="fill">
+                  <mat-label>Question</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.question" />
+                </mat-form-field>
+              </div>
+
+              <mat-grid-list cols="5" rowHeight="30px">
+                <mat-grid-tile [colspan]="1" [rowspan]="3" *ngFor="let opc of item.answers; let j = index">
+                  <div class="page__section position-relative">
+                    <span class="fixed-label">Option {{j+1}}</span>
+                    <div>
+                      <input matInput placeholder="Answer" [(ngModel)]="opc.answer1" />
+                    </div>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+              <mat-grid-list cols="3" rowHeight="40px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                  <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Correct Option</mat-label>
+                      <mat-select matNativeControl [(ngModel)]="item.text">
+                        <mat-option *ngFor="let op of item.answers; let o = index"
+                          (click)="changeTrue(item, o, i, $event)" [value]=item.correct>{{op.answer1}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA OPCION BOXES-->
+            <div *ngIf="item.element == 10" class="textarea">
+              <div class="title_c alto">
+                <span class="basics__title">Boxes</span>
+                <div class="basics__secundary">
+                  <span class="basics__terceary required">Required</span>
+                  <mat-slide-toggle class="basics__terceary" [(ngModel)]="item.required"></mat-slide-toggle>
+                  <span class="basics__terceary browser text_size" (click)="addOption(i)">Add Option</span>
+                  <span class="basics__caption browser text_size">Add Caption Other</span>
+                </div>
+              </div>
+              <div class="title_c__input__ margen">
+                <mat-form-field appearance="fill">
+                  <mat-label>Question</mat-label>
+                  <input matInput placeholder="Title" type="text" [(ngModel)]="item.question" />
+                </mat-form-field>
+              </div>
+
+              <mat-grid-list cols="5" rowHeight="30px">
+                <mat-grid-tile [colspan]="1" [rowspan]="3" *ngFor="let opc of item.answers; let j = index">
+                  <div class="page__section position-relative">
+                    <span class="fixed-label">Option {{j+1}}</span>
+                    <div>
+                      <mat-checkbox>
+                        &nbsp;&nbsp;<input matInput placeholder="Answer" [(ngModel)]="opc.answer1" />
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+              <mat-grid-list cols="3" rowHeight="40px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                  <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Other</mat-label>
+                      <input matInput placeholder="Other" [(ngModel)]="item.text" />
+                    </mat-form-field>
+                  </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                  <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Correct Option</mat-label>
+                      <mat-select matNativeControl [(ngModel)]="item.correctid">
+                        <mat-option *ngFor="let op of item.answers; let o = index" [(ngModel)]="item.correctAnswer"
+                          (click)="changeTrue(item, o, i, $event)" [value]='o'>{{op.answer1}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+
+            </div>
+            <!------------------------------------------------------------------------------------------------------->
+            <!--DIV PARA PARAGRAPH-->
+            <div class="title_c altura_paragrapf" *ngIf="item.element == 11">
+              <div class="title_c__align__">
+                <img src="./assets/icons/align-left.svg" alt="10px">
+                <img src="./assets/icons/align-center.svg" alt="10px">
+                <img src="./assets/icons/align-right.svg" alt="10px">
+              </div>
+              <div class="title_c__textarea__">
+                <mat-form-field appearance="fill">
+                  <textarea matInput rows="5" placeholder="Write" [(ngModel)]="item.text"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <img src="/assets/icons/delete.png" *ngIf="permission_delete" class="img_booton_" (click)="deleteSectionE(item, i)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="page__section-buttong flex_">
+      <button (click)="preview()" class="ancho preview">Preview</button>
+      <button (click)="save()" class="ancho" style="margin-left: 20px;" *ngIf="permission_edit || permission_write">Save</button>
+    </div>
+
+
+  </div>
+</div>

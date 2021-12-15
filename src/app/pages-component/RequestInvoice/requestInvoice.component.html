@@ -1,0 +1,400 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path">
+      Operations / Service Records / Assignee Name / Invoice
+    </div>
+    <div class="page__title">
+      Supplier Invoice Request
+    </div>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="supplier !=0">
+        <div class="page__section-data font-size-12 comments input_central">
+          <span class="text-mini gray_05">Supplier Partner</span><br />
+          <p style="margin: 0; font-size: 12px;">{{supplierPartnerName}}</p>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="supplier == 0">
+        <div class="page__section-data font-size-12 comments input_central">
+          <span class="text-mini gray_05">Client Name</span><br />
+          <p style="margin: 0; font-size: 12px;">{{cliente}}</p>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Status</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_.status">
+            <mat-option *ngFor="let item of ca_status" [value]="item.id">{{item.status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <div class="textarea margin_table">
+      <p class="subtitledos">Additional Expenses</p>
+    </div>
+
+    <div class="textarea margin_table">
+      <mat-slide-toggle [(ngModel)]="data_.additional"></mat-slide-toggle>
+    </div>
+
+    <br>
+
+    <div *ngIf="data_.additional">
+      <!--------------------------------------------------------------------------------------->
+      <!--TABLE PAYMENTS-->
+      <table class="mat-elevation-z8 textarea mat-table">
+        <tr class="mat-header-row">
+          <th class="mat-header-cell">Requested</th>
+          <th class="mat-header-cell">Concept</th>
+          <th class="mat-header-cell">Amount</th>
+          <th class="mat-header-cell">Currency</th>
+          <th class="mat-header-cell"></th>
+        </tr>
+        <tr class="mat-row" *ngFor="let item of data_.additionalExpenses; let i = index;">
+          <td class="mat-cell">
+            <div class="table-row__check">
+              <mat-checkbox (click)="requested(item,i)" [(ngModel)]="item.requested"></mat-checkbox>
+            </div>
+          </td>
+          <td class="mat-cell">{{item.concept}}</td>
+          <td class="mat-cell">{{item.amount}}</td>
+          <td class="mat-cell">{{getCurrency(item.currency)}}</td>
+          <td class="mat-cell">
+            <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editExpence(item, i)">
+          </td>
+        </tr>
+      </table>
+
+      <mat-grid-list cols="4" rowHeight="70px">
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <div class="addPropperty">
+            <div class="page__section-button page__section-button--big"
+              style="flex: 0 1 180px !important; left: 6px !important;">
+              <button class="button-icon button-icon--more" (click)="addExpence();">
+                Add Expence
+              </button>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea" style="display: flex; height: 100%;">
+          <div style="flex-basis: 50%;height: 100%; ">
+            <p class="page__section-name">Relocation Services</p>
+          </div>
+          <div style="flex-basis: 50%; margin-top: 45px; height: 100%;">
+            <div style="flex-basis: 50%;height: 100%; ">
+              <p class="page__section-name">*All the times is indicated in hours</p>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <!------------------------------------------------------------------------------------------------------------>
+    <!--START TABLE RELOCATION-->
+    <div class="page__section">
+      <table mat-table mat-sort [dataSource]="relocation_standalone_table"
+        style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+
+        <ng-container matColumnDef="col_0">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Work<br />Order</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.numberWorkOrder }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Service / Service ID</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div>{{ element.service }}</div>
+            <div *ngIf="element.services?.length > 0">{{ element.services[0] }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.status }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.program }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Total hours</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.total }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Amount per Hour</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.amountPerHour | currency }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Total Fee</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.totalFee | currency }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Available</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.available }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Invoiced</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.invoiced }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Hours To Invoice</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">
+            <div *ngIf="element.program != 'Coordination' && element.program != 'Package'">
+              <button mat-button matTooltip="Click to edit" style="width: 100%; min-height: 20px;"
+                (click)="element.editHour = true; element.reshour = element.hoursToInvoice" *ngIf="!element.editHour">
+                {{element.hoursToInvoice}}
+              </button>
+              <div style="display: flex; 
+                        justify-content: space-between;
+                        align-items: center;" *ngIf="element.editHour">
+                <mat-form-field style="flex-basis: 80%;">
+                  <input matInput [(ngModel)]="element.hoursToInvoice" placeholder="Hours">
+                </mat-form-field>
+                <img src="/assets/icons/delete.png"
+                  (click)='element.hoursToInvoice = element.reshour;element.editHour = false' style="width: 15px;">
+                <img src="/assets/icons/purple-check.png" (click)='saveDataInvoice(element, i)' style="width: 15px;">
+              </div>
+            </div>
+            <div *ngIf="element.program == 'Coordination' || element.program == 'Package'">
+              <mat-checkbox [(ngModel)]="element.to_Invoice" (change)="validate_relocation($event, element, i)">
+              </mat-checkbox>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_10">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Ammount to Invoice</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{element.amountToInvoice | currency}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_11">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Pending Fee</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{element.pendingFee | currency}}
+          </td>
+        </ng-container>
+
+        <!--ng-container matColumnDef="col_11">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Comments (Billing Instruction)</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button mat-button matTooltip="Click to edit" style="width: 100%; min-height: 20px;"
+              *ngIf="!element.editComment" (click)="element.editComment = true; element.rescom = element.comments">
+              {{element.comments}}
+            </button>
+            <div style="display: flex; 
+                        justify-content: space-between;
+                        align-items: center;" *ngIf="element.editComment">
+              <mat-form-field style="flex-basis: 80%;">
+                <input matInput #message maxlength="256" [(ngModel)]="element.comments" placeholder="Comment">
+                <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+              </mat-form-field>
+              <img src="/assets/icons/delete.png"
+                (click)='element.comments = element.rescom;element.editComment = false' style="width: 15px;">
+              <img src="/assets/icons/purple-check.png" (click)='element.editComment = false' style="width: 15px;">
+            </div>
+          </td>
+        </ng-container-->
+
+        <tr mat-header-row *matHeaderRowDef="table_once_cols"></tr>
+        <tr mat-row *matRowDef="let row; columns: table_once_cols;"></tr>
+      </table>
+
+      <!--table style="box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+        <tr style="display: flex;">
+          <td style="flex-basis: 67%;padding: 10px 0 10px 0; font-size: 14px;">TOTAL</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center; flex-basis: 8%; padding: 10px 0 10px 0; font-size: 14px;">
+            {{subtotal_rel | currency}}</td>
+          <td style="text-align: center;flex-basis: 8%;padding: 10px 0 10px 0;font-size: 14px;">{{pending_r | currency}}
+          </td>
+          <td></td>
+        </tr>
+      </table-->
+    </div>
+    <!--END TABLE RELOCATION-->
+    <!------------------------------------------------------------------------------------------------------------>
+
+
+    <!------------------------------------------------------------------------------------------------------------>
+    <!--START TABLE IMMIGRATION-->
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea" style="display: flex; height: 100%;">
+          <div style="flex-basis: 50%;height: 100%; ">
+            <p class="page__section-name">Immigration Services</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <div class="page__section">
+      <table mat-table mat-sort [dataSource]="immigration_coordinator_table"
+        style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+
+        <ng-container matColumnDef="col_0">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Work<br />Order</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.numberWorkOrder }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_1">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Service / Service ID</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.service }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_2">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.status }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_3">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.program }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_4">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Total hours</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.total }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_5">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Amount per Hour</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.amountPerHour | currency }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_6">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Total Fee</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.totalFee | currency }}
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="col_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center">To Invoice</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">
+            <!--{{element.hoursToInvoice}}-->
+            <mat-checkbox [(ngModel)]="element.to_Invoice" (change)="validate_immigration($event, element, i)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_8">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Ammount to Invoice</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{element.amountToInvoice | currency}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="col_9">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Pending Fee</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{element.pendingFee | currency}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="table_nueve_cols"></tr>
+        <tr mat-row *matRowDef="let row; columns: table_nueve_cols;"></tr>
+      </table>
+
+      <!--
+      <table style="box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+        <tr style="display: flex;">
+          <td style="flex-basis: 57%;padding: 10px 0 10px 0; font-size: 14px;">TOTAL</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center; flex-basis: 12%; padding: 10px 0 10px 0; font-size: 14px;">
+            {{subtotal_imm | currency}}</td>
+          <td style="text-align: center;flex-basis: 8%;padding: 10px 0 10px 0;font-size: 14px;">
+            {{pending_imm | currency}}</td>
+          <td></td>
+        </tr>
+      </table>
+      -->
+    </div>
+    <!--END TABLE IMMIGRATION-->
+    <!------------------------------------------------------------------------------------------------------------>
+    <br>
+    <br>
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field appearance="fill">
+          <mat-label>Comment</mat-label>
+          <input matInput placeholder="Comment" [(ngModel)]="data_.comments">
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+
+    <div class="page__section margin-top-mini page__section--justify-end">
+      <div class="page__section-buttong">
+        <button (click)="save()">Send Request</button>
+      </div>
+    </div>
+  </div>
+</div>

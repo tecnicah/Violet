@@ -1,0 +1,206 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Calls</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <!-----------------------------------primera seccion-------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Caller  / Callee" type="text" (keyup)="applyFilter($event)"
+            [(ngModel)]="data_model.filter" />
+          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Service Record</mat-label>
+        <mat-select matNativeControl [(ngModel)]="data_model.sr" (ngModelChange)="consultaWorkOrder(); searchData()">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Service Record</mat-label>
+            <input matInput placeholder="Service Record" [(ngModel)]="filter_.numberServiceRecord">
+          </mat-form-field>
+          <mat-option *ngFor="let data of ca_service_record  | filterBy: filter_" [value]="data.id">{{data.numberServiceRecord}} / {{data.assigneeName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Work Order</mat-label>
+        <mat-select matNativeControl [(ngModel)]="data_model.wo" (selectionChange)="consultaService(); searchData()">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Work Order</mat-label>
+            <input matInput placeholder="Work Order" [(ngModel)]="filter.numberWorkOrder">
+          </mat-form-field>
+          <mat-option *ngFor="let data of workOrder | filterBy: filter" [value]="data.id">{{data.numberWorkOrder}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label>Service </mat-label>
+        <mat-select matNativeControl [(ngModel)]="data_model.service" (ngModelChange)="searchData()">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Service</mat-label>
+            <input matInput placeholder="Service" [(ngModel)]="filters.serviceNumber">
+          </mat-form-field>
+          <mat-option *ngFor="let data of services | filterBy: filters" [value]="data.service">{{data.serviceNumber}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;" matTooltip="Clear filter"
+          (click)="cleanFilter()">
+          <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+        </button>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty" *ngIf="permission_write">
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button class="button-icon button-icon--more" (click)="AddCall();" style="width: 100px;">
+            Add Call
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-------------------------------------------------------------------------------------------------------------->
+  <!--OPEN TABLE FOLLOW-->
+  <div class="page__section">
+    <table mat-table [dataSource]="data_table" class="mat-elevation-z8 textarea" #sortcall='matSort' matSort>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="ServiceRecord">
+        <th mat-sort-header="numberServiceRecord" mat-header-cell *matHeaderCellDef>Service <br> Record</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.numberServiceRecord}}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="WorkOrder">
+        <th mat-sort-header="numberWorkOrder" mat-header-cell *matHeaderCellDef> Work Order </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.numberWorkOrder}}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Service">
+        <th mat-sort-header="service" mat-header-cell *matHeaderCellDef> Service </th>
+        <td mat-cell *matCellDef="let element"> {{element.service}} </td>
+      </ng-container>
+
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Caller">
+        <th mat-sort-header="caller" mat-header-cell *matHeaderCellDef> Caller </th>
+        <td mat-cell *matCellDef="let element">
+          <!--{{element.caller}}-->
+          <span *ngIf="element.caller != null"> {{(element.caller.length> 7) ?  (element.caller | slice:0:7)+'..': element.caller}}</span>
+          
+        </td>
+      </ng-container>
+
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Callee">
+        <th mat-sort-header="callee" mat-header-cell *matHeaderCellDef> Callee </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.callee != null"> {{(element.callee.length> 7) ?  (element.callee | slice:0:7)+'..': element.callee}}</span>
+          <!--{{element.callee}}-->
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Date">
+        <th mat-sort-header="date" mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd MMM yyyy'}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Time">
+        <th mat-sort-header="time" mat-header-cell *matHeaderCellDef> Time </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.time}}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Duration">
+        <th mat-sort-header="duration" mat-header-cell *matHeaderCellDef> Duration </th>
+        <td mat-cell *matCellDef="let element"> {{element.duration}}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Escalate">
+        <th mat-sort-header="escalate" mat-header-cell *matHeaderCellDef> Escalate </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="table-row__check">
+            <img src="assets/table-icons/check.png" *ngIf="element.escalate" />
+            <img src="assets/table-icons/uncheck.png" *ngIf="!element.escalate" />
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="edit">
+        <th mat-sort-header="edit" mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="table-row__check">
+            <img src="assets\icons\pencil.png" style="width: 17px;" (click)="editCall(element)">
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="page__section-name no-padding">
+        <span class="page__section-lblRed">Welcome Call</span>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="page__section text-center paginator margin-top-mini">
+    <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+
+    <!-- <mat-paginator
+      (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize" #paginator #paginatorElement
+      [pageSizeOptions]="[10, 20, 2147483647]"
+      showFirstLastButtons
+    >
+    </mat-paginator> -->
+  </div>
+  <br><br>
+  <!--CLOSE TABLE FOLLOW-->
+
+
+</mat-dialog-content>
+<!----------------------------------------------------------------------->

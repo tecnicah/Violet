@@ -1,0 +1,26 @@
+th.mat-header-cell {
+    text-align: center !important;
+  }
+.delete_f{
+  top: 8px;
+    right: 15px;
+    width: 15px;
+    cursor: pointer;
+}
+
+.refresh{
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}
+
+mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
+	width: 65px !important;
+}

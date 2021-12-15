@@ -1,0 +1,269 @@
+<div *ngIf="show">
+   <!------------------------------------OPEN HEADER------------------------------------------>
+   <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title" *ngIf="data.id == 0">Add Event</h2>
+      <h2 mat-dialog-title class="primary_title" *ngIf="data.id != 0">Update Event</h2>
+
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Event Report Date</mat-label>
+            <input [(ngModel)]="event.eventReportDate" matInput [matDatepicker]="pickerEvent" placeholder="Event Report Date">
+            <mat-datepicker-toggle matSuffix [for]="pickerEvent"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEvent></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Event Close Date</mat-label>
+            <input [(ngModel)]="event.eventCloseDate" matInput [matDatepicker]="pickerClose" placeholder="Event Close Date">
+            <mat-datepicker-toggle matSuffix [for]="pickerClose"></mat-datepicker-toggle>
+            <mat-datepicker #pickerClose></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      <!--  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central" style="width: 100%;">
+          <mat-form-field appearance="fill">
+            <mat-label>Severity</mat-label>
+              <mat-select [(ngModel)]="event.severityId" matNativeControl>
+              <mat-option *ngFor="let item of severity_catalogue" [value]="item.id" >{{item.severity}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="input_central" style="width: 100%;">
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input [(ngModel)]="event.description" matInput placeholder="Description" type="text"/>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <!--  -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="event.statusId">
+              <mat-option *ngFor="let data of catalog_estatus" [value]="data.id">{{data.status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <br>
+          <p class="page__section-name">Assignee Photos</p>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+    <!-- Assignee Photos -->
+    <!-- fotos desde get -->
+    <div class="carts_team_container" *ngIf="event.assignedPhotos.length > 0">
+      <div class="cart_team_office mat-elevation-z8" *ngFor="let item of event.assignedPhotos; let i = index">
+        <img [src]="image_path + item.photoPath" class="avatar imgAssigne">
+        <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteImgAssignee(item)">
+      </div>
+    </div>
+    <!-- fotos nuevas -->
+    <div class="carts_team_container" *ngIf="newPhotoAssignee">
+      <div  class="cart_team_office mat-elevation-z8" *ngFor="let itemnew of newPhotoAssignee; let n = index">
+        <img src="{{'data:image/jpg;base64,' + itemnew.photoPath}}" id="photoAssignee" class="avatar imgAssigne">
+        <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteImgAssignee(itemnew)">
+      </div>
+    </div>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <input class="btnr btnr--pencil" hidden type="file" id="fileAssig" accept="image/*" (change)="addPhotosAssignee($event)">
+            <button onclick="document.getElementById('fileAssig').click()" class="button-icon button-icon--more">
+              Add Photos
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <p class="page__section-name">Supplier Consultant Photos</p>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-- Supplier Consultant Photos -->
+    <!-- fotos desde get -->
+    <div class="carts_team_container">
+      <div class="cart_team_office mat-elevation-z8" *ngFor="let item of event.supplierConsultantPhotos; let i = index">
+        <img [src]="image_path + item.photoPath" class="avatar imgSupplier">
+        <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteImgSupplier(item)">
+      </div>
+    </div>
+    <!-- fotos nuevas -->
+    <div class="carts_team_container" *ngIf="newPhotoSupplier">
+      <div  class="cart_team_office mat-elevation-z8" *ngFor="let itemnew of newPhotoSupplier; let n = index">
+        <img src="{{'data:image/jpg;base64,' + itemnew.photoPath}}" id="photoSupplier" class="avatar imgAssigne">
+        <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteImgAssignee(itemnew)">
+      </div>
+    </div>
+    <mat-grid-list cols="5" rowHeight="60px">
+      <mat-grid-tile [colspan]="5" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <input class="btnr btnr--pencil" hidden type="file" id="fileSupplier" accept="image/*" (change)="addPhotosSupplier($event)">
+            <button onclick="document.getElementById('fileSupplier').click()" class="button-icon button-icon--more">
+              Add Photos
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <!-- Comments -->
+    <mat-grid-list cols="1">
+      <div class="page__section margin-top-m margin-bottom-mini">
+        <div class="page__section-name">Comments</div>
+      </div>
+    </mat-grid-list>
+    <!-- comentarios con id -->
+    <div class="comments" *ngFor="let data of event.commentReportAnEvents; let i = index">
+      <mat-grid-list cols="10" rowHeight="80px" *ngIf="data && data.id !=0 ">
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div>
+            <img class="avatar" src="{{image_path}}{{data?.createdByNavigation.avatar}}" alt=""
+              *ngIf="data?.createdByNavigation.avatar != null">
+            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);"
+            *ngIf="data?.createdByNavigation.avatar == null"></div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Name</span><br />
+              {{data.createdByNavigation?.name}} {{data.createdByNavigation?.lastName}} {{data.createdByNavigation?.motherLastName}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Title</span><br />
+              {{data.createdByNavigation?.userType.type}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Date</span><br />
+              {{data.createdDate | date:'dd MMM yyy'}}
+            </div>
+
+            <div style="text-align:end; width: auto !important;">
+              <mat-icon class="calendar">calendar_today</mat-icon>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="160px" *ngIf="data.id != 0">
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <div class="textarea">
+            <br><br>
+            <p >Comment</p>
+            <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+              <textarea disabled [(ngModel)]="data.comment" matInput (change)="data.comment = $sevent.target.value" #message
+                maxlength="500">{{data.comment}}</textarea>
+              <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <!-- comentarios sin id -->
+    <div class="comments" *ngFor="let item of event.commentReportAnEvents let i = index">
+      <mat-grid-list cols="10" rowHeight="80px" *ngIf="item.id == 0">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div>
+            <img class="avatar" src="{{image_path}}{{item.createdByNavigation.avatar}}" alt=""
+              *ngIf="item.createdByNavigation.avatar != null">
+            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="item.createdByNavigation.avatar === null"></div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Name</span><br />
+            {{item.createdByNavigation.name}} {{item.createdByNavigation.lastName}} {{item.createdByNavigation.motherLastName}}
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12">
+            <span class="text-mini gray_05">Title</span><br />
+            <span> {{item.createdByNavigation.userType.type}}</span>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div class="page__section-data font-size-12" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Date</span><br />
+              {{item.createdDate | date:'dd MMM yyy'}}
+            </div>
+            <div style="text-align:end; width: auto !important;">
+              <mat-icon class="calendar">calendar_today</mat-icon>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="160px" *ngIf="item.id == 0">
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <div class="textarea">
+            <br><br>
+            <p>Comment</p>
+            <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+              <!-- [(ngModel)]="comment_string.comment" -->
+              <textarea matInput  (change)="item.comment = $event.target.value" #message maxlength="500">{{item.comment}}</textarea>
+              <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <mat-grid-list cols="1">
+      <div class="page__section">
+        <div class="page__section-name"></div>
+        <div class="page__section-button">
+          <button (click)="addNewComment()" class="button-icon button-icon--adder">
+            <span >Add Comment</span>
+          </button>
+        </div>
+      </div>
+    </mat-grid-list>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save()">Save</button>
+    </div>
+  </mat-dialog-actions>
+</div>
+

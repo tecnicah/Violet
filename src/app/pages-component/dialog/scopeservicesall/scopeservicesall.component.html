@@ -1,0 +1,126 @@
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Apply all Scope</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  
+  <mat-dialog-content class="mat-typography">
+  
+    <mat-grid-list cols="4" rowHeight="60px">
+  
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central">
+          <div>
+            <span  class="text-min gray_05">Country</span><br />
+            <span
+              *ngFor="let item of getDataCountryScopeDoc"
+              class="text-min gray_05"
+            >
+              {{item}}
+            </span>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+  
+    <!-- scope description and documents de partner -->
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-name">
+          Scope Description
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="300px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <kendo-editor  [value]="tempScopeDescription" [(ngModel)]="tempScopeDescription" style="height: 280px; width: 100%;"></kendo-editor>
+      </mat-grid-tile>
+    </mat-grid-list>
+  
+    <!-- documentos del partner  -->
+    <mat-grid-list cols="1" >
+      <div class="page__section margin-top-min">
+        <div class="page__section-name">
+          Documents
+        </div>
+        <div class="page__section">
+          <div class="page__section-input page__section-input--25">
+            <span class="documents__index documents__index--task">
+              Document Type
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--25">
+            <span class="documents__index documents__index--task">
+              Uploaded Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--25">
+            <span class="documents__index documents__index--task">
+              Status
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--25">
+            <span class="documents__index documents__index--task">
+              Privacy
+            </span>
+          </div>
+        </div>
+        <div class="page__section documents__ascard" *ngFor="let item of tempScopeDocument">
+            <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+              style="background: transparent!important;">
+            <div class="page__section-input page__section-input--25 documents__ascard--task">
+            {{ item.fileName}}
+            <!-- idDocumentTypeName -->
+            </div>
+            <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
+  
+              {{item.updateDate |date :'dd MMM yyy'}}
+              <!-- {{item.updateDate| date:'dd MMM yyy'}} -->
+  
+            </div>
+            <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
+  
+              {{item.uploadDate| date:'dd MMM yyy'}}
+              <!-- {{item.updateDate| date:'dd MMM yyy'}} -->
+  
+            </div>
+            <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
+              <!--{{item.statusName}}-->
+              {{statusName(item.status)}} 
+              <!-- statusName -->
+            </div>
+            <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.status}}
+              <!-- statusName -->
+            </div>
+            <div *ngIf="item.id==0" class="page__section-input page__section-input--25 documents__ascard--task">
+              <!--{{item.privacyName}}-->
+              {{privacyName(item.privacy)}}
+              <!-- privacyName, -->
+            </div>
+            <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
+              {{item.privacy}}
+              <!-- privacyName, -->
+            </div>
+          </div>
+      </div>
+    </mat-grid-list>
+  
+    <div class="textarea margin_table" style="text-align: end;">
+      <button class="btnr btnr--add" *ngIf="permission_write || permission_edit" (click)="DialogDocumentsLeadClientComponent(null)" matRipple matRippleColor="rgba(157, 50, 146, 0.5)">
+        Add New Document
+      </button>
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong" *ngIf="permission_write || permission_edit">
+      <button (click)="validarForm()">Save</button>
+    </div>
+  </mat-dialog-actions>
+  

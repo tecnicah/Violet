@@ -1,0 +1,282 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title" *ngIf="this.data.id == 0">Add City</h2>
+    <h2 mat-dialog-title class="primary_title" *ngIf="this.data.id != 0">Update City</h2>
+
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea">
+        <p class="page__section-name">City Information</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'systemConfiguration'">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>City Name</mat-label>
+          <input matInput placeholder="City Name" [(ngModel)]="data_.city">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'violetApp'">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>City Name</mat-label>
+          <input matInput placeholder="City Name" [(ngModel)]="data_.city" disabled>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'systemConfiguration'">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Time Zone</mat-label>
+          <mat-select [(ngModel)]="data_.idTimeZone">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Time Zone</mat-label>
+              <input matInput placeholder="Time Zone" [(ngModel)]="timefilter.timeZone">
+            </mat-form-field>
+            <mat-option *ngFor="let item of ca_timeZone | filterBy: timefilter" [value]='item.id'>{{item.timeZone}}</mat-option>
+            <mat-option disabled *ngIf="(ca_timeZone | filterBy: timefilter).length === 0">No
+              matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'violetApp'">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Time Zone</mat-label>
+          <mat-select [(ngModel)]="data_.idTimeZone" disabled>
+            <mat-option disabled *ngFor="let item of ca_timeZone" [value]='item.id'>{{item.timeZone}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1"  *ngIf="this.data_.origin == 'violetApp'">
+      <div class="textarea">
+        <p class="page__section-name">About</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <!----------------------------------------------------------------------------------------->
+  <!--START TABLE ABOUT-->
+  <table class="mat-elevation-z8 textarea mat-table"  *ngIf="this.data_.origin == 'violetApp'">
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Title</th>
+      <th class="mat-header-cell">Subtitle</th>
+      <th class="mat-header-cell">Photos</th>
+      <th class="mat-header-cell"></th>
+    </tr>
+    <tr class="mat-row" *ngFor="let item of data_.cityAbouts; let i = index">
+      <td class="mat-cell">{{item.title}}</td>
+      <td class="mat-cell">{{item.subtitle}}</td>
+      <td class="mat-cell">{{item.photoCityAbouts.length}}</td>
+      <td class="mat-cell" style="text-align: end;">
+        <img src="assets/icons/pencil.png" style="width: 20px; margin-right: 10px;" (click)="editInfo(1, item, i)">
+        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteInfo(1, i,item)">
+      </td>
+    </tr>
+  </table>
+  <!--CLOSE TABLE ABOUT-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="this.data_.origin == 'violetApp'">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button class="button-icon button-icon--more" (click)="addInfo(1);">
+            Add Info
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="this.data_.origin == 'violetApp'">
+      <div class="textarea">
+        <p class="page__section-name">Attractions</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--START TABLE ATTRACTION-->
+  <table class="mat-elevation-z8 textarea mat-table" *ngIf="this.data_.origin == 'violetApp'" >
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Title</th>
+      <th class="mat-header-cell">Subtitle</th>
+      <th class="mat-header-cell">Photos</th>
+      <th class="mat-header-cell"></th>
+    </tr>
+    <tr class="mat-row" *ngFor="let item of data_.cityAttractions; let i = index">
+      <td class="mat-cell">{{item.title}}</td>
+      <td class="mat-cell">{{item.subtitle}}</td>
+      <td class="mat-cell">{{item.photoCityAttractions.length}}</td>
+      <td class="mat-cell" style="text-align: end;">
+        <img src="assets/icons/pencil.png" style="width: 20px; margin-right: 10px;" (click)="editInfo(2, item, i)">
+        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteInfo(2, i, item)">
+      </td>
+    </tr>
+  </table>
+  <!--CLOSE TABLE ATTRACTION-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="this.data_.origin == 'violetApp'">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button class="button-icon button-icon--more" (click)="addInfo(2);">
+            Add Info
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="this.data_.origin == 'violetApp'">
+      <div class="textarea">
+        <p class="page__section-name">Emergency contact</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--START TABLE EMERGENCY-->
+  <table class="mat-elevation-z8 textarea mat-table" *ngIf="this.data_.origin == 'violetApp'">
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Name</th>
+      <th class="mat-header-cell">Description</th>
+      <th class="mat-header-cell">Icon</th>
+      <th class="mat-header-cell">Phone Number</th>
+      <th class="mat-header-cell"></th>
+    </tr>
+    <tr class="mat-row" *ngFor="let item of data_.cityEmergencies; let i = index">
+      <td class="mat-cell">{{item.name}}</td>
+      <td class="mat-cell">{{item.description}}</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">{{item.phoneNumber | mask: '(000) 000-0000'}}</td>
+      <td class="mat-cell" style="text-align: end;">
+        <img src="assets/icons/pencil.png" style="width: 20px; margin-right: 10px;" (click)='editInfoEmergency(item,i)'>
+        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteInfo(3, i, item)">
+      </td>
+    </tr>
+  </table>
+  <!--CLOSE TABLE EMERGENCY-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px" *ngIf="this.data_.origin == 'violetApp'">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button class="button-icon button-icon--more" (click)='addInfoEmergency()'>
+            Add Info
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="page__section-name">What to do</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--START TABLE WHAT TO DO-->
+  <table class="mat-elevation-z8 textarea mat-table" *ngIf="this.data_.origin == 'violetApp'">
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Title</th>
+      <th class="mat-header-cell">Subtitle</th>
+      <th class="mat-header-cell">Photos</th>
+      <th class="mat-header-cell"></th>
+    </tr>
+    <tr class="mat-row" *ngFor="let item of data_.cityWhatToDos; let i = index">
+      <td class="mat-cell">{{item.title}}</td>
+      <td class="mat-cell">{{item.subtitle}}</td>
+      <td class="mat-cell">{{item.photoWhatToDos.length}}</td>
+      <td class="mat-cell" style="text-align: end;">
+        <img src="assets/icons/pencil.png" style="width: 20px; margin-right: 10px;" (click)="editInfo(4, item, i)">
+        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteInfo(4, i,item)">
+      </td>
+    </tr>
+  </table>
+  <!--CLOSE TABLE WHAT TO DO-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px" *ngIf="this.data_.origin == 'violetApp'">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button class="button-icon button-icon--more" (click)="addInfo(4);">
+            Add Info
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <p class="page__section-name">Where to eat</p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--START TABLE WHERE TO EAT-->
+  <table class="mat-elevation-z8 textarea mat-table" *ngIf="this.data_.origin == 'violetApp'">
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Title</th>
+      <th class="mat-header-cell">Subtitle</th>
+      <th class="mat-header-cell">Photos</th>
+      <th class="mat-header-cell"></th>
+    </tr>
+    <tr class="mat-row" *ngFor="let item of data_.cityWhereEats; let i = index">
+      <td class="mat-cell">{{item.title}}</td>
+      <td class="mat-cell">{{item.subtitle}}</td>
+      <td class="mat-cell">{{item.photoWhereEats.length}}</td>
+      <td class="mat-cell" style="text-align: end;">
+        <img src="assets/icons/pencil.png" style="width: 20px; margin-right: 10px;" (click)="editInfo(5, item, i)">
+        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteInfo(5, i, item)">
+      </td>
+    </tr>
+  </table>
+  <!--CLOSE TABLE WHERE TO EAT-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="4" rowHeight="70px" *ngIf="this.data_.origin == 'violetApp'">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button class="button-icon button-icon--more" (click)="addInfo(5);">
+            Add Info
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)='save()'>Save</button>
+  </div>
+</mat-dialog-actions>

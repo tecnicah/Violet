@@ -1,0 +1,38 @@
+<!-----------------------------------OPEN HEADER-------------------------------------->
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Operation Leaders</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <!----------------------------------CLOSE HEADER-------------------------------------->
+
+  <!---------------------------------OPEN CONTENT--------------------------------------->
+  <mat-dialog-content class="mat-typography">
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central textarea">
+          <mat-label>Operation Leaders</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data.consultant">
+
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Leaders</mat-label>
+              <input matInput placeholder="Leaders" [(ngModel)]="filterLeader.user">
+            </mat-form-field>
+
+            <mat-option *ngFor="let item of ca_assignedTeam | filterBy: filterLeader" [value]="item.id">{{item.user}} / {{item.title}}</mat-option>
+            <mat-option disabled *ngIf="(ca_assignedTeam | filterBy: filterLeader).length === 0">No matching elements</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-dialog-content>
+  <!--------------------------------CLOSE CONTENT--------------------------------------->
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save_office()">Save</button>
+    </div>
+  </mat-dialog-actions>
+

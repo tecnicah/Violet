@@ -1,0 +1,143 @@
+<div fxLayout="row" fxLayoutGap="10px">
+  <!-- column -->
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Search Profile</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <div class="page__section page__section-inputs margin-top-min">
+    <div class="page__section-input page__section-input--4">
+      <mat-form-field class="example-full-width">
+        <mat-label>Search Profile</mat-label>
+        <input matInput placeholder="Search Profile" (keyup)="applyFilter($event)" />
+        <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="page__section">
+    <table mat-table matSort [dataSource]="dataSource" style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_0">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="serviceRecordNo" class="text-center">
+          Service Record <br /> Number
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center cursor-pointer browser"
+          (click)="goToServiceRecordSelected( element.serviceRecordNo )">
+          {{ element.serviceRecordNo == null ? 'SR-#' : element.serviceRecordNo }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_1">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="name">
+          Assignee <br /> Name
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ (element.name.length>10) ?  (element.name | slice:0:10)+'..': element.name}}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_2">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceLine">
+          Service Line
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.serviceLine }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_3">
+        <th mat-header-cell *matHeaderCellDef class="text-center"  mat-sort-header="partner">
+          Partner
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.partner }}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_4">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">
+          Client
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ (element.client.length>10) ?  (element.client | slice:0:10)+'..': element.client}}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_5">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client.vip">
+          VIP
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center" style="width: 80px;">
+          <div class="table-row__check">
+            <img src="/../../../assets/table-icons/check.png" *ngIf="element.vip" />
+            <img src="/../../../assets/table-icons/uncheck.png" *ngIf="!element.vip" />
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_6">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="city">
+          Home City
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{element.city}}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_7">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="country">
+          Host City
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{element.country}}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_8">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Last Assisted
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <span (click)="toggleModalOver()">
+            
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="profile_table"></tr>
+      <tr mat-row *matRowDef="let row; columns: profile_table;"></tr>
+    </table>
+  </div>
+  <div class="page__section paginator">
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]"></mat-paginator>
+  </div>
+</mat-dialog-content>
+
+
+<!-- div class="cmodal cmodal--1">
+    <div class="modal-message">
+        <button class="modal-form--closeButton" (click)="hideModal()">x</button>
+        <div class="modal-form__title">
+            New Service Order
+        </div>
+        <div class="page__section page__section-inputs margin-top-min">
+            <span class="text-center">
+                Este es el mensaje que saldria sobre el mensaje que estaria que un mensaje ouuuhh!
+            </span>
+        </div>
+    </div>   
+</div -->

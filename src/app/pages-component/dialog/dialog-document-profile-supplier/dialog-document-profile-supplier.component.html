@@ -1,0 +1,115 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add New Document</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="6" rowHeight="70px">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="textarea">
+        <p class="Upload-Document">Upload Document</p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div *ngIf="city != undefined" class="textarea">
+        <p class="Location">Location &nbsp; <b class="City">{{city}}</b></p>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="textarea">
+        <p class="Uploaded-Date">Uploaded Date <b class="City">{{date | date:'dd MMM yyy'}}</b></p>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!--UPLOAD DOCUMENTS-->
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="6" rowHeight="160px">
+    <mat-grid-tile [colspan]="6" [rowspan]="1">
+      <div class="textarea">
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" id="doc" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="cargaDocumento">Field is required
+        </mat-hint>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!----------------------------------------------------------------------------------------->
+  <!--TABLA PARA MOSTRAR NOMBRE DEL DOCUMENTO-->
+  <div class="upload-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="upload-name-style">
+        <tr>
+          <td class="subtitle">{{ temporalDocument.fileName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!----------------------------------------------------------------------------------------->
+  <mat-grid-list cols="6" rowHeight="70px">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Document Type</mat-label>
+          <mat-select [(ngModel)]="tempData.documentType" (focus)="activeDocument = false;">
+            <mat-option *ngFor="let item of documentType" [value]="item.id">{{item.documentType}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeDocument">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Expiration Date</mat-label>
+          <input matInput [matDatepicker]="pickertres" placeholder="Expiration Date"
+            [(ngModel)]="tempData.expirationDate" (ngModelChange)="activeExpiration = false;">
+          <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+          <mat-datepicker #pickertres></mat-datepicker>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeExpiration">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Privacy</mat-label>
+          <mat-select [(ngModel)]="tempData.privacy" (focus)="activePrivacy = false;">
+            <mat-option *ngFor="let item of  privacy" [value]="item.id">{{item.privacy}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activePrivacy">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="valida_form();">Save</button>
+  </div>
+</mat-dialog-actions>

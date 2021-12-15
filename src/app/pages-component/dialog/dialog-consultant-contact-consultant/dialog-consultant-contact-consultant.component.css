@@ -1,0 +1,19 @@
+.addPropperty{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+div{
+    width: 100%;
+}
+
+.mat-header-row th{
+    text-align: center;
+}
+
+.input__image-label img {
+    height: 150px;
+    width: 150px;
+    top: -40px;
+  }

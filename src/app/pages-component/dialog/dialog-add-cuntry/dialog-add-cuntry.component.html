@@ -1,0 +1,293 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Add Country</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="4" rowHeight="60px">
+     <!-- add countru multicheck en caso de que la data reciba action = new -->
+     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action == 'new' && data.id == 0">
+      <mat-form-field appearance="fill" class="textarea input_central">
+        <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
+        <mat-select [(ngModel)]="data.idCountry" (focus)="active_country = false" required matNativeControl multiple (ngModelChange)="getStandarDocuments()">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Country</mat-label>
+            <input matInput placeholder="Country" [(ngModel)]="filerCountry.name">
+          </mat-form-field>
+          <mat-option *ngFor="let item of caCounty | filterBy:filerCountry" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+          <mat-option disabled *ngIf="(caCounty | filterBy: filerCountry).length === 0">No matching elements</mat-option>
+        </mat-select>
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+    <!-- country se mostrara sin multicheck cuando el action sea 0 ya que es un update -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new' && data.id == 0">
+      <mat-form-field appearance="fill" class="textarea input_central">
+        <mat-label>Country</mat-label>
+        <mat-select [(ngModel)]="data.idCountry" matNativeControl>
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Country</mat-label>
+            <input matInput placeholder="Country" [(ngModel)]="filerCountry.name">
+          </mat-form-field>
+          <mat-option *ngFor="let item of caCounty | filterBy:filerCountry" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+          <mat-option disabled *ngIf="(caCounty | filterBy: filerCountry).length === 0">No matching elements</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new' && data.id != 0">
+      <div class="page__section-data font-size-12 comments input_central">
+        <div>
+          <span class="text-mini gray_05">Country</span><br />
+          {{data.name}}
+        </div>
+      </div>
+
+    </mat-grid-tile>
+
+    <!-- este solo se mostrara si no es caso para multicheck  -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1" >
+      <p>Standard Scope & Documents</p>
+      <mat-checkbox [disabled]="data.idCountry == undefined" [(ngModel)]="data.standarScopeDocuments" (change)="getStandarDocuments(); data.standarScopeDocuments = $event.checked ? 1 : 0 " [checked]="data.standarScopeDocuments === 1"
+      ></mat-checkbox>
+        <!-- (change)="getStandarDocuments(); data.standarScopeDocuments = $event.checked ? 1 : 0 " -->
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- scope description and documents de partner -->
+  <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 0)">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-name">
+        Scope Description
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="300px" *ngIf="(data.standarScopeDocuments === 0)">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <kendo-editor [value]="data.scopeDescription" [(ngModel)]="data.scopeDescription" style="height: 280px; width: 100%;"></kendo-editor>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- scope description and documents standar-->
+  <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 1) && (data.action != 'new')">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-name">
+        Estantar desciption
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central">
+        <span class="text-mini gray_05">Scope Description</span><br />
+        <p *ngIf="dataScopeDocument != null"  [innerHTML]="dataScopeDocument.scopeDescription"></p>
+        <p *ngIf="dataScopeDocument == null"> No Data</p>
+      </div>
+
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- scope description and documents standar multicheck-->
+  <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 1)&& (data.action == 'new')">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-name">
+        Estantar desciption
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngFor="let item of dataScopeDescription">
+      <div class="page__section-data font-size-12 comments input_central" >
+        <span class="text-mini gray_05">Scope Description</span><br />
+        <p  [innerHTML]="item"></p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- documentos del partner  -->
+  <mat-grid-list cols="1" *ngIf="(data.standarScopeDocuments === 0)">
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Documents
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+      <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries">
+          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;">
+          <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{ item.fileName}}
+          <!-- idDocumentTypeName -->
+          </div>
+          <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
+
+            {{item.updateDate |date :'dd MMM yyy'}}
+            <!-- {{item.updateDate| date:'dd MMM yyy'}} -->
+
+          </div>
+          <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
+
+            {{item.uploadDate| date:'dd MMM yyy'}}
+            <!-- {{item.updateDate| date:'dd MMM yyy'}} -->
+
+          </div>
+          <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
+            {{item.statusName}}
+            <!-- statusName -->
+          </div>
+          <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
+            {{item.statusName}}
+            <!-- statusName -->
+          </div>
+          <div *ngIf="item.id==0" class="page__section-input page__section-input--25 documents__ascard--task">
+            {{item.privacyName}}
+            <!-- privacyName, -->
+          </div>
+          <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
+            {{item.privacyName}}
+            <!-- privacyName, -->
+          </div>
+        </div>
+      </div>
+  </mat-grid-list>
+  <!-- documentos standar de admin center de get sin multicheck-->
+  <mat-grid-list cols="1" *ngIf="(data.standarScopeDocuments === 1) && (data.action != 'new') && data.standarScopeDocuments != null" >
+
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Documents standar
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+      <div class="page__section documents__ascard" *ngFor="let item of dataScopeDocument?.documentServiceCountries">
+          <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{ getDocument(item.documentType)}}
+          </div>
+          <div class="page__section-input page__section-input--25 documents__ascard--task">
+
+            {{item.updatedDate |date :'dd MMM yyy'}}
+
+          </div>
+          <div  class="page__section-input page__section-input--25 documents__ascard--task">
+            {{getStatus(item.status)}}
+          </div>
+
+          <div  class="page__section-input page__section-input--25 documents__ascard--task">
+            {{getPrivacy(item.privacy)}}
+          </div>
+      </div>
+    </div>
+  </mat-grid-list>
+  <!-- visualizacion de documentos multicheck -->
+  <mat-grid-list cols="1" *ngIf="((data.standarScopeDocuments === 1) && (data.action == 'new'))" >
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Documents standar
+      </div>
+      <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+      <div class="page__section documents__ascard" *ngFor="let item of dataScopeDocument">
+          <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{ getDocument(item.documentType)}}
+          </div>
+          <div class="page__section-input page__section-input--25 documents__ascard--task">
+
+            {{item.updatedDate |date :'dd MMM yyy'}}
+
+          </div>
+          <div  class="page__section-input page__section-input--25 documents__ascard--task">
+            {{getStatus(item.status)}}
+          </div>
+
+          <div  class="page__section-input page__section-input--25 documents__ascard--task">
+            {{getPrivacy(item.privacy)}}
+          </div>
+        </div>
+    </div>
+  </mat-grid-list>
+
+
+  <div class="textarea margin_table" style="text-align: end;" *ngIf="(data.standarScopeDocuments === 0) ">
+    <button class="btnr btnr--add" *ngIf="permission_write || permission_edit" (click)="DialogDocumentsLeadClientComponent(null)" matRipple matRippleColor="rgba(157, 50, 146, 0.5)">
+      Add New Document
+    </button>
+  </div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong" *ngIf="permission_write || permission_edit">
+    <button (click)="validarForm()">Save</button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,125 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Experience Survey</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<!-----------------------------------content-------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="3" rowHeight="80px">
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div>
+        <p class="subtitle" style="font-size: 12px; margin: 0;">
+          {{dataSend.name}}
+        </p>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div>
+        <p class="subtitle" style="font-size: 12px; margin: 0;">Complete Date</p>
+        <p class="title" style="font-size: 12px;">{{dataSend.completedDate | date:'dd MMM yyy'}}</p>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="margin: auto auto auto 70px;">
+        <p class="subtitle" style="font-size: 12px; margin: 0;">Title</p>
+        <p class="title" style="font-size: 12px;">{{dataSend.name}}</p>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <div *ngFor="let item of dataSend.experienceSurveySuppliers | paginate: { itemsPerPage: 2, currentPage: p }">
+    <mat-grid-list cols="3" rowHeight="80px">
+      <!-- nombre supllier -->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div>
+          <!-- <p class="subtitledos">{{name(item.idsup)}}</p> -->
+          <p class="subtitledos">{{item.supplier}} </p>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="rating">
+          <span class="subtitle" style="font-size: 12px; margin: 15px;"> General </span>
+          <bar-rating [max]="5" [(ngModel)]="item.general"></bar-rating>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <span class="subtitle" style="font-size: 12px;"> Service quality </span>
+          <bar-rating [max]="5" [(ngModel)]="item.serviceQuality"></bar-rating>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="ratingcenter">
+          <div>
+            <span class="subtitle" style="font-size: 12px;"> Punctuality </span>
+            <bar-rating [max]="5" [(ngModel)]="item.punctuality"></bar-rating>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="rating">
+          <div>
+            <span class="subtitle" style="font-size: 12px;"> Attention </span>
+            <bar-rating [max]="5" [(ngModel)]="item.attention"></bar-rating>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <span class="subtitle" style="font-size: 12px;"> Professionalism </span>
+          <bar-rating [max]="5" [(ngModel)]="item.professionalism"></bar-rating>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="ratingcenter">
+          <div>
+            <span class="subtitle" style="font-size: 12px;"> Price </span>
+            <bar-rating [max]="5" [(ngModel)]="item.price"></bar-rating>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="rating">
+          <div>
+            <span class="subtitle" style="font-size: 12px;"> Response time </span>
+            <bar-rating [max]="5" [(ngModel)]="item.responseTime"></bar-rating>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="130px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div>
+          <br><br>
+          <p class="subtitle">Feedback</p>
+          <mat-form-field appearance="outline" class="textarea">
+            <textarea matInput (change)="item.feedback = $event.target.value">{{item.feedback}}</textarea>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <pagination-controls (pageChange)="p = $event" style="display: none;"></pagination-controls>
+  <div class="page__section-buttong">
+    <button (click)="continue()">{{boton}}</button>
+  </div>
+</mat-dialog-actions>

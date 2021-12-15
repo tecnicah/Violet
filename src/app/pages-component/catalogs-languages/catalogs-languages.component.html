@@ -1,0 +1,58 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">Operations / Report</div>
+    <div class="page__title title">
+      Languages
+    </div>
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
+            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <!-- Language -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-butuonc" id="languajes" style="margin-top: -30px;">
+          <button class="button-icon button-icon--more" (click)="addLenguage(0)">
+            Add Language
+          </button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+      <!-- table lenguajes -->
+    <div class="page__section">
+      <table mat-table [dataSource]="dataLanguages" #sortlang='matSort' matSort matSort class="mat-elevation-z8 textarea">
+        <!-- Language -->
+        <ng-container matColumnDef="Language">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Language"> Language </th>
+          <td mat-cell *matCellDef="let lang"> {{lang.name}} </td>
+        </ng-container>
+        <!-- Name Abbreviation -->
+        <ng-container matColumnDef="Abbreviation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="Abbreviation"> Abbreviation </th>
+          <td mat-cell *matCellDef="let lang"> {{lang.abbreviation}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let lang">
+            <img src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="addLenguage(lang.id)" >
+            <!-- (click)="editPayment(lang)" -->
+            <span>&nbsp;</span>
+              <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteLenguage(lang.id)" >
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsLanguages"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsLanguages;"></tr>
+      </table>
+    </div>
+    <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+      <mat-paginator #paglang [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

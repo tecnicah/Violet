@@ -1,0 +1,146 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id == 0">Add Role</h2>
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id != 0">Update Role</h2>
+
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="3" rowHeight="70px">
+    <!-- fecha -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.createdDate">
+      <div class="page__section-data">
+        <span class="text-mini gray_05">Initial Autho Date</span><br />
+        {{ dateWorker(data.createdDate)  }}
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!data.createdDate"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <!-- inputs -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Role</mat-label>
+        <input matInput required placeholder="Role" [(ngModel)]="data.role">
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_role">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <!-- description   -->
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput required placeholder="Description" [(ngModel)]="data.description">
+        <mat-error>Field is required</mat-error>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_description">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="page__section margin-top-min">
+        <div class="page__section-name">
+          Permission
+        </div>
+      </div>
+    </mat-grid-tile>
+    <!-- <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile> -->
+    <mat-grid-tile *ngIf="selectAll == false" [colspan]="1" [rowspan]="1">
+      <div  class="page__section no-padding-tb page__section--justify-end margin-tb-mini">
+        <span (click)="AllRole()"
+          class="text-min font-purple-dark cursor-pointer padding-right-min">
+          Select All
+        </span>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="selectAll == true" [colspan]="1" [rowspan]="1">
+      <div  class="page__section no-padding-tb page__section--justify-end margin-tb-mini">
+        <span
+          (click)="unSelectRole()"
+          class="text-min font-purple-dark cursor-pointer padding-right-min">
+          Unselect
+        </span>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <mat-grid-list cols="7" rowHeight="50px">
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color"><span class="text-mini gray_05">Menu</span></mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color"><span class="text-mini gray_05">SubMenu</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color"><span class="text-mini gray_05">Section</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color">
+      <span class="text-mini gray_05">Reading</span>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color">
+      <span class="text-mini gray_05">Writing</span>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color">
+      <span class="text-mini gray_05">Editing</span>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="1"
+                   [style.background]="myArr[1].color">
+      <span class="text-mini gray_05">Deleting</span>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <mat-grid-list *ngFor="let permission of myArr; let i=index" cols="7" rowHeight="30px">
+    <mat-grid-tile [colspan]="1"
+                   [rowspan]="permission.rows"
+                   [style.background]="permission.color"><span class="text-mini gray_05">{{permission.menu}}</span></mat-grid-tile>
+    <div *ngFor="let p of permission.permissionssubmenu;">
+      <mat-grid-tile [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="permission.color"><span class="text-mini gray_05">{{p.submenu}}</span></mat-grid-tile>
+      <mat-grid-tile [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="permission.color"><span class="text-mini gray_05">{{p.seccion}}</span></mat-grid-tile>
+      <mat-grid-tile [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="permission.color">
+        <mat-checkbox class="text-mini gray_05" [(ngModel)]="p.reading">
+        </mat-checkbox>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="permission.color">
+        <mat-checkbox class="text-mini gray_05" [(ngModel)]="p.writing">
+        </mat-checkbox>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="permission.color">
+        <mat-checkbox class="text-mini gray_05" [(ngModel)]="p.editing">
+        </mat-checkbox>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1"
+                     [rowspan]="1"
+                     [style.background]="permission.color">
+        <mat-checkbox class="text-mini gray_05" [(ngModel)]="p.deleting">
+        </mat-checkbox>
+      </mat-grid-tile>
+    </div>
+  </mat-grid-list>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="validForm()">Save</button>
+  </div>
+</mat-dialog-actions>

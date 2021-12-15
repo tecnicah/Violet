@@ -1,0 +1,729 @@
+<div class="main-wrapper padding-general-x">
+  <div class="page">
+    <div class="page__path subtitle">My Profile</div>
+    <div class="page__title title">
+      <mat-grid-list cols="2" rowHeight="70px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="textarea">
+            ID-{{userData.id}}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="textarea page__section-butuonc">
+            <button class="button-icon button-icon--pencil" *ngIf="!edit" (click)="edit = !edit">Edit info</button>
+            <button class="button-icon button-icon--cancel" *ngIf="edit" (click)="edit = !edit">Cancel</button>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <!--contenido-->
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="3">
+        <div class="photo">
+          <div class='content'>
+            <img [src]="_services.url_images+userData.avatar" alt="">
+            <div class="textarea page__section-butuonc" style="width: 70%;">
+              <button class="button-icon button-icon--pencil" *ngIf="edit">Edit Photo</button>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central" *ngIf="!edit">
+          <span class="float">Name</span><br>
+          <span class="text">{{userData.name}} {{userData.lastName}} {{userData.motherLastName}}</span>
+        </div>
+        <mat-form-field appearance="legacy" class="input_central" *ngIf="edit">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Name" [(ngModel)]="userData.name">
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="edit">
+        <mat-form-field appearance="legacy" class="input_central">
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="Name" [(ngModel)]="userData.lastName">
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="edit">
+        <mat-form-field appearance="legacy" class="input_final">
+          <mat-label>Mother Last Name</mat-label>
+          <input matInput placeholder="Name" [(ngModel)]="userData.motherLastName">
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central" *ngIf="!edit">
+          <span class="float">Title</span><br>
+          <span class="text">{{userData.role.role}}</span>
+        </div>
+        <mat-form-field appearance="legacy" *ngIf="edit" class="input_central">
+          <mat-label>Title</mat-label>
+          <mat-select>
+            <mat-option value="option">Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit" [ngClass]="{'input_final': !edit, 'input_central': edit}">
+          <span class="float">Experience</span><br>
+          <b class="text" [ngClass]="{'browser': !edit}">%00.00</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central" *ngIf="!edit">
+          <span class="float">Country</span><br>
+          <span class="text">Mexico</span>
+        </div>
+        <mat-form-field appearance="legacy" *ngIf="edit" class="input_final">
+            <mat-label>Country</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let item of caCountry" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">City</span><br>
+          <span class="text">CDMX</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea flex-icon input_final">
+          <div class="no-edit">
+            <span class="float">Active Since</span><br>
+            <span class="text">20 Sep 2020</span>
+          </div>
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Contact Phone</span><br>
+          <span class="text">{{userData.mobilePhone}}</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Premier E-mail</span><br>
+          <span class="text">{{userData.email}}</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Spoken Languages</span><br>
+          <span class="text">English, Spanish, French</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Professional Biography</span><br>
+          <span class="text">Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
+            ipsum dolor sit amet </span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Hiring Office</span><br>
+          <span class="text">Lorem ipsum </span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <span class="subtitles" style="color: rgba(0, 0, 0, .5);"> Hobbies & Passions</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">Hobbies & Passions</span><br>
+          <span class="text">Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
+            ipsum dolor sit amet </span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <span class="subtitles" style="color: rgba(0, 0, 0, .5);"> Assigned Team</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Manager</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Coordinator</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Service Line</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <b class="subtitles">Personal Information</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">Current Address</span><br>
+          <span class="text">Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
+            ipsum dolor sit amet </span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Country</span><br>
+          <span class="text">Mexico</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">City</span><br>
+          <span class="text">CDMX</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">ZIP Code</span><br>
+          <span class="text">56589</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea flex-icon input_central">
+          <div class="no-edit">
+            <span class="float">Date of Birth</span><br>
+            <span class="text">20 Sep 2020</span>
+          </div>
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Nationality</span><br>
+          <span class="text">Mexican</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Personal e-mail</span><br>
+          <span class="text">loremipsum@email.com</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Personal Phone</span><br>
+          <span class="text">5555555555</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">Allergies</span><br>
+          <span class="text">Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
+            ipsum dolor sit amet </span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <span class="subtitles" style="color: rgba(0, 0, 0, .5);"> Education</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">School</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Major</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea flex-icon input_central">
+          <div class="no-edit">
+            <span class="float">Graduation Year</span><br>
+            <span class="text">20 Sep 2020</span>
+          </div>
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <b class="subtitles">Emergency Contact</b>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <table mat-table [dataSource]="ELEMENT_DATA" class="mat-elevation-z8">
+
+      <!-- Contact Name Column -->
+      <ng-container matColumnDef="Contact Name">
+        <th mat-header-cell *matHeaderCellDef> Contact Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      </ng-container>
+
+      <!-- Relationship -->
+      <ng-container matColumnDef="Relationship">
+        <th mat-header-cell *matHeaderCellDef> Relationship </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Phone Number Column -->
+      <ng-container matColumnDef="Phone Number">
+        <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+      </ng-container>
+
+      <!-- Home Number Column -->
+      <ng-container matColumnDef="Home Number">
+        <th mat-header-cell *matHeaderCellDef> Home Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+      </ng-container>
+
+      <!-- Location Column -->
+      <ng-container matColumnDef="Location">
+        <th mat-header-cell *matHeaderCellDef> Location </th>
+        <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <br>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <b class="subtitles">Compensation & Benefits</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Place of Work</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Base Compensation</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Currency</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Taxes</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Benefit</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Amount</span><br>
+          <span class="text">1523600</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Frequency</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Total Compensation</span><br>
+          <span class="text">Field Text</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">RH Comments</span><br>
+          <span class="text">Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem
+            ipsum dolor sit amet </span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <b class="subtitles">Payment Information</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">Payment Methods</span><br>
+          <mat-checkbox>Wire Transfer</mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit text-center input_final">
+          <span class="float">Fiscal Invoice</span><br>
+          <mat-checkbox></mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Account Type</span><br>
+          <span class="text">Checking</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Account Holders Name</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Bank Name</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">CLABE (MX Payments)</span><br>
+          <span class="text">5826132156231</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Routing Number (ABA)</span><br>
+          <span class="text">6554986523165</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">SWIFT / BIC Code ( If Applies)</span><br>
+          <span class="text">98646854</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Currency</span><br>
+          <span class="text">MXN</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Wire Fee Approx</span><br>
+          <span class="text">$35,55.00</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="textarea no-edit input_final">
+          <span class="float">Bank Address</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">International Payment Acceptance</span><br>
+          <mat-checkbox></mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea no-edit">
+          <span class="float">General Comments</span><br>
+          <span class="text">Lorem ipsum</span>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="1">
+      <div class="page__section margin-top-min">
+        <div class="page__section-name">Documents</div>
+        <div class="page__section">
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Document Type
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Uploaded Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Issue Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Location
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Status
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--6_1">
+            <span class="documents__index documents__index--task">
+              Privacy
+            </span>
+          </div>
+        </div>
+
+        <div class="page__section documents__ascard">
+          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important;">
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            Drivers Licence
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            20 Sep 2020
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            20 Sep 2020
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            CDMX
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            Approved
+          </div>
+          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+            Public
+          </div>
+        </div>
+      </div>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1">
+      <div class="page__section margin-top-min">
+        <div class="page__section-name">Trainings</div>
+        <div class="page__section">
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Course
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Status
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Percentage
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Score
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Start Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Complete by
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              Completed Date
+            </span>
+          </div>
+          <div class="page__section-input page__section-input--8_1">
+            <span class="documents__index documents__index--task">
+              &nbsp;
+            </span>
+          </div>
+        </div>
+
+        <div class="page__section documents__ascard">
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            Client Service
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            In Progress
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            <div class="flex-progress">
+              <span>50%&nbsp;</span>
+              <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
+            </div>
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            0/100
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            20 Sep 2020
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            20 Sep 2020
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            --
+          </div>
+          <div class="page__section-input page__section-input--8_1 documents__ascard--task">
+            <b class="browser">Go to Training</b>
+          </div>
+        </div>
+      </div>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea">
+          <b class="subtitles">Time Off</b>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Total Alloted Days</span><br>
+          <span class="text">15</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Requested Days</span><br>
+          <span class="text">5</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea no-edit input_central">
+          <span class="float">Available days</span><br>
+          <span class="text">10</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_final">
+          <mat-label>Year</mat-label>
+          <mat-select>
+            <mat-option selected value="">Year</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="textarea">
+          <span class="subtitles" style="color: rgba(0, 0, 0, .5);">Approved</span>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea page__section-butuonc">
+          <button class="button-icon button-icon--export">Export</button>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-chip-list class="chips">
+      <mat-chip>20 Sep 2020 / Request Type</mat-chip>
+      <mat-chip>20 Sep 2020 / Request Type</mat-chip>
+      <mat-chip>20 Sep 2020 / Request Type</mat-chip>
+      <mat-chip>20 Sep 2020 / Request Type</mat-chip>
+      <mat-chip>20 Sep 2020 / Request Type</mat-chip>
+    </mat-chip-list>
+
+    <br>
+
+    <mat-grid-list cols="4" rowHeight="100px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+          <textarea matInput #message maxlength="500"></textarea>
+          <mat-hint align="end">{{message.value?.length || 0}} / 500</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="textarea page__section-butuonc">
+          <button class="button-icon button-icon--more">New Request</button>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+  </div>
+</div>
