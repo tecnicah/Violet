@@ -64,4 +64,10 @@
   font-size: 11px;
 }
 
+.mat-list-base .mat-list-item {
+  font-size: 12px;
+}
 
+.mat-list-base .mat-list-item .mat-line:nth-child(n+2) {
+  font-size: 12px;
+}

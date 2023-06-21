@@ -10,13 +10,13 @@
 <!-----------------------------------content-------------------------------------->
 <mat-dialog-content class="mat-typography">
 
-  <mat-grid-list cols="3" rowHeight="70px">
+  <mat-grid-list cols="4" rowHeight="70px">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Payment Type</mat-label>
-          <mat-select [(ngModel)]="data.paymentType">
-            <mat-option *ngFor='let data_ of ca_payment_Type' [value]='data_.id'>{{data_.paymentType}}</mat-option>
+          <mat-select [(ngModel)]="data.paymentType" (selectionChange)="validate_payment_process();">
+            <mat-option *ngFor='let data_ of ca_payment_Type' [value]='data_.id'>{{data_.type}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -26,7 +26,7 @@
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Responsible</mat-label>
-          <mat-select [(ngModel)]="data.responsible">
+          <mat-select [(ngModel)]="data.responsible" (selectionChange)="validate_payment_process();">
             <mat-option *ngFor="let item of ca_responsible" [value]="item.id">{{item.responsable}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -36,13 +36,34 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
+          <mat-label>Amount</mat-label>
+          <span matPrefix>$ &nbsp;</span>
+          <input matInput required placeholder="Amount" min="0" type="number" [(ngModel)]="data.amount">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Currency</mat-label>
+          <mat-select [(ngModel)]="data.currency">
+            <mat-option *ngFor="let item of ca_currency" [value]="item.id">{{item.currency}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
           <input matInput placeholder="Description" [(ngModel)]="data.description">
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Comment</mat-label>
@@ -58,7 +79,7 @@
 <mat-dialog-actions align="end">
 
   <div class="page__section-buttong">
-    <button (click)="save_data();">Save</button>
+    <button *ngIf="data_.edicion" (click)="save_data();">Save</button>
   </div>
 
 </mat-dialog-actions>

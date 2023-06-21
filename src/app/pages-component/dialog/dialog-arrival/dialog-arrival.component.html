@@ -17,7 +17,7 @@
           <mat-label>Search</mat-label>
           <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
             [(ngModel)]="data_search.filter" />
-          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          <mat-icon matSuffix style="color:#3A2337">search</mat-icon>
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -263,10 +263,10 @@
           <mat-menu #menu="matMenu">
             <div *ngIf="element.serviceLine == 'I'">
               <span *ngFor="let item of services_consult">
-                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #3A2337;"
                   (click)="showDialogentryVisa(item)">{{item.service_name}} / {{item.numberWorkOrder}} /
                   {{item.number_server}}</button>
-                <button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                <button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #3A2337;"
                   (click)="openmodal(item, edit_sr_model.assigneeInformations[0].homeCountryId)">{{item.service_name}}
                   / {{item.numberWorkOrder}} / {{item.number_server}}</button>
               </span>
@@ -274,10 +274,10 @@
 
             <div *ngIf="element.serviceLine == 'R'">
               <span *ngFor="let item of services_consult">
-                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #3A2337;"
                   (click)="PreDecision(item)">{{item.service_name}} / {{item.numberWorkOrder}} /
                   {{item.number_server}}</button>
-                <button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                <button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #3A2337;"
                   (click)="openmodal(item, edit_sr_model.assigneeInformations[0].homeCountryId)">{{item.service_name}}
                   / {{item.numberWorkOrder}} / {{item.number_server}}</button>
               </span>

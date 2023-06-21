@@ -1,7 +1,7 @@
 <div class="main-wrapper padding-general-x" id='seccion_uno'>
   <div class="page">
     <div class="page__path subtitle" >
-      Operations / Supplier Partners / New Supplier Partner Profile
+      Operations / Supplier Partners / New Service Provider
       <button class="page__path--closeButton" routerLinkActive="router-link-active" (click)="goBack()">
         Back
       </button>
@@ -16,8 +16,8 @@
     <mat-grid-list cols="5" rowHeight="70px">
       <mat-grid-tile [colspan]="3" [rowspan]="1">
         <div class="page__title title">
-          Supplier Partner Profile
-          <span class="padding-left-m font-15">Consultant supplier company</span>
+          Service Provider Profile
+          <span class="padding-left-m font-15">Service Provider company</span>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -184,7 +184,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label [ngClass]="{valid: active_since}">Supplier Since</mat-label>
-          <input matInput [matDatepicker]="pickertres" [min]="minDate" placeholder="Supplier Since"
+          <input matInput [matDatepicker]="pickertres" placeholder="Supplier Since"
             [(ngModel)]="data.supplierSince" (ngModelChange)="active_since = false" required>
           <mat-error>Field is required</mat-error>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_since">Field is required</mat-hint>
@@ -243,7 +243,7 @@
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central">
-          <mat-label>Taxes Percentage</mat-label>
+          <mat-label>Percentage</mat-label>
           <mat-select [(ngModel)]="data.taxesPercentage">
             <mat-option *ngFor="let item of ca_taxes" [value]="item.id">{{item.taxe}}</mat-option>
           </mat-select>
@@ -507,26 +507,65 @@
         <!--OPEN CARD TO PAYMENT-->
         <div class="mat-elevation-z4" style="padding: 10px;" *ngIf="element.payment">
 
-          <mat-grid-list cols="4" rowHeight="70px">
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <mat-grid-list cols="4" rowHeight="25px">
+
+            <mat-grid-tile [colspan]="4" [rowspan]="2">
               <div class="textarea" style="display: flex; justify-content: space-between;">
                 <span>
-                  <p class="subtitle" style="font-size: 12px;">
-                    Payment Methods
-                  </p>
-                  <mat-checkbox class="example-margin" [(ngModel)]="element.paymentInformationConsultants[0].creditCard"
-                    (change)="showCard($event)">
-                    <span class="subtitle" style="font-size: 12px;">Credit Card</span>
-                  </mat-checkbox>
+                  <p class="page__section-name">Payment Methods</p>
                 </span>
+                
                 <span>
                   <p class="subtitle" style="font-size: 12px;">
                     Fiscal Invoice
                   </p>
                   <mat-checkbox class="example-margin"
-                    [(ngModel)]="element.paymentInformationConsultants[0].fiscalInvoice">
+                    [(ngModel)]="element.paymentInformationServices[0].fiscalInvoice">
                   </mat-checkbox>
                 </span>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <mat-grid-list cols="4" rowHeight="50px">
+           
+            <mat-grid-tile [colspan]="4" [rowspan]="1">
+              <div class="textarea" style="display: flex; justify-content: space-between;">
+                <span>
+                  <mat-checkbox class="example-margin" [(ngModel)]="element.paymentInformationConsultants[0].creditCard"
+                    (change)="showCard($event)">
+                    <span class="subtitle" style="font-size: 12px;">Credit Card</span>
+                  </mat-checkbox>
+                </span>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="textarea">
+                <mat-checkbox (change)="showChecks($event)" class="example-margin"
+                  [(ngModel)]="element.paymentInformationConsultants[0].checks">
+                  <span class="subtitle" style="font-size: 12px;">Checks</span>
+                </mat-checkbox>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <div class="textarea">
+                <mat-checkbox (change)="showCash($event)" class="example-margin"
+                  [(ngModel)]="element.paymentInformationConsultants[0].cash">
+                  <span class="subtitle" style="font-size: 12px;">Cash</span>
+                </mat-checkbox>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="4" *ngIf="element.paymentInformationConsultants[0].checks">
+              <div class="input_final" style="width: 100%;">
+                <mat-form-field appearance="fill">
+                  <mat-label>Pay to the Order Of</mat-label>
+                  <input matInput required placeholder="Pay to the Order Of"
+                    [(ngModel)]="element.paymentInformationConsultants[0].payToOrderOf" type="text" #message_payto
+                    maxlength="150">
+                  <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
+                </mat-form-field>
               </div>
             </mat-grid-tile>
           </mat-grid-list>
@@ -606,36 +645,6 @@
           </mat-grid-list>
 
           <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1">
-              <div class="textarea">
-                <mat-checkbox (change)="showChecks($event)" class="example-margin"
-                  [(ngModel)]="element.paymentInformationConsultants[0].checks">
-                  <span class="subtitle" style="font-size: 12px;">Checks</span>
-                </mat-checkbox>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1">
-              <div class="textarea">
-                <mat-checkbox (change)="showCash($event)" class="example-margin"
-                  [(ngModel)]="element.paymentInformationConsultants[0].cash">
-                  <span class="subtitle" style="font-size: 12px;">Cash</span>
-                </mat-checkbox>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="4" *ngIf="element.paymentInformationConsultants[0].checks">
-              <div class="input_final" style="width: 100%;">
-                <mat-form-field appearance="fill">
-                  <mat-label>Pay to the Order Of</mat-label>
-                  <input matInput required placeholder="Pay to the Order Of"
-                    [(ngModel)]="element.paymentInformationConsultants[0].payToOrderOf" type="text" #message_payto
-                    maxlength="150">
-                  <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
 
             <!--mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
             <mat-grid-tile [colspan]="1" [rowspan]="1"

@@ -44,8 +44,10 @@ export class DialogAddLeaderComponent implements OnInit {
         console.log(dataLeader);
         for (let i = 0; i < dataLeader.length; i++) {
           const element = dataLeader[i];
-          if (element.servce_line == this.serviceLine || element.servce_line == 3) {
-            this.data_leader.push(element);
+          if (element.servce_line == this.serviceLine) {
+            if(element.role == "Manager"){
+              this.data_leader.push(element);
+            }
           }
         }
         console.log('leader', this.data_leader);

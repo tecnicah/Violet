@@ -8,7 +8,6 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 import { LoaderComponent } from 'app/shared/loader';
 import { DialogGeneralConfirmation } from '../dialog-general-confirmation/dialog-general-confirmation.component';
 import { DialogConfirmServiceComponent } from '../dialog-confirm-service/dialog-confirm-service.component'
-import { userInfo } from 'os';
 
 @Component({
   selector: 'app-dialog-base-prueba',
@@ -27,12 +26,14 @@ export class NewServiceOrderDialog implements OnInit {
     public router: Router
   ) {
     dialogRef.disableClose = true;
+
   }
   public at: boolean = true;
   public gt: boolean = false;
   public standalone_table_columns: string[] = ['cam_1', 'cam_2', 'cam_3', 'cam_4', 'cam_5', 'cam_6', 'cam_7', 'cam_8', 'cam_9', 'cam_10'];
-  public package_services: string[] = ['campo_0', 'campo_1', 'campo_2', 'campo_3', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
+  public package_services: string[] = ['campo_0', 'campo_1', 'campo_2',  'campo_3', 'campo_3a', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
   public loader: LoaderComponent = new LoaderComponent();
+  minDate: Date = new Date();
 
   public standalone_table_content: any = [
     {
@@ -56,39 +57,14 @@ export class NewServiceOrderDialog implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  public can_see_fee: boolean = false;
   ngOnInit() {
     console.log(this.data);
-    this.user = JSON.parse(localStorage.getItem("userData"));
+    //this.work_order.serviceLineId = 2;
     this.getCatalogues();
-    console.log(this.data);
-    this.validatingMainFields();
-    const today: Date = new Date();
-    this.yesterday_today = today;
-    if (this.data.new_sr) this.is_new_sr = true;
-    if (this.data.id_so != null) {
-      this.loader.showLoader();
-      this.is_editing = true;
-      this.main_fields_fill = true;
-      this._services.service_general_get(`ServiceOrder/GetOrderById?so=${this.data.id_so}`)
-        .subscribe((response: any) => {
-          if (response.success) {
-            const root_res: any = response.result.value;
-            this.work_order = root_res.workOrder[0];
-            console.log('work_order', this.work_order);
-            this.requestCatalogueCategory(this.work_order.serviceLineId);
-            this.initSummaryTable();
-            setTimeout(() => {
-              this.setDeliverToFixed();
-              this.createWOTableContent();
-              this.createTablesForBundles();
-              this.loader.hideLoader();
-            }, 777);
-          }
-        },
-          (error: any) => {
-            console.error('Error (ServiceOrder/GetOrderById)', error);
-          });
-    }
+    this.catalogos();
+    this.user = JSON.parse(localStorage.getItem("userData"));
+    console.log("user =========================0" , this.user)
   }
   public validatingMainFields(): void {
 
@@ -125,25 +101,25 @@ export class NewServiceOrderDialog implements OnInit {
   }
   getDeliverIn(id) {
     // 3
-    if (this.deliverin[0].idCountryHome == id) {
-      return this.deliverin[0].countryHomeName;
+    if (this.deliverin[0]?.idCountryHome == id) {
+      return this.deliverin[0]?.countryHomeName;
     }
-    else if (this.deliverin[0].idCountryHost == id) {
-      return this.deliverin[0].countryHostName;
+    else if (this.deliverin[0]?.idCountryHost == id) {
+      return this.deliverin[0]?.countryHostName;
     }
   }
 
   // valida que no se agregue otro servicio igual para el deliver to
   validDeliverTo() {
     // this.catalogService = [];
-    for (let i = 0; i < this.wo_standalone_table.data.length; i++) {
+    for (let i = 0; i < this.wo_standalone_table.data?.length; i++) {
       const element = this.wo_standalone_table.data[i];
       for (let c = 0; c < this.catalogService.length; c++) {
         const category = this.catalogService[c];
 
-        if (element.serviceId === category.id) {
-          this.catalogService.splice(c, 1);
-        }
+        // if (element.serviceId === category.id) {
+        //   this.catalogService.splice(c, 1);
+        // }
       }
     }
 
@@ -165,7 +141,11 @@ export class NewServiceOrderDialog implements OnInit {
   }
   public service_bundle: BundledServices = new BundledServices();
   public showPackagesServices(index: number = null): void {
+debugger;
+    if(this.work_order.serviceLineId == 1){  this.service_bundle.coordination = true; }
+    if(this.work_order.serviceLineId == 2){ this.setDeliverToFixed();}
 
+    this.service_bundle.statusId = 1;
     const bundle_container_b: any = document.getElementsByClassName('bundle_container_b'),
       bunble_container_p: any = document.getElementsByClassName('bunble_container_p');
 
@@ -264,16 +244,32 @@ export class NewServiceOrderDialog implements OnInit {
     }
   }
 
+
+  cordinationbundle(e, element) {
+    console.log('evento', e);
+    if (e.checked) {
+      this.at = true;
+      this.service_stanalone.authoTime = "0";
+      element.authoTime = "0";
+    } else {
+      this.at = false;
+      this.service_stanalone.authoTime = "";
+    }
+  }
+
   public serviceline_catalogue: any = [];
   public deliverto_catalogue: any = [];
   public deliverin_catalogue: any = [];
   public city_catalogue: any = [];
   public deliverin = [];
-  public async getCatalogues(): Promise<void> {
 
+  public async catalogos(){
     this.serviceline_catalogue = await this._services.getCatalogueFrom('GetServiceLine');
     this.deliverin_catalogue = await this._services.getCatalogueFrom('GetDelivired');
     this.city_catalogue = await this._services.getCatalogueFrom('GetCity');
+  }
+
+  public getCatalogues() {
 
     if (!this.data.new_sr) {
       this.work_order.createdDate = new Date();
@@ -288,23 +284,63 @@ export class NewServiceOrderDialog implements OnInit {
         .subscribe((response: any) => {
 
           if (response.success) {
-
+            debugger;
             this.deliverto_catalogue = response.applicant.value;
-            if (this.data.new_sr_data.immigrationCoodinators.length > 0 && this.data.new_sr_data.relocationCoordinators.length == 0) {
-              this.work_order.serviceLineId = 1;
-              this.disable = true;
-              this.work_order.createdDate = new Date();
-              this.requestCatalogueCategory(1);
-              this.validatingMainFields();
-              this.setDeliverToFixed();
-            } else if (this.data.new_sr_data.relocationCoordinators.length > 0 && this.data.new_sr_data.immigrationCoodinators.length == 0) {
-              this.work_order.serviceLineId = 2;
-              this.disable = true;
-              this.work_order.createdDate = new Date();
-              this.requestCatalogueCategory(2);
-              this.validatingMainFields();
-              this.setDeliverToFixed();
+
+            if(this.user.role.id == 19 || this.user.role.id == 1 || this.user.role.id == 2){
+              this.can_see_fee = true;
             }
+            else{
+              this.can_see_fee = false;
+            }
+        
+            console.log("data recibida ====================",this.data);
+            this.validatingMainFields();
+            const today: Date = new Date();
+            this.yesterday_today = today;
+            if (this.data.new_sr) this.is_new_sr = true;
+            if (this.data.id_so != null) {
+              this.loader.showLoader();
+              this.is_editing = true;
+              this.main_fields_fill = true;
+              this._services.service_general_get(`ServiceOrder/GetOrderById?so=${this.data.id_so}`)
+                .subscribe((response: any) => {
+                  if (response.success) {                    
+                    const root_res: any = response.result.value;
+                    this.work_order = root_res.workOrder[0];
+                    console.log('work_order', this.work_order);
+                    this.requestCatalogueCategory(this.work_order.serviceLineId);
+                    this.initSummaryTable();
+                    setTimeout(() => {
+                      this.setDeliverToFixed();
+                      this.createWOTableContent();
+                      this.createTablesForBundles();
+                      this.work_order.serviceLineId = 2;
+                      this.loader.hideLoader();
+                    }, 100);
+                  }
+                },
+                  (error: any) => {
+                    console.error('Error (ServiceOrder/GetOrderById)', error);
+                  });
+            }
+            // if (this.data.new_sr_data?.immigrationCoodinators.length > 0 && this.data.new_sr_data?.relocationCoordinators.length == 0) {
+            //   this.work_order.serviceLineId = 1;
+            //   this.disable = true;
+            //   this.work_order.createdDate = new Date();
+            //   this.requestCatalogueCategory(1);
+            //   this.validatingMainFields();
+            //   this.setDeliverToFixed();
+            // } else if (this.data.new_sr_data?.relocationCoordinators.length > 0 && this.data.new_sr_data?.immigrationCoodinators.length == 0) {
+            //   debugger;
+            //   this.work_order.serviceLineId = 2;
+            //   this.disable = true;
+            //   this.work_order.createdDate = new Date();
+            //   this.requestCatalogueCategory(2);
+            //   this.validatingMainFields();
+            //   this.setDeliverToFixed();
+              
+            // }
 
           }
 
@@ -317,7 +353,7 @@ export class NewServiceOrderDialog implements OnInit {
 
     } else {
 
-      const dependets_created: any[] = this.data.new_sr_data.assigneeInformations[0].dependentInformations;
+      const dependets_created: any[] = this.data.new_sr_data.assigneeInformations[0]?.dependentInformations;
 
       dependets_created.forEach((dependent: any) => {
 
@@ -390,8 +426,9 @@ export class NewServiceOrderDialog implements OnInit {
     console.log('deliver in ', this.standalone_work.deliveringIn);
     this.catalogService = [];
     this.standalone_work.serviceId = '';
+    debugger;
     // let partnerID = localStorage.getItem('partnerID');
-    this._services.service_general_get(`Catalogue/GetService?country=${this.standalone_work.deliveringIn}&client=${this.data.partnerID}&serviceLine=${this.work_order.serviceLineId}`)
+    this._services.service_general_get(`Catalogue/GetService?country=${this.standalone_work.deliveringIn}&client=${this.data.clientID}&serviceLine=${this.work_order.serviceLineId}`)
       .subscribe((response: any) => {
         console.log(response);
         this.catalogService = response.result.value;
@@ -406,7 +443,7 @@ export class NewServiceOrderDialog implements OnInit {
     this.catalogServiceBundle = [];
     this.service_bundle.serviceId = '';
     // let partnerID = localStorage.getItem('partnerID');
-    this._services.service_general_get(`Catalogue/GetService?country=${this.service_bundle.deliveringIn}&client=${this.data.partnerID}&serviceLine=${this.work_order.serviceLineId}`)
+    this._services.service_general_get(`Catalogue/GetService?country=${this.service_bundle.deliveringIn}&client=${this.data.clientID}&serviceLine=${this.work_order.serviceLineId}`)
       .subscribe((response: any) => {
         console.log(response);
         this.catalogServiceBundle = response.result.value;
@@ -426,7 +463,7 @@ export class NewServiceOrderDialog implements OnInit {
   // ServiceRecord/GetCategoryByCountry/1/98?IdserviceLine=1
   public getCategory() {
     // let partnerID = localStorage.getItem('partnerID');
-    this._services.service_general_get(`ServiceRecord/GetCategoryByCountry/${this.standalone_work.deliveringIn}/${this.data.partnerID}?IdserviceLine=${this.work_order.serviceLineId}`)
+    this._services.service_general_get(`ServiceRecord/GetCategoryByCountry/${this.standalone_work.deliveringIn}/${this.data.clientID}?IdserviceLine=${this.work_order.serviceLineId}`)
       .subscribe((response: any) => {
         console.log(response);
         this.category = response.country.value;
@@ -437,7 +474,7 @@ export class NewServiceOrderDialog implements OnInit {
   public category_ = [];
   public getCategory_() {
     // let partnerID = localStorage.getItem('partnerID');
-    this._services.service_general_get('ServiceRecord/GetCategoryByCountry/' + this.service_bundle.deliveringIn + '/' + this.data.partnerID + '?IdserviceLine=' + this.work_order.serviceLineId)
+    this._services.service_general_get('ServiceRecord/GetCategoryByCountry/' + this.service_bundle.deliveringIn + '/' + this.data.clientID + '?IdserviceLine=' + this.work_order.serviceLineId)
       .subscribe((response: any) => {
         console.log(response);
         this.category_ = response.country.value;
@@ -534,6 +571,7 @@ export class NewServiceOrderDialog implements OnInit {
     }
     if (validations.main && validations.bundles && validations.one_service && this.show_bform_errors) {
       console.log(this.work_order);
+      debugger;
       this._services.service_general_post_with_url('ServiceOrder/CreateOrder', this.work_order)
         .subscribe((response: any) => {
           if (response.success) {
@@ -569,7 +607,7 @@ export class NewServiceOrderDialog implements OnInit {
     this.work_order.standaloneServiceWorkOrders.forEach(E => {
       E.projectedFee = E.projectedFee.toString();
     });
-
+//debugger;
     let currency;
     this.work_order.standaloneServiceWorkOrders.forEach(E => {
       currency = E.projectedFee.split('$');
@@ -579,17 +617,19 @@ export class NewServiceOrderDialog implements OnInit {
         E.projectedFee = currency[1];
       }
       E.projectedFee = E.projectedFee.toString();
-      debugger
+    //  debugger
     });
-    this.work_order.bundledServicesWorkOrders.forEach(E => {
-      currency = E.projectedFee.split('$');
-      if (currency.length == 1) {
-        E.projectedFee = currency[0];
-      } else if (currency.length == 2) {
-        E.projectedFee = currency[1];
-      }
-      E.projectedFee = E.projectedFee.toString();
-    });
+    // debugger;
+     console.log("this.work_order.standaloneServiceWorkOrders ===========================",this.work_order.standaloneServiceWorkOrders);
+    // this.work_order.bundledServicesWorkOrders.forEach(E => {
+    //   currency = E.projectedFee.split('$');
+    //   if (currency.length == 1) {
+    //     E.projectedFee = currency[0];
+    //   } else if (currency.length == 2) {
+    //     E.projectedFee = currency[1];
+    //   }
+    //   E.projectedFee = E.projectedFee.toString();
+    // });
 
     console.log('Data Work order sent ====> ', this.work_order);
     debugger
@@ -723,7 +763,7 @@ export class NewServiceOrderDialog implements OnInit {
 
   public id_category: string;
   public addServiceToBundle(bundle_in: BundledServicesWorkOrders): void {
-
+debugger;
     if (this.bundleServiceComplete()) {
 
       //if( this.is_new_sr ) {
@@ -858,6 +898,7 @@ export class NewServiceOrderDialog implements OnInit {
 
   public wo_standalone_table: any = [];
   public createWOTableContent(): void {
+    console.log("this.deliverto_catalogue", this.deliverto_catalogue);
     this.work_order.standaloneServiceWorkOrders.forEach((work: any) => {
       work.deliverToText = this.getValueFromCatalogue(this.deliverto_catalogue, work.deliveredTo, 'name');
       work.deliverInText = this.getValueFromCatalogue(this.deliverin_catalogue, work.deliveringIn, 'serviceType');
@@ -1093,7 +1134,9 @@ debugger;
     no_serv: false,
     no_prof: false,
     no_auto: false,
-    no_loca: false
+    no_loca: false,
+    no_acceptance:false
+
   }
   public standAloneFormValidator(): boolean {
     let result: boolean = true;
@@ -1109,6 +1152,9 @@ debugger;
 
     this.standalone_work.autho == '' ?
       this.salon_form_valdator.no_auto = true : this.salon_form_valdator.no_auto = false;
+
+      this.standalone_work.acceptance == '' ?
+      this.salon_form_valdator.no_acceptance = true : this.salon_form_valdator.no_acceptance = false;
 
     this.standalone_work.location == '' ?
       this.salon_form_valdator.no_loca = true : this.salon_form_valdator.no_loca = false;
@@ -1167,7 +1213,27 @@ debugger;
 
   }
 
+  public coordinationBundle(){
+    if(this.service_bundle.serviceId == "24" || this.service_bundle.serviceId == "25"){
+      this.service_bundle.coordination = true;
+    }
+    else{
+      this.service_bundle.coordination = false;
+    }
+  }
+
+  public coordonatioTransport(){
+    console.log(this.standalone_work.serviceId);
+    if(this.standalone_work.serviceId == "24" || this.standalone_work.serviceId == "25"){
+      this.standalone_work.coordination = true;
+    }
+    else{
+      this.standalone_work.coordination = false;
+    }
+  }
+
   public removeErrorLabel(input_value: any, object_data: any): void {
+    
     if (input_value == "" || input_value == null) {
       object_data.handler[object_data.field] = true;
     } else {
@@ -1180,7 +1246,7 @@ debugger;
   }
 
   public getValueFromCatalogue(catalogue: any, id_to_find: any, field_to_find: string): string {
-
+debugger;
     let result: string = '';
 
     catalogue.forEach((item: any) => {
@@ -1287,7 +1353,9 @@ debugger;
     if (this.work_order.serviceLineId == '2') {
       this.set_my_self = true;
       this.deliverto_catalogue.forEach((dependent: any) => {
-        if (dependent.relationship) {
+        console.log(dependent.relationship);
+        debugger;
+        if (dependent.relationship == 'Assignee') {
           this.standalone_work.deliveredTo = dependent.dependentId;
           this.service_bundle.deliveredTo = dependent.dependentId;
         }
@@ -1423,7 +1491,7 @@ class StandaloneServiceWorkOrders {
   serviceTypeId: number = 0;
   location: string = '';
   categoryId: string = '';
-  acceptance: Date;
+  acceptance: any = new Date();
   coordination: boolean = false;
   authoTime: string = '0';
   autho: any = new Date();
@@ -1441,8 +1509,8 @@ class StandaloneServiceWorkOrders {
 class BundledServicesWorkOrders {
   id: number = 0;
   workOrderId: number = 0;
-  totalTime: string = '';
-  projectedFee: string = '';
+  totalTime: string = '0';
+  projectedFee: string = '0';
   package: boolean = false;
   createdBy: number = 0;
   createdDate: Date = null;
@@ -1462,7 +1530,7 @@ class BundledServices {
   categoryId: string = '';
   location: string = '';
   autho: any = new Date();
-  acceptance: Date;
+  acceptance: any = new Date();
   statusId: number;
   createdBy: number = 0;
   createdDate: string = '';
@@ -1471,4 +1539,5 @@ class BundledServices {
   workServicesId: number = 0;
   workServices: any = { id: 0 }
   local: boolean = true;
+  coordination: boolean = false;
 }

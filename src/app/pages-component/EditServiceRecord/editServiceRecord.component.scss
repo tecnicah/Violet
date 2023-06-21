@@ -21,6 +21,25 @@
   &__red {
     background: #ff5858;
   }
+  &__green_color {
+    color: #009577;
+  }
+
+  &__yellow_color {
+    color: #fbb03b;
+  }
+
+  &__red_color {
+    color: #ff5858;
+  }
+
+  &__late_color {
+    color: #FFE0E0;
+  }
+
+  &__pending_color {
+    color: #FFF7D3;
+  }
 }
 
 .link {
@@ -69,9 +88,6 @@
       //height: 60px;
       border-radius: 100%;
 
-  }
-  .foto{
-    // object-fit: cover !important;
   }
 
   .perfil{
@@ -336,10 +352,97 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
        text-align: left;
        font-size: 14px;
        font-weight: bold;
-       color: #56004e;
+       color: #3A2337;
       }
     }
 
   }
 
 }
+// .mat-list-base {
+//   padding-top: 0 !important;
+//   display: flex !important;
+//   -webkit-tap-highlight-color: transparent;
+// }
+
+// .mat-list-item-content{
+//   padding-left: 0 !important;
+// }
+
+// .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+//   display: flex !important;
+//   flex-direction: row !important;
+//   align-items: center !important;
+//   box-sizing: border-box !important;
+//   padding: 0 !important;
+//   position: relative !important;
+//   height: inherit !important;
+// }
+
+// .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   box-sizing: border-box;
+//   padding: 0;
+//   position: relative;
+//   height: inherit;
+// }
+
+// .mat-list-base .mat-list-item {
+//   font-size: 12px !important;
+// }
+
+// .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+//   display: block;
+//   height: 14px;
+//   -webkit-tap-highlight-color: transparent;
+//   width: auto;
+//   padding: 0;
+// }
+
+// .mat-list-base .mat-list-item .mat-list-icon, .mat-list-base .mat-list-option .mat-list-icon {
+//     flex-shrink: 0;
+//     width: 24px;
+//     height: 24px;
+//     font-size: 21px;
+//     box-sizing: content-box;
+//     border-radius: 50%;
+//     padding: 0;
+// }
+
+// ::ng-deep .mat-list .mat-list-item .mat-line{
+//   word-wrap: break-word;
+//   white-space: pre-wrap;
+// }
+
+.none-visible{
+  display: none;
+}
+
+.view-visible{
+  display: block;
+}
+
+.mat-list-base .mat-list-item {
+  font-size: 12px;
+}
+
+.divIconContainer {
+  display: inline-block;
+  padding: 5px
+}
+.spanicon
+  {
+    display:inline-block;
+    vertical-align:top;
+    font-size: 21px;
+  }
+
+  .urgent{
+    background: #ffe0e0 !important;
+  }
+  
+  .pendingAuth{
+    background: #fff7d3 !important;
+  }

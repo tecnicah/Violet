@@ -23,13 +23,14 @@ export class DialogAdminCenterDocumentsUploadComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userData'));
     this.today = new Date();
+    this.documents.location = '';
     this.catalogos();
   }
 
   public default_dependents: boolean = true;
   caStatus = [];
   async catalogos() {
-    this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
+    this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/25');
     this.caCountry = await this._services.getCatalogueFrom('GetPrivacy');
     this.caStatus = await this._services.getCatalogueFrom('GetDocumentStatus');
     console.log(this.data);

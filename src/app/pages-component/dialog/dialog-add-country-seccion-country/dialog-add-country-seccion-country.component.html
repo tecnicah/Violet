@@ -14,9 +14,9 @@
   <mat-grid-list cols="4" rowHeight="60px">
 
     <!-- add countru multicheck en caso de que la data reciba action = new -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action == 'new' && data.id == 0">
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action == 'new'">
       <form [formGroup]="searchUserForm" fxFlex fxLayout="column" autocomplete="off" style="margin: 30px">
-        <!--mat-form-field appearance="fill" class="textarea input_central">
+        <!-- mat-form-field appearance="fill" class="textarea input_central">
           <mat-label>Country</mat-label>
           <mat-select [(ngModel)]="data.country" (selectionChange)='all()' matNativeControl multiple>
             <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
@@ -38,9 +38,9 @@
     </mat-grid-tile>
     <!-- country se mostrara sin multicheck cuando el action sea 0 ya que es un update -->
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new'">
-      <mat-form-field appearance="fill" class="textarea input_central">
+      <mat-form-field class="textarea input_central">
         <mat-label>Country</mat-label>
-        <mat-select [disabled]="data.id != 0" [(ngModel)]="data.country" matNativeControl>
+        <mat-select [disabled]="data.id != 0" [(ngModel)]="data.country">
           <mat-option *ngFor="let item of caCounty" [value]="item.id">
             {{item.name}}
           </mat-option>
@@ -74,8 +74,9 @@
         <textarea matInput placeholder="Scope Description" rows="3" [(ngModel)]="data.scopeDescription"></textarea>
       </mat-form-field-->
       <!--a ngular-editor [(ngModel)]="data.scopeDescription" (ngModelChange)="view()" [config]="config"></angular-editor-->
-      <kendo-editor [value]="data.scopeDescription" [(ngModel)]="data.scopeDescription"
-        style="height: 280px; width: 100%;"></kendo-editor>
+
+      <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="data.scopeDescription"
+        [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -87,6 +88,11 @@
         Documents
       </div>
       <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Name
+          </span>
+        </div>
         <div class="page__section-input page__section-input--25">
           <span class="documents__index documents__index--task">
             Document Type
@@ -102,16 +108,21 @@
             Status
           </span>
         </div>
-        <div class="page__section-input page__section-input--25">
+        <!-- <div class="page__section-input page__section-input--25">
           <span class="documents__index documents__index--task">
             Privacy
           </span>
-        </div>
+        </div> -->
       </div>
 
       <div class="page__section documents__ascard" *ngFor="let item of data.documentServiceCountries; let i = index">
         <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
           style="background: transparent!important;" (click)="deleteDocument(item.id, i) ">
+        <div class="page__section-input page__section-input--25 documents__ascard--task"
+          style="text-decoration: underline ; cursor: pointer; color:purple; "
+          (click)="openRepairsFileOnWindow(item.filePath, item.id)">
+          {{ item.name}}
+        </div>
         <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{ getDocumentName(item.documentType)}} {{item.documentTypeNavigation?.privacyNavigation}}
         </div>
@@ -121,9 +132,9 @@
         <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{statusName(item.status)}} {{item.statusNavigation?.status}}
         </div>
-        <div class="page__section-input page__section-input--25 documents__ascard--task">
+        <!-- <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{privacyName(item.privacy)}} {{item.privacyNavigation?.privacy}}
-        </div>
+        </div> -->
       </div>
 
     </div>
@@ -132,7 +143,7 @@
   <div class="textarea margin_table" style="text-align: end;">
     <button class="btnr btnr--add" (click)="DialogDocumentsLeadClientComponent(null)" matRipple
       matRippleColor="rgba(157, 50, 146, 0.5)">
-      Add New Document
+      New Document
     </button>
   </div>
 

@@ -1,0 +1,102 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Renewal Details
+        
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+               - Lease Summary
+            </span>  
+        </h2>
+        
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    
+
+        <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+        
+            <div >
+                <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+                    <mat-grid-list cols="4" rowHeight="70px">
+
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="textarea" style="height: 80%;">
+                            <p class="subtitle" style="font-size: 12px; margin: 0px;">Automatically Renewed</p>
+                            <mat-checkbox [(ngModel)]="data_renewal.automatically"></mat-checkbox>
+                          </div>
+                        </mat-grid-tile>
+              
+              
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Renewal Notification Days</mat-label>
+                              <!-- <input matInput placeholder="enewal Notification Days" [min]="0" type="number" [(ngModel)]="data_renewal.renewalNotification"> -->
+                              <mat-select [(ngModel)]="data_renewal.renewalNotification">
+                                <mat-option *ngFor="let data of lapsos_dias" [value]="data.id">{{data.id}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+              
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Additional Rent Increase Date</mat-label>
+                              <input matInput [matDatepicker]="pickerAdditional" placeholder="Additional Rent Increase Date"
+                                [(ngModel)]="data_renewal.additionalRentIncreaseDate">
+                              <mat-datepicker-toggle matSuffix [for]="pickerAdditional"></mat-datepicker-toggle>
+                              <mat-datepicker #pickerAdditional></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+              
+              
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Recurrent Increase Period</mat-label>
+                              <mat-select [(ngModel)]="data_renewal.recurrentIncreasePeriod">
+                                <mat-option *ngFor="let data of recurrence_static" [value]="data.id">{{data.id}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+              
+                        <mat-grid-tile [colspan]="4" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Comments</mat-label>
+                              <input matInput placeholder="Comments" [min]="0" [(ngModel)]="data_renewal.comments">
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+              
+              
+                        <!-- <mat-grid-tile [colspan]="4" [rowspan]="1">
+                          <div class="page__section-buttong"
+                            style="display: flex; justify-content: flex-end; flex: 0px !important;">
+                            <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;"
+                              (click)="saveRenewal()">
+                              Save Renewal D.
+                            </button>
+                          </div>
+                        </mat-grid-tile> -->
+              
+                      </mat-grid-list>
+
+                </div>
+                <!---------------------------------- PINTAR CONTRACTS PASADOS ----------------------------->
+            </div>
+        </div>
+  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button *ngIf="data.edicion" (click)="saveRenewal()" >Save </button>
+    </div>  
+</mat-dialog-actions>

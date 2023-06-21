@@ -5,6 +5,7 @@ import { DialogDocumentProfileSupplierComponent } from '../dialog-document-profi
 import { FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry } from 'ngx-file-drop';
 import { GeneralConfirmationComponent } from '../general-confirmation/general-confirmation.component';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
+import { DialogCropImageComponent } from '../dialog-crop-image/dialog-crop-image.component';
 
 
 @Component({
@@ -14,13 +15,19 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 })
 export class DialogNewContactComponent implements OnInit {
 
+  public no_main_photo: boolean = false;
   ca_contactType: any[] = [];
   ca_city: any[] = [];
   ca_privacy: any[] = [];
   ca_documentType: any[] = [];
+  public prefixCatalog;
   administrativeContactsServices: any = {
     "documentAdministrativeContactsServices": [],
   };
+  typePrefix = {
+    countriesName: ''
+  }
+  prefixWork: any;
   user: any;
   date: any;
   constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public dialogRef: MatDialogRef < any > , @Inject(MAT_DIALOG_DATA) public data: any) {}
@@ -28,6 +35,26 @@ export class DialogNewContactComponent implements OnInit {
   //***********************************//
   ngOnInit() {
     console.log("data recibida: ", this.data);
+
+     // sacar prefix de work phone
+     if (this.data.phoneNumber != '' && this.data.phoneNumber != null)
+     {
+       let search = '+';
+       // obtener la posicion de +
+       let posicion = this.data.phoneNumber.indexOf(search);
+       // obtener el valor de prefix
+       this.prefixWork = this.data.phoneNumber.substr(0, posicion);
+       // obtener valor phone
+       this.data.phoneNumber = this.data.phoneNumber.substr(posicion + 1);
+
+     }
+
+    //console.log(photo_assing);
+    if (this.data.photo == undefined || this.data.photo == null || this.data.photo == '') {
+
+      this.no_main_photo = true;
+
+    }
     this.verificaNodos();
     this._services.service_general_get('Catalogue/GetState?country=' + this.data.country).subscribe((data => {
       if (data.success) {
@@ -38,6 +65,38 @@ export class DialogNewContactComponent implements OnInit {
     this.date = new Date();
     this.user = JSON.parse(localStorage.getItem('userData'));
   }
+
+  public previewSelectedPhoto(event: any, field_to_display: string, section: string = ''): void {
+
+    const dialogRef = this._dialog.open(DialogCropImageComponent, {
+      data: { image: "", name: "" },
+      width: "70%",
+      height: "95%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(result);
+        if(result != undefined){
+          this.no_main_photo = false;
+          //this._services.url_images = "";
+debugger;
+          const field_photo: any = document.getElementById(field_to_display),
+            //event_data: any = event.target.files[0],
+            dependent_index: string = field_to_display.split('_')[3],
+            root: any = this;
+
+            const base64: any = result
+            ////console.log(base64.split('.')[1]);
+            this.administrativeContactsServices.photo =  base64.split(',')[1];
+            this.administrativeContactsServices.photoExtension = "png";
+          
+            setTimeout(() => field_photo.setAttribute('src', base64), 333);
+        }
+    });
+
+  }
+
+  
   //************************************************************//
   verificaNodos(){
     if (this.data != null) {
@@ -60,6 +119,7 @@ export class DialogNewContactComponent implements OnInit {
     })) 
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
+    this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
   }
   //*************************************************************//
   addDocument() {
@@ -217,6 +277,9 @@ export class DialogNewContactComponent implements OnInit {
   //************************************************************//
   save() {
     this.administrativeContactsServices.success = true;
+    if ( this.administrativeContactsServices.phoneNumber != '' && this.prefixWork) {
+      this.administrativeContactsServices.phoneNumber = `${this.prefixWork}+${this.administrativeContactsServices.phoneNumber}`
+    }
     this.dialogRef.close(this.administrativeContactsServices);
   }
   //*************************************************************//

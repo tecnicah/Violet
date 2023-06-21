@@ -1221,65 +1221,76 @@
       </div>
     </mat-grid-list>
 
+<!--  //////////////////////////////// Service Client Documents //////////////////////////////-->
+<mat-grid-list cols="1" *ngIf="serviceScope != null">
+  <div class="page__section margin-top-min">
+    <div class="subtitledos">
+      Client Service Documents
+    </div> <br><br>
+    <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+      <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+        No Client Service Documents loaded
+      </div>
+    </div>
+    <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
+      <div class="page__section-input page__section-input--6_1-local">
+        <span class="documents__index documents__index--task">
+          Document Type
+        </span>
+      </div>
+      <div class="page__section-input page__section-input--6_1-local">
+        <span class="documents__index documents__index--task">
+          Upload
+        </span>
+      </div>
+      <div class="page__section-input page__section-input--6_1-local">
+        <span class="documents__index documents__index--task">
+          Status
+        </span>
+      </div>
+    </div>
+    <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
+      <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
+        style="background: transparent!important;" style="right: 40px;"
+        (click)="openFileOnWindow(item.fileRequest)">
+      <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+        {{item.documentType}}
+      </div>
+      <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+        {{item.updated_date | date:'dd MMM yyy'}}
+      </div>
+      <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+        {{item.status}}
+      </div>
+    </div>
+  </div>
+</mat-grid-list>
 
-    <!--  Service Client Documents -->
-      <mat-grid-list cols="1" *ngIf="serviceScope">
-        <div class="page__section margin-top-min">
-          <div class="subtitledos">
-            Scope Client Service
-          </div>
-          <br><br>
 
-          <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Document Type
-              </span>
-            </div>
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Status
-              </span>
-            </div>
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Privacy
-              </span>
-            </div>
+<!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
 
-          </div>
-          <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
-            <!-- (click)="DeleteOnline(item.id)" -->
-            <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
-            style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
-            <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-              style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.documentType}}
-            </div>
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.status}}
-            </div>
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.privacy}}
-            </div>
-          </div>
-        </div>
-      </mat-grid-list>
-      <!-- Scope Client Service -->
-      <mat-grid-list cols="4" rowHeight="70px">
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="wid">
-            <p class="subtitledos">Client Service Scope</p>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
-          <div class="textarea">
-            <p [innerHTML]="serviceScope.scopeDescription"></p>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <br><br>
+<mat-grid-list cols="4" rowHeight="70px">
+  <br><br>
+  <div class="wid">
+    <p class="subtitledos">Client Service Scope</p>
+  </div>
+  <div *ngIf="serviceScope.scopeDescription.length > 0" [innerHTML]="serviceScope.scopeDescription">
+  </div>
+  <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope != null">
+    <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+      Client Service Scope not captured or empty.
+    </div>
+    <div class="textarea" *ngIf="serviceScope.scopeDescription == null">
+      Client Service Scope not captured or empty.
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
+    <div class="textarea">
+      Client Service Scope not captured or empty.
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<br><br>
 
   </mat-dialog-content>
 

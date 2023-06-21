@@ -1,0 +1,59 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;">Select Property</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+
+
+<mat-dialog-content class="mat-typography">
+    <div class="page__section">
+        <!---------------------------TABLA HOUSING------------------------------>
+        <table matTableExporter mat-table [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea" id="exportReport">
+            <ng-container matColumnDef="Address">
+                <th mat-header-cell *matHeaderCellDef> Address </th>
+                <td mat-cell *matCellDef="let element">
+                    <a style="color: blue; text-decoration: underline; cursor: pointer;" (click)="editHousing(element)">
+                        {{element.address}}
+                    </a>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Neighborhood">
+                <th mat-header-cell *matHeaderCellDef> Neighborhood </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.neighborhood}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element"> {{element.price | currency }} </td>
+            </ng-container>
+            <ng-container matColumnDef="Property Type">
+                <th mat-header-cell *matHeaderCellDef> Property Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Actions">
+                <th mat-header-cell *matHeaderCellDef> Selected </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <mat-checkbox [checked]="element.id == data.ph_id" [disabled]="element.id == data.ph_id"
+                            (change)="setPermanent($event, element)">
+                        </mat-checkbox>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsHousing"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsHousing;"></tr>
+        </table>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+<br><br>
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button (click)="HomeDetailsnew()" style="">Add Property</button>
+    </div> 
+</mat-dialog-actions>

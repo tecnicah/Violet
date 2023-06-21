@@ -1,5 +1,4 @@
 //ESTILOS GLOBALES DEL SITIO//
-@import '~ngx-bar-rating/themes/br-default-theme';
 @import 'flatpickr/dist/flatpickr.css';
 
 .primary_title {
@@ -412,7 +411,7 @@ body {
 }
 
 .mat-tab-label-active {
-  background-image: linear-gradient(to top, #4435a6, #9d3292) !important;
+  background-image: linear-gradient(to top, #3A2337, #9d3292) !important;
   opacity: 1 !important;
   color: #ffffff;
 

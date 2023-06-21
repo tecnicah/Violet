@@ -1,0 +1,60 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">Add Service Reminder </h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  
+  <!-----------------------------------content-------------------------------------->
+  <mat-dialog-content class="mat-typography">
+
+    <mat-grid-list cols="4" rowHeight="100px" >
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+                <mat-form-field appearance="fill">
+                    <mat-label>Reminder Date</mat-label>
+                    <input matInput min="{{today|date:'yyyy-MM-dd'}}" required [matDatepicker]="pickerocho"
+                        placeholder="Reminder Date" [(ngModel)]="newreminder.reminderDate">
+                    <span class="label-error" >
+                        <!-- Field is required -->
+                    </span>
+                    <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerocho></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <!-- <div class="input_central wid">
+                <mat-form-field appearance="fill">
+                    <mat-label>Reminder Comments</mat-label>
+                    <input matInput required placeholder="Reminder Comments" [(ngModel)]="newreminder.reminderComments"
+                        #message_reminder maxlength="200">
+                    <mat-hint align="end">{{message_reminder.value.length}} / 200</mat-hint>
+                    <span class="label-error"
+                        *ngIf="newreminder.reminderComments == '' || newreminder.reminderComments == null">
+                        Field is required
+                    </span>
+                </mat-form-field>
+            </div> -->
+            <div class="textarea">
+                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                    <textarea matInput #message  maxlength="500" (change)="newreminder.reminderComments = $event.target.value">
+                        {{newreminder.reminderComments}}
+                    </textarea>
+                    <mat-hint align="end">{{newreminder.reminderComments.length}} / 200</mat-hint>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+  
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save()">Save</button>
+    </div>
+  </mat-dialog-actions>

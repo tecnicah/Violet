@@ -1,0 +1,80 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h2 mat-dialog-title class="primary_title">Add Payment Process</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+<!-----------------------------------content-------------------------------------->
+<mat-dialog-content class="mat-typography">
+    
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxFlex="30" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>One Time Entry Fee</mat-label>
+        <mat-select [(ngModel)]="school_search.oneTimeEntryFee">
+          <mat-option *ngFor="let item of ca_payment_process" [value]="item.id">{{item.payment}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="30" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>Admissions Fee</mat-label>
+        <mat-select [(ngModel)]="school_search.admissionsFee">
+          <mat-option *ngFor="let item of ca_payment_process" [value]="item.id">{{item.payment}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="30" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>Tution</mat-label>
+        <mat-select [(ngModel)]="school_search.tution">
+          <mat-option *ngFor="let item of ca_payment_process" [value]="item.id">{{item.payment}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="30" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>Books</mat-label>
+        <mat-select [(ngModel)]="school_search.books">
+          <mat-option *ngFor="let item of ca_payment_process" [value]="item.id">{{item.payment}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxFlex="25" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>Uniform</mat-label>
+        <mat-select [(ngModel)]="school_search.uniform">
+          <mat-option *ngFor="let item of ca_payment_process" [value]="item.id">{{item.payment}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="25" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>IB</mat-label>
+        <mat-select [(ngModel)]="school_search.ib">
+          <mat-option *ngFor="let item of ca_payment_process" [value]="item.id">{{item.payment}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="60" class="input_central textarea">
+      <mat-form-field appearance="fill">
+        <mat-label>Other</mat-label>
+        <input matInput placeholder="Other" [(ngModel)]='school_search.others' maxlength="150">
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <div class="page__section-buttong">
+        <button (click)="save_data();">Save</button>
+    </div>
+
+</mat-dialog-actions>

@@ -1,0 +1,36 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">{{ data.header }}</h2>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutGap="10px" class="margin-bottom-m">
+        <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+            {{ data.body }}
+            <br>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutGap="10px" class="margin-bottom-m">
+        <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+            <mat-form-field appearance="fill">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="home_finding.statusId">
+                  <mat-option *ngFor="let item of ca_estatus" [value]="item.id"> {{item.status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button (click)="no()" style="background-color: #f9f9f9;color: #9d3292;">No, cancel</button>
+    </div>
+    &nbsp;&nbsp;&nbsp;
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+      <button (click)="yes()">Yes</button>
+    </div>
+</mat-dialog-actions>

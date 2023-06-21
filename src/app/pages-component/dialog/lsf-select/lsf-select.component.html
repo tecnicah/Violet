@@ -1,0 +1,118 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;">Lease Summary</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutGap="10px" class="margin-bottom-m">
+        <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+
+            Please select an option or
+            <span style="font-weight: bolder; color: #9d3292; 
+            text-decoration: underline; cursor: pointer;" (click)="lease();">Export</span>
+            the information
+            <br>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-grid-list cols="2" rowHeight="70px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+                <mat-label style="font-size:medium;">Lease Summary Version</mat-label>
+                <mat-select [(ngModel)]='lsf_service_detail_id'>
+                    <mat-option *ngFor="let data of versions_lsf" [value]="data.idServiceDetail">{{data.catCategoryText}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<mat-dialog-content class="mat-typography">
+    <div class="page__section">
+
+        <div class="dash dash--80" style=" width: 100%;">
+
+            <div class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="lscontract();">
+                <div class="dash__card dash__card--up cursor-pointer">
+                    <span class="dash__card--flag index-aqua"></span>
+                    <div class="dash__card-sTitl">Contract Details</div>
+                    <img src="../../../assets/contract.png" class="dash__card-sIcon" style="width: 25px;" />
+                    <!--  <div class="dash__card-sMini">
+                  <span>{{counts?.arrivals}}</span> 
+                </div>-->
+                </div>
+            </div>
+            <div class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="lspayments();">
+                <div class="dash__card dash__card--up cursor-pointer">
+                    <span class="dash__card--flag index-aqua"></span>
+                    <div class="dash__card-sTitl">Payments</div>
+                    <img src="../../../assets/payment.png" class="dash__card-sIcon" style="width: 25px;" />
+                    <!--  <div class="dash__card-sMini">
+                    <span>{{counts?.arrivals}}</span> 
+                  </div>-->
+                </div>
+            </div>
+            <div class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="lscost();">
+                <div class="dash__card dash__card--up cursor-pointer">
+                    <span class="dash__card--flag index-aqua"></span>
+                    <div class="dash__card-sTitl">Cost Savings</div>
+                    <img src="../../../assets/cost.png" class="dash__card-sIcon" style="width: 25px;" />
+                    <!--  <div class="dash__card-sMini">
+                  <span>{{counts?.arrivals}}</span> 
+                </div>-->
+                </div>
+            </div>
+
+            <div class="dash__cell dash__cell--25" style=" width: 33%;" (click)="lsrenewal();">
+                <div class="dash__card dash__card--up cursor-pointer">
+                    <span class="dash__card--flag index-aqua"></span>
+                    <div class="dash__card-sTitl">Renewal Details</div>
+                    <img src="../../../assets/renewal.png" class="dash__card-sIcon" style="width: 25px;" />
+                    <!--  <div class="dash__card-sMini">
+                    <span>{{counts?.arrivals}}</span> 
+                  </div>-->
+                </div>
+            </div>
+            <div class="dash__cell dash__cell--25" style=" width: 33%;" (click)="lsdeparture();">
+                <div class="dash__card dash__card--up cursor-pointer">
+                    <span class="dash__card--flag index-aqua"></span>
+                    <div class="dash__card-sTitl">Departure Details</div>
+                    <img src="../../../assets/depar.png" class="dash__card-sIcon" style="width: 25px;" />
+                    <!--  <div class="dash__card-sMini">
+                    <span>{{counts?.arrivals}}</span> 
+                  </div>-->
+                </div>
+            </div>
+            <div class="dash__cell dash__cell--25" style=" width: 33%;" (click)="lsland();">
+                <div class="dash__card dash__card--up cursor-pointer">
+                    <span class="dash__card--flag index-aqua"></span>
+                    <div class="dash__card-sTitl">Landlord Details</div>
+                    <img src="../../../assets/land.png" class="dash__card-sIcon" style="width: 25px;" />
+                    <!--  <div class="dash__card-sMini">
+                    <span>{{counts?.arrivals}}</span> 
+                  </div>-->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <br><br>
+    <br><br>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button (click)="no()" style="background-color: #f9f9f9;color: #9d3292;">Cancel</button>
+    </div>
+    <!-- &nbsp;&nbsp;&nbsp;
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button  (click)="export()">Export</button>
+    </div>  -->
+</mat-dialog-actions>

@@ -13,14 +13,14 @@
   <mat-grid-list cols="4" rowHeight="70px">
 
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
         <div>
           <span class="text-mini gray_05">Service Line</span><br />
           {{services_bundle[0]?.serviceLine}}
         </div>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
@@ -33,7 +33,7 @@
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-        <div>
+        <div *ngIf="userData.role.role != 'Supplier'">
           <span class="text-mini gray_05">Global Projected Fee</span><br />
           {{services_bundle[0]?.projectedFee | currency}}
         </div>
@@ -62,7 +62,7 @@
 </mat-grid-list>
 
 <div class="aling">
-        <mat-grid-list cols="7" rowHeight="70px">
+        <mat-grid-list cols="3" rowHeight="70px">
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <span class="type_text_header">Status</span>
           </mat-grid-tile>
@@ -72,7 +72,7 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <span class="type_text_header">Service ID</span>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
             <span class="type_text_header">Autho Time</span>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -83,13 +83,13 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <span class="type_text_header">Requested Extra Time</span>
-          </mat-grid-tile>
+          </mat-grid-tile> -->
         </mat-grid-list>
       </div>
 
       <div>
-        <div class="mat-elevation-z4 pointer" style="margin-bottom: 15px;" *ngFor="let item of services_bundle[0]?.services" (click)="showService(item)">
-          <mat-grid-list cols="7" rowHeight="70px">
+        <div class="mat-elevation-z4 pointer" style="margin-bottom: 15px; cursor:pointer;" *ngFor="let item of services_bundle[0]?.services" (click)="showService(item)">
+          <mat-grid-list cols="3" rowHeight="70px">
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <span class="type_text">{{item.status}}</span>
             </mat-grid-tile>
@@ -99,7 +99,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <span class="type_text">{{item.serviceNumber}}</span>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
               <span class="type_text">{{item.autho| date:'hh:mm'}} </span>
             </mat-grid-tile>
              <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -110,7 +110,7 @@
             </mat-grid-tile>
              <mat-grid-tile [colspan]="1" [rowspan]="1">
               <span class="type_text">{{item.requestedExtraTime}}</span>
-            </mat-grid-tile>
+            </mat-grid-tile> -->
           </mat-grid-list>
         </div>
       </div>

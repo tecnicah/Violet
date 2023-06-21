@@ -12,9 +12,9 @@
 <!----------------------------------OPEN CONTENT------------------------------------------>
 <mat-dialog-content class="mat-typography">
 
-  <mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-list cols="12" rowHeight="100px">
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Contact Name</mat-label>
@@ -26,7 +26,7 @@
     </mat-grid-tile>
 
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Relationship</mat-label>
@@ -40,11 +40,10 @@
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-
-      <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: -62px;">
+      <mat-form-field>
         <mat-label>Prefix</mat-label>
         <mat-select matNativeControl [(ngModel)]="prefix" (focus)="activePrefix = false;">
-          <mat-form-field appearance="outline" style="padding: 5px;">
+          <mat-form-field appearance="outline">
             <mat-label>Prefix</mat-label>
             <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
           </mat-form-field>
@@ -55,18 +54,21 @@
         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activePrefix">Field is required
         </mat-hint>
       </mat-form-field>
+    </mat-grid-tile>
 
-
-      <mat-form-field style="width: 50% !important;">
-        <mat-label>Phone Number</mat-label>
-        <input matInput placeholder="Phone Number"  type="number" min="0" (focus)="activeNumber = false;" (keydown)="validaNumericos($event)" [(ngModel)]="data.phoneNumber" />
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNumber">Field is required
-        </mat-hint>
-      </mat-form-field>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field>
+          <mat-label>Phone Number</mat-label>
+          <input matInput placeholder="Phone Number"  type="number" min="0" (focus)="activeNumber = false;" (keydown)="validaNumericos($event)" [(ngModel)]="data.phoneNumber" />
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNumber">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: -62px;">
+      <mat-form-field>
         <mat-label>Prefix</mat-label>
         <mat-select matNativeControl [(ngModel)]="prefixPersonal" (focus)="active_Prefix = false">
           <mat-form-field appearance="outline" style="padding: 5px;">
@@ -80,18 +82,21 @@
         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_Prefix">Field is required
         </mat-hint>
       </mat-form-field>
-
-
-      <mat-form-field style="width: 50% !important;">
-        <mat-label>Personal Phone</mat-label>
-        <input matInput placeholder="Personal Phone"  type="number" min="0"
-          [(ngModel)]="data.homeNumber" (focus)="active_Numberp = false;"/>
-          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_Numberp">Field is required
-          </mat-hint>
-      </mat-form-field>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field>
+          <mat-label>Personal Phone</mat-label>
+          <input matInput placeholder="Personal Phone"  type="number" min="0"
+            [(ngModel)]="data.homeNumber" (focus)="active_Numberp = false;"/>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_Numberp">Field is required
+            </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="6" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>location</mat-label>

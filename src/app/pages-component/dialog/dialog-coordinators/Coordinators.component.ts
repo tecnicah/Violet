@@ -59,7 +59,7 @@ import { Router } from '@angular/router';
   }
 
 
-  public coordinators_table_colums:string[] = ['col_1','col_2','col_3','col_4','col_5','col_6','col_7','col_8'];
+  public coordinators_table_colums:string[] = ['col_1','col_2','col_3','col_4','col_5','col_6','col_7'];
   public coordinators_table_data:any = undefined;
   public requestCoordinatorsTableData( url_params:string = '' ):void {
       this.__loader__.showLoader();

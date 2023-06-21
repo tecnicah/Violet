@@ -12,28 +12,30 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="page__section-data font-size-12">
             <span class="text-mini gray_05">Document</span><br />
-            <span class="gray_05 cursor-pointer font-purple-dark" (click)="openFileOnWindow( library_data.ulr_document )">
+            <span style="font-size: 16px; text-decoration: underline;" 
+            class="gray_05 cursor-pointer font-purple-dark" (click)="openFileOnWindow( library_data.ulr_document )">
               View Document
             </span>
           </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="library_data.upload_date != '' && library_data.upload_date != null"> 
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.upload_date != '' && library_data.upload_date != null">
           <div class="page__section-data font-size-12">
-            <span class="text-mini gray_05">Uploaded Date</span><br />
+            <span class="text-mini gray_05">Uploaded</span><br />
             {{ library_data.upload_date | date:'dd MMM yyy' }}
           </div>
       </mat-grid-tile>
     </mat-grid-list>
 
     <mat-grid-list cols="4" rowHeight="80px">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.document_type != '' && library_data.document_type != null">
             <div class="page__section-data font-size-12">
               <span class="text-mini gray_05">Document Type</span><br />
               {{ library_data.document_type }}
             </div>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.relationship != '' && library_data.relationship != null">
             <div class="page__section-data font-size-12">
               <span class="text-mini gray_05">Relationship</span><br />
               {{ library_data.relationship }}
@@ -42,20 +44,21 @@
     </mat-grid-list>
 
     <mat-grid-list cols="4" rowHeight="80px">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.issueDate != '' && library_data.issueDate != null">
             <div class="page__section-data font-size-12">
-              <span class="text-mini gray_05">Issue Date</span><br />
+              <span class="text-mini gray_05">Issue</span><br />
               {{ library_data.issueDate | date:'dd MMM yyy' }}
             </div>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.expirationDate != '' && library_data.expirationDate != null">
             <div class="page__section-data font-size-12">
-              <span class="text-mini gray_05">Expiration Date</span><br />
+              <span class="text-mini gray_05">Expiration</span><br />
               {{ library_data.expirationDate | date:'dd MMM yyy' }}
             </div>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.issuingAuthority != '' && library_data.issuingAuthority != null">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.issuingAuthority != '' && library_data.issuingAuthority != null">
             <div class="page__section-data font-size-12">
               <span class="text-mini gray_05">Issuing Authority</span><br />
               {{ library_data.issuingAuthority }}
@@ -64,13 +67,13 @@
     </mat-grid-list>
 
     <mat-grid-list cols="4" rowHeight="80px">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="library_data.name != '' && library_data.name != null">
             <div class="page__section-data font-size-12">
               <span class="text-mini gray_05">Country of Origin</span><br />
               {{ library_data.name }}
             </div>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="library_data.comment != '' && library_data.comment != null">
             <div class="page__section-data font-size-12">
               <span class="text-mini gray_05">Comment</span><br />
               {{ library_data.comment }}

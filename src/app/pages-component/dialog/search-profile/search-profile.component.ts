@@ -36,7 +36,8 @@ export class DialogSearchProfileComponent implements OnInit {
             accept_date: 'Example',
             coordination: 'Example',
             autho_time: 'Example',
-            projected_fee: 'Example'
+            projected_fee: 'Example',
+            email: 'Example'
         }
     ];
 
@@ -63,9 +64,19 @@ export class DialogSearchProfileComponent implements OnInit {
 
                     for (let i = 0; i < response.map.value.length; i++) {
                         const element = response.map.value[i];
-                        if(element.serviceLine.length >= 1){
-                            response.map.value[i].serviceLine =  response.map.value[i].serviceLine[0];
-                        }
+                       // response.map.value[i].serviceLine ="";
+                        
+                        // for (let j = 0; j < response.map.value[i].serviceLinelength; j++) {
+                        //     debugger;
+                        //     if(response.map.value[i].serviceLine !=  response.map.value[i].serviceLine[j] && 
+                        //         response.map.value[i].serviceLine.length < 15)
+                        //     {
+                        //         response.map.value[i].serviceLine += " "+ response.map.value[i].serviceLine[j];
+                        //     }
+                        // }
+                         if(element.serviceLine.length >= 1){
+                             response.map.value[i].serviceLine =  response.map.value[i].serviceLine[0];
+                         }
                     }
 
                     this.dataSource = new MatTableDataSource( response.map.value );

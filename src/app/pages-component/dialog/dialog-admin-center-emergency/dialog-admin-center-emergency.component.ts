@@ -12,7 +12,7 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 })
 export class DialogAdminCenterEmergencyComponent implements OnInit {
 
- 
+  typeResources: any[]= [];
   temporalDocument = [];
   data_:any = {
     photoCityEmergencies: []
@@ -35,6 +35,14 @@ export class DialogAdminCenterEmergencyComponent implements OnInit {
   
   ngOnInit(): void {
     console.log("data que reibe modal info: ", this.data);
+    this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+        .subscribe((data => {
+          console.log("Type",data);
+            if (data.success) {
+              this.typeResources = data.result;
+            }
+            
+          }));
     if(this.data != null){
         this.data_ = this.data;
         if(!this.data_.photoCityEmergencies){ this.data_.photoCityEmergencies = []}

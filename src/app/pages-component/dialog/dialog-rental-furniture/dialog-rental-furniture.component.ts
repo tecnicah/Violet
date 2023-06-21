@@ -12,6 +12,7 @@ import { DialogDeletepaymentconceptComponent } from '../dialog-deletepaymentconc
 import { DialogDocumentsView } from '../dialog-documents-view/dialog-documents-view.component';
 import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/dialog-request-payment-new.component';
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
+import { DialogPaymentRentalComponent } from '../dialog-payment-rental/dialog-payment-rental.component';
 
 
 @Component({
@@ -63,11 +64,11 @@ export class DialogRentalFurnitureComponent implements OnInit {
   minDate: Date = new Date();
   public __loader__: LoaderComponent= new LoaderComponent();
   show: boolean = false;
-  serviceScope : any[] = [];
+  serviceScope = null;
 
 
   ngOnInit(): void {
-    console.log(this.data);
+    //console.log(this.data);
     this.__loader__.showLoader();
     this.user = JSON.parse(localStorage.getItem('userData'));
     for (let i = 1; i < 11; i++) {
@@ -77,7 +78,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
     this._services.service_general_get('RelocationServices/GetRentalFurnitureCoordinationById?id=' + this.data.data.service[0].id).subscribe(r => {
       if (r.success) {
         this.rentalData = r.result;
-        console.log(this.rentalData);
+        console.log("GetRentalFurnitureCoordinationById ===========",this.rentalData);
         if (this.rentalData.stayExtensionRentalFurnitureCoordinations.length > 0) {
           this.rentalData.extensionToggle = true;
           this.showPanelSchooling = true;
@@ -85,6 +86,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
           this.showPanelSchooling = false;
           this.rentalData.extensionToggle = false;
         }
+
         if (this.rentalData.commentRentalFurnitureCoordinations.length == 0) {
           this.addReply();
         }
@@ -92,12 +94,13 @@ export class DialogRentalFurnitureComponent implements OnInit {
         this._services.service_general_get('User').subscribe(r => {
           this.allUser = r.result;
         })
-        this.get_payment();
+       // this.get_payment();
         this.getServiceScope();
-
+        
 
       }
       this.get_SupplierType();
+      this._supplier();
       this.show = true;
       this.__loader__.hideLoader();
 
@@ -110,7 +113,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
   getServiceScope() {
     this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.rentalData.workOrderServicesId}&client=${this.data.data.partnerId }`).subscribe(resp => {
       if (resp.success) {
-        console.log('Data ScopeService: ', resp);
+        //console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
       }
     });
@@ -121,27 +124,65 @@ export class DialogRentalFurnitureComponent implements OnInit {
     window.open( server_url );
   }
 
+   //Responsable//
+   getResponsable(id) {
+    for (let i = 0; i < this.ca_responsible.length; i++) {
+      if (this.ca_responsible[i].id == id) {
+        return this.ca_responsible[i].responsable;
+      }
+    }
+  }
+
+  ca_currency = [];
+  //CURRENCY//
+  getCurrency(id) {
+    this.ca_currency = this.caCurrency;
+    for (let i = 0; i < this.ca_currency.length; i++) {
+      if (this.ca_currency[i].id == id) {
+        return this.ca_currency[i].currency;
+      }
+    }
+  }
+
   get_SupplierType(){
-    debugger;
-      this._services.service_general_get('SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=' + this.rentalData.workOrderServicesId+'&supplierType='+12+'&serviceLine=2').subscribe(r => {
-      if (r.success) {
+    //debugger;
+      //this._services.service_general_get('SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=' + this.rentalData.workOrderServicesId+'&supplierType='+12+'&serviceLine=2').subscribe(r => {
+      this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService="+ this.rentalData.workOrderServicesId).subscribe(r => {
+       //debugger;
+        if (r.success) {
         this.supplier_get = r.result.value;
-        console.log(this.supplier_get);
+        //console.log("this.supplier_get ===================",this.supplier_get);
         this.getInfo();
         this.getMain();
       }
     })
   }
 
+  // get_supplierPartner(){
+  //   //   //console.log(" datos a enviar supplier ============", this.housing_model.workOrderServicesId, this.data)
+  //      this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService="+ this.housing_model.workOrderServicesId).subscribe((data => {
+  //     // this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
+  //        if (data.success) {
+  //          //console.log('DATA CONSULTA SUPPLIER PARTNER: ',data.result.value);
+  //          this.services_catalogue = data.result.value;
+  //         }
+  //      }), (err)=>{
+  //        //console.log("no se realizo la consulta por falta de parametro");
+  //      });
+  //    }
+  ca_payment= [];
+  ca_responsible = [];
   public ca_privacy = [];
   async catalogos() {
     //this.cestatus = await this._services.getCatalogueFrom('GetStatus');
     this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=18").subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.cestatus = data.result;
       }
     }));
+    this.ca_payment = await this._services.getCatalogueFrom('GetPaymentMethod');
+    this.ca_responsible = await this._services.getCatalogueFrom('GetResponsablePayment');
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.caCurrency = await this._services.getCatalogueFrom('GetCurrency');
     this.caPaymentType = await this._services.getCatalogueFrom('GetPaymentType');
@@ -151,13 +192,13 @@ export class DialogRentalFurnitureComponent implements OnInit {
     this.nacionality = await this._services.getCatalogueFrom('GetCountry');
     //this.ca_document = await this._services.getCatalogueFrom('GetDocumentType');
     this._services.service_general_get("Catalogue/GetDocumentType/1").subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.ca_document = data.result;
       }
     }))
     this._services.service_general_get("ServiceRecord/GetApplicant/" + this.data.sr).subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.caRelationship = data.applicant.value;
       }
@@ -165,90 +206,43 @@ export class DialogRentalFurnitureComponent implements OnInit {
     }))
   }
 
-  get_payment() {
-    console.log('Extracion de datos');
-    this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.rentalData.workOrderServicesId).subscribe((data => {
-      if (data.success) {
-        console.log('datos de tabla request', data);
-        this.calculo = data.result.value;
-        this.calculo.total = this.calculo.ammountSubTotal + this.calculo.managementFeeSubTotal + this.calculo.wireFeeSubTotal + this.calculo.advanceFeeSubTotal;
-        this.payments = data.result.value.payments;
-        // console.log('datos de la tabla' + data.result.value.payments);
-      }
-      console.log('2° datos de la tabla' + this.payments);
-    }))
-  }
-  addPayment(data) {
-    console.log('workOrderServicesId', this.rentalData.workOrderServicesId);
-    if(data == null){
-      data = {
-        serviceRecord: this.data.data.serviceRecordId,
-        sr: this.data.data.serviceRecordId,
-        workOrderServices: this.rentalData.workOrderServicesId,
-        workOrder: this.data.data.workOrderId,
-        service: this.data.data.id_server,
-        id: 0,
-        type: 2,
-        supplierType: 3
-      }
-    }else{
-      data.type = 2;
-      data.supplierType = 3;
-      data.id = data.requestPaymentId;
-      data.serviceRecord = this.data.data.serviceRecordId;
-      data.sr = this.data.data.serviceRecordId;
-      data.service = this.data.data.id_server;
-    }
-    console.log("Data al abrir modal de payment concept: ", data);
-    const dialogRef = this._dialog.open(DialogRequestPaymentNewComponent, {
-      data: data,
-      width: "95%"
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.get_payment();;
-    });
-  }
-  //**EDIT PAYMENT**//
-  editPayment(data) {
-    data.type = 2;
-    data.supplierType = 3;
-    data.id = data.requestPaymentId;
-    data.serviceRecord = this.data.data.serviceRecordId;
-    data.sr = this.data.data.serviceRecordId;
-    data.service = this.data.data.id_server;
-    const dialogRef = this._dialog.open(DialogRequestPaymentNewComponent, {
-      data: data,
+  addPaymentType() {
+    console.log("entra a abrir modal payment type");
+    this.data.operacion = 'insertar';
+    this.data.id = 0;
+    this.data.idRentalFurniture = this.rentalData.id;
+    const dialog = this._dialog.open(DialogPaymentRentalComponent, {
+      data: this.data,
       width: "95%"
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.get_payment();
+    dialog.beforeClosed().subscribe(result => {
+      
+      console.log("elemento guardado de payment: ", result);
+      setTimeout(() => {
+        this.ngOnInit();
+      }, 1000);
+      
     });
   }
-  // delete payment
-  deletePaymentConcept(data) {
-    const dialogRef = this._dialog.open(DialogDeletepaymentconceptComponent, {
-      width: "20%"
+
+  //EDICION//
+
+  paymentSchooling = [];
+  editPaymentType(element, i) {
+    console.log("entra a abrir modal payment type");
+    this.data.operacion = 'edicion';
+    this.data.i = i;
+    this.data.pago = element;
+    const dialog = this._dialog.open(DialogPaymentRentalComponent, {
+      data: this.data,
+      width: "95%"
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-
-      if (result.success) {
-          this._services.service_general_delete("RequestPayment/DeletePaymentConcept/"+data.id+"/"+result.type).subscribe((data => {
-            if (data.success) {
-              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: data.message
-                },
-                width: "350px"
-              });
-              this.get_payment();;
-            }
-          }))
-      }
-    })
+    dialog.beforeClosed().subscribe(result => {
+      console.log("elemento guardado de payment: ", result);
+      this.ngOnInit();
+    });
   }
 
 
@@ -256,44 +250,16 @@ export class DialogRentalFurnitureComponent implements OnInit {
     this.rentalData.extensionToggle = $event.checked;
     if (this.rentalData.extensionToggle) {
       this.showPanelSchooling = true;
-      console.log(this.showPanelSchooling);
+      //console.log(this.showPanelSchooling);
       if(this.rentalData.stayExtensionRentalFurnitureCoordinations.length == 0){
         this.addExtencion();
       }
     } else {
       this.showPanelSchooling = false;
-      console.log(this.showPanelSchooling);
+      //console.log(this.showPanelSchooling);
     }
   }
 
-  addpayment() {
-    const dialogRef = this._dialog.open(DialogAddpaymentComponent, {
-      data: {
-        id: 0
-      },
-      width: "95%"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      result.rentalFurnitureCoordinationId = this.rentalData.id;
-      this.rentalData.paymentsRentalFurnitureCoordinations.push(result);
-      console.log("cierre del dialog addPaymentType: ", this.rentalData.paymentsRentalFurnitureCoordinations);
-
-    });
-  }
-
-  editPaymentType(data, pos) {
-    const dialogRef = this._dialog.open(DialogAddpaymentComponent, {
-      data: data,
-      width: "95%"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.rentalData.paymentsRentalFurnitureCoordinations[pos] = result;
-      console.log("cierre del dialog EDIT PaymentType: ", this.rentalData.paymentsRentalFurnitureCoordinations);
-    });
-  }
 
   addExtencion() {
     this.rentalData.stayExtensionRentalFurnitureCoordinations.push({
@@ -351,7 +317,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (id == 0) {
           this.rentalData.reminderRentalFurnitureCoordinations.splice(i, 1);
@@ -383,7 +349,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result.success) {
         result.rentalFurnitureCoordinationId = this.rentalData.id;
         this.temporalDocument.push(result);
@@ -401,7 +367,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         this._services.service_general_delete("RelocationServices/DeleteDocumentRFC?id=" + id).subscribe((data => {
           if (data.success) {
@@ -429,7 +395,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         this.temporalDocument.splice(position, 1);
       }
@@ -457,28 +423,46 @@ export class DialogRentalFurnitureComponent implements OnInit {
     for (let i = 0; i < this.supplier_get.length; i++) {
       if(this.supplier_get[i].id == this.rentalData.supplierPartner){
         this.info = this.supplier_get[i];
-        console.log(this.info);
+        //console.log(this.info);
       }
     }
   }
+
+  Supplier:any[] = [];
+
+  _supplier(){
+    if(this.rentalData.supplierPartner != null && this.rentalData.supplierPartner != 0)
+    {
+   //console.log("Entre a _supplier ==========",this.rentalData.supplierPartner, +this.rentalData.workOrderServicesId)
+     this._services.service_general_get("SupplierPartnerProfile/GetAdmintContactsServiceProv?supplierPartner="+ this.rentalData.supplierPartner+"&workOrderService="+this.rentalData.workOrderServicesId).subscribe((data => {
+       // this._services.service_general_get("SupplierPartnerProfile/GetConsultantContactsService?supplierPartner="+this.data.supplierPartner+"&supplierType="+this.data.supplierType).subscribe((data => {
+          if (data.success) {
+            //console.log('DATA CONSULTA SUPPLIER: ',data.result.value);
+            this.Supplier = data.result.value;
+           }
+        }),(err)=>{
+          //console.log("No se realizo la consulta por falta de parametros");
+        });
+    }
+ }
 
   getInfoMain(){
     for (let i = 0; i < this.main.length; i++) {
       if(this.main[i].id == this.rentalData.mainContact){
         this.infomain = this.main[i];
-        console.log(this.infomain);
+        //console.log(this.infomain);
       }
     }
   }
 
   getMain(){
-    debugger;
-    this._services.service_general_get("SupplierPartnerProfile/GetAdministrativeContactsServiceBySupplierPartner?workOrderService=" + this.rentalData.workOrderServicesId + "&supplierPartner=" + this.rentalData.supplierPartner).subscribe((data => {
-      if (data.success) {
-        this.main = data.result.value;
-        this.getInfoMain();
-      }
-    }))
+    //debugger;
+    // this._services.service_general_get("SupplierPartnerProfile/GetAdministrativeContactsServiceBySupplierPartner?workOrderService=" + this.rentalData.workOrderServicesId + "&supplierPartner=" + this.rentalData.supplierPartner).subscribe((data => {
+    //   if (data.success) {
+    //     this.main = data.result.value;
+    //     this.getInfoMain();
+    //   }
+    // }))
   }
 
   public showDocumentDialogDetails( document:any, service_line:number = undefined ):void {
@@ -494,7 +478,8 @@ export class DialogRentalFurnitureComponent implements OnInit {
   }
 
   save() {
-    console.log("SAVE INFORMATION: ", this.rentalData);
+    //console.log("SAVE INFORMATION: ", this.rentalData);
+    this.__loader__.showLoader();
     this.rentalData.documentRentalFurnitureCoordinations = this.temporalDocument;
     this.rentalData.updateBy = this.user.id;
     this.rentalData.updatedDate = new Date();
@@ -514,12 +499,12 @@ export class DialogRentalFurnitureComponent implements OnInit {
       ? this.rentalData.serviceCompletionDate != null? this.rentalData.serviceCompletionDate :  new Date() 
       : "" ;
 
-    console.log(this.rentalData);
+    //console.log(this.rentalData);
     this.temporalDocument = [];
     this.__loader__.showLoader();
     this._services.service_general_put("RelocationServices/PutRentalFurnitureCoordinaton", this.rentalData).subscribe((data => {
       if (data.success) {
-        console.log(data);
+        //console.log(data);
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
@@ -532,6 +517,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
         this.ngOnInit();
       }
     }))
+    this.__loader__.hideLoader();
   }
 
    //PRIVACY//

@@ -38,7 +38,7 @@
   </mat-grid-list>
   <mat-grid-list cols="4" rowHeight="300px">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <kendo-editor  [value]="tempScopeDescription" [(ngModel)]="tempScopeDescription" style="height: 280px; width: 100%;"></kendo-editor>
+      <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="tempScopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </mat-grid-tile>
   </mat-grid-list>
 

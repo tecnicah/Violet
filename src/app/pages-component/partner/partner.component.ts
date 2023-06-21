@@ -9,6 +9,7 @@ import { PdfMakeWrapper, Table } from 'pdfmake-wrapper';
 import pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 import { FormGroup, FormControl } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { LoaderComponent } from 'app/shared/loader';
 
 @Component({
   selector: 'app-partner',
@@ -40,7 +41,7 @@ export class PartnerComponent implements OnInit {
   maxall: number = 20;
 
 
-  displayedColumns: string[] = ['Company Type', 'Client Type', 'City', 'Date of Contract', 'Status', 'Contact Name', 'Actions'];
+  displayedColumns: string[] = ['Company Type', 'Client Type', 'Assignment', 'Status', 'City', 'Contact Name'];
 
   datasource: any;
   @ViewChild(MatSort) sort: MatSort;
@@ -56,6 +57,7 @@ export class PartnerComponent implements OnInit {
 	public permission_write : boolean = false;
 	public permission_delete : boolean = false;
 	public permission_edit : boolean = false;
+  public __loader__: LoaderComponent = new LoaderComponent();
 	consultaPermisos(){
 		console.log("CONSULTA PARA PERMISOS DE USUARIO");
 		let url = localStorage.getItem('url_permisos');
@@ -71,6 +73,7 @@ export class PartnerComponent implements OnInit {
   }
   //*********************************************//
   ngOnInit(): void {
+    this.__loader__.showLoader();
     this.consultaPermisos();
     this._services.service_general_get_noapi('GetClientPartnerProfile?lead_or_client=4').subscribe(r=>{
       if(r.success){
@@ -81,6 +84,8 @@ export class PartnerComponent implements OnInit {
       }
     })
     this.catalogos();
+    this.__loader__.hideLoader();
+
   }
   getPageSizeOptions() {
     if (this.datasource?.paginator.length > this.maxall) {

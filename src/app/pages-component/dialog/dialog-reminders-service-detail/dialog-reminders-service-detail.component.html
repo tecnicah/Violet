@@ -1,0 +1,71 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h2 mat-dialog-title class="modal-form__title">Service Reminders</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<!-- ///////////////////////////////  Service Documents //////////////////////////////////-->
+<mat-dialog-content>
+    <mat-grid-list cols="1" *ngIf="_reminders != null">
+        <div class="page__section margin-top-min">
+            <mat-card *ngFor="let data of _reminders.reminderServiceDetails; let i = index;" style="width: 100%;">
+
+                <div align="end">
+                    <img src="./assets/icons/pencil.png" class="delete" (click)="editReminder(data)" style=" z-index: 1000; ;width: 20px; cursor: pointer; margin-right: 30px ; ">
+                    <img src="./assets/trashir.png" class="delete" (click)="removeReminder(data)" style=" z-index: 1000; ;width: 23px; cursor: pointer;">
+                </div>
+    
+                <mat-grid-list cols="4" rowHeight="90px" >
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central wid">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Reminder Date</mat-label>
+                                <input disabled matInput min="{{today_|date:'yyyy-MM-dd'}}" required [matDatepicker]="pickerocho"
+                                    placeholder="Reminder Date" [(ngModel)]="data.reminderDate">
+                                <span class="label-error" *ngIf="data.reminderDate == '' || data.reminderDate == null">
+                                    Field is required
+                                </span>
+                                <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerocho></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+    
+                    <mat-grid-tile [colspan]="2" [rowspan]="1">
+                        <!-- <div class="input_central wid">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Reminder Comments</mat-label>
+                                <input matInput required placeholder="Reminder Comments" [(ngModel)]="data.reminderComments"
+                                    #message_reminder maxlength="200" disabled>
+                                <mat-hint align="end">{{message_reminder.value.length}} / 200</mat-hint>
+                                <span class="label-error"
+                                    *ngIf="data.reminderComments == '' || data.reminderComments == null">
+                                    Field is required
+                                </span>
+                            </mat-form-field>
+                        </div> -->
+                        <div class="textarea">
+                            <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                                <textarea matInput #message disabled maxlength="500" >
+                                    {{data.reminderComments}}
+                                </textarea>
+                                <!-- <mat-hint align="end">{{data.reminderComments.length}} / 200</mat-hint> -->
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card>
+        </div>
+    </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+        <button (click)="addReminder()">Add Reminder</button>
+       
+    </div>
+
+</mat-dialog-actions>

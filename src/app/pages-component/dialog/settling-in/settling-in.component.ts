@@ -12,6 +12,13 @@ import { DialogPaymentConceptComponent } from '../dialog-payment-concept/dialog-
 import { DialogDocumentsView } from '../dialog-documents-view/dialog-documents-view.component';
 import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/dialog-request-payment-new.component';
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
+import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
+import { Router } from '@angular/router';
+
+interface Datos {
+  workOrderServicesId: number;
+  partner_id: number;
+}
 
 @Component({
   selector: 'app-settling-in',
@@ -20,16 +27,25 @@ import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocati
 })
 export class SettlingInComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<any>,
+  datos:Datos = {
+    workOrderServicesId: 0,
+    partner_id: 0
+  };
+  
+  isVisible : boolean =false;
+
+  constructor(public router: Router, public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _services: ServiceGeneralService,
     public _dialog: MatDialog) { }
+
 
   calculo: any = {};
   vista: boolean = false;
   settlingin: any = {};
   user: any = {};
   cestatus: any[] = [];
+  ca_transportType: any[] = [];
   temporalDocument: any[] = [];
   table_payments: any[] = [];
   ca_requestType: any[] = [];
@@ -47,42 +63,398 @@ export class SettlingInComponent implements OnInit {
   displayedColumns: string[] = ['Requested By', 'Authorized By', 'Autho Date', 'Autho Acceptance Date', 'Time'];
   dataSourcePayment: any[] = [];
   displayedColumnsPayment: string[] = ['Payment', 'Amount', 'ManagementFee', 'WireFee', "AdvanceFee", 'Service', 'Recurrence', 'action'];
-  serviceScope: any[] = [];
+  serviceScope = null;
   public today = new Date();
-
-
+  num_drivers = 1;
+  family = [];
+  ddlhome = [{ id: 1, text: "Yes" }, { id: 2, text: "No" }]
+  isChecked = true;
   public __loader__: LoaderComponent = new LoaderComponent();
 
   ngOnInit(): void {
+    this.settlingin.bankAccount = true;
+    this.settlingin.driversNumber = 0;
+    this.settlingin.homeCountryDl = 1;
+
+    console.log("settlingin.driversNumber", this.settlingin.driversNumber)
+
     this.user = JSON.parse(localStorage.getItem('userData'));
-    console.log('datat user', this.user)
+    //console.log('datat user', this.user)
     this.catalogos();
 
   }
+
+  //////////////////////manage estatus 
+
+  disabled_by_permissions: boolean = false;
+  hide_by_permissions: boolean = false;
+  hide_complete: boolean = false;
+  show_completed: boolean = false;
+  show_progress: boolean = false;
+  wo_: boolean = false;
+  sr_: boolean = false;
+
+  setup_permissions_settings() {
+    //debugger;
+    if (!this.data.data.numberWorkOrder) {
+      this.wo_ = this.data.workOrderId;
+    }
+    else {
+      this.wo_ = this.data.data.numberWorkOrder
+    }
+
+    if (!this.data.data.number_server) {
+      this.sr_ = this.data.data.serviceNumber
+    }
+    else {
+      this.sr_ = this.data.data.number_server
+    }
+
+    if (this.user.role.id == 3) {
+      this.disabled_by_permissions = true
+    }
+    else {
+      this.hide_by_permissions = true;
+    }
+    if (this.settlingin.statusId != 39 && this.settlingin.statusId != 2) { //active , in progress
+      this.hide_complete = true;
+    }
+    else {
+      if (this.settlingin.statusId == 39) {
+        this.show_progress = true;
+      }
+      else {
+        this.show_completed = true;
+      }
+    }
+  }
+
+  change_button() {
+    //debugger;
+    if (this.show_completed) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure the service is complete?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // ////console.log(result);
+        if (result) {
+          this.settlingin.statusId = 37; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+
+    if (this.show_progress) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Do you want start the service?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // ////console.log(result);
+        if (result) {
+          this.settlingin.statusId = 2; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+  }
+
+  selectCheck(type) {
+    if (type == 1) {
+      this.settlingin.carLease = false;
+    }
+    else {
+      this.settlingin.carPurchase = false;
+    }
+  };
+  //////////////////////manage estatus
+  _texto_status = "";
+
+  get_text_status() {
+    for (var v = 0; v < this.cestatus.length; v++) {
+      if (this.cestatus[v].id == this.settlingin.statusId) {
+        this._texto_status = this.cestatus[v].status;
+      }
+    }
+  }
+
+  change_status_detail() {
+    const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
+      data: {
+        header: "Confirmation",
+        body: "What is the status of the service?",
+        rol: this.user.role.id,
+        category: 15,
+        type: "school_search",
+        data: this.cestatus
+      },
+      width: "350px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //
+      // //console.log(result);
+      if (result.success) {
+        this.settlingin.statusId = result.id; //penidng to completion 
+        this.get_text_status();
+      }
+      else {
+        //nada 
+      }
+    });
+
+  }
+
+  validService(event, type) {
+    console.log(this.settlingin.bankCompleted);
+    switch (type) {
+      case 'bank':
+        if (!event.checked) {
+          if (this.settlingin.bankCompleted != null || this.settlingin.bankCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Bank Account",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.bankAccount = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'car':
+        if (!event.checked) {
+          if (this.settlingin.carCompleted != null || this.settlingin.carCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Car Assistance",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.carPurchaseLease = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'child':
+        if (!event.checked) {
+          if (this.settlingin.childCareCompleted != null || this.settlingin.childCareCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Child Care",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.childCare = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'clean':
+        if (!event.checked) {
+          if (this.settlingin.cleaningServicesCompleted != null || this.settlingin.cleaningServicesCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Cleaning Services",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.cleaningServices = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'driver':
+        if (!event.checked) {
+          if (this.settlingin.driverLicenseCompleted != null || this.settlingin.driverLicenseCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Drivers License",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.driverLicense = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'health':
+        if (!event.checked) {
+          if (this.settlingin.healthCareCompleted != null || this.settlingin.healthCareCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Health Care",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.healthCare = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'leisure':
+        if (!event.checked) {
+          if (this.settlingin.leisureClubMembershipCompleted != null || this.settlingin.leisureClubMembershipCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Leisure & Club Memberships",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.leisureClubMembership = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'local':
+        if (!event.checked) {
+          if (this.settlingin.localRegistrationCompleted != null || this.settlingin.localRegistrationCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Local Registration",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.localRegistration = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'recreational':
+        if (!event.checked) {
+          if (this.settlingin.recreationalClubCompleted != null || this.settlingin.recreationalClubCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Recreational Clubs",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.recreationalClub = true;
+              }
+            });
+          }
+        }
+        break;
+      case 'spousal':
+        if (!event.checked) {
+          if (this.settlingin.spousalAssistanceCompleted != null || this.settlingin.spousalAssistanceCompleted != '') {
+            const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+              data: {
+                header: "Spousal Assistance",
+                body: "The subservice has already been completed, be sure to remove it?"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (!result) {
+                this.settlingin.spousalAssistance = true;
+              }
+            });
+          }
+        }
+        break;
+      default:
+      // code block
+    }
+  }
   // get service scope
   getServiceScope() {
-    this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.settlingin.workOrderServicesId}&client=${this.data.data.partnerId }`).subscribe(resp => {
+    this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.settlingin.workOrderServicesId}&client=${this.data.data.partnerId}`).subscribe(resp => {
       if (resp.success) {
-        console.log('Data ScopeService: ', resp);
+        //console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
+        this.datos.workOrderServicesId = this.settlingin.workOrderServicesId;
+        this.datos.partner_id =  this.data.data.partnerId;
+        this.isVisible =true;
       }
     });
   }
-  public __serverPath__:string = this._services.url_images;
+  public __serverPath__: string = this._services.url_images;
 
-  public openFileOnWindow( url_in:string ):void {
-    const server_url:string = this.__serverPath__ + url_in;
-    window.open( server_url );
+  public openFileOnWindow(url_in: string): void {
+    const server_url: string = this.__serverPath__ + url_in;
+    window.open(server_url);
   }
   ca_privacy = [];
   async catalogos() {
     this.__loader__.showLoader();
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
-    //this.cestatus = await this._services.getCatalogueFrom('GetStatus');
+    this.ca_transportType = await this._services.getCatalogueFrom('GetTransportType');
     this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=14").subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.cestatus = data.result;
+      }
+    }))
+
+    this._services.service_general_get('Catalogue/GetDependents?sr=' + Number(this.data.sr)).subscribe((data_ => {
+      if (data_.success) {
+        this.family = data_.result;
+        //console.log("family============================", this.family)
       }
     }))
 
@@ -91,17 +463,21 @@ export class SettlingInComponent implements OnInit {
       this.allUser = r.result;
     })
 
+
+
     this._services.service_general_get('RelocationServices/GetSettlingInById?id=' + this.data.data.service[0].id).subscribe((data => {
       if (data.success) {
         this.settlingin = data.result;
+        console.log("this.settlingin ======================", this.settlingin)
+        this.setup_permissions_settings();
         this.get_supplierPartner();
         this.get_supplierPartnerClean();
-
+        this.get_text_status();
         this.vista = true;
         if (this.settlingin.commentSettlingIns.length == 0) {
           this.addReply();
         }
-        console.log('data settling', this.settlingin);
+        //console.log('data settling', this.settlingin);
         this.__loader__.hideLoader();
         this.get_payment();
         this.getServiceScope();
@@ -132,32 +508,84 @@ export class SettlingInComponent implements OnInit {
     this._services.service_general_get('Catalogue/GetDocumentType/1').subscribe((data => {
       if (data.success) {
         this.caDocumentType = data.result;
-        console.log(this.caDocumentType);
+        //console.log(this.caDocumentType);
       }
     }))
     this.caCountry = await this._services.getCatalogueFrom('GetCountry');
 
   }
 
+  get_relastonship_name(id): string {
+    // debugger;
+    let rel = ""
+    if (id == 7) {
+      rel = "Assignee";
+    } else if (id == 1) {
+      rel = "Spouse";
+    } else if (id == 2) {
+      rel = "Child";
+    } else if (id == 3) {
+      rel = "Father";
+    } else if (id == 13) {
+      rel = "Mother";
+    } else {
+      rel = "Other";
+    }
+
+    return rel;
+  }
+
+  sendTest(){
+    console.log(this.settlingin.homeCountryDl);
+  }
   //**CONSULTA SUPPLIER PARTNER**//
 
   // select child care
   get_supplierPartner() {
-    this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=" + this.settlingin.workOrderServicesId + "&supplierType=22&serviceLine=2").subscribe((data => {
-      console.log(data);
+    this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=" + this.settlingin.workOrderServicesId + "&supplierType=15&serviceLine=2").subscribe((data => {
+      console.log("CLEAN GetServiceProviderByServiceId:", data);
       if (data.success) {
         this.CleaningCompanySupplier = data.result.value;
       }
     }))
   }
+
+
   // select cleaning services
   get_supplierPartnerClean() {
-    this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=" + this.settlingin.workOrderServicesId + "&supplierType=15&serviceLine=2").subscribe((data => {
-      console.log('supplier partner',data);
+    debugger;
+    this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=" + this.settlingin.workOrderServicesId + "&supplierType=22&serviceLine=2").subscribe((data => {
+      console.log("CHILD CARE GetServiceProviderByServiceId:", data);
+
       if (data.success) {
         this.ChildCareCompanySupplier = data.result.value;
       }
     }))
+  }
+
+  setShildrenSupplier(id) {
+    debugger;
+    this.ChildCareCompanySupplier.forEach(element => {
+      if (element.id == id) {
+        this.settlingin.childCareSupplier = element.contactName == null || element.contactName == '' ? 'No contact name' : element.contactName;
+      }
+    });
+  }
+
+  setCleanSupplier(id) {
+    debugger;
+    this.CleaningCompanySupplier.forEach(element => {
+      if (element.id == id) {
+        this.settlingin.cleaningServicesSupplier = element.contactName == null || element.contactName == '' ? 'No contact name' : element.contactName;
+      }
+    });
+  }
+
+  viewProfile(id) {
+    this.router.navigate(['/supplierServices/' + id])
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   ///Documents catalogos
@@ -178,6 +606,7 @@ export class SettlingInComponent implements OnInit {
     }
   }
 
+
   getChildPArtner(supplierTypeId) {
     this._services.service_general_get('Catalogue/GetSupplierBySupplierType?key=' + supplierTypeId).subscribe(r => {
       if (r.success) {
@@ -197,18 +626,18 @@ export class SettlingInComponent implements OnInit {
   get_payment() {
     this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.settlingin.workOrderServicesId).subscribe((data => {
       if (data.success) {
-        console.log(data.result);
+        //console.log(data.result);
         this.calculo = data.result.value;
         this.calculo.total = this.calculo.ammountSubTotal + this.calculo.managementFeeSubTotal + this.calculo.wireFeeSubTotal + this.calculo.advanceFeeSubTotal;
         this.table_payments = data.result.value.payments;
-        console.log(this.table_payments);
+        //console.log(this.table_payments);
       }
-      console.log(this.table_payments);
+      //console.log(this.table_payments);
     }))
   }
   //**METHODS COMMENTS (NEW)**//
   addReply() {
-    console.log(this.user);
+    //console.log(this.user);
     this.settlingin.commentSettlingIns.push({
       "id": 0,
       "settlingInId": this.settlingin.id,
@@ -274,7 +703,7 @@ export class SettlingInComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
 
       if (result.success) {
         this._services.service_general_delete("RequestPayment/DeletePaymentConcept/" + data.id + "/" + result.type).subscribe((data => {
@@ -307,8 +736,8 @@ export class SettlingInComponent implements OnInit {
         fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          console.log(droppedFile.relativePath);
-          console.log(file, this.files);
+          //console.log(droppedFile.relativePath);
+          //console.log(file, this.files);
 
           fileEntry.file(file => {
             reader.readAsDataURL(file);
@@ -358,17 +787,17 @@ export class SettlingInComponent implements OnInit {
       } else {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
+        //console.log(droppedFile.relativePath, fileEntry);
       }
     }
   }
 
   public fileOver(event) {
-    console.log(event);
+    //console.log(event);
   }
 
   public fileLeave(event) {
-    console.log(event);
+    //console.log(event);
   }
 
   //reminders
@@ -379,9 +808,9 @@ export class SettlingInComponent implements OnInit {
     }
     this.settlingin.reminderSettlingIns.push({
       "id": 0,
-      "settlingInId": this.settlingin.id,
-      "reminderDate": "",
-      "reminderComments": "",
+      "predecisionOrientationId": this.settlingin.id,
+      "reminderDate": new Date(),
+      "reminderComments": " ",
       "createdBy": this.user.id,
       "createdDate": new Date()
     })
@@ -397,7 +826,7 @@ export class SettlingInComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (item.id == 0) {
           this.settlingin.reminderSettlingIns.splice(i, 1);
@@ -431,7 +860,7 @@ export class SettlingInComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         this._services.service_general_delete("RelocationServices/DeleteDocumentSI?id=" + id).subscribe((data => {
           if (data.success) {
@@ -461,7 +890,7 @@ export class SettlingInComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         this.temporalDocument.splice(i, 1);
       }
@@ -477,7 +906,7 @@ export class SettlingInComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result.success) {
         result.settlingInId = this.settlingin.id;
         this.temporalDocument.push(result);
@@ -485,49 +914,73 @@ export class SettlingInComponent implements OnInit {
     });
   }
 
+  valiate_form(): boolean {
+    let response: boolean = true;
+
+    return
+  }
 
   save() {
-    this.settlingin.updateBy = this.user.id;
-    this.settlingin.updatedDate = new Date();
-    this.settlingin.documentSettlingIns = this.temporalDocument;
-    this.__loader__.showLoader();
 
-    let data_comment_aux = this.settlingin.commentSettlingIns;
-    this.settlingin.commentSettlingIns = [];
+    if (this.valiate_form) {
 
-    for (let i = 0; i < data_comment_aux.length; i++) {
-      if (data_comment_aux[i].reply != null && data_comment_aux[i].reply != undefined && data_comment_aux[i].reply.trim() != '') {
-        this.settlingin.commentSettlingIns.push(data_comment_aux[i]);
+      this.settlingin.updateBy = this.user.id;
+      this.settlingin.updatedDate = new Date();
+      this.settlingin.documentSettlingIns = this.temporalDocument;
+      this.__loader__.showLoader();
+
+      let data_comment_aux = this.settlingin.commentSettlingIns;
+      this.settlingin.commentSettlingIns = [];
+
+      for (let i = 0; i < data_comment_aux.length; i++) {
+        if (data_comment_aux[i].reply != null && data_comment_aux[i].reply != undefined && data_comment_aux[i].reply.trim() != '') {
+          this.settlingin.commentSettlingIns.push(data_comment_aux[i]);
+        }
       }
-    }
-    // si el estatus cambia a complete la fecha se guarda
-    if (this.settlingin.statusId == 4 || this.settlingin.statusId == 5) {
-      this.settlingin.serviceCompletionDate = new Date().toISOString();
-    }
-    else {
-      this.settlingin.serviceCompletionDate = '';
-    }
+      // si el estatus cambia a complete la fecha se guarda
+      if (this.settlingin.statusId == 4 || this.settlingin.statusId == 5) {
+        this.settlingin.serviceCompletionDate = new Date().toISOString();
+      }
+      else {
+        this.settlingin.serviceCompletionDate = '';
+      }
 
-    console.log(this.settlingin);
-    this.temporalDocument = [];
-    this._services.service_general_put("RelocationServices/PutSettlingIn", this.settlingin).subscribe((data => {
-      if (data.success) {
-        console.log(data);
-        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-          data: {
-            header: "Success",
-            body: "Update Data"
-          },
-          width: "350px"
-        });
-        this.dialogRef.close();
-        this.ngOnInit();
+      //console.log(this.settlingin);
+      this.temporalDocument = [];
+      this._services.service_general_put("RelocationServices/PutSettlingIn", this.settlingin).subscribe((data => {
+        if (data.success) {
+          //console.log(data);
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Success",
+              body: "Update Data"
+            },
+            width: "350px"
+          });
+          this.dialogRef.close();
+          this.ngOnInit();
+          this.__loader__.hideLoader();
+        }
+      }), (err) => {
+        //console.log("error: ", err);
         this.__loader__.hideLoader();
-      }
-    }), (err) => {
-      console.log("error: ", err);
+      })
+
+    } else {
+      console.error('Error de validacion en el formulario');
       this.__loader__.hideLoader();
-    })
+
+      const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Information Required",
+          body: "Information invalid or incomplet."
+        },
+        width: "350px"
+      });
+      this.dialogRef.close();
+    }
+
+
   }
 
   public showDocumentDialogDetails(document: any, service_line: number = undefined): void {
@@ -536,7 +989,7 @@ export class SettlingInComponent implements OnInit {
       data: {
         sr_id: this.data.sr,
         document: document,
-        sl: 1 ,
+        sl: 1,
         name_section: "only_one_service"
       }
     });

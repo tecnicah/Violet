@@ -11,6 +11,20 @@ import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-cli
 })
 export class DialogApplyAllScopeComponent implements OnInit {
 
+  public modulesQuill = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ font: [] }],
+      [{ color: [] }, { background: [] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ align: [] }],
+      ['blockquote', 'code-block'],
+      [{ list: 'ordered'}, { list: 'bullet' }]
+    ]
+  };
+  htmlContent: any;
+
   constructor(public dialogRef: MatDialogRef<DialogApplyAllScopeComponent>,
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -43,6 +57,12 @@ export class DialogApplyAllScopeComponent implements OnInit {
     this.getCountryApplyScope();
   }
 
+  onChangedEditor(event: any): void {
+    if (event.html) {
+        this.htmlContent = event.html;
+      }
+  }
+  
   //**************** P E R M I S O S *************************//
 	consultaPermisos(){
 		console.log("CONSULTA PARA PERMISOS DE USUARIO");

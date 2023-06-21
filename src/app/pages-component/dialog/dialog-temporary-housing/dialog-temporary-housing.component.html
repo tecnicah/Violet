@@ -9,11 +9,11 @@
 
 <mat-dialog-content class="mat-typography">
 
-  <mat-grid-list cols="4" rowHeight="80px">
+  <mat-grid-list cols="5" rowHeight="80px">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
         <div>
-          <span class="text-mini gray_05">Autho Date</span><br />
+          <span class="text-mini gray_05">Autho</span><br />
           {{ housing_model.authoDate | date:'dd/MMM/yyy' }}
         </div>
         <div style="text-align:end; width: auto !important;">
@@ -25,7 +25,7 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
         <div *ngIf="housing_model.authoAcceptanceDate != '0001-01-01T00:00:00'">
-          <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+          <span class="text-mini gray_05">Autho Acceptance</span><br />
           {{ housing_model.authoAcceptanceDate | date:'dd/MMM/yyy' }}
         </div>
         <div *ngIf="housing_model.authoAcceptanceDate == '0001-01-01T00:00:00'">
@@ -40,8 +40,20 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div style="height: 70%; ">
         <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
-        <mat-checkbox [disabled]="user_data.role.id == 3" class="example-margin textarea" [(ngModel)]="housing_model.coordination">
+        <mat-checkbox disabled class="example-margin textarea" [(ngModel)]="housing_model.coordination">
         </mat-checkbox>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="addPropperty" *ngIf="!hide_complete && !hide_by_permissions"> 
+        <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <button *ngIf="show_completed" class="button-icon button-icon--follow" (click)="change_button()">
+            Complete
+          </button>
+          <button *ngIf="show_progress" class="button-icon button-icon--flag" (click)="change_button()">
+            Start
+          </button>
+        </div>
       </div>
     </mat-grid-tile>
 
@@ -49,7 +61,7 @@
       <div class="input_final">
         <mat-form-field appearance="fill">
           <mat-label>Status</mat-label>
-          <mat-select [(ngModel)]="housing_model.statusId">
+          <mat-select [(ngModel)]="housing_model.statusId" [disabled]="disabled_by_permissions">
             <mat-option selected disabled value="">Status</mat-option>
             <mat-option *ngFor="let item of status_catalogue" [value]="item.id">{{item.status}}</mat-option>
           </mat-select>
@@ -58,56 +70,70 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-  <mat-grid-list cols="4" rowHeight="80px">
-    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+  <mat-grid-list cols="5" rowHeight="80px">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <div class="input_final">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
         <div>
-          <span class="text-mini gray_05">Completion Date</span><br />
-          {{ housing_model.serviceCompletionDate | date:'dd/MMM/yyy' }}
-        </div>
-        <!-- <mat-form-field appearance="fill">
+          <span class="text-mini gray_05">Work Order</span><br />
+          {{ wo_ }}
+        </div> 
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Service #</span><br />
+          {{ sr_ }}
+        </div> 
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-form-field appearance="fill">
           <mat-label>Completion Date</mat-label>
           <input disabled matInput [matDatepicker]="serv_date" [(ngModel)]="housing_model.serviceCompletionDate" />
           <mat-datepicker-toggle matSuffix [for]="serv_date"></mat-datepicker-toggle>
           <mat-datepicker #serv_date></mat-datepicker>
         </mat-form-field> -->
+
+      <div class="page__section-data font-size-12 comments input_final" style="display: flex;">
+        <div>
+          <span class="text-mini gray_05">Completion</span><br />
+          {{ housing_model.serviceCompletionDate | date:'dd MMM yyy' }}
+        </div>
+        <div style="text-align:end; width: auto !important;">
+          <mat-icon class="calendar">calendar_today</mat-icon>
+        </div>
       </div>
     </mat-grid-tile>
 
     <!-- Extension  -->
-    <div *ngIf="dataSource.length > 0">
+    <!-- <div *ngIf="dataSource.length > 0">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div>
           <p class="page__section-name">Extensions</p>
         </div>
       </mat-grid-tile>
-    </div>
+    </div>-->
   </mat-grid-list>
-  <!--OPEN TABLE EXTENSION-->
-  <div *ngIf="dataSource.length > 0">
+  <!--<div *ngIf="dataSource.length > 0">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 textarea">
-      <!-- Name Column -->
+  
       <ng-container matColumnDef="Authorized By">
         <th mat-header-cell *matHeaderCellDef> Authorized By </th>
         <td mat-cell *matCellDef="let element"> {{element.dos}} </td>
       </ng-container>
 
-      <!-- Weight Column -->
       <ng-container matColumnDef="Autho Date">
         <th mat-header-cell *matHeaderCellDef> Autho Date </th>
         <td mat-cell *matCellDef="let element"> {{element.tres}} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Autho Acceptance Date">
         <th mat-header-cell *matHeaderCellDef> Autho Acceptance Date </th>
         <td mat-cell *matCellDef="let element"> {{element.cuatro}} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Time">
         <th mat-header-cell *matHeaderCellDef> Time </th>
         <td mat-cell *matCellDef="let element"> {{element.cinco}} </td>
@@ -117,7 +143,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <br><br>
-  </div>
+  </div> -->
   <!--CLOSE TABLE EXTENSION-->
   <!-------------------------------------------------------------------------------------------------------->
 
@@ -131,30 +157,30 @@
   </mat-grid-list>
 
   <mat-grid-list cols="4" rowHeight="80px">
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section position-relative">
         <span class="fixed-label subtitle">Property Type</span>
-        <!-- <mat-radio-group aria-label="Gender" style="display: flex;" [(ngModel)]="housing_model.apartment">
-          <mat-radio-button value="true">
-            Apartament
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </mat-radio-button>
-          <mat-radio-button value="false">
-            House
-          </mat-radio-button>
-        </mat-radio-group> -->
-
         <div class="page__section-input">
-          <mat-checkbox [disabled]="user_data.role.id == 3" class="example-margin" [(ngModel)]="housing_model.apartment" style="display: flex;">
+          <mat-checkbox class="example-margin" [(ngModel)]="housing_model.apartment" style="display: flex;">
             <span class="text-mini">Apartment</span>
           </mat-checkbox>
         </div>
         <div class="page__section-input">
-          <mat-checkbox [disabled]="user_data.role.id == 3" class="example-margin" [(ngModel)]="housing_model.house">
+          <mat-checkbox class="example-margin" [(ngModel)]="housing_model.house">
             <span class="text-mini">House</span>
           </mat-checkbox>
         </div>
+      </div>
+    </mat-grid-tile> -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Property Type</mat-label>
+          <mat-select required [(ngModel)]="housing_model.idPropertyType">
+            <mat-option *ngFor="let item of caPropertyTypeHousing" [value]="item.id">{{item.propertyType}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </mat-grid-tile>
 
@@ -162,7 +188,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Bedrooms</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.bedrooms">
+          <mat-select matNativeControl [(ngModel)]="housing_model.bedrooms">
             <mat-option selected disabled value="">Bedrooms</mat-option>
             <mat-option value="1">1</mat-option>
             <mat-option value="2">2</mat-option>
@@ -177,7 +203,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Bathrooms</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.bathrooms">
+          <mat-select matNativeControl [(ngModel)]="housing_model.bathrooms">
             <mat-option selected disabled value="">Bathrooms</mat-option>
             <mat-option value="1">1</mat-option>
             <mat-option value="2">2</mat-option>
@@ -191,7 +217,7 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="wid" style="height: 80%;">
         <p class="subtitle" style="font-size: 10px; margin: 0;"> Pet Friendly</p>
-        <mat-checkbox [disabled]="user_data.role.id == 3" class="example-margin" [(ngModel)]="housing_model.petFrindly">
+        <mat-checkbox class="example-margin" [(ngModel)]="housing_model.petFrindly">
         </mat-checkbox>
       </div>
     </mat-grid-tile>
@@ -204,7 +230,8 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Start day</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput [min]="minDate" [matDatepicker]="start_day_date" [(ngModel)]="housing_model.totalAllotedDaysStart" />
+          <input matInput [min]="minDate" [matDatepicker]="start_day_date"
+            [(ngModel)]="housing_model.totalAllotedDaysStart" />
           <mat-datepicker-toggle matSuffix [for]="start_day_date"></mat-datepicker-toggle>
           <mat-datepicker #start_day_date></mat-datepicker>
         </mat-form-field>
@@ -214,7 +241,8 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>End day</mat-label>
-          <input matInput [disabled]="user_data.role.id == 3" [min]="minDate" [matDatepicker]="end_day_date" [(ngModel)]="housing_model.totalAllotedDaysEnd" />
+          <input matInput [min]="minDate" [matDatepicker]="end_day_date"
+            [(ngModel)]="housing_model.totalAllotedDaysEnd" />
           <mat-datepicker-toggle matSuffix [for]="end_day_date"></mat-datepicker-toggle>
           <mat-datepicker #end_day_date></mat-datepicker>
         </mat-form-field>
@@ -226,7 +254,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Budget</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Budget" type="number" [(ngModel)]="housing_model.budget" />
+          <input matInput placeholder="Budget" type="number" [(ngModel)]="housing_model.budget" />
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -235,7 +263,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Currency</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.currency">
+          <mat-select matNativeControl [(ngModel)]="housing_model.currency">
             <mat-option selected disabled value="">Currency</mat-option>
             <mat-option *ngFor="let item of currency_catalogue" [value]="item.id">
               {{ item.currency }}
@@ -252,7 +280,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Payment Responsibility</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.paymentResponsibilty">
+          <mat-select matNativeControl [(ngModel)]="housing_model.paymentResponsibilty">
             <mat-option selected disabled value="">Payment Responsibility</mat-option>
             <mat-option *ngFor="let item of responsable_catalogue" [value]="item.id">
               {{ item.name }}
@@ -265,7 +293,7 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="wid" style="height: 80%;">
         <p class="subtitle" style="font-size: 10px; margin: 0;">Client Security Inspection Required</p>
-        <mat-checkbox [disabled]="user_data.role.id == 3" class="example-margin" [(ngModel)]="housing_model.clientSecurityInspectionRequired">
+        <mat-checkbox class="example-margin" [(ngModel)]="housing_model.clientSecurityInspectionRequired">
         </mat-checkbox>
       </div>
     </mat-grid-tile>
@@ -273,93 +301,84 @@
 
   <div>
     <!-- encabezados housing list -->
-    <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!-- <mat-grid-list cols="4" rowHeight="70px"> -->
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Housing List</p>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
-      <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <!-- <mat-grid-tile [colspan]="3" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button [disabled]="user_data.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--home" (click)="HousingSpecs()">
+            <button  [disabled]="user.role.id == 3" class="button-icon button-icon--home" (click)="HousingSpecs()">
               Housing Specs
             </button>
           </div>
 
           <div class="page__section-button page__section-button--big" style="left: 12px;">
-            <button [disabled]="user_data.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--send">
+            <button  [disabled]="user.role.id == 3" class="button-icon button-icon--send">
               Send Properties
             </button>
           </div>
 
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button [disabled]="user_data.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="HomeDetailsnew()">
+            <button  [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="HomeDetailsnew()">
               Add Properties
             </button>
           </div>
         </div>
-      </mat-grid-tile>
-    </mat-grid-list>
+      </mat-grid-tile> -->
+    <!-- </mat-grid-list> -->
     <!-----------------TABLA HOUSING--------------------------->
-    <table mat-table [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea">
+    <!-- <table mat-table [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea">
 
-      <!-- Position Column -->
       <ng-container matColumnDef="Supplier Partner">
         <th mat-header-cell *matHeaderCellDef>Supplier Partner</th>
         <td mat-cell *matCellDef="let element"> {{element.supplierCompany}} </td>
       </ng-container>
 
-      <!-- Position Column -->
       <ng-container matColumnDef="Supplier">
         <th mat-header-cell *matHeaderCellDef>Supplier</th>
         <td mat-cell *matCellDef="let element"> {{element.supplier}}</td>
       </ng-container>
 
-      <!-- Position Column -->
       <ng-container matColumnDef="Property No.">
         <th mat-header-cell *matHeaderCellDef>Property No.</th>
         <td mat-cell *matCellDef="let element"> {{element.propertyNo}} </td>
       </ng-container>
 
-      <!-- Name Column -->
       <ng-container matColumnDef="Property Type">
         <th mat-header-cell *matHeaderCellDef> Property Type </th>
         <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>
       </ng-container>
 
-      <!-- Weight Column -->
       <ng-container matColumnDef="Address">
         <th mat-header-cell *matHeaderCellDef> Address </th>
         <td mat-cell *matCellDef="let element">
           {{(element.address.length>10) ?  (element.address | slice:0:10)+'..': element.address}} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Price">
         <th mat-header-cell *matHeaderCellDef> Price </th>
         <td mat-cell *matCellDef="let element"> {{element.price}} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Currency">
         <th mat-header-cell *matHeaderCellDef> Currency </th>
         <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Status">
         <th mat-header-cell *matHeaderCellDef> Status </th>
         <td mat-cell *matCellDef="let element"> {{element.status}} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Actions">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
           <div [hidden]="user.role.id == 3">
-            <img src="assets/icons/pencil.png" [disabled]="user_data.role.id == 3" style="width: 20px;" (click)="editHousing(element)">
+            <img src="assets/icons/pencil.png"  style="width: 20px;" (click)="editHousing(element)">
           </div>
         </td>
       </ng-container>
@@ -367,7 +386,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumnsHousing"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumnsHousing;"></tr>
     </table>
-    <br><br>
+    <br><br> -->
   </div>
   <!--TABLE HOUSING CLOSE-->
   <!--END SECTION HOUSING-->
@@ -388,7 +407,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Reservation Type</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.reservationType">
+          <mat-select matNativeControl [(ngModel)]="housing_model.reservationType">
             <mat-option selected disabled value="">Reservation Type</mat-option>
             <mat-option *ngFor="let item of reservation_catalogue" [value]="item.id">
               {{ item.reservationType }}
@@ -402,11 +421,24 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Supplier Partner</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.supplierPartner">
-            <mat-option selected disabled value="">Supplier Partner</mat-option>
-            <mat-option *ngFor="let item of services_catalogue" [value]="item.id">
-              {{ item.contactName }}
+          <mat-select [(ngModel)]="housing_model.supplierPartner" (ngModelChange)="_supplier();">
+            <mat-option [value]=null>No service provider</mat-option>
+            <mat-option *ngFor="let item of services_catalogue" [value]="item.id"> 
+              {{item.comercialName}}
             </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Contact</mat-label>
+          <mat-select [(ngModel)]="housing_model.idAdministrativeContact">
+            <mat-option [value]=null>No service provider</mat-option>
+            <mat-option *ngFor="let item of Supplier" [value]="item.id">
+               {{item.contactName}}
+              </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -414,21 +446,21 @@
   </mat-grid-list>
 
   <mat-grid-list cols="4" rowHeight="80px">
-    <!-- property no -->
+    <!-- property no 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Property No.</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Property No" type="text" [(ngModel)]="housing_model.propertyNo" />
+          <input  matInput placeholder="Property No" type="text" [(ngModel)]="housing_model.propertyNo" />
         </mat-form-field>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile>-->
     <!-- property address -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Property Address</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Property Address" type="text" [(ngModel)]="housing_model.propertyAddress" />
+          <input matInput placeholder="Property Address" type="text" [(ngModel)]="housing_model.propertyAddress" />
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -437,7 +469,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Neighborhood </mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Neighborhood" type="text" [(ngModel)]="housing_model.neighborhood" />
+          <input matInput placeholder="Neighborhood" type="text" [(ngModel)]="housing_model.neighborhood" />
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -458,7 +490,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Reservation Amount</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Reservation Amount" type="number"
+          <input matInput placeholder="Reservation Amount" type="number"
             [(ngModel)]="housing_model.finalReservationAmount" />
         </mat-form-field>
       </div>
@@ -468,7 +500,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Currency</mat-label>
-          <mat-select  [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.currencyFinalReservationAmount">
+          <mat-select matNativeControl [(ngModel)]="housing_model.currencyFinalReservationAmount">
             <mat-option selected disabled value="">Currency</mat-option>
             <mat-option *ngFor="let item of currency_catalogue" [value]="item.id">
               {{ item.currency }}
@@ -482,7 +514,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Security Deposit</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Security Deposit" type="number" [(ngModel)]="housing_model.securityDeposit" />
+          <input matInput placeholder="Security Deposit" type="number" [(ngModel)]="housing_model.securityDeposit" />
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -491,7 +523,7 @@
       <div class="input_final wid">
         <mat-form-field appearance="fill">
           <mat-label>Currency</mat-label>
-          <mat-select [disabled]="user_data.role.id == 3" matNativeControl [(ngModel)]="housing_model.curencySecurityDeposit">
+          <mat-select matNativeControl [(ngModel)]="housing_model.curencySecurityDeposit">
             <mat-option selected disabled value="">Currency</mat-option>
             <mat-option *ngFor="let item of currency_catalogue" [value]="item.id">
               {{ item.currency }}
@@ -509,7 +541,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Payments Due</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Payments Due" type="number" [(ngModel)]="housing_model.paymentsDue" />
+          <input matInput placeholder="Payments Due" type="number" [(ngModel)]="housing_model.paymentsDue" />
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -518,7 +550,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Check In Date</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput [min]="minDate" [matDatepicker]="check_in_date" [(ngModel)]="housing_model.checkIn"
+          <input matInput [min]="minDate" [matDatepicker]="check_in_date" [(ngModel)]="housing_model.checkIn"
             (dateChange)="getDaysBetweenDatesStaticField( housing_model, ['checkIn','checkOut'], 'total_days_prop_sel' )"
             (change)="getDaysBetweenDatesStaticField( housing_model, ['checkIn','checkOut'], 'total_days_prop_sel' )" />
           <mat-datepicker-toggle matSuffix [for]="check_in_date"></mat-datepicker-toggle>
@@ -531,7 +563,7 @@
       <div class="input_central wid">
         <mat-form-field appearance="fill">
           <mat-label>Check-Out Date</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput [min]="minDate" [matDatepicker]="check_out_date" [(ngModel)]="housing_model.checkOut"
+          <input matInput [min]="minDate" [matDatepicker]="check_out_date" [(ngModel)]="housing_model.checkOut"
             (dateChange)="getDaysBetweenDatesStaticField( housing_model, ['checkIn','checkOut'], 'total_days_prop_sel' )"
             (change)="getDaysBetweenDatesStaticField( housing_model, ['checkIn','checkOut'], 'total_days_prop_sel' )" />
           <mat-datepicker-toggle matSuffix [for]="check_out_date"></mat-datepicker-toggle>
@@ -544,7 +576,7 @@
       <div class="input_final wid">
         <mat-form-field appearance="fill">
           <mat-label>Total Days</mat-label>
-          <input [disabled]="user_data.role.id == 3" matInput placeholder="Total Days" type="number" id="total_days_prop_sel"
+          <input matInput placeholder="Total Days" type="number" id="total_days_prop_sel"
             [(ngModel)]="housing_model.totalDays" />
         </mat-form-field>
       </div>
@@ -552,18 +584,18 @@
 
   </mat-grid-list>
 
-  <mat-grid-list cols="1">
+  <!-- <mat-grid-list cols="1">
     <div class="page__section">
       <div class="page__title">
         Extensions
         <br><br>
-        <mat-slide-toggle [disabled]="user_data.role.id == 3" (change)="toggleStaySection($event)" [checked]='active'></mat-slide-toggle>
+        <mat-slide-toggle  (change)="toggleStaySection($event)" [checked]='active'></mat-slide-toggle>
       </div>
     </div>
     <div class="page__section" *ngIf="active">
       <div *ngFor="let extention of housing_model.stayExtensionTemporaryHousings, let i = index;"
         class="page__section page__section--card page__section--card--cuadra margin-tb-mini">
-        <button class="page__section--card-closeButton" [disabled]="user_data.role.id == 3" (click)="deleteExtension(extention, i)"
+        <button class="page__section--card-closeButton"  (click)="deleteExtension(extention, i)"
           *ngIf="extention.id == 0">
         </button>
         <div class="page__section page__section-inputs page__section--nowrap">
@@ -571,7 +603,7 @@
             <div class="input_central">
               <mat-form-field appearance="fill">
                 <mat-label>Initial Date</mat-label>
-                <input matInput [disabled]="user_data.role.id == 3" [min]="minDate" [matDatepicker]="initial_date_stay" [(ngModel)]="extention.initialDate"
+                <input matInput  [min]="minDate" [matDatepicker]="initial_date_stay" [(ngModel)]="extention.initialDate"
                   (dateChange)="getDaysBetweenDatesStaticField( extention, ['initialDate','finalDate'],i )"
                   (change)="getDaysBetweenDatesStaticField( extention, ['initialDate','finalDate'],i )" />
                 <mat-datepicker-toggle matSuffix [for]="initial_date_stay"></mat-datepicker-toggle>
@@ -583,7 +615,7 @@
             <div class="input_central">
               <mat-form-field appearance="fill">
                 <mat-label>Final Date</mat-label>
-                <input matInput [disabled]="user_data.role.id == 3" [min]="minDate" [matDatepicker]="final_date_stay" [(ngModel)]="extention.finalDate"
+                <input matInput  [min]="minDate" [matDatepicker]="final_date_stay" [(ngModel)]="extention.finalDate"
                   (dateChange)="getDaysBetweenDatesStaticField( extention, ['initialDate','finalDate'], i )"
                   (change)="getDaysBetweenDatesStaticField( extention, ['initialDate','finalDate'], i )" />
                 <mat-datepicker-toggle matSuffix [for]="final_date_stay"></mat-datepicker-toggle>
@@ -595,7 +627,7 @@
             <div class="input_central">
               <mat-form-field appearance="fill">
                 <mat-label>Extra Days</mat-label>
-                <input [disabled]="user_data.role.id == 3" matInput placeholder="Extra Days" type="number" id="extradays"
+                <input  matInput placeholder="Extra Days" type="number" id="extradays"
                   [(ngModel)]="extention.extraDays" />
               </mat-form-field>
             </div>
@@ -603,7 +635,7 @@
           <div class="page__section-input page__section-input--10">
             <mat-form-field appearance="fill">
               <mat-label>Total Days</mat-label>
-              <input [disabled]="user_data.role.id == 3" matInput [(ngModel)]="extention.totalDays" readonly id="{{i}}" placeholder="Days..."
+              <input  matInput [(ngModel)]="extention.totalDays" readonly id="{{i}}" placeholder="Days..."
                 type="number" />
             </mat-form-field>
           </div>
@@ -613,7 +645,7 @@
           <div class="page__section-input page__section-input--x">
             <mat-form-field appearance="fill">
               <mat-label>Comment</mat-label>
-              <input matInput [disabled]="user_data.role.id == 3" placeholder="Comment" type="text" [(ngModel)]="extention.comment" />
+              <input matInput  placeholder="Comment" type="text" [(ngModel)]="extention.comment" />
             </mat-form-field>
           </div>
         </div>
@@ -621,13 +653,13 @@
       <div class="page__section margin-top-mini margin-bottom-m">
         <div class="page__section-name"></div>
         <div class="page__section-button">
-          <button (click)="addExtention()" [disabled]="user_data.role.id == 3" class="button-icon button-icon--adder">
+          <button (click)="addExtention()"  class="button-icon button-icon--adder">
             Add Extension
           </button>
         </div>
       </div>
     </div>
-  </mat-grid-list>
+  </mat-grid-list> -->
 
   <!-- documentos -->
   <mat-grid-list cols="1">
@@ -671,7 +703,7 @@
       <div class="page__section documents__ascard"
         *ngFor="let item of housing_model.documentTemporaryHousingCoordinatons; let i = index">
         <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" [disabled]="user_data.role.id == 3" (click)="removeDocument(i, item.id)" style="right: 40px;">
+          style="background: transparent!important;" (click)="removeDocument(i, item.id)" style="right: 40px;">
         <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
           style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)">
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
@@ -725,7 +757,7 @@
       <div class="addPropperty">
         <div class="page__section-button page__section-button--big"
           style="flex: 0 1 180px !important; left: 6px !important;">
-          <button (click)="AddDocument()" [disabled]="user_data.role.id == 3" class="button-icon button-icon--more">
+          <button (click)="AddDocument()" class="button-icon button-icon--more">
             Add New Document
           </button>
         </div>
@@ -736,9 +768,9 @@
   <!-- request payment -->
   <mat-grid-list cols="4" rowHeight="70px">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="wid">
+      <!-- <div class="wid">
         <p class="page__section-name">Requested Payments</p>
-      </div>
+      </div> -->
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -760,7 +792,7 @@
   </mat-grid-list-->
   <!----------------------------------------------------------------------------------------->
   <!--START TABLE PAYMENT-->
-  <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
+  <!-- <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
     <ng-container matColumnDef="Payment">
       <th mat-header-cell *matHeaderCellDef> Payment </th>
       <td mat-cell *matCellDef="let element">
@@ -768,52 +800,44 @@
       </td>
     </ng-container>
 
-    <!-- Position Column -->
+   
     <ng-container matColumnDef="Amount">
       <th mat-header-cell *matHeaderCellDef> Amount </th>
       <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
     </ng-container>
 
-    <!-- management Column -->
+    
     <ng-container matColumnDef="ManagementFee">
       <th mat-header-cell *matHeaderCellDef> Management Fee </th>
       <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
     </ng-container>
 
-
-    <!-- Weight wire -->
     <ng-container matColumnDef="WireFee">
       <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
       <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
     </ng-container>
 
-    <!-- advance Column -->
     <ng-container matColumnDef="AdvanceFee">
       <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
       <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
     </ng-container>
 
-    <!-- service Column -->
     <ng-container matColumnDef="Service">
       <th mat-header-cell *matHeaderCellDef> Total </th>
       <td mat-cell *matCellDef="let element"> </td>
     </ng-container>
 
-
-    <!-- recurrence Column -->
     <ng-container matColumnDef="Recurrence">
       <th mat-header-cell *matHeaderCellDef> Recurrence </th>
       <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
     </ng-container>
 
-
-    <!-- Symbol Column -->
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element">
-        <img src="assets\icons\pencil.png" [disabled]="user_data.role.id == 3" style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
+        <img src="assets\icons\pencil.png"  style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
         <span>&nbsp;</span>
-        <img src="assets\icons\delete.png" [disabled]="user_data.role.id == 3" style="width: 18px; cursor: pointer;"
+        <img src="assets\icons\delete.png"  style="width: 18px; cursor: pointer;"
           (click)="deletePaymentConcept(element)">
       </td>
     </ng-container>
@@ -823,7 +847,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;" [ngClass]="{'urgente': row.urgent == true}">
     </tr>
   </table>
-  <br><br>
+  <br><br> -->
   <!--CLOSE TABLE PAYMENT-->
   <mat-grid-list cols="4" rowHeight="30px">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
@@ -835,7 +859,7 @@
           <!--span class="browser">TOTAL: {{calculo.total | currency}}</span-->
         </div>
         <div class="page__section-butuonc" style="left: 6px;">
-          <button class="button-icon button-icon--money" [disabled]="user_data.role.id == 3" (click)="addPayment(null)">Request Payment</button>
+          <!-- <button class="button-icon button-icon--money"  (click)="addPayment(null)">Request Payment</button> -->
         </div>
       </div>
     </mat-grid-tile>
@@ -998,12 +1022,9 @@
     <mat-grid-list cols="4" rowHeight="130px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
-          <br><br>
-          <p *ngIf="i == 0">Comment</p>
-          <p *ngIf="i > 0">Reply</p>
           <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-            <textarea matInput (change)="data.reply = $event.target.value" [disabled]="data.id > 0" #message
-              maxlength="500">{{data.reply}}</textarea>
+            <textarea placeholder="Write your comment..." matInput (change)="data.reply = $event.target.value"
+              [disabled]="data.id > 0" #message maxlength="500">{{data.reply}}</textarea>
             <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
           </mat-form-field>
         </div>
@@ -1016,8 +1037,9 @@
     <mat-grid-tile [colspan]="4" [rowspan]="1">
       <div class="addPropperty">
         <div class="page__section-button page__section-button--big" style="left: 6px;">
-          <button (click)="addReply()" [disabled]="user_data.role.id == 3" class="button-icon button-icon--more">
-            Add {{cr}}
+          <button *ngIf="housing_model.commentTemporaryHosuings[0].id != 0" (click)="addReply()"
+            class="button-icon button-icon--more">
+            Add Comment
           </button>
         </div>
       </div>
@@ -1025,14 +1047,19 @@
   </mat-grid-list>
 
 
-  <mat-grid-list cols="1">
-    <div class="page__section margin-top-min">
-      <div class="page__title">
-        Reminder
+  <mat-grid-list cols="4" rowHeight="50px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="page__section margin-top-min">
+        <div class="subtitledos">
+          Reminders
+        </div>
       </div>
-      <div class="page__section"
-        *ngFor="let reminder of housing_model.reminderTemporaryHousingCoordinatons, index as index;">
-        <div class="page__section page__section--card page__section--card--cuadra margin-tb-mini">
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+  </mat-grid-list>
+  <!-- <div class="page__section" *ngFor="let reminder of housing_model.reminderTemporaryHousingCoordinatons, index as index;"> -->
+
+  <!-- <div class="page__section page__section--card page__section--card--cuadra margin-tb-mini">
           <button (click)="deleteReminderSelected( reminder, index )" class="page__section--card-closeButton">x
           </button>
           <div class="page__section page__section-inputs page__section--nowrap">
@@ -1040,7 +1067,10 @@
               <div class="input_central">
                 <mat-form-field appearance="fill">
                   <mat-label>Reminder Date</mat-label>
-                  <input matInput [disabled]="user_data.role.id == 3" [matDatepicker]="service_line_reminder" [(ngModel)]="reminder.reminderDate" />
+                  <input matInput placeholder="Write reminder description.." [min]="today" [matDatepicker]="service_line_reminder" [(ngModel)]="reminder.reminderDate" />
+                  <span class="label-error" *ngIf="reminder.reminderDate == '' || reminder.reminderDate == null">
+                    Field is required
+                  </span>
                   <mat-datepicker-toggle matSuffix [for]="service_line_reminder"></mat-datepicker-toggle>
                   <mat-datepicker #service_line_reminder></mat-datepicker>
                 </mat-form-field>
@@ -1049,33 +1079,77 @@
             <div class="page__section-input page__section-input--8">
               <mat-form-field appearance="fill">
                 <mat-label>Reminder Comments</mat-label>
-                <input matInput [disabled]="user_data.role.id == 3" placeholder="Service Line" type="text" [(ngModel)]="reminder.reminderComments" />
+                <input matInput  placeholder="Service Line" type="text" [(ngModel)]="reminder.reminderComments" />
+                <mat-hint align="end">{{message_reminder.value.length}} / 200</mat-hint>
+                <span class="label-error" *ngIf="reminder.reminderComments == '' || reminder.reminderComments == null">
+                  Field is required
+                </span>
               </mat-form-field>
             </div>
           </div>
-        </div>
-      </div>
+        </div> -->
+  <!-- </div> -->
+  <mat-card *ngFor="let data of housing_model.reminderTemporaryHousingCoordinatons; let i = index;">
+
+    <div align="end">
+      <img src="assets/icons/quit.svg" class="delete" (click)="deleteReminderSelected( data, i )">
     </div>
-  </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Reminder</mat-label>
+            <input matInput [min]="today" required [matDatepicker]="pickerocho" placeholder="Reminder Date"
+              [(ngModel)]="data.reminderDate">
+            <span class="label-error" *ngIf="data.reminderDate == '' || data.reminderDate == null">
+              Field is required
+            </span>
+            <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+            <mat-datepicker #pickerocho></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Reminder Comments</mat-label>
+            <input matInput required placeholder="Reminder Comments" #message_reminder maxlength="199"
+              [(ngModel)]="data.reminderComments">
+            <mat-hint align="end">{{message_reminder.value.length}} / 200</mat-hint>
+            <span class="label-error" *ngIf="data.reminderComments == '' || data.reminderComments == null">
+              Field is required
+            </span>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+
   <mat-grid-list cols="1">
     <div class="page__section margin-top-mini margin-bottom-m">
       <div class="page__section-name"></div>
       <div class="page__section-button">
-        <button (click)="addNewReminder()" [disabled]="user_data.role.id == 3" class="button-icon button-icon--adder">
+        <button (click)="addNewReminder()" class="button-icon button-icon--adder">
           Add Reminder
         </button>
       </div>
     </div>
   </mat-grid-list>
-   <!--  Service Client Documents -->
-   <mat-grid-list cols="1" *ngIf="serviceScope">
+  <!--  //////////////////////////////// Service Client Documents //////////////////////////////-->
+  <mat-grid-list cols="1" *ngIf="serviceScope != null">
     <div class="page__section margin-top-min">
       <div class="subtitledos">
-        Scope Client Service
+        Client Service Documents
+      </div> <br><br>
+      <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          No Client Service Documents loaded
+        </div>
       </div>
-      <br><br>
-
-      <div *ngIf="serviceScope.documentcountries" class="page__section">
+      <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
         <div class="page__section-input page__section-input--6_1-local">
           <span class="documents__index documents__index--task">
             Document Type
@@ -1083,49 +1157,60 @@
         </div>
         <div class="page__section-input page__section-input--6_1-local">
           <span class="documents__index documents__index--task">
-            Status
+            Upload
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1-local">
           <span class="documents__index documents__index--task">
-            Privacy
+            Status
           </span>
         </div>
-
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
-        <!-- (click)="DeleteOnline(item.id)" -->
         <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
-        style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
-        <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
+          style="background: transparent!important;" style="right: 40px;"
+          (click)="openFileOnWindow(item.fileRequest)">
         <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
           {{item.documentType}}
         </div>
         <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-          {{item.status}}
+          {{item.updated_date | date:'dd MMM yyy'}}
         </div>
         <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-          {{item.privacy}}
+          {{item.status}}
         </div>
       </div>
     </div>
   </mat-grid-list>
-  <!-- Scope Client Service -->
+
+
+  <!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
+
   <mat-grid-list cols="4" rowHeight="70px">
-    <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="wid">
-        <p class="subtitledos">Client Service Scope</p>
+    <br><br>
+    <div class="wid">
+      <p class="subtitledos">Client Service Scope</p>
+    </div>
+    <div *ngIf="serviceScope != null">
+      <div *ngIf="serviceScope.scopeDescription.length > 0" [innerHTML]="serviceScope.scopeDescription">
+      </div>
+    </div>
+    
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope != null">
+      <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+        Client Service Scope not captured or empty.
+      </div>
+      <div class="textarea" *ngIf="serviceScope.scopeDescription == null">
+        Client Service Scope not captured or empty.
       </div>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
       <div class="textarea">
-        <p [innerHTML]="serviceScope.scopeDescription"></p>
+        Client Service Scope not captured or empty.
       </div>
     </mat-grid-tile>
   </mat-grid-list>
   <br><br>
-
 
 </mat-dialog-content>
 

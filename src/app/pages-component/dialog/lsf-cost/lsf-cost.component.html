@@ -1,0 +1,76 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Cost Savings
+           
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+               - Lease Summary
+            </span>  
+        </h2>
+        
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+        <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">   
+            <div >
+                <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+
+                     <!----------------------------------------------------------------------------------------->
+            <!--START TABLE COST SAVINGS-->
+            <table class="mat-elevation-z8 textarea mat-table" id="cost">
+                <tr class="mat-header-row">
+                    <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('cost',0);">Cost Type <img
+                            src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;"></th>
+                    <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('cost',1);">Cost Savings
+                        <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;"></th>
+                    <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('cost',2);">Cost Savings
+                        Currency
+                        <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;">
+                    </th>
+                    <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('cost',3);">Cost Description
+                        <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;">
+                    </th>
+                    <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('cost',4);"> </th>
+                </tr>
+                <tr class="mat-row" *ngFor="let item of costSavingHomes; let i = index">
+                    <td class="mat-cell">{{item.costType}}</td>
+                    <td class="mat-cell">{{item.costSavings | currency}}</td>
+                    <td class="mat-cell">{{getCurrency(item.currency)}}</td>
+                    <td class="mat-cell">{{item.costDesc}}</td>
+                    <td class="mat-cell">
+                        <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editCostSavings(item, i);">
+                        &nbsp;&nbsp;
+                        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteCostSavings(item)">
+                    </td>
+                </tr>
+            </table>
+            <!--CLOSE TABLE PROPERTY EXPENSES-->
+            <!----------------------------------------------------------------------------------------->
+            <mat-grid-list cols="4" rowHeight="70px">
+                <mat-grid-tile [colspan]="4" [rowspan]="1">
+                    <div class="addPropperty">
+                        <div class="page__section-button page__section-button--big" style="left: 6px;">
+                            <button *ngIf="data.edicion" class="button-icon button-icon--more" (click)="addCostSavings();">
+                                Cost Savings
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+                </div>
+                <!---------------------------------- PINTAR CONTRACTS PASADOS ----------------------------->
+            </div>
+        </div>
+  
+</mat-dialog-content>
+
+<!-- <mat-dialog-actions align="end">
+
+
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button  (click)="save_BD();" >Save </button>
+    </div>  
+</mat-dialog-actions> -->

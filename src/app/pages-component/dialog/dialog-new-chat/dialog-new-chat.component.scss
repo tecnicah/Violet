@@ -163,3 +163,17 @@
 
   }
 }
+
+::ng-deep .mat-dialog-container {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+.mat-dialog-content {
+  display: block;
+  margin: 0 -24px;
+  padding: 0 24px;
+  max-height: 65vh;
+  overflow: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}

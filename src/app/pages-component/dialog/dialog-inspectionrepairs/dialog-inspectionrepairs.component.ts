@@ -47,13 +47,17 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
     this.loader.showLoader();
     console.log("DATA QUE RECIBE EL MODAL DE INSPECTIONS & REPAIRS: ", this.data);
     this.user=JSON.parse(localStorage.getItem('userData'));
-    console.log("User info: ", this.user);
+   // console.log("User info: ", this.user);
     this.catalogos();
     this.supplierPartner();
     this.llenarJSON();
   }
+
   //************************************************//
   llenarJSON() {
+
+    console.log("Esta es la dara recibida que carga todo en el I&R", this.data)
+
     if(this.data.repairs) {
       this.data_repairs=this.data.repairs;
       this.data_final.repairs = this.data_repairs;
@@ -99,6 +103,7 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
   SupplierCompany=[];
   ca_statuspropertySection=[];
   ca_relation = [];
+
   async catalogos() {
     this.ca_currency=await this._services.getCatalogueFrom('GetCurrency');
     this.ca_repair=await this._services.getCatalogueFrom('GetRepairType');
@@ -138,7 +143,8 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
         createdBy: this.user.id,
         createdDate: new Date(),
         updateBy: this.user.id,
-        updatedDate: new Date()
+        updatedDate: new Date(),
+        idServiceDetail : this.data.idServiceDetail_current
       })
   }
   //DELETE INSPECTION//
@@ -165,19 +171,20 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
     this.data_repairs.push( {
         id: 0,
         housingList: this.data.id,
-        repairType: 0,
-        supplierPartner: 0,
+        repairType: null,
+        supplierPartner: null,
         repairStartDate: null,
         repairEndDate: null,
         totalDays: 0,
         totalCostRepair: 0,
-        currency: 0,
+        currency: null,
         comments: null,
         createdBy: this.user.id,
         createdDate: new Date(),
         updateBy: this.user.id,
         updatedDate: new Date(),
-        documentRepairs: []
+        documentRepairs: [], 
+        idServiceDetail : this.data.idServiceDetail_current
       }
 
     )
@@ -241,6 +248,40 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
       }
     }
 
+    for(let i=0; i < this.data_inspection.length; i++){
+      if(this.data_inspection[i].id !=0) {
+        this._services.service_general_put("HousingList/PutInspection", this.data_inspection[i]).subscribe((data=> {
+              if(data.success) {
+                console.log("HousingList/PutInspection - Request: " , this.data_inspection[i] ," response: ",data);
+                this.loader.hideLoader();
+              }
+            }
+
+          ), (err)=> {
+            this.loader.hideLoader();
+            console.log("error al guardar los repairs: ", err);
+          }
+
+        )
+      }
+
+      else {
+        this._services.service_general_post_with_url("HousingList/PostInspection", this.data_inspection[i]).subscribe((data=> {
+              if(data.success) {
+                console.log("HousingList/PostRepair - Request: " , this.data_inspection[i] ," response: ",data);
+                this.loader.hideLoader();
+              }
+            }
+
+          ), (err)=> {
+            this.loader.hideLoader();
+            console.log("error al guardar los repairs: ", err);
+          }
+
+        )
+      }
+    }
+
     const dialog=this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Success",
@@ -275,11 +316,12 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
   //************************************************//
   //GUARDAR TARJETA ITERABLE DE MOVE OUT//
   save() {
+    debugger;
     this.loader.showLoader();
     console.log("ENTRA A GUARDAR O ACTUALIZAR INFORMACION MOVE IN: ", this.data_move_in);
     if(this.data.status_ == 'nuevo'){
       this.data_move_in.id=0;
-      this.data_move_in.propertyInspection=1;
+      this.data_move_in.propertyInspection=1; //move in 
       this.data_move_in.housingList=this.data.id,
       this.data_move_in.propertyAddress=this.data.address;
       this.data_move_in.zipCode=this.data.zip;
@@ -287,6 +329,7 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
       this.data_move_in.createdDate=new Date();
       this.data_move_in.updatedBy=this.user.id;
       this.data_move_in.updatedDate=new Date();
+      this.data_move_in.idServiceDetail = this.data.idServiceDetail_current;
   
       this.pasar_Informacion();
       console.log(this.data_move_in);
@@ -301,7 +344,7 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
       this.loader.hideLoader();
     }else{
       //ACTUALIZACION DEL REGISTROS//
-      this.data_move_in.propertyInspection=1;
+      this.data_move_in.propertyInspection=1; //move in 
       this.data_move_in.housingList=this.data.id,
       this.data_move_in.propertyAddress=this.data.address;
       this.data_move_in.zipCode=this.data.zip;
@@ -309,7 +352,7 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
       this.data_move_in.createdDate=new Date();
       this.data_move_in.updatedBy=this.user.id;
       this.data_move_in.updatedDate=new Date();
-      
+      this.data_move_in.idServiceDetail = this.data.idServiceDetail_current;
 
       if(this.data_move_in.id && this.data_move_in.id!=0){
         console.log("data_move_in", this.data_move_in);
@@ -330,7 +373,7 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
         this.data_move_in.id=0;
         this._services.service_general_post_with_url("PropertyReport/PostPropertyReport", this.data_move_in).subscribe((data => {
           if(data.success){
-            console.log(data);
+            console.log("response PropertyReport/PostPropertyReport =============",data);
              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
@@ -359,7 +402,8 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
       this.data_move_out.createdDate=new Date();
       this.data_move_out.updatedBy=this.user.id;
       this.data_move_out.updatedDate=new Date();
-  
+      this.data_move_out.idServiceDetail = this.data.idServiceDetail_current;
+
       this.pasar_Informacion();
       console.log(this.data_move_in);
       console.log(this.data_move_out);
@@ -381,6 +425,7 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
       this.data_move_out.createdDate=new Date();
       this.data_move_out.updatedBy=this.user.id;
       this.data_move_out.updatedDate=new Date();
+      this.data_move_out.idServiceDetail = this.data.idServiceDetail_current;
 
       if(this.data_move_out.id && this.data_move_out.id!=0){
         console.log("data_move_out", this.data_move_out);
@@ -1010,5 +1055,38 @@ import { GeneralConfirmationComponent } from '../general-confirmation/general-co
     const server_url:string = this._services.url_images + url_in;
     window.open( server_url );
   }
+
+  show_hide_all_ = false;
+  show_hide_all(option){
+      this.show_hide_all_ = option;
+      this.mostrarTarjeta.contractDetails = option ;
+      this.mostrarTarjeta.paymenType = option;
+      this.mostrarTarjeta.costSaving = option;
+      this.mostrarTarjeta.renewalDetails = option;
+      this.mostrarTarjeta.departureDetails = option;
+      this.mostrarTarjeta.landLord = option; 
+      this.mostrarTarjeta.move_in = option;
+      this.mostrarTarjeta.repairs = option;
+      this.mostrarTarjeta.move_out = option;
+  };
+
+  ///////////////////////////////////////////////// COSAS NUEVAS JULIO 2022 ////////////////////////////////////////////////
+
+  permanentHome = null;
+  
+
+  get_lease_sf() {
+    this.loader.showLoader();
+
+    this._services.service_general_get("HousingList/GetHistoricHousingByService?key=" + this.data.id + "&servide_detail_id=" + this.data.idServiceDetail_current).subscribe((response => {
+      debugger;
+      // this.calc_RentCostSavings();
+      this.permanentHome = response.result.value;
+      console.log('Casa permamente desde el POP UP | I&R: ', response.result.value);
+      //this.llenarJSON();
+      this.loader.hideLoader();
+    }));
+  }
+
 }
 

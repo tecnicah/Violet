@@ -16,10 +16,10 @@
             <mat-form-field class="input_central_half">
               <mat-label>Search</mat-label>
               <input matInput placeholder="Search" type="text" (keyup)="tableSerchFilter( $event )" />
-              <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+              <mat-icon matSuffix style="color:#3A2337">search</mat-icon>
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
             <mat-form-field appearance="fill" class="input_central_half">
               <mat-label>Service Line</mat-label>
               <mat-select
@@ -35,7 +35,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
         <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div style="width: 100%; display: flex;">
                 <mat-form-field appearance="fill" class="input_central_half">
@@ -110,7 +110,7 @@
             <ng-container matColumnDef="col_1">
                 <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">Name</th>
                 <td mat-cell *matCellDef="let element" class="text-center browser" [matMenuTriggerFor]="coordinador" (click)="data_coord(element)">
-                    {{ element.coordinator }}
+                    {{ element.name }}
                 </td>
             </ng-container>
             <ng-container matColumnDef="col_2">
@@ -155,14 +155,14 @@
                   </span>
               </td>
             </ng-container>
-            <ng-container matColumnDef="col_8">
+            <!-- <ng-container matColumnDef="col_8">
               <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="pendingBilling">Pending Billing</th>
               <td mat-cell *matCellDef="let element" class="text-center">
                   <span class="font-purple-dark text-bold">
                       {{ element.pendingBilling }}
                   </span>
               </td>
-            </ng-container>
+            </ng-container> -->
             <tr mat-header-row *matHeaderRowDef="coordinators_table_colums"></tr>
             <tr mat-row *matRowDef="let row; columns: coordinators_table_colums;"></tr>
         </table>
@@ -196,19 +196,19 @@
       </div>
     </div>
     <br>
-    <div class="data">
+    <!-- <div class="data">
       <span class="title">Service Line</span>
     </div>
 
     <div class="pie">
       <mat-checkbox [checked]="data_coordinador?.serviceLine == 'Immigration'">Immigration</mat-checkbox>
       <mat-checkbox [checked]="data_coordinador?.serviceLine == 'Relocation'">Relocation</mat-checkbox>
-    </div>
+    </div> -->
     <div class="data">
       
 
       <span class="title">Coordinator</span>
-      <p>{{data_coordinador?.coordinator}}</p>
+      <p>{{data_coordinador?.name}}</p>
 
       <span class="title">Premier Email</span>
       <p>{{data_coordinador?.email}}</p>
@@ -216,7 +216,7 @@
       <span class="title">Phone Number</span>
       <p>{{data_coordinador?.phoneNumber}}</p>
 
-      <span class="browser" style="color: #9d3292;" (click)="gotoProfile(data_coordinador?.profileId)">View Profile</span>
+      <span class="browser" style="color: #3A2337;" (click)="gotoProfile(data_coordinador?.profileId)">View Profile</span>
 
     </div>
   </div>

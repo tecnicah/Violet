@@ -11,7 +11,7 @@ import { DialogGeneralMessageComponent } from '../dialog/general-message/general
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderComponent } from 'app/shared/loader';
 import { GeneralConfirmationComponent } from '../dialog/general-confirmation/general-confirmation.component';
-import { DialogCampusComponent } from '../dialog/dialog-campus/dialog-campus.component';
+import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-crop-image.component';
 
 @Component({
   selector: 'app-supplier-services',
@@ -19,6 +19,21 @@ import { DialogCampusComponent } from '../dialog/dialog-campus/dialog-campus.com
   styleUrls: ['./supplier-services.component.css']
 })
 export class SupplierServicesComponent implements OnInit {
+  public modulesQuill = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ font: [] }],
+      [{ color: [] }, { background: [] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ align: [] }],
+      ['blockquote', 'code-block'],
+      [{ list: 'ordered'}, { list: 'bullet' }]
+    ]
+  };
+
+  public no_main_photo: boolean = false;
+  id_serivice_: any;
   paymentSwitch: false;
   wireTransferSwitch: false;
   loader: LoaderComponent = new LoaderComponent();
@@ -44,10 +59,16 @@ export class SupplierServicesComponent implements OnInit {
   ca_language: any[] = [];
   data: any = {
     "id": 0,
-    "photo": ''
+    "photo": '',
+    "taxesPercentage":  1,
+    "currency":2,
+    "amountPerHour":0,
+    "taxeName": " "
   };
   minDate: Date = new Date();
-
+  htmlContent: any;
+  schoolgrades_catalogue: any[]= [];
+  languages_catalogue: any[] = [];
 
   constructor(public router: Router, public _services: ServiceGeneralService, public _dialog: MatDialog, public _routerParams: ActivatedRoute) {}
 
@@ -57,11 +78,11 @@ export class SupplierServicesComponent implements OnInit {
   public permission_delete: boolean = false;
   public permission_edit: boolean = false;
   consultaPermisos() {
-    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    //console.log("CONSULTA PARA PERMISOS DE USUARIO");
     let url = localStorage.getItem('url_permisos');
     this._services.service_general_get('Role/' + url).subscribe(data => {
       if (data.success) {
-        console.log("Permisos: ", data.result.value)
+        //console.log("Permisos: ", data.result.value)
         this.permission_read = data.result.value[0].reading;
         this.permission_write = data.result.value[0].writing;
         this.permission_edit = data.result.value[0].editing;
@@ -83,9 +104,6 @@ export class SupplierServicesComponent implements OnInit {
     city: ''
   };
 
-
-
-
   //*********************************************//
   ngOnInit(): void {
     this.consultaPermisos();
@@ -103,7 +121,16 @@ export class SupplierServicesComponent implements OnInit {
     */
     this.catalogos();
     this.verificaNodos();
+    
   }
+
+
+  onChangedEditor(event: any): void {
+    if (event.html) {
+        this.htmlContent = event.html;
+      }
+  }
+  
   //*************************************************************//
   verificaNodos() {
     if (!this.data.supplierPartnerDetails) {
@@ -146,8 +173,8 @@ export class SupplierServicesComponent implements OnInit {
   //*************************************************************//
   caCards: any[] = [];
   consultaInformacionServicio(id_serivice) {
-    console.log(typeof id_serivice);
-    console.log(id_serivice);
+    //console.log(typeof id_serivice);
+    //console.log(id_serivice);
     if (id_serivice.trim() == '') {
       return true
     }
@@ -155,7 +182,17 @@ export class SupplierServicesComponent implements OnInit {
     this._services.service_general_get('SupplierPartnerProfile/GetService?key=' + id_serivice).subscribe((data => {
       if (data.success) {
         this.data = data.result;
+        console.log("dataaaa",data.result);
         // revisa si es consultor y tiene permisos en secciones
+        let photo_assing: string = this.data.photo;
+
+          //console.log(photo_assing);
+          if (photo_assing == undefined || photo_assing == null || photo_assing == '') {
+
+            this.no_main_photo = true;
+
+          }
+          
         this.consultantPermisos();
         this.data.supplierPartnerDetails[0].vehiculo = [];
         if (this.data.supplierPartnerDetails[0].typeVehiclesSupplierPartnerDetails.length > 0) {
@@ -180,7 +217,7 @@ export class SupplierServicesComponent implements OnInit {
           this.getCity(element, i);
         }
 
-        console.log("esta es la consulta del servicio: ", this.data);
+        //console.log("esta es la consulta del servicio: ", this.data);
         for (let i = 0; i < this.data.areasCoverageServices.length; i++) {
           if (this.data.areasCoverageServices[i].paymentInformationServices.length > 0) {
             this.data.areasCoverageServices[i].payment = true;
@@ -212,8 +249,9 @@ export class SupplierServicesComponent implements OnInit {
           }
         }
 
-        console.log(this.caCards);
+        //console.log(this.caCards);
         this.loader.hideLoader();
+        this.set_display_default_fields();
       }
     }))
   }
@@ -230,12 +268,15 @@ export class SupplierServicesComponent implements OnInit {
   ca_currency = [];
   creditCardAux = [];
   async catalogos() {
+    this.schoolgrades_catalogue = await this._services.getCatalogueFrom('GetGradeSchooling');
+    this.languages_catalogue = await this._services.getCatalogueFrom('GetLanguages');
     this.ca_typeSupplier = await this._services.getCatalogueFrom('GetSupplierType');
     this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
     this.creditCardAux = await this._services.getCatalogueFrom('GetCreditCard');
     this.ca_methodPayment = await this._services.getCatalogueFrom('GetPaymentMethod');
     this.ca_serviceLine = await this._services.getCatalogueFrom('GetServiceLine');
     this.ca_status = await this._services.getCatalogueFrom('GetSupplierPartnerProfileStatus');
+    this.data.status = 8;
     this.ca_country = await this._services.getCatalogueFrom('GetCountry');
     this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_areacoverage = await this._services.getCatalogueFrom('GetAreaCoverageType');
@@ -244,7 +285,7 @@ export class SupplierServicesComponent implements OnInit {
     this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
       if (data.success) {
         this.ca_documentType = data.result;
-        console.log(this.ca_documentType);
+        //console.log(this.ca_documentType);
       }
     }))
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
@@ -261,30 +302,87 @@ export class SupplierServicesComponent implements OnInit {
       }
     }))
 
-    let id_serivice = this._routerParams.snapshot.params.id;
-    if (id_serivice != 'nuevo') {
-      this.consultaInformacionServicio(id_serivice);
+    this.id_serivice_ = this._routerParams.snapshot.params.id;
+    if (this.id_serivice_ != 'nuevo') {
+      this.consultaInformacionServicio(this.id_serivice_);
     }
   }
-  //*************************************************************//
-  newCampus(i) {
 
-    const dialogRef = this._dialog.open(DialogCampusComponent, {
-      width: "90%",
+  display_default_fields:boolean = true;
+
+  set_display_default_fields(){
+   if(this.data.supplierType == 13 || this.data.supplierType == 11 || this.data.supplierType == 28 || 
+    this.data.supplierType == 33 || this.data.supplierType == 27 || this.data.supplierType == 24 || 
+    this.data.supplierType == 5 || this.data.supplierType == 9 || this.data.supplierType == 12 || this.data.supplierType == 34){
+    this.display_default_fields = false;
+
+   }
+   else
+   {
+     this.display_default_fields = true;
+   }
+
+  }
+
+  public previewSelectedPhoto(event: any, field_to_display: string, section: string = ''): void {
+
+    const dialogRef = this._dialog.open(DialogCropImageComponent, {
+      data: { image: "", name: "" },
+      width: "70%",
+      height: "95%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.success) {
-        console.log(result);
-        result.createdBy = this.user.id;
-        result.createdDate = new Date();
-        result.updatedBy = this.user.id;
-        result.updatedDate = new Date();
-        result.id = 0;
-        result.areaCoverageId = this.data.areasCoverageServices[i].id;
-        this.data.areasCoverageServices[i].campuses.push(result)
-      }
+      //console.log(result);
+        if(result != undefined){
+          this.no_main_photo = false;
+
+          const field_photo: any = document.getElementById(field_to_display),
+            //event_data: any = event.target.files[0],
+            dependent_index: string = field_to_display.split('_')[3],
+            root: any = this;
+
+            const base64: any = result
+            ////console.log(base64.split('.')[1]);
+            this.data.photo =  base64.split(',')[1];
+            this.data.photoExtension = "png";
+          
+            setTimeout(() => field_photo.setAttribute('src', base64), 333);
+        }
     });
+
+  }
+
+  serviceLineOption(id){
+    debugger;
+    if(id==1){
+      this.data.immigration = true; 
+    }
+    else{
+      this.data.relocation = true;
+    }
+
+  }
+  
+  //*************************************************************//
+  newCampus(i) {
+
+    // const dialogRef = this._dialog.open(DialogCampusComponent, {
+    //   width: "90%",
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.success) {
+    //     //console.log(result);
+    //     result.createdBy = this.user.id;
+    //     result.createdDate = new Date();
+    //     result.updatedBy = this.user.id;
+    //     result.updatedDate = new Date();
+    //     result.id = 0;
+    //     result.areaCoverageId = this.data.areasCoverageServices[i].id;
+    //     this.data.areasCoverageServices[i].campuses.push(result)
+    //   }
+    // });
   }
   // delete admin contact
   deleteAdminContact(id: number, i, k) {
@@ -296,11 +394,11 @@ export class SupplierServicesComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (id != 0) {
           this._services.service_general_delete(`SupplierPartnerProfile/Delete/Service/AdministrativeContact/${id}`).subscribe((data) => {
-            console.log('respuesta de eliminacion', data);
+            //console.log('respuesta de eliminacion', data);
             if (data.success) {
               const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                 data: {
@@ -339,11 +437,11 @@ export class SupplierServicesComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (id != 0) {
           this._services.service_general_delete(`SupplierPartnerProfile/Delete/Service/ConsultantContacts/${id}`).subscribe((data) => {
-            console.log('respuesta de eliminacion', data);
+            //console.log('respuesta de eliminacion', data);
             if (data.success) {
               const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                 data: {
@@ -372,21 +470,21 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   editCampus(i, datos, k) {
-    const dialogRef = this._dialog.open(DialogCampusComponent, {
-      width: "90%",
-      data: datos
-    });
+    // const dialogRef = this._dialog.open(DialogCampusComponent, {
+    //   width: "90%",
+    //   data: datos
+    // });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.success) {
-        console.log(result);
-        result.createdBy = this.user.id;
-        result.createdDate = new Date();
-        result.updatedBy = this.user.id;
-        result.updatedDate = new Date();
-        this.data.areasCoverageServices[i].campuses[k] = result;
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.success) {
+    //     //console.log(result);
+    //     result.createdBy = this.user.id;
+    //     result.createdDate = new Date();
+    //     result.updatedBy = this.user.id;
+    //     result.updatedDate = new Date();
+    //     this.data.areasCoverageServices[i].campuses[k] = result;
+    //   }
+    // });
   }
   //*************************************************************//
   newContact(type, i) {
@@ -419,7 +517,7 @@ export class SupplierServicesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
-        console.log(result);
+        //console.log(result);
         result.createdBy = this.user.id;
         result.createdDate = new Date();
         result.updatedBy = this.user.id;
@@ -460,7 +558,7 @@ export class SupplierServicesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
-        console.log(result);
+        //console.log(result);
         result.createdBy = this.user.id;
         result.createdDate = new Date();
         result.updatedBy = this.user.id;
@@ -481,14 +579,14 @@ export class SupplierServicesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices.push(result);
-        console.log(this.data);
+        //console.log(this.data);
         debugger
       }
     });
   }
   //*************************************************************//
   getCity(data, i) {
-    console.log("consulta ciudad: ", data);
+    //console.log("consulta ciudad: ", data);
     this._services.service_general_get('Catalogue/GetState?country=' + data).subscribe((data => {
       if (data.success) {
         this.ca_city[i] = data.result;
@@ -515,7 +613,7 @@ export class SupplierServicesComponent implements OnInit {
   //*************************************************************//
   addAreaCoverage() {
     this.caCards.push(this.creditCardAux);
-    console.log(this.caCards);
+    //console.log(this.caCards);
     this.data.areasCoverageServices.push({
       "id": 0,
       "supplierPartnerProfileService": 0,
@@ -617,7 +715,7 @@ export class SupplierServicesComponent implements OnInit {
       if (result.success) {
         result.areaCoverage = 0;
         this.data.areasCoverageServices[i].documentAreasCoverageServices.push(result);
-        console.log(this.data);
+        //console.log(this.data);
       }
     });
   }
@@ -639,8 +737,8 @@ export class SupplierServicesComponent implements OnInit {
         fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          console.log(droppedFile.relativePath);
-          console.log(file, this.files);
+          //console.log(droppedFile.relativePath);
+          //console.log(file, this.files);
 
           fileEntry.file(file => {
             reader.readAsDataURL(file);
@@ -663,17 +761,17 @@ export class SupplierServicesComponent implements OnInit {
       } else {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
+        //console.log(droppedFile.relativePath, fileEntry);
       }
     }
   }
   //*************************************************************//
   public fileOver(event) {
-    console.log(event);
+    //console.log(event);
   }
   //*************************************************************//
   public fileLeave(event) {
-    console.log(event);
+    //console.log(event);
   }
   //************************************************************//
   editWireTransfer(i, wire, k) {
@@ -685,7 +783,7 @@ export class SupplierServicesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices[k] = result;
-        console.log("Edicion de archivo: ", this.data);
+        //console.log("Edicion de archivo: ", this.data);
       }
     });
   }
@@ -699,7 +797,7 @@ export class SupplierServicesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
-        console.log(result);
+        //console.log(result);
         result.createdBy = this.user.id;
         result.createdDate = new Date();
         result.updatedBy = this.user.id;
@@ -718,7 +816,7 @@ export class SupplierServicesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
-        console.log(result);
+        //console.log(result);
         result.createdBy = this.user.id;
         result.createdDate = new Date();
         result.updatedBy = this.user.id;
@@ -769,7 +867,7 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   nameLanguage(data) {
-    //console.log("lenguajes: ", data);
+    ////console.log("lenguajes: ", data);
     let lenguajes = '';
     for (let i = 0; i < data.length; i++) {
       for (let j = 0; j < this.ca_language.length; j++) {
@@ -790,6 +888,7 @@ export class SupplierServicesComponent implements OnInit {
   active_since: boolean = false;
   active_type: boolean = false;
   seccionUno = 0;
+
   valida_form() {
     let contador = 0;
     this.seccionUno = 0;
@@ -798,7 +897,7 @@ export class SupplierServicesComponent implements OnInit {
       this.seccionUno++;
       contador++;
     }
-
+    debugger;
     if (this.data.immigration == undefined && this.data.relocation == undefined) {
       this.active_serviceLine = true;
       this.seccionUno++;
@@ -867,7 +966,7 @@ export class SupplierServicesComponent implements OnInit {
 
 
     if (contador == 0) {
-      console.log("entra a guardar la informacion");
+      //console.log("formulario valido, entra a guardar la informacion");
       this.save();
     } else {
       let msg = '';
@@ -878,7 +977,7 @@ export class SupplierServicesComponent implements OnInit {
       }
       this.showtoast(msg);
     }
-    console.log(this.data)
+    //console.log(this.data)
   }
   //************************************************************//
   save() {
@@ -886,9 +985,9 @@ export class SupplierServicesComponent implements OnInit {
     this.data.createdBy = this.user.id;
     this.data.createdDate = new Date();
     this.data.updatedBy = this.user.id;
-    this.data.updatedDate = new Date();
-    console.log("DATA: ", this.data);
-    console.log(this.toppings);
+    this.data.updatedDate = new Date(); 
+    console.log("DATA a guardar: ", this.data);
+    //console.log(this.toppings);
 
     if (this.data.supplierPartnerDetails[0].vehiculo != undefined && this.data.supplierPartnerDetails[0].vehiculo.length > 0) {
       this.data.supplierPartnerDetails[0].typeVehiclesSupplierPartnerDetails = [];
@@ -917,16 +1016,16 @@ export class SupplierServicesComponent implements OnInit {
       }
     }
 
-    console.log("DATA: ", this.data);
-    console.log(JSON.stringify(this.data));
+    //console.log("DATA: ", this.data);
+    //console.log(JSON.stringify(this.data));
 
 
     if (this.data.id == 0) {
-      console.log("ENTRA A POST");
-      this._services.service_general_post_with_url('SupplierPartnerProfile/PostService', this.data).subscribe((data => {
-        console.log("save supplier: ", data);
+      //console.log("ENTRA A POST");
+      this._services.service_general_post_with_url('SupplierPartnerProfile/PostService', this.data).subscribe(data => {
+        //console.log("save supplier: ", data);
         if (data.success) {
-          console.log(data);
+          //console.log(data);
           const dialog = this._dialog.open(DialogGeneralMessageComponent, {
             data: {
               header: "Success",
@@ -938,7 +1037,27 @@ export class SupplierServicesComponent implements OnInit {
           this.router.navigateByUrl('/supplierPartners');
 
         }
-      }))
+        else{
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Error",
+              body: "Invalid Information, Please contact to support"
+            },
+            width: "350px"
+          });
+          this.loader.hideLoader();
+        }
+      },(err)=>{
+        console.log("error en SupplierPartnerProfile/PostService ========", err);
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Error",
+              body: "Invalid Information, Please contact support"
+          },
+          width: "350px"
+        });
+        this.loader.hideLoader();
+      });
     } else {
       this.verificab64();
     }
@@ -1019,9 +1138,9 @@ export class SupplierServicesComponent implements OnInit {
   //************************************************************//
   updateDate() {
     this._services.service_general_put('SupplierPartnerProfile/PutService', this.data).subscribe((data => {
-      console.log("save supplier: ", data);
+      //console.log("save supplier: ", data);
       if (data.success) {
-        console.log(data);
+        //console.log(data);
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
@@ -1036,7 +1155,7 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   deleteDocument(i, a) {
-    console.log("Entra a eliminar documento: ", i, a);
+    //console.log("Entra a eliminar documento: ", i, a);
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -1045,7 +1164,7 @@ export class SupplierServicesComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         this.data.areasCoverageServices[i].documentAreasCoverageServices.splice(a, 1);
       }
@@ -1064,9 +1183,9 @@ export class SupplierServicesComponent implements OnInit {
   }
 
   deleteWireTransfer(i, wire, k) {
-    console.log("este es i  ", i);
-    console.log("este es wire  ", wire);
-    console.log("este es k  ", k);
+    //console.log("este es i  ", i);
+    //console.log("este es wire  ", wire);
+    //console.log("este es k  ", k);
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -1075,11 +1194,11 @@ export class SupplierServicesComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (wire.id && wire.id != 0) {
           this._services.service_general_delete('SupplierPartnerProfile/Delete/Service/WireTransfer/' + wire.id).subscribe((data) => {
-            console.log('respuesta de eliminacion', data);
+            //console.log('respuesta de eliminacion', data);
             if (data.success) {
               const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                 data: {

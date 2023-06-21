@@ -32,24 +32,14 @@
         <div class="page__sectionConsultant page__section-inputs no-padding-tb">
           <div class="page__sectionConsultant page__section-input--x no-padding-tb">
             <div class="input__image">
-              <label for="file" class="input__image-label">
+              <label for="ass_prof_photo_input" class="input__image-label">
                 <div class="input__image-label--cardConsultant">
-
-                  <img class="lead_client_avatar" src="{{administrativeContactsServices.b64}}"
-                    *ngIf="administrativeContactsServices.b64" alt="" 
-                    alt="">
-
-                  <img class="lead_client_avatar" src="{{_services.url_images}}{{administrativeContactsServices.photo}}"
-                    *ngIf="administrativeContactsServices.photo != '' && administrativeContactsServices.photo!=undefined && administrativeContactsServices.id != 0 && !administrativeContactsServices.b64">
-
-                  <img class="lead_client_avatar"
-                    *ngIf="!administrativeContactsServices.b64 && administrativeContactsServices.photo == ''"
-                    src="assets/images/users/avatar.png" id="ass_prof_photo" />
-
+                  <img [class.display-none]="no_main_photo"
+                  src="{{_services.url_images}}{{administrativeContactsServices.photo}}"
+                  id='ass_prof_photo_two' />
+                  <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" />
                 </div>
-                <p class="input__image-label--cardSpanConsultant" (click)="editPhoto()" class="input__image-label--cardSpanConsultant">Edit Photo
-                </p>
-                
+                <span class="input__image-label--cardSpan" (click)="previewSelectedPhoto( $event, 'ass_prof_photo_two', 'profile')">Edit Photo</span>
               </label>
             </div>
           </div>
@@ -118,16 +108,26 @@
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <div class="input_final textarea">
-        <mat-form-field appearance="fill">
-          <mat-label>Phone Number</mat-label>
+      <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: 72px;">
+        <mat-label>Prefix</mat-label>
+        <mat-select  matNativeControl [(ngModel)]="prefixWork">
+          <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-label>Prefix</mat-label>
+            <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+          </mat-form-field>
+          <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+            {{ item.countriesIsdCode }} / {{ item.countriesName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 50% !important;">
+        <mat-label>Phone Number</mat-label>
           <input matInput required placeholder="Phone Number" type="tel" min="0" (keydown)="validaNumericos($event)"
             [(ngModel)]="administrativeContactsServices.phoneNumber" (focus)="FalseVar()">
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activePhoneNumber">Field is required</mat-hint>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNumberLongitud">Maximum length 20 characters
           </mat-hint>
-        </mat-form-field>
-      </div>
+      </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">

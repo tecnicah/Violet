@@ -104,7 +104,7 @@
             </div>
             <div class="page__section-input page__section-input--6_1">
               <span class="documents__index documents__index--task">
-
+                Type
               </span>
             </div>
             <div class="page__section-input page__section-input--6_1">
@@ -130,6 +130,14 @@
             <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             </div>
             <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+              <div class="input_final textarea">
+                <mat-form-field appearance="fill">
+                  <mat-label>Type Resource</mat-label>
+                  <mat-select [(ngModel)]="item.typeId">
+                    <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </div>
             <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             </div>

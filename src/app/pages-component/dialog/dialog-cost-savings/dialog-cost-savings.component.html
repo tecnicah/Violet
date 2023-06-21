@@ -11,29 +11,30 @@
 
 <!---------------------------------OPEN CONTENT--------------------------------------->
 <mat-dialog-content class="mat-typography">
-  <mat-grid-list cols="4" rowHeight="70px">
+  <mat-grid-list cols="3" rowHeight="70px">
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central">
         <mat-form-field appearance="fill">
-          <mat-label>Cost Type</mat-label>
-          <input matInput required placeholder="Cost Type" type="text" [(ngModel)]="data.costType"  #message_type maxlength="500">
-          <mat-hint align="end">{{message_type.value.length}} / 500</mat-hint>
+          <mat-label>Cost</mat-label>
+          <input matInput required placeholder="Cost Type" type="text" [(ngModel)]="data.costType"  #message_type maxlength="100">
+          <mat-hint align="end">{{message_type.value.length}} / 100</mat-hint>
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central">
         <mat-form-field appearance="fill">
           <mat-label>Cost Savings</mat-label>
-          <input matInput required placeholder="Cost Savings" type="text" [(ngModel)]="data.costSavings" #message maxlength="500">
-          <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+          <span matPrefix>$ &nbsp;</span>
+          <input matInput required placeholder="Cost Savings"  type="number" [(ngModel)]="data.costSavings" >
+          
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central">
         <mat-form-field appearance="fill">
           <mat-label>Cost Savings Currency</mat-label>
@@ -44,12 +45,21 @@
       </div>
     </mat-grid-tile>
 
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Description </mat-label>
+          <input matInput required placeholder="Cost Savings"  type="text" [(ngModel)]="data.costDesc" >
+          
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
   </mat-grid-list>
 </mat-dialog-content>
 <!--------------------------------CLOSE CONTENT--------------------------------------->
 
 <mat-dialog-actions align="end">
   <div class="page__section-buttong">
-    <button (click)="save_data()">Save</button>
+    <button (click)="save_data()">Save Cost Savings</button>
   </div>
 </mat-dialog-actions>

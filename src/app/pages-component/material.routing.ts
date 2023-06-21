@@ -6,6 +6,7 @@ import { TeamsComponent } from './Teams/teams.component';
 import { NewServiceRecordComponent } from './NewServiceRecord/newServiceRecord.component';
 import { EditServiceRecordComponent } from './EditServiceRecord/editServiceRecord.component';
 import { ServiceRecordAllServicesComponent } from './ServiceRecordsAllServices/ServiceRecordAllServices.component';
+import { AppointmentAllApointmentComponent } from './appointment-all-apointment/appointment-all-apointment.component';
 import { RequestInvoiceComponent } from './RequestInvoice/requestInvoice.component';
 import { ActionItemsComponent } from './ActionItems/ActionsItems.component';
 import { SupplierPartnersComponent } from './supplier-partners/supplier-partners.component';
@@ -74,6 +75,8 @@ import { CatalogsCompanyTypeComponent } from './catalogs-company-type/catalogs-c
 import { AdminCenterUsersComponent } from './admin-center-users/admin-center-users.component';
 import { AdminCenterSystemConfigurationComponent } from './admin-center-system-configuration/admin-center-system-configuration.component';
 import { ViewAllReportsComponent } from './view-all-reports/view-all-reports.component';
+import { HomeFindingFullComponent } from './home-finding-full/home-finding-full.component';
+
 export const MaterialRoutes: Routes = [
   {
     path: 'teams',
@@ -88,9 +91,11 @@ export const MaterialRoutes: Routes = [
   },
   {path: 'serviceRecord', component: NewServiceRecordComponent},
   {path: 'dashboard', component: DashboardComponent},
+  {path: 'editServiceRecord/:id/:tipo', component: EditServiceRecordComponent},
   {path: 'editServiceRecord/:id', component: EditServiceRecordComponent},
   {path: 'editServiceRecord', component: EditServiceRecordComponent},
   {path: 'serviceRecordAllServices/:id', component: ServiceRecordAllServicesComponent},
+  {path: 'Allappointment/:id', component: AppointmentAllApointmentComponent},
   {path: 'requestInvoice', component: RequestInvoiceComponent},
   {path: 'actionItems', component: ActionItemsComponent},
   {path: 'serviceCalendar', component: CalendarComponent},
@@ -110,7 +115,7 @@ export const MaterialRoutes: Routes = [
   {path: 'home', component: HomeComponent },
   {path: 'directory', component: DirectoryComponent },
   {path: 'notification', component: NotificationComponent },
-  {path: 'messenger-center', component: MessengerCenterComponent},
+  {path: 'messenger-center/:id', component: MessengerCenterComponent},
   {path: 'my-training', component: MyTrainingComponent},
   {path: 'leads', component: LeadsComponent},
   {path: 'partner_client/:id', component: NewPartnerClientComponent},
@@ -164,5 +169,5 @@ export const MaterialRoutes: Routes = [
   // nuevo diseño de admin center
   { path: 'admin-center/users', component: AdminCenterUsersComponent },
   { path: 'admin-center/system-configuration', component: AdminCenterSystemConfigurationComponent }
-
+  ,{path: 'homefindingfull/:id',component: HomeFindingFullComponent }
 ];

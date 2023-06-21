@@ -1,0 +1,64 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h2 mat-dialog-title class="modal-form__title">Service Documents</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<!-- ///////////////////////////////  Service Documents //////////////////////////////////-->
+<mat-dialog-content>
+    <mat-grid-list cols="1" *ngIf="serviceScope != null">
+        <div class="page__section margin-top-min">
+
+            <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+                <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+                    No Service Documents loaded
+                </div>
+            </div>
+            <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
+                <div class="page__section-input page__section-input--6_1-local">
+                    <span class="documents__index documents__index--task">
+                        File name
+                    </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1-local">
+                    <span class="documents__index documents__index--task">
+                        Upload
+                    </span>
+                </div>
+                <div class="page__section-input page__section-input--6_1-local">
+                    <span class="documents__index documents__index--task">
+                        Type
+                    </span>
+                </div>
+            </div>
+            <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
+                <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
+                    style="background: transparent!important;" style="right: 40px;"
+                    (click)="openFileOnWindow(item.fileRequest)">
+                <img src="./assets/trashir.png" class="delete" style="background: transparent!important; width: 25px; margin-top: 5px;"
+                    (click)="delete_document(item)">
+
+                <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+                    {{item.fileName}}
+                </div>
+                <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+                    {{item.updatedDate | date:'dd MMM yyy'}}
+                </div>
+                <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+                    {{item.documentTypeNavigation.documentType}}
+                </div>
+            </div>
+        </div>
+    </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+        <button (click)="addDocument()">Add Document</button>
+
+    </div>
+
+</mat-dialog-actions>

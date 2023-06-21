@@ -1,0 +1,97 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Departure Details
+        
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+               - Lease Summary
+            </span>  
+        </h2>
+        
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    
+
+        <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+        
+            <div >
+                <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+                    <mat-grid-list cols="4" rowHeight="70px">
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div style="height: 80%;" class="textarea">
+                            <p class="subtitle" style="font-size: 12px; margin: 0px;">Diplomatic Clause</p>
+                            <mat-checkbox [(ngModel)]="data_departure.diplomaticClause"></mat-checkbox>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Early Termination Notification Days</mat-label>
+                              <input matInput placeholder="Number of Days" type="number" min="0"
+                                [(ngModel)]="data_departure.earlyTerminationNotification">
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div style="height: 80%;" class="textarea">
+                            <p class="subtitle" style="font-size: 12px; margin: 0px;">Permission to credit Security Deposit
+                            </p>
+                            <mat-checkbox [(ngModel)]="data_departure.permission"></mat-checkbox>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Penalty</mat-label>
+                              <mat-select [(ngModel)]="data_departure.penalty">
+                                <mat-option [value]=1>Yes</mat-option>
+                                <mat-option [value]=2>No</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="2" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Penalty Description</mat-label>
+                              <input matInput placeholder="Penalty Description" [(ngModel)]="data_departure.amount">
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Security Deposit Return Days</mat-label>
+                              <input matInput placeholder="Security Deposit Return Days" type="number" min="0"
+                                [(ngModel)]="data_departure.securityDepositReturn">
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Return Security Deposit To</mat-label>
+                              <mat-select [(ngModel)]="data_departure.returnSecurityDepositTo">
+                                <mat-option *ngFor="let item of ca_security" [value]="item.id">{{item.responsable}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        
+                      </mat-grid-list>
+                </div>
+                <!---------------------------------- PINTAR CONTRACTS PASADOS ----------------------------->
+            </div>
+        </div>
+  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button *ngIf="data.edicion" (click)="saveDeparture();" >Save </button>
+    </div>  
+</mat-dialog-actions>

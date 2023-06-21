@@ -1,4 +1,4 @@
-import { Component, OnInit ,Inject} from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogDocumentsComponent } from '../dialog-documents/dialog-documents.component';
@@ -12,6 +12,26 @@ import { DialogDeletepaymentconceptComponent } from '../dialog-deletepaymentconc
 import { DialogDocumentsView } from '../dialog-documents-view/dialog-documents-view.component';
 import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/dialog-request-payment-new.component';
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
+import { DialogLeaseSummaryComponent } from '../dialog-lease-summary/dialog-lease-summary.component';
+import { DialogInspectionrepairsComponent } from '../dialog-inspectionrepairs/dialog-inspectionrepairs.component';
+import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
+import { DialogPropertyExpensesComponent } from '../dialog-property-expenses/dialog-property-expenses.component';
+import { DialoglLandlordBankDetailComponent } from '../dialogl-landlord-bank-detail/dialogl-landlord-bank-detail.component';
+import { DialogPaymentTypeComponent } from '../dialog-payment-type/dialog-payment-type.component';
+import { DialogCostSavingsComponent } from '../dialog-cost-savings/dialog-cost-savings.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { json } from '@angular-devkit/core';
+import { stringify } from 'querystring';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { DialogAttendeesComponent } from '../dialog-attendees/dialog-attendees.component';
+import { DialogKeyComponent } from '../dialog-key/dialog-key.component';
+import { DialogInventoryComponent } from '../dialog-inventory/dialog-inventory.component';
+import { DialogAttendeesInspecComponent } from '../dialog-attendees-inspec/dialog-attendees-inspec.component';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { environment } from '../../../../environments/environment';
+
+
 @Component({
   selector: 'app-home-finding',
   templateUrl: './home-finding.component.html',
@@ -19,286 +39,485 @@ import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocati
 })
 export class HomeFindingComponent implements OnInit {
 
-
-  calculo : any = {};
-  mostrarTarjeta : any = {
-    contractDetails: false,
-    paymenType: false,
-    costSaving: false,
-    renewalDetails: false,
-    departureDetails: false,
-    landLord: false,
-    repairs: false,
-    move_in: false,
-    move_out: false
-  };
-  //VARIABLES PARA LEASER SUMMARY//
-  data_contracts:any = {};
-  paymentHousings = [];
-  costSavingHomes = [];
-  data_renewal:any ={}
-  data_departure:any = {}
-  data_land:any = {
-    creditCardLandLordDetails:[]
-  };
-  //VARIABLES PARA INSECTIONS & REPAIRS//
-  data_move_in:any= {
-    propertyReportSections: [],
-      keyInventories: [],
-      attendees: []
-  };
-  data_move_out:any= {
-    propertyReportSections: [],
-      keyInventories: [],
-      attendees: []
-  };
+  @ViewChild('sortrole') sortrole: MatSort;
+  calculo: any = {};
 
 
-  constructor(public dialogRef: MatDialogRef < any > , @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) {}
 
-  show:boolean = false;
+
+  constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
+
+  show: boolean = false;
   user: any = {};
   //*******************************************************//
   //***********************VARIABLES***********************//
-  table_payments:any;
+  table_payments: any;
   ca_estatus: any[] = [];
   ca_currency: any[] = [];
-  ca_requestType:any[]=[];
-  ca_dependent:any[]=[];
+  ca_requestType: any[] = [];
+  ca_dependent: any[] = [];
   home_finding: any = {};
-  temporalDocument:any[]=[];
-  ca_accounttype:any[] = [];
-  ca_leaseTemplate:any[] = [];
-  ca_creditCard:any[]=[];
-  nacionality:any[]=[];
-  ca_document:any[]=[];
+  temporalDocument: any[] = [];
+  temporalDocumentHF: any[] = [];
+  ca_accounttype: any[] = [];
+  ca_leaseTemplate: any[] = [];
+  ca_creditCard: any[] = [];
+  nacionality: any[] = [];
+  ca_document: any[] = [];
   cr: string = "Reply";
-  loader:LoaderComponent = new LoaderComponent();
+  url_api = `${environment.URL_EXPORT}`;
+  ca_security = [];
+  ca_initial = [];
+  ca_ongoing = []; 
+  ca_realtor_com = [];
+
+
+  _deliveredTo = "Assignee Name";
+  _city_name = "City Name"
+  _country_name = "Country Name"
+  SupplierCompany = [];
+
+  loader: LoaderComponent = new LoaderComponent();
   //TABLE EXTENSION//
   dataSource: any[] = [];
   displayedColumns: string[] = ['Authorized By', 'Autho Date', 'Autho Acceptance Date', 'Time'];
   //RESQUEST PAYMENT//
   dataSourcePay: any[] = [];
-  displayedColumnsPay: string[] =  ['Payment','Amount', 'ManagementFee', 'WireFee', "AdvanceFee", 'Service', 'Recurrence','action'];
+  displayedColumnsPay: string[] = ['Payment', 'Amount', 'ManagementFee', 'WireFee', "AdvanceFee", 'Service', 'Recurrence', 'action'];
   //TABLE HOUSING//
   dataSourceHousing: any[] = [];
-  displayedColumnsHousing: string[] = ['Property No.', 'Property Type', 'Address', 'Price', 'Currency', 'Housing Status', 'Actions'];
+  displayedColumnsHousing: string[] = ['Send', 'Property Type', 'Address', 'Neighborhood', 'Price', 'Currency', 'Housing Status', 'Actions'];
+  displayedColumnsBanking: string[] = ['Account Type', 'Account Holders Type', 'Bank Name', 'Account Number', 'International Codes', 'Actions'];
+  //displayedColumnsHousing: string[] = ['Property Type', 'Address', 'Neighborhood', 'Price', 'Currency', 'Housing Status', 'Actions'];
+  displayedColumnsHousingExport: string[] = ['NoProperty', 'Property Type', 'Neighborhood', 'Address', 'NoBedroom', 'NoBathroom', 'ParkingSpaces', 'Size', 'ListRent', 'Currency', 'Status', 'Comments'];
   //*******************************************************//
-  serviceScope: any[] = [];
+  serviceScope = { "documentcountries": "", "scopeDescription": "" };
   public leaseGuarentee = [
     {
       value: 1,
-      name: 'Yes'
+      name: 'None'
     },
     {
-      value: 0,
-      name: 'No'
+      value: 2,
+      name: 'Company Guarantor'
+    },
+    {
+      value: 3,
+      name: 'Advance Rent'
+    },
+    {
+      value: 4,
+      name: 'Advance Deposit'
+    },
+    {
+      value: 5,
+      name: 'Property'
+    },
+    {
+      value: 6,
+      name: 'Insurance Bond'
     }
   ];
 
+  today_: Date = new Date();
+  hl_to_send = [];
+  ca_lease_signa = [{ id: 1, value: "Assignee" }, { id: 2, value: "Client" }, { id: 3, value: "Assigne and Client" }];
 
   ngOnInit(): void {
     this.loader.showLoader();
-    console.log("HOME FINDING: ", this.data);
+    console.log("HOME FINDING DETAIL FROM SR: =====================================", this.data);
     this.user = JSON.parse(localStorage.getItem('userData'));
+    console.log("USUARIO  ==========================", this.user)
     this.home_finding = {};
     this.get_catalogos();
   }
-   // get service scope
-   getServiceScope() {
-    this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.home_finding.workOrderServicesId}&client=${this.data.data.partnerId }`).subscribe(resp => {
+
+  //////////////////////manage estatus 
+
+  disabled_by_permissions: boolean = false;
+  hide_by_permissions: boolean = false;
+  hide_complete: boolean = false;
+  show_completed: boolean = false;
+  show_progress: boolean = false;
+  wo_: boolean = false;
+  sr_: boolean = false;
+  ca_property = [];
+  
+  setup_permissions_settings() {
+    //////debugger;
+    if (!this.data.data.numberWorkOrder) {
+      this.wo_ = this.data.workOrderId;
+    }
+    else {
+      this.wo_ = this.data.data.numberWorkOrder
+    }
+
+    if (!this.data.data.number_server) {
+      this.sr_ = this.data.data.serviceNumber
+    }
+    else {
+      this.sr_ = this.data.data.number_server
+    }
+
+    if (this.user.role.id == 3) {
+      this.disabled_by_permissions = true
+    }
+    else {
+      this.hide_by_permissions = true;
+    }
+    if (this.home_finding.statusId != 39 && this.home_finding.statusId != 2) { //active , in progress
+      this.hide_complete = true;
+    }
+    else {
+      if (this.home_finding.statusId == 39) {
+        this.show_progress = true;
+      }
+      else {
+        this.show_completed = true;
+      }
+    }
+  }
+
+  change_button() {
+    //////debugger;
+    if (this.show_completed) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure the service is complete?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // //console.log(result);
+        if (result) {
+          this.home_finding.statusId = 37; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+
+    if (this.show_progress) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Do you want start the service?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // //console.log(result);
+        if (result) {
+          this.home_finding.statusId = 2; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+  }
+
+  //////////////////////manage estatus 
+
+  // get service scope
+  getServiceScope() {
+    this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.home_finding.workOrderServicesId}&client=${this.data.data.partnerId}`).subscribe(resp => {
       if (resp.success) {
-        console.log('Data ScopeService: ', resp);
+        console.log('Data ScopeService: ================================', resp);
         this.serviceScope = resp.result.value;
       }
     });
   }
-  public __serverPath__:string = this._services.url_images;
-  public openFileOnWindow( url_in:string ):void {
-    const server_url:string = this.__serverPath__ + url_in;
-    window.open( server_url );
+  public __serverPath__: string = this._services.url_images;
+  public openFileOnWindow(url_in: string): void {
+    const server_url: string = this.__serverPath__ + url_in;
+    window.open(server_url);
   }
-  //*****************************************************************************************************//
-  ca_accountType = [];
-  ca_payment_Type = [];
-  ca_responsible = [];
-  ca_recurrence = [];
-  ca_statuspropertySection = [];
-  ca_propertySection = [];
-  ca_relation = [];
-  ca_repair = [];
-  SupplierCompany = []
-  ca_property = [];
+  
+
   ca_privacy = [];
+
   //BRING DATA CATALOGUES//
   async get_catalogos() {
-    this.ca_statuspropertySection=await this._services.getCatalogueFrom('GetStatusPropertySection');
-    //this.ca_estatus = await this._services.getCatalogueFrom('GetStatus');
-    this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=21").subscribe((data => {
-      console.log(data);
-      if (data.success) {
-        this.ca_estatus = data.result;
-      }
-    }));
+    //debugger;
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
+
+    this._deliveredTo = this.data.data.deliveredTo;
+    this._city_name = this.data.data.location;
+    this._country_name = this.data.data.country;
+    console.log("this._deliveredTo =================", this._deliveredTo)
+   // this.fill_payments_due();
+    this.today_.setDate(this.today_.getDate() + 1);
+  //  this.ca_statuspropertySection = await this._services.getCatalogueFrom('GetStatusPropertySection');
+    this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=21").subscribe((data => {
+      if (data.success) { this.ca_estatus = data.result; }
+    }));
+  //  this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
     this.ca_requestType = await this._services.getCatalogueFrom('GetRequestType');
     this.ca_leaseTemplate = await this._services.getCatalogueFrom('GetLeaseTemplate');
     this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
+    this.ca_creditCard.sort((a, b) => (a.id < b.id ? -1 : 1));
     this.nacionality = await this._services.getCatalogueFrom('GetCountry');
-    //this.ca_document = await this._services.getCatalogueFrom('GetDocumentType');
-    this._services.service_general_get("Catalogue/GetDocumentType/1").subscribe((data => {
-      console.log(data);
-      if (data.success) {
-        this.ca_document = data.result;
-      }
+    this._services.service_general_get("Catalogue/GetDocumentType/26").subscribe((data => {
+      if (data.success) { this.ca_document = data.result; }
     }))
-    this.ca_propertySection=await this._services.getCatalogueFrom('GetPropertySection');
+ //   this.ca_propertySection = await this._services.getCatalogueFrom('GetPropertySection');
     let duration = await this._services.getCatalogueFrom('GetDuration');
-    this.ca_relation = await this._services.getCatalogueFrom('GetRelationship');
-    this.ca_repair=await this._services.getCatalogueFrom('GetRepairType');
+ //   this.ca_relation = await this._services.getCatalogueFrom('GetRelationship');
+ //   this.ca_repair = await this._services.getCatalogueFrom('GetRepairType');
     this.ca_property = await this._services.getCatalogueFrom('GetPropertyTypeHousing');
-    this.ca_recurrence = duration.filter(function(E){
-      if(E.recurrence != null){
-         return true;
-      }
-    });
 
-    this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
+    ///////////// Catalogos de pagos 
+    this.ca_security = await this._services.getCatalogueFrom('GetResponsablePayment');//= await this._services.getCatalogueFrom('GetSecurityDeposit');
+    this.ca_initial = this.ca_security; //await this._services.getCatalogueFrom('GetResponsablePayment');//= await this._services.getCatalogueFrom('GetInitialRentPayment');
+    this.ca_ongoing = this.ca_security; //await this._services.getCatalogueFrom('GetResponsablePayment');//= await this._services.getCatalogueFrom('GetOngoingRentPayment');
+    this.ca_realtor_com = this.ca_security;//await this._services.getCatalogueFrom('GetResponsablePayment');//= await this._services.getCatalogueFrom('GetRealtorCommission'); 
+
+ //   this.ca_recurrence = duration.filter(function (E) { if (E.recurrence != null) { return true; } });
+  //  this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
+    this.ca_creditCard.forEach(E => { E.checked = false; });
+  //  this.ca_payment_Type = await this._services.getCatalogueFrom('GetPaymentTypeStatus'); //= await this._services.getCatalogueFrom('GetPaymentType');
+  //  this.ca_responsible = await this._services.getCatalogueFrom('GetResponsablePayment');
 
-    this.ca_creditCard.forEach(E => {
-      E.checked = false;
-    });
+  //  this.get_items_section(0);
+    // this.get_attendees_list_all();
 
-    this.ca_payment_Type = await this._services.getCatalogueFrom('GetPaymentType');
-    this.ca_responsible = await this._services.getCatalogueFrom('GetResponsablePayment');
-
-    this._services.service_general_get('Catalogue/GetSupplierCompany?id=2').subscribe(r=> {
-      if(r.success) {
-        for (let i=0; i < r.result.length; i++) {
-          const element=r.result[i];
+    this._services.service_general_get('Catalogue/GetSupplierCompany?id=2').subscribe(r => {
+      if (r.success) {
+        for (let i = 0; i < r.result.length; i++) {
+          const element = r.result[i];
           this.SupplierCompany.push(element)
         }
       }
     });
 
-    this._services.service_general_get('Catalogue/GetSupplierCompany?id=5').subscribe(r=> {
-      if(r.success) {
-        for (let i=0; i < r.result.length; i++) {
-          const element=r.result[i];
+    this._services.service_general_get('Catalogue/GetSupplierCompany?id=5').subscribe(r => {
+      if (r.success) {
+        for (let i = 0; i < r.result.length; i++) {
+          const element = r.result[i];
           this.SupplierCompany.push(element)
         }
       }
     })
 
-
     this._services.service_general_get('RelocationServices/GetHomeFindingById?id=' + this.data.data.service[0].id).subscribe(data => {
       if (data.success) {
-        console.log('DATA CONSULTA: ', data);
-        this.home_finding = data.result;
+        console.log('DATA GetHomeFindingById ===========================: ', data, "id :", this.data.data.service[0].id);
+        this.temporalDocument =
+          this.home_finding = data.result;
+        this.payment_rocess.securityDepositId = this.home_finding.securityDepositId;
+        this.payment_rocess.initialRentPaymentId = this.home_finding.initialRentPaymentId;
+        this.payment_rocess.ongoingRentPaymentId = this.home_finding.ongoingRentPaymentId;
+        this.payment_rocess.realtorCommissionId = this.home_finding.realtorCommissionId;
+
+        this.get_text_status();
+
         this.show = true;
         this.dataSource = this.home_finding.extensionHomeFindings;
-        this.get_dependent();
+       // this.get_dependent();
+      //  this.get_contarct_type();
         this.getServiceScope();
-        if( this.home_finding.commentHomeFindings.length == 0){
+        if (this.home_finding.commentHomeFindings.length == 0) {
           this.addReply();
         }
-        this.getDataHousing();
-        this.get_payment();
-        this.loader.hideLoader();
+        this.getDataHousingList();
+       // this.supplierPartner_repairs();
+        //this.get_payment();
+        //   this.loader.hideLoader();
+        this.setup_permissions_settings();
       }
     });
+
+    ////////////////////////////////////////// CATALOGOS I&R ////////////////////////////////////////////////
+
+    // this.ca_currency=await this._services.getCatalogueFrom('GetCurrency');
+    // this.ca_repair=await this._services.getCatalogueFrom('GetRepairType');
+    // this.ca_propertySection=await this._services.getCatalogueFrom('GetPropertySection');
+    // this.ca_statuspropertySection=await this._services.getCatalogueFrom('GetStatusPropertySection');
+    // this.ca_relation = await this._services.getCatalogueFrom('GetRelationship');
+    // this.ca_resppayrep = await this._services.getCatalogueFrom('GetPaymentRepairResponsability');
+
+   /*  this._services.service_general_post_with_url('HousingList/GetPaymentRepairResponsability', 1).subscribe(r => {
+
+      this.ca_resppayrep = r.hl;
+      // console.log("pagoooooooooooooooooooooooooooos", this.ca_resppayrep)
+    }) */
+
+    // Move In 
+
+    //this.ca_status_report = await this._services.getCatalogueFrom('get_status_report');
+
+    /* this._services.service_general_get('PropertyReport/get_status_report').subscribe(r => {
+      if (r.success) {
+        console.log("this.ca_status_report ", r);
+        this.ca_status_report  = r.result;
+      }
+    }) */
 
   }
   //*****************************************************************************************************//
   //DEPENDENT//
-  get_dependent(){
-    this._services.service_general_get('Catalogue/GetDependents?sr=' + Number(this.data.sr)).subscribe(data => {
+/*   get_dependent() {
+    this._services.service_general_get('Catalogue/GetLeaseSignators?sr=0').subscribe(data => {
       if (data.success) {
-        console.log('DATA CONSULTA: ', data);
+        console.log('DATA GetLeaseSignators ==================================: ', data);
         this.ca_dependent = data.result;
       }
     });
-  }
-  //*****************************************************************************************************//
-  //DATA TABLE HOUSING//
-  getDataHousing() {
-    this._services.service_general_get('HousingList/GetAllHousing?key=' + Number(this.data.data.workOrderId)).subscribe((data_housing) => { //this.area_orientation.workOrderServicesId
-      if (data_housing.success) {
-        console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
-        this.dataSourceHousing = data_housing.message;
-        this.permanent_homet(this.dataSourceHousing);
-        this.dataFinal();
+  } */
+
+  contract_Type: any[] = [];
+
+ /*  get_contarct_type() {
+    this._services.service_general_get('AdminCenter/ContractType/All').subscribe(resp => {
+      if (resp.success) {
+        console.log('get contract ===========================================', resp);
+        this.contract_Type = resp.result;
       }
     });
+  } */
+
+  //*****************************************************************************************************//
+  //DATA TABLE HOUSING//
+  getDataHousingList() {
+    ////debugger;
+    this.loader.showLoader();
+    // ////debugger;
+    ////console.log("this.data.data.workOrderId ========" , this.data.data.workOrderId)
+    //this._services.service_general_get('HousingList/GetAllHousing?key=' + Number(this.data.data.workOrderId)).subscribe((data_housing) => { //this.area_orientation.workOrderServicesId
+    // this._services.service_general_get(`HousingList/GetSegmentedHousing?wo_id=${this.data.data.workOrderId}&id_service_detail=${this.home_finding.id}&shared=${1}`).subscribe(data_housing => {
+    this._services.service_general_get(`HousingList/GetHomeFindingHousingList?id_service_detail=${this.home_finding.id}`).subscribe((data_housing => {
+      //debugger;
+      if (data_housing.success) {
+        console.log('DATA CONSULTA HOUSING LIST ===========================: ', data_housing);
+        if (data_housing.custom) {
+          if (data_housing.custom.value)
+            this.dataSourceHousing = data_housing.custom.value;
+        }
+
+
+        let _dataSourceHousing = this.dataSourceHousing;
+
+        let phl = _dataSourceHousing.filter(function (E) {
+          if (E.status_id == 7) {
+            return true;
+          }
+        })
+
+        if (phl.length > 0) {
+          this.permanent_homet(phl[0].id);
+         // this.get_attendees_list_all(phl[0].id);
+        }
+        else {
+          this.permanentHome = null;
+          this.loader.hideLoader();
+        }
+        this.dataFinal();
+      }
+      else {
+        this.loader.hideLoader();
+      }
+    }), (err) => {
+      this.loader.hideLoader();
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Error",
+          body: "An error has occurred."
+        },
+        width: "350px"
+      });
+      console.log("error en GetHomeFindingHousingList : ", err);
+    });
   }
+
   //*****************************************************************************************************//
   //**PERMANENT HOME**//
-  permanentHome:any;
-  data_inspection=[];
-  data_repairs=[];
+  permanentHome: any;
   data_home = [];
-  permanent_homet(data){
-      let permanentHome  = data.filter(function(E)  {
-          if(E.status == "Permanent Home"){
-             return true;
-          }
-      })
-      console.log(permanentHome);
-      this.data_home = permanentHome;
-      for (let i = 0; i < permanentHome.length; i++) {
-        this._services.service_general_get("HousingList/GetHousing?key="+permanentHome[i].id).subscribe((data => {
-          this.permanentHome = data.result;
-          console.log('esta es la casa permanente: ', this.permanentHome);
-          this.data_contracts = this.permanentHome.contractDetail;
-          this.paymentHousings = this.permanentHome.paymentHousings;
-          this.costSavingHomes = this.permanentHome.costSavingHomes;
-          this.data_renewal = this.permanentHome.renewalDetailHome;
-          this.data_departure = this.permanentHome.departureDetailsHome;
-          this.data_land = this.permanentHome.landlordDetailsHome;
 
-          if(this.data_land.creditCardLandLordDetails){
-            this.ca_creditCard.forEach(E => {
-            for (let i = 0; i < this.data_land.creditCardLandLordDetails.length; i++) {
-                if(this.data_land.creditCardLandLordDetails[i].creditCard == E.id){
-                  E.checked = true;
-                }
-              }
-            })
-          }
-
-          if(this.permanentHome.propertyReports) {
-            for(let i=0; i < this.permanentHome.propertyReports.length; i++) {
-              if(this.permanentHome.propertyReports[i].propertyInspection==1) {
-                this.data_move_in=this.permanentHome.propertyReports[i];
-              }
-
-              if(this.permanentHome.propertyReports[i].propertyInspection==2) {
-                this.data_move_out=this.permanentHome.propertyReports[i];
-              }
-            }
-
-            console.log(this.data_move_in);
-          }
-
-          this.data_inspection = this.permanentHome.inspections;
-          this.data_repairs = this.permanentHome.repairs;
-        }))
-      }
+  permanent_homet(id_ph) {
+    if (id_ph > 0) {
+      this.loader.showLoader();
+      this.GetOnlyPropertyDetails(id_ph);
+      //this.get_attendees_list_all(id_ph);
+    }
   }
+
+  GetOnlyPropertyDetails(id_ph) {
+
+
+    this._services.service_general_get("HousingList/GetOnlyPropertyDetails?key=" + id_ph + "&servide_detail_id=" + this.home_finding.id).subscribe((data => {
+      this.permanentHome = data.result.value;
+      console.log('DETALLES DE LA CASA PERMANENTE : ', this.permanentHome);
+this.GetLeaseInspectionsVersions(id_ph);
+      this.GetOnlyPropertyLSF(id_ph);
+
+      // this.llenarJSON();
+      //  this.loader.hideLoader();
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("error al guardar los contract details: ", err);
+    })
+  }
+
+
+  GetLeaseInspectionsVersions(id_ph){
+
+debugger
+  this._services.service_general_get("HousingList/GetLeaseInspectionsVersions?id_service_detail=" + this.home_finding.id + "&id_catCategoryId=" + 21 + "&housing_list_id=" + id_ph).subscribe((data => {
+    console.log('response GetLeaseInspectionsVersions : ', data);
+  }), (err) => {
+    this.loader.hideLoader();
+    console.log("error al guardar los contract details: ", err);
+  })
+}
+
+  permanentHome_LSF;
+  GetOnlyPropertyLSF(id_ph) {
+
+    // this.loader.showLoader();
+    console.log("HousingList/GetOnlyPropertyLSF?key=" + id_ph + "&servide_detail_id=" + this.home_finding.id);
+    this._services.service_general_get("HousingList/GetOnlyPropertyLSF?key=" + id_ph + "&servide_detail_id=" + this.home_finding.id).subscribe((data => {
+      this.permanentHome_LSF = data.result.value;
+      console.log('ONLY LEASE SUMARY FORM : ', this.permanentHome_LSF);
+      this.GetOnlyPropertyInspRep(id_ph);
+      //this.llenarJSON();
+      // this.loader.hideLoader();
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("error al guardar los contract details: ", err);
+    })
+  }
+
+  permanentHome_IR;
+  GetOnlyPropertyInspRep(id_ph) {
+
+    // this.loader.showLoader();
+    this._services.service_general_get("HousingList/GetOnlyPropertyInspRep?key=" + id_ph + "&servide_detail_id=" + this.home_finding.id).subscribe((data => {
+      this.permanentHome_IR = data.result.value;
+      console.log('ONLY LEASE INSPECTION & REPAIRS : ', this.permanentHome_IR);
+      //this.llenarJSON();
+      this.loader.hideLoader();
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("ERROR -------------- ONLY LEASE INSPECTION & REPAIRS: ", err);
+    })
+  }
+
   //*****************************************************************************************************//
   //**CONSULTA PAYMENT**//
   get_payment() {
     this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.home_finding.workOrderServicesId).subscribe((data => {
       if (data.success) {
-        console.log(data.result);
+        ////console.log(data.result);
         this.calculo = data.result.value;
         this.calculo.total = this.calculo.ammountSubTotal + this.calculo.managementFeeSubTotal + this.calculo.wireFeeSubTotal + this.calculo.advanceFeeSubTotal;
         this.table_payments = data.result.value.payments;
-        console.log(this.table_payments);
+        ////console.log(this.table_payments);
       }
-      console.log(this.table_payments);
+      ////console.log(this.table_payments);
     }))
   }
   //**METHODS PAYMENTS (NEW PAYMENT)**//
@@ -319,7 +538,7 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.get_payment();
+      //this.get_payment();
     });
   }
   //**EDIT REQUEST PAYMENT**//
@@ -336,7 +555,7 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.get_payment();
+      //this.get_payment();
     });
   }
 
@@ -347,49 +566,49 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      ////console.log(result);
 
       if (result.success) {
-          this._services.service_general_delete("RequestPayment/DeletePaymentConcept/"+data.id+"/"+result.type).subscribe((data => {
-            if (data.success) {
-              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: data.message
-                },
-                width: "350px"
-              });
-              this.get_payment();
-            }
-          }))
+        this._services.service_general_delete("RequestPayment/DeletePaymentConcept/" + data.id + "/" + result.type).subscribe((data => {
+          if (data.success) {
+            const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Success",
+                body: data.message
+              },
+              width: "350px"
+            });
+            //this.get_payment();
+          }
+        }))
       }
     })
   }
   //*****************************************************************************************************//
   //**METHODS COMMENTS (NEW)**//
   addReply() {
-    console.log(this.user);
+    ////console.log(this.user);
     this.home_finding.commentHomeFindings.push({
-        "id": 0,
-        "homeFindingId": this.home_finding.id,
-        "reply": null,
-        "userId": this.user.id,
-        "createdBy": this.user.id,
-        "createdDate": new Date(),
-        "updateBy": this.user.id,
-        "updatedDate": new Date(),
-        "user": this.user
-      })
+      "id": 0,
+      "homeFindingId": this.home_finding.id,
+      "reply": null,
+      "userId": this.user.id,
+      "createdBy": this.user.id,
+      "createdDate": new Date(),
+      "updateBy": this.user.id,
+      "updatedDate": new Date(),
+      "user": this.user
+    })
 
-      if (this.home_finding.commentHomeFindings.length == 1) {
-        this.cr = "Comment";
-      } else {
-        this.cr = "Reply";
-      }
+    if (this.home_finding.commentHomeFindings.length == 1) {
+      this.cr = "Comment";
+    } else {
+      this.cr = "Reply";
+    }
   }
   //*****************************************************************************************************//
   addDocument() {
-    this.data.typeDocument = 1;
+    this.data.typeDocument = 26;
     this.data.location = this.data.data.location;
     const dialogRef = this._dialog.open(DialogDocumentsRelocationComponent, {
       width: "95%",
@@ -397,16 +616,17 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if(result.success){
-         result.homeFindingId = this.home_finding.id;
-         this.temporalDocument.push(result);
+      ////console.log(result);
+      if (result.success) {
+        ////debugger;
+        result.homeFindingId = this.home_finding.id;
+        this.temporalDocumentHF.push(result);
       }
     });
   }
   //*****************************************************************************************************//
   //**DELETE DOCUMENTO FROM DATABASE**//
-  deleteDocument_DB(id){
+  deleteDocument_DB(id) {
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -416,7 +636,7 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      ////console.log(result);
       if (result) {
         this._services.service_general_delete("RelocationServices/DeleteDocumentHF?id=" + id).subscribe((data => {
           if (data.success) {
@@ -434,7 +654,7 @@ export class HomeFindingComponent implements OnInit {
     });
   }
   //**DELETE DOCUMENT FROM VAR TEMPORALS**//
-  deleteDocument_LOCAL(position){
+  deleteDocument_LOCAL(position) {
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -444,9 +664,9 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      ////console.log(result);
       if (result) {
-        this.temporalDocument.splice(position, 1);
+        this.temporalDocumentHF.splice(position, 1);
       }
     })
   }
@@ -456,8 +676,8 @@ export class HomeFindingComponent implements OnInit {
     this.home_finding.reminderHomeFindings.push({
       "id": 0,
       "homeFindingId": this.home_finding.id,
-      "reminderDate": null,
-      "reminderComments": null,
+      "reminderDate": new Date(),
+      "reminderComments": " ",
       "createdBy": this.user.id,
       "createdDate": new Date()
     })
@@ -472,7 +692,7 @@ export class HomeFindingComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      ////console.log(result);
       if (result) {
         if (id == 0) {
           this.home_finding.reminderHomeFindings.splice(i, 1);
@@ -495,14 +715,16 @@ export class HomeFindingComponent implements OnInit {
   }
   //******************************************************************************************************//
   //HOUSING//
-  HousingSpecs(){
+  HousingSpecs() {
+
     let data_ = {
       numberWorkOrder: this.data.data.numberWorkOrder,
       serviceID: this.data.data.number_server,
-      serviceName:  this.data.data.service_name,
+      serviceName: this.data.data.service_name,
       sr: this.data.sr,
       service: this.data.data.serviceTypeId,
       type_housing: 2,
+      home_finding_id: this.home_finding.id,
       workOrderServicesId: this.home_finding.workOrderServicesId
     }
     const dialogRef = this._dialog.open(DialogHousingSpecificationsComponent, {
@@ -511,13 +733,16 @@ export class HomeFindingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      ////console.log(result);
       if (result) {
       }
     })
   }
+
+  
+
   //NEW RECORD//
-  HomeDetailsnew(){
+  HomeDetailsnew() {
     const dialogRef = this._dialog.open(DialogHomeDetailsComponent, {
       data: {
         id: 0,
@@ -526,32 +751,27 @@ export class HomeFindingComponent implements OnInit {
         workOrderServicesId: this.home_finding.workOrderServicesId,
         numberWorkOrder: this.data.data.numberWorkOrder,
         serviceID: this.data.data.number_server,
-        serviceName:  this.data.data.service_name,
+        serviceName: this.data.data.service_name,
         service: this.data.data.serviceRecordId,
-        serviceTypeId : this.data.data.serviceTypeId,
+        serviceTypeId: this.data.data.serviceTypeId,
         sr: this.data.sr,
-        supplierType: 3
-        /*
-        id: 0,
-        nuevo: true,
-        workOrder: this.data.data.workOrderId,
-        numberWorkOrder: this.data.data.numberWorkOrder,
-        serviceID: this.data.data.number_server,
-        serviceName:  this.data.data.service_name,
-        service: this.data.data.serviceRecordId,
-        serviceTypeId : this.data.data.serviceTypeId,
-        sr: this.data.sr
-        */
+        supplierType: 3,
+        no_permanent: false
+        , idServiceDetail: this.home_finding.id
+        , shared: 1,
+        cat_service_id: 26, // Cat_Service es home finding
+        catCategoryId: 21 // Cat_Category es home finding
       },
       width: "95%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getDataHousing();
+      this.getDataHousingList();
+      
     })
   }
   //EDIT HOUSING//
-  editHousing(data){
+  editHousing(data) {
     /*
     data.sr = this.data.sr;
     data.numberWorkOrder = this.data.data.numberWorkOrder;
@@ -560,171 +780,121 @@ export class HomeFindingComponent implements OnInit {
     */
     data.supplierType = 3
     data.workOrderServicesId = this.home_finding.workOrderServicesId,
-    data.sr = this.data.sr;
+      data.sr = this.data.sr;
     data.numberWorkOrder = this.data.data.numberWorkOrder;
-    data.serviceID =  this.data.data.number_server;
+    data.serviceID = this.data.data.number_server;
     data.serviceName = this.data.data.service_name;
-    console.log("Editar Housing: ", data);
-    const dialogRef = this._dialog.open(DialogHomeDetailsComponent,{
+    data.idServiceDetail = this.home_finding.id;
+    data.shared = 1;
+    data.cat_service_id = 26;
+    ////console.log("Editar Housing: ", data);
+    const dialogRef = this._dialog.open(DialogHomeDetailsComponent, {
       data: data,
       width: "95%"
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.getDataHousing();
+      this.getDataHousingList();
     })
   }
-  //******************************************************************************************************//
-  //DATA FINAL//
-  dataFinal(){
-    /*
-    this.home_finding.permanentHomes = [];
-    let housing = this.dataSourceHousing.filter(function(E){
-      if(E.status == 'Pending'){
-        return true;
-      }
-    })
 
-    housing.forEach(E => {
-     this._services.service_general_get("HousingList/GetHousing?key="+E.id).subscribe(async(data) => {
-        console.log("LA CASA ES: ",data);
-        if(data.success){
-          this.home_finding.permanentHomes.push(data.result);
+  validatedeleteHousing(_data_) {
+    ////debugger;
+    if (_data_.wassended || _data_.status != 'Pending') {
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Not Allowed",
+          body: "The property has already been sent, it cannot be deleted."
+        },
+        width: "350px"
+      });
+    }
+    else {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure to delete the property?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          // this.save();
+          this.delete_housing(_data_);
         }
       });
+    }
+  }
+
+  delete_housing(_data_) {
+    this.loader.showLoader();
+    debugger
+    this._services.service_general_put("HousingList/LogicDeleteHousing", _data_.id).subscribe((data => {
+      console.log("guardar db: ", data);
+
+      if (data.success) {
+        console.log(data);
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Information saved"
+          },
+          width: "350px"
+        });
+        this.loader.hideLoader();
+        this.getDataHousingList();
+        // this.dialogRef.close();
+        // this.ngOnInit();
+      }
+    }), (err) => {
+      this.loader.hideLoader();
+      this.getDataHousingList();
+      console.log("error: ", err);
     })
-    */
-    ///console.log("OBJETO FINALLLLLLL OBJETO FINALLLLLLL: ",this.home_finding);
+  }
+
+  //******************************************************************************************************//
+  //DATA FINAL//
+  dataFinal() {
+
   }
   //******************************************************************************************************//
   //DOCUMENT TYPE//
-  getDocument(id){
-    for(let i = 0; i < this.ca_document.length; i++){
-      if(this.ca_document[i].id == id){
-         return this.ca_document[i].documentType;
+  getDocument(id) {
+    for (let i = 0; i < this.ca_document.length; i++) {
+      if (this.ca_document[i].id == id) {
+        return this.ca_document[i].documentType;
       }
     }
   }
   //NACIONALITY//
-  getNacionality(id){
-    for(let i = 0; i < this.nacionality.length; i++){
-      if(this.nacionality[i].id == id){
-         return this.nacionality[i].name;
+  getNacionality(id) {
+    for (let i = 0; i < this.nacionality.length; i++) {
+      if (this.nacionality[i].id == id) {
+        return this.nacionality[i].name;
       }
     }
   }
   //INCLUDED//
-  getIncluded(data){
-    if(data == false){
+  getIncluded(data) {
+    if (data == false) {
       return 'NO';
-    }else if(data == true){
+    } else if (data == true) {
       return 'SI';
     }
   }
-  //Currency//
-  getCurrency(id){
-    for (let i = 0; i < this.ca_currency.length; i++) {
-      if(this.ca_currency[i].id == id){
-         return this.ca_currency[i].currency;
-      }
-    }
-  }
-  //Payment//
-  getPayment(id){
-    for (let i = 0; i < this.ca_payment_Type.length; i++) {
-      if(this.ca_payment_Type[i].id == id){
-         return this.ca_payment_Type[i].paymentType;
-      }
-    }
-  }
-  //Responsable//
-  getResponsable(id){
-    for (let i = 0; i < this.ca_responsible.length; i++) {
-      if(this.ca_responsible[i].id == id){
-         return this.ca_responsible[i].responsable;
-      }
-    }
-  }
-  //Recurrencia//
-  getRecurrence(id){
-    for (let i = 0; i < this.ca_recurrence.length; i++) {
-      if(this.ca_recurrence[i].id == id){
-         return this.ca_recurrence[i].recurrence;
-      }
-    }
-  }
-  //DEPENDENT//
-  getDependent(id){
-    for (let i = 0; i < this.ca_dependent.length; i++) {
-      if(this.ca_dependent[i].id == id){
-         return this.ca_dependent[i].name;
-      }
-    }
-  }
-  //DEPENDENT//
-  getAccount(id){
-  for (let i = 0; i < this.ca_accountType.length; i++) {
-    if(this.ca_accountType[i].id == id){
-       return this.ca_accountType[i].accountType;
-    }
-  }
-  }
-  //Seccion property//
-  getProperty(id){
-    for (let i = 0; i < this.ca_propertySection.length; i++) {
-      if(this.ca_propertySection[i].id == id){
-         return this.ca_propertySection[i].propertySection;
-      }
-    }
-  }
-  //Seccion property//
-  getCondicion(id){
-      for (let i = 0; i < this.ca_statuspropertySection.length; i++) {
-        if(this.ca_statuspropertySection[i].id == id){
-           return this.ca_statuspropertySection[i].status;
-        }
-      }
-    }
-  //RELATION SHIP//
-  getReltion(id){
-    for (let i = 0; i < this.ca_relation.length; i++) {
-      if(this.ca_relation[i].id == id){
-         return this.ca_relation[i].relationship;
-      }
-    }
-  }
-  //Repair//
-  getRepair(id){
-    for (let i = 0; i < this.ca_repair.length; i++) {
-      if(this.ca_repair[i].id == id){
-         return this.ca_repair[i].repairType;
-      }
-    }
-  }
-  //Supplier//
-  getSupplier(id){
-    for (let i = 0; i < this.SupplierCompany.length; i++) {
-      if(this.SupplierCompany[i].int == id){
-         return this.SupplierCompany[i].supplierCompany;
-      }
-    }
-  }
-  //Supplier//
-  getProperty_(id){
-    for (let i = 0; i < this.ca_property.length; i++) {
-      if(this.ca_property[i].id == id){
-         return this.ca_property[i].propertyType;
-      }
-    }
-  }
+
+
+ 
   //FUNCION PARA VER DOCUMENTO//
 
-  public showDocumentDialogDetails( document:any, service_line:number = undefined ):void {
+  public showDocumentDialogDetails(document: any, service_line: number = undefined): void {
     const dialogRef = this._dialog.open(DialogDocumentsView, {
       width: "95%",
       data: {
         sr_id: this.data.sr,
         document: document,
-        sl:1,
+        sl: 1,
         name_section: "only_one_service"
       }
     });
@@ -732,21 +902,62 @@ export class HomeFindingComponent implements OnInit {
   }
   //******************************************************************************************************//
   //SELECT CARD//
-  select_card(data, event){
-    console.log(data);
-    console.log(event);
+  select_card(data, event) {
+    ////console.log(data);
+    ////console.log(event);
   }
   //******************************************************************************************************//
-  save(){
+
+  async validate_status_complete(obj_detail) {
+    if (obj_detail.statusId == 4 || obj_detail.statusId == 5) {
+      obj_detail.serviceCompletionDate = new Date().toISOString();
+
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "The status is complete, this will set the end of service date to today. are you sure?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // //console.log(result);
+        if (result) {
+          this.save()
+        }
+        else {
+          return false
+        }
+      });
+
+    }
+    else {
+      obj_detail.serviceCompletionDate = '';
+      this.save();
+      return true;
+    }
+
+  }
+
+  async save() {
+    // //debugger;
+    //     var continuar = await this.validate_status_complete(this.home_finding);
+    //     if(!continuar)
+    //     {
+    //       return
+    //     }
+    //debugger;
+
+    this.loader.showLoader();
     this.home_finding.updateBy = this.user.id;
     this.home_finding.updatedDate = new Date();
     this.home_finding.createdBy = this.user.id;
     this.home_finding.createdDate = new Date();
-    this.home_finding.documentHomeFindings = this.temporalDocument;
+    this.home_finding.documentHomeFindings = this.temporalDocumentHF;
 
 
 
-    let data_comment_aux =  this.home_finding.commentHomeFindings;
+    let data_comment_aux = this.home_finding.commentHomeFindings;
     this.home_finding.commentHomeFindings = [];
 
     for (let i = 0; i < data_comment_aux.length; i++) {
@@ -762,34 +973,186 @@ export class HomeFindingComponent implements OnInit {
       this.home_finding.serviceCompletionDate = '';
     }
 
-    console.log("GUARDAR: ", this.home_finding);
+    ////console.log("GUARDAR: ", this.home_finding);
     this.temporalDocument = [];
 
-    this._services.service_general_put("RelocationServices/PutHomeFinding", this.home_finding).subscribe((data => {
-      if(data.success){
-        console.log(data);
-         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-              data: {
-                header: "Success",
-                body: "Update Data"
-              },
-              width: "350px"
-            });
-            this.dialogRef.close();
-            this.temporalDocument = [];
-            this.ngOnInit();
+    this.home_finding.documentHomeFindings = this.temporalDocumentHF;
+    this.home_finding.userId = this.user.id;
+    this.home_finding.number_server = this.data.data.number_server;
+    debugger
+    console.log(stringify(this.home_finding))
+    this._services.service_general_put("RelocationServices/PutHomeFinding", this.home_finding).subscribe(data => {
+      this.loader.hideLoader();
+      if (data.success) {
+        ////console.log(data);
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Update Data"
+          },
+          width: "350px"
+        });
+        this.dialogRef.close();
+        this.temporalDocument = [];
+        this.ngOnInit();
       }
-    }))
-    this.loader.hideLoader();
+      else {
+        console.log("ha ocurrido un error al guardar ne le servicio RelocationServices/PutHomeFinding", this.data)
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Error",
+            body: "An error has occurred."
+          },
+          width: "350px"
+        });
+      }
+    }, (error) => {
+      this.loader.hideLoader();
+      console.error('error interno en el servicio RelocationServices/PutHomeFinding: ', error);
+      const dialog2 = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Error",
+          body: "An error has occurred."
+        },
+        width: "350px"
+      });
+    })
+
 
   }
 
   //PRIVACY//
-  getPrivacyName(id) {
+   getPrivacyName(id) {
     for (let i = 0; i < this.ca_privacy.length; i++) {
       if (this.ca_privacy[i].id == id) {
         return this.ca_privacy[i].privacy;
         // return this.applicant[i].name + ' / ' + this.applicant[i].relationship;
+      }
+    }
+  } 
+
+  //***********************************************************************************************************//
+  
+
+
+
+
+  change_status_detail() {
+    //////debugger;
+    const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
+      data: {
+        header: "Confirmation",
+        body: "What is the status of the service?",
+        rol: this.user.role.id,
+        category: 21,
+        type: "home_findig"
+      },
+      width: "350px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      ////debugger;
+      // //console.log(result);
+      if (result.success) {
+        this.home_finding.statusId = result.id; //penidng to completion 
+        this.get_text_status();
+      }
+      else {
+        //nada 
+      }
+    });
+
+
+  }
+
+  //***********************************************************************************************************//
+  
+
+  payment_rocess = { "securityDepositId": null, "initialRentPaymentId": null, "ongoingRentPaymentId": null, "realtorCommissionId": null }
+
+
+  _texto_status = "";
+
+  get_text_status() {
+    for (var v = 0; v < this.ca_estatus.length; v++) {
+      if (this.ca_estatus[v].id == this.home_finding.statusId) {
+        this._texto_status = this.ca_estatus[v].status;
+      }
+    }
+  }
+
+
+  set_houses_to_send(id, set) {
+
+    if (set) {
+      this.hl_to_send.push(id);
+    }
+    else {
+      this.hl_to_send = this.hl_to_send.filter(function (E) {
+        if (E != id) {
+          return true;
+        }
+      });
+    }
+
+  }
+
+  onChangeDemo(ob: MatCheckboxChange, element) {
+    element.wassended = ob.checked;
+    console.log("checked: " + ob.checked, " id housing: ", element.id);
+    this.set_houses_to_send(element.id, ob.checked)
+  }
+
+  sent_houses_list() {
+
+    console.log("casas a enviar: ", this.hl_to_send);
+
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      data: {
+        header: "Confirmation",
+        body: "This action will change the status of the properties to 'Sent' and send an email notifying the assignee."
+      },
+      width: "350px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // //console.log(result);
+      if (result) {
+        //this.getDataHousingList();
+        this.call_service_send_propertys();
+      }
+    });
+  }
+
+
+  call_service_send_propertys() {
+    this.loader.showLoader();
+    let list_obj = { list: this.hl_to_send, id_sr: this.data.data.serviceRecordId }
+
+    console.log("DATA A enviar la servicio : ", list_obj);
+    this._services.service_general_post_with_url("HousingList/SendPropertys", list_obj).subscribe((data => {
+      this.loader.hideLoader();
+
+      console.log("resultado de SendPropertys: ", data, data.result.value);
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Success",
+          body: "Properties Sent"
+        },
+        width: "350px"
+      });
+
+
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("Error en SendPropertys: ", err);
+    })
+  }
+
+  getProperty_(id) {
+    for (let i = 0; i < this.ca_property.length; i++) {
+      if (this.ca_property[i].id == id) {
+        return this.ca_property[i].propertyType;
       }
     }
   }

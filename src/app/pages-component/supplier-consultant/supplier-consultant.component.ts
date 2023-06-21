@@ -10,7 +10,6 @@ import { DialogGeneralMessageComponent } from '../dialog/general-message/general
 import { DialogDocumentProfileSupplierComponent } from '../dialog/dialog-document-profile-supplier/dialog-document-profile-supplier.component';
 import { LoaderComponent } from 'app/shared/loader';
 import { GeneralConfirmationComponent } from '../dialog/general-confirmation/general-confirmation.component';
-import { resourceLimits } from 'worker_threads';
 
 
 @Component({

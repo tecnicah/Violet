@@ -1,14 +1,5 @@
-<div  class="main-wrapper padding-general-x">
+<div class="main-wrapper padding-general-x">
   <div class="page">
-    <!--div class="page__path subtitle" *ngxPermissionsOnly="['Manager']">
-        Superadmin Dashboard
-      </div>
-      <div class="page__path subtitle" *ngxPermissionsOnly="['Coordinator']">
-        Coordinator Dashboard
-      </div>
-      <div class="page__path subtitle" *ngxPermissionsOnly="['Supplier']">
-        Supplier Dashboard
-      </div-->
     <div class="page__path subtitle">
       {{userData.role.role}} Dashboard
     </div>
@@ -25,7 +16,7 @@
     <!-- manager supplier -->
     <div class="page__section" *ngxPermissionsOnly="['1', '3', '19', '20', '21']">
       <div class="dash">
-        <div class="dash__block" (click)="openCalendar()">
+        <!-- <div class="dash__block" (click)="openCalendar()">
           <div class="dash__card cursor-pointer">
             <span class="dash__card--flag index-pink"></span>
             <div class="dash__card-bTitl">Calendar</div>
@@ -40,14 +31,30 @@
               <span>{{counts?.calendar}}</span>
             </span>
           </div>
-        </div>
-        <div class="dash__cell">
+        </div> -->
+        <!-- <div class="dash__cell">
           <div class="dash__card dash__card--up cursor-pointer" (click)="goToPage('actionItems')">
             <span class="dash__card--flag index-lemon"></span>
             <div class="dash__card-sTitl">Action Items</div>
             <img src="../../../assets/icons/dash-activity.svg" class="dash__card-sIcon" />
             <div class="dash__card-sMini">
               <span>{{counts?.activityItems}}</span>
+            </div>
+          </div>
+        </div> -->
+        <div class="dash__cell" (click)="openCalendar()">
+          <div class="dash__card dash__card--up cursor-pointer">
+            <span class="dash__card--flag index-pink"></span>
+            <div class="dash__card-sTitl">Calendar</div>
+            <img src="../../../assets/icons/dash-calendar.svg" class="dash__card-bIcon" />
+            <div class="dash__card-bNumb">
+              {{ __todaydate__.getDate() }}
+            </div>
+            <div class="dash__card-bSmal">
+              {{ __months__[__todaydate__.getMonth()] + __todaydate__.getFullYear() }}
+            </div>
+            <div class="dash__card-sMini">
+              <span>{{counts?.calendar}}</span>
             </div>
           </div>
         </div>
@@ -71,7 +78,7 @@
             </div>
           </div>
         </div>
-        <div class="dash__cell" *ngxPermissionsOnly="['1', '19','20', '21']" (click)="openFollowers()">
+        <!-- <div class="dash__cell" *ngxPermissionsOnly="['1', '19','20', '21']" (click)="openFollowers()">
           <div class="dash__card dash__card--up cursor-pointer">
             <span class="dash__card--flag index-yellow"></span>
             <div class="dash__card-sTitl">Following</div>
@@ -80,14 +87,14 @@
               <span>{{counts?.following}}</span>
             </div>
           </div>
-        </div>
-        <div class="dash__cell" *ngxPermissionsOnly="['3']" (click)="openAvailavility()">
+        </div> -->
+        <!-- <div class="dash__cell" *ngxPermissionsOnly="['3']" (click)="openAvailavility()">
           <div class="dash__card dash__card--up cursor-pointer">
             <span class="dash__card--flag index-pinky"></span>
             <div class="dash__card-sTitl">Availability</div>
             <img src="../../../assets/icons/dash-avaibility.svg" class="dash__card-sIcon" />
           </div>
-        </div>
+        </div> -->
         <div class="dash__cell" (click)="openNotification()">
           <div class="dash__card dash__card--down cursor-pointer">
             <span class="dash__card--flag index-blue"></span>
@@ -98,7 +105,7 @@
             </div>
           </div>
         </div>
-        <div class="dash__cell" (click)="openEscalation()">
+        <!-- <div class="dash__cell" (click)="openEscalation()">
           <div class="dash__card dash__card--down cursor-pointer">
             <span class="dash__card--flag index-orangered"></span>
             <div class="dash__card-sTitl">Escalations</div>
@@ -107,8 +114,8 @@
               <span>{{counts?.escalation}}</span>
             </div>
           </div>
-        </div>
-        <div class="dash__cell" (click)="openCall()">
+        </div> -->
+        <!-- <div class="dash__cell" (click)="openCall()">
           <div class="dash__card dash__card--down cursor-pointer">
             <span class="dash__card--flag index-sky"></span>
             <div class="dash__card-sTitl">Calls</div>
@@ -117,7 +124,7 @@
               <span>{{counts?.calls}}</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="dash__cell" *ngxPermissionsOnly="['1', '19', '20', '21']">
           <div class="dash__card dash__card--down cursor-pointer" (click)="openDialogCoordinadors()">
             <span class="dash__card--flag index-purple"></span>
@@ -128,22 +135,22 @@
             </div>
           </div>
         </div>
-        <div class="dash__cell" *ngxPermissionsOnly="['3']">
+        <!-- <div class="dash__cell" *ngxPermissionsOnly="['3']">
           <div class="dash__card dash__card--down cursor-pointer">
             <span class="dash__card--flag index-demon"></span>
             <div class="dash__card-sTitl">Experience</div>
             <span class="dash__card-sNumb">40.00%</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- coordinador -->
     <div class="page__section" *ngxPermissionsOnly="['2']">
-      <div class="dash dash--80">
-        <div class="dash__block dash__block--25" (click)="openCalendar()">
-          <div class="dash__card cursor-pointer">
+      <div class="dash">
+        <div class="dash__cell" (click)="openCalendar()">
+          <div class="dash__card dash__card--up cursor-pointer">
             <span class="dash__card--flag index-pink"></span>
-            <div class="dash__card-bTitl">Calendar</div>
+            <div class="dash__card-sTitl">Calendar</div>
             <img src="../../../assets/icons/dash-calendar.svg" class="dash__card-bIcon" />
             <div class="dash__card-bNumb">
               {{ __todaydate__.getDate() }}
@@ -151,12 +158,12 @@
             <div class="dash__card-bSmal">
               {{ __months__[__todaydate__.getMonth()] + __todaydate__.getFullYear() }}
             </div>
-            <span class="dash__card-bMini">
+            <div class="dash__card-sMini">
               <span>{{counts?.calendar}}</span>
-            </span>
+            </div>
           </div>
         </div>
-        <div class="dash__cell dash__cell--25">
+        <!-- <div class="dash__cell dash__cell--25">
           <div class="dash__card dash__card--up cursor-pointer" (click)="goToPage('actionItems')">
             <span class="dash__card--flag index-lemon"></span>
             <div class="dash__card-sTitl">Action Items</div>
@@ -165,7 +172,7 @@
               <span>{{counts?.activityItems}}</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="dash__cell dash__cell--25" (click)="openReminders()">
           <div class="dash__card dash__card--up cursor-pointer">
             <span class="dash__card--flag index-orange"></span>
@@ -196,7 +203,7 @@
             </div>
           </div>
         </div>
-        <div class="dash__cell dash__cell--25" (click)="openEscalation()">
+        <!-- <div class="dash__cell dash__cell--25" (click)="openEscalation()">
           <div class="dash__card dash__card--down cursor-pointer">
             <span class="dash__card--flag index-orangered"></span>
             <div class="dash__card-sTitl">Escalations</div>
@@ -205,8 +212,8 @@
               <span>{{counts?.escalation}}</span>
             </div>
           </div>
-        </div>
-        <div class="dash__cell dash__cell--25" (click)="openCall()">
+        </div> -->
+        <!-- <div class="dash__cell dash__cell--25" (click)="openCall()">
           <div class="dash__card dash__card--down cursor-pointer">
             <span class="dash__card--flag index-sky"></span>
             <div class="dash__card-sTitl">Calls</div>
@@ -215,9 +222,9 @@
               <span>{{counts?.calls}}</span>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
-      <div class="dash dash--20">
+      <!-- <div class="dash dash--20">
         <div class="dash__block dash__block--x">
           <div class="dash__card cursor-pointer">
             <span class="dash__card--flag index-demon"></span>
@@ -227,7 +234,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- Markers + Service Line Filter ----------------------------------------------- -->
     <!-- Markers + Service Line Filter ----------------------------------------------- -->
@@ -236,31 +243,33 @@
     <!-- Markers + Service Line Filter ----------------------------------------------- -->
     <!-- Markers + Service Line Filter ----------------------------------------------- -->
     <!-- Markers + Service Line Filter ----------------------------------------------- -->
-    <div class="page__section margin-top-min">
+    <!-- <div class="page__section margin-top-min">
       <div class="page__section-name">
         Service Records
       </div>
     </div>
     <mat-grid-list cols="5" rowHeight="70px" *ngxPermissionsOnly="['1', '19','20','21']">
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <mat-form-field appearance="fill" class="input_central">
+        <mat-form-field appearance="fill">
           <mat-label>Service Line</mat-label>
-          <mat-select matNativeControl [(ngModel)]="filter_data.serviceLine"
-            (ngModelChange)="updateDashboardData(); getSupplierPartner(); getCoordinatorImmigration();">
-            <mat-option selected disabled value="">Service Line</mat-option>
-            <mat-option *ngFor="let item of serviceline_catalogue" [value]="item.id">
+          <mat-select matNativeControl [(ngModel)]="filter_data.serviceLine" (ngModelChange)="updateDashboardData();">
+            <mat-option value="I/R">I/R</mat-option>
+            <mat-option *ngFor="let item of serviceline_catalogue" [value]="item.serviceLine">
               {{ item.serviceLine }}
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <button (click)="resetDashboardTableFilters()" mat-icon-button color="primary" matTooltip="Clear filter">
+          <mat-icon>cached</mat-icon>
+        </button>
       </mat-grid-tile>
-    </mat-grid-list>
-    <mat-grid-list cols="5" rowHeight="105px" class="margin-bottom-min"
-      *ngxPermissionsOnly="['1','2', '19', '20', '21']">
+    </mat-grid-list> -->
+    <!-- <mat-grid-list cols="5" rowHeight="105px" class="margin-bottom-min"
+      *ngxPermissionsOnly="['1','2','3', '19', '20', '21']">
       <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
         <div class="filterCard">
           <div class="filterCard__label"></div>
-          <div class="filterCard__card cursor-pointer" id="act_filter_card" (click)="filterTableByCard('act')">
+          <div class="filterCard__card cursor-pointer" id="act_filter_card" (click)="filterTableByCardSelect('act')">
             <div class="filterCard__card-text">Active</div>
             <div class="filterCard__card-numb">
               {{ dash_data.active }}
@@ -271,7 +280,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
         <div class="filterCard">
           <div class="filterCard__label"></div>
-          <div class="filterCard__card cursor-pointer" id="inp_filter_card" (click)="filterTableByCard('inp')">
+          <div class="filterCard__card cursor-pointer" id="inp_filter_card" (click)="filterTableByCardSelect('inp')">
             <div class="filterCard__card-text">In Progress</div>
             <div class="filterCard__card-numb">
               {{ dash_data.inprogress }}
@@ -282,18 +291,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
         <div class="filterCard">
           <div class="filterCard__label"></div>
-          <div class="filterCard__card cursor-pointer" id="onh_filter_card" (click)="filterTableByCard('onh')">
-            <div class="filterCard__card-text">On Hold</div>
-            <div class="filterCard__card-numb">
-              {{ dash_data.onHold }}
-            </div>
-          </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
-        <div class="filterCard">
-          <div class="filterCard__label"></div>
-          <div class="filterCard__card cursor-pointer" id="vip_filter_card" (click)="filterTableByCard('vip')">
+          <div class="filterCard__card cursor-pointer" id="vip_filter_card" (click)="filterTableByCardSelect('vip')">
             <div class="filterCard__card-text">VIP</div>
             <div class="filterCard__card-numb">
               {{ dash_data.vip }}
@@ -304,15 +302,26 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
         <div class="filterCard">
           <div class="filterCard__label"></div>
-          <div class="filterCard__card cursor-pointer" id="pen_filter_card" (click)="filterTableByCard('pen')">
-            <div class="filterCard__card-text">Pending Acceptance</div>
+          <div class="filterCard__card cursor-pointer" id="onh_filter_card" (click)="filterTableByCardSelect('onh')">
+            <div class="filterCard__card-text">Pending Assign</div>
+            <div class="filterCard__card-numb">
+              {{ dash_data.pendingAssigned }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" class="overflow-visible">
+        <div class="filterCard">
+          <div class="filterCard__label"></div>
+          <div class="filterCard__card cursor-pointer" id="pen_filter_card" (click)="filterTableByCardSelect('pen')">
+            <div class="filterCard__card-text">Pending Accept</div>
             <div class="filterCard__card-numb">
               {{ dash_data.pendngAcceptance }}
             </div>
           </div>
         </div>
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> -->
     <!-- Table Filters ----------------------------------------------------------- -->
     <!-- Table Filters ----------------------------------------------------------- -->
     <!-- Table Filters ----------------------------------------------------------- -->
@@ -324,12 +333,11 @@
       <mat-grid-tile [colspan]="2" [rowspan]="1">
         <mat-form-field class="input_central_half">
           <mat-label>Search</mat-label>
-          <input matInput (keyup)="serchFilter($event)" placeholder="Search" type="text" />
+          <input matInput [(ngModel)]="filter_data.search" (keyup)="serchFilter($event)" placeholder="Search" type="text" />
           <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
         </mat-form-field>
-      </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
 
@@ -358,7 +366,7 @@
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label>Country</mat-label>
           <mat-select matNativeControl [(ngModel)]="filter_data.country"
-            (selectionChange)="ableCityField(); updateDashboardData(); getSupplierPartner();">
+            (selectionChange)="ableCityField(); updateDashboardData();">
             <mat-form-field appearance="outline" style="padding: 5px;">
               <mat-label>Country</mat-label>
               <input matInput placeholder="country" [(ngModel)]="filterCountry.name">
@@ -375,8 +383,7 @@
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label>City</mat-label>
           <mat-select matNativeControl [(ngModel)]="filter_data.city"
-            (selectionChange)="updateDashboardData(); getCoordinatorImmigration(); getSupplierPartner();"
-            [disabled]="!able_city_filter">
+            (selectionChange)="updateDashboardData(); getCoordinatorImmigration();" [disabled]="!able_city_filter">
             <mat-form-field appearance="outline" style="padding: 5px;">
               <mat-label>city</mat-label>
               <input matInput placeholder="city" [(ngModel)]="filterCity.city ">
@@ -404,6 +411,13 @@
         </mat-form-field>
       </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;"
+            matTooltip="Clear filter" (click)="cleanFilter()">
+            <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
+          </button>
+      </mat-grid-tile>
+
     </mat-grid-list>
     <mat-grid-list cols="5" rowHeight="70px">
       <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -415,7 +429,6 @@
               <mat-label>Partner</mat-label>
               <input matInput placeholder="Partner" [(ngModel)]="filterPartner.coordinator">
             </mat-form-field>
-            <mat-option selected value="">Partner</mat-option>
             <mat-option *ngFor="let item of parther_catalogue | filterBy: filterPartner" [value]="item.id">
               {{ item.coordinator }}
             </mat-option>
@@ -434,7 +447,6 @@
               <mat-label>client</mat-label>
               <input matInput placeholder="client" [(ngModel)]="filterClient.name">
             </mat-form-field>
-            <mat-option selected value="">Client</mat-option>
             <mat-option *ngFor="let item of client_catalogue | filterBy: filterClient" [value]="item.id">
               {{ item.name }}
             </mat-option>
@@ -443,7 +455,13 @@
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['1','3', '19','20', '21']">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-checkbox              
+              (change)="checkCheckBoxvalue($event)">
+              VIP
+          </mat-checkbox>
+      </mat-grid-tile>
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['1','3', '19','20', '21']">
         <div style="width: 100%; display: flex;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label>Coordinator</mat-label>
@@ -453,7 +471,6 @@
                 <mat-label>Coordinator</mat-label>
                 <input matInput placeholder="Coordinator" [(ngModel)]="filterCoordinator.coordinator">
               </mat-form-field>
-              <mat-option selected value="">Coordinator</mat-option>
               <mat-option *ngFor="let item of coordinator_catalogue | filterBy: filterCoordinator" [value]="item.id">
                 {{ item.coordinator }}
               </mat-option>
@@ -466,8 +483,8 @@
             <mat-icon>cached</mat-icon>
           </button>
         </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['1','2','19','20','21']">
+      </mat-grid-tile> -->
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['1','2','19','20','21']">
         <div style="width: 100%; display: flex;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label>Supplier</mat-label>
@@ -475,11 +492,10 @@
               [disabled]="supplier_catalogue.length == 0">
               <mat-form-field appearance="outline" style="padding: 5px;">
                 <mat-label>Supplier</mat-label>
-                <input matInput placeholder="Supplier" [(ngModel)]="filterSupplier.comercialName">
+                <input matInput placeholder="Supplier" [(ngModel)]="filterSupplier.name">
               </mat-form-field>
-              <!-- <mat-option selected disabled value="">Supplier</mat-option> -->
               <mat-option *ngFor="let item of supplier_catalogue | filterBy: filterSupplier" [value]="item.id">
-                {{ item.comercialName }}
+                {{ item.name }}
               </mat-option>
               <mat-option disabled *ngIf="(supplier_catalogue | filterBy: filterSupplier).length === 0">No matching
                 elements</mat-option>
@@ -494,596 +510,761 @@
             <mat-icon>cached</mat-icon>
           </button>
         </div>
+      </mat-grid-tile> -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1" style="text-align: center;">
+        <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
+          
+        </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngxPermissionsOnly="['2','3']"></mat-grid-tile>
+ 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-butuonc">
-          <button *ngxPermissionsOnly="['1','19','20','21']" (click)="showExportDialog('m')"
-            class="button-icon button-icon--export">
+
+      <div class="page__section-butuonc">
+         
+          <button (click)="exporter.exportTable('xls')" id="excel" class="button-icon button-icon--adder" *ngIf="userData.role.role != 'Supplier'">
             Export
           </button>
-          <button *ngxPermissionsOnly="['2']" (click)="showExportDialog('c')" class="button-icon button-icon--export">
-            Export
-          </button>
-          <!--button *ngxPermissionsOnly="['3']" (click)="showExportDialog('s')" class="button-icon button-icon--export">
-            Export
-          </button-->
-          <!-- button
-                (click)="exporter.exportTable('xls')"
-                id="excel" style="display: none;"
-                class="button-icon button-icon--adder">
-                Export
-              </button -->
         </div>
       </mat-grid-tile>
     </mat-grid-list>
     <!-- Table -------------------------------------------------------- -->
-    <!-- Table -------------------------------------------------------- -->
-    <!-- Table -------------------------------------------------------- -->
-    <!-- Table -------------------------------------------------------- -->
-    <!-- Table -------------------------------------------------------- -->
-    <!-- Table -------------------------------------------------------- -->
-    <!-- Table -------------------------------------------------------- -->
-    <!--TABLAS PARA ACEPTAR LA SR CON LAS COLUMNAS ACEPTAR Y RECHAZAR-->
-    <div class="page__section" id="export" *ngIf="!show_table">
 
 
-      <table *ngxPermissionsOnly="['1','19','20','21']" mat-table matSort matTableExporter
-        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
-        <ng-container matColumnDef="col_0">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
-            {{ element.numberServiceRecord }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_1">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <div class="table-row__check">
-              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
-              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
-            </div>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_2">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.status }}">
-              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_3">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.initialAutho | date:'dd MMM yyy' }}
-          </td>
-        </ng-container>
-        <!--ng-container matColumnDef="col_4">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.hostCountry }}
-          </td>
-        </ng-container-->
-        <ng-container matColumnDef="col_5">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
-          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
-          (click)="viewCity(element)"  style="cursor: pointer">
-            {{ element.hostCity }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_6">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="name">Partner</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.name }}">
-              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_7">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.client }}">
-              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_8">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.assigneeName }}">
-              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
-            </span>
-          </td>
-        </ng-container>
+    <table mat-table matSort matTableExporter [dataSource]="service_records_table_data" #exporter="matTableExporter"
+      class="main-table">
 
-        <ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="sr">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">SR
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)"
+          style="cursor: pointer;">
+          {{ element.numberServiceRecord }}
+        </td>
+      </ng-container>
 
-        <mat-menu #servicios="matMenu" xPosition="before">
-          <div>
-            <span *ngFor="let item of SR_WO">
-              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
-                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
-            </span>
+      <ng-container matColumnDef="service_line">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="service_line" class="text-center">Service <br />
+          Line</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+
+          <span class="cursor-pointer" title="{{ element.serviceLine }}" *ngIf="element.serviceLine=='Relocation'">
+            R
+          </span>
+
+          <span class="cursor-pointer" title="{{ element.serviceLine}}" *ngIf="element.serviceLine=='Immigration'">
+            I
+          </span>
+
+          <span class="cursor-pointer" title="{{ element.serviceLine}}" *ngIf="element.serviceLine=='I/R'">
+            I/R
+          </span>
+
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vip">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <div class="table-row__check">
+            <img src="assets/table-icons/check.png" *ngIf="element.vip" />
+            <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
           </div>
-        </mat-menu>
-
-
-        <ng-container matColumnDef="col_10">
-          <th mat-header-cell *matHeaderCellDef class="text-center">Coordinator</th>
-          <td mat-cell *matCellDef="let element" class="text-center" mat-sort-header="coordinator">
-            <span title="{{ element.coordinator }}">
-              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_11">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Supplier<br />Consultant
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.supplier }}">
-              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="col_12">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Accept
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="Accept" *ngIf="element.aceptar != null" style="cursor: pointer;" (click)="accept(element)">
-              <mat-icon style="color: #9d3292;">done</mat-icon>
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="col_13">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Reject
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="Rejected" *ngIf="element.rechazar != null" style="cursor: pointer;" (click)="decline(element)">
-              <mat-icon style="color: #9d3292;">not_interested</mat-icon>
-            </span>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="service_records_colums"></tr>
-        <tr mat-row *matRowDef="let row; columns: service_records_colums;"></tr>
-      </table>
-
-
-
-      <table *ngxPermissionsOnly="['3','2']" mat-table matSort matTableExporter
-        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
-        <ng-container matColumnDef="col_0">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
-            {{ element.numberServiceRecord }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_1">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <div class="table-row__check">
-              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
-              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
-            </div>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_2">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.status }}">
-              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_3">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.initialAutho | date:'dd MMM yyy' }}
-          </td>
-        </ng-container>
-        <!--ng-container matColumnDef="col_4">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.hostCountry }}
-          </td>
-        </ng-container-->
-        <ng-container matColumnDef="col_5">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
-          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
-          (click)="viewCity(element)"  style="cursor: pointer">
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <span title="{{ element.status }}">
+            {{ element.status }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho Date</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{ element.initialAutho | date:'dd MMM yyy' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">City</th>
+        <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}"
+          [matMenuTriggerFor]="country" (click)="viewCity(element)" style="cursor: pointer">
+          <span class="browser">
             {{ element.hostCity }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_6">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="partner">Partner</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.name }}">
-              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_7">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.client }}">
-              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_8">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.assigneeName }}">
-              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
-            </span>
-          </td>
-        </ng-container>
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="partner">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="name">Partner</th>
+        <td mat-cell *matCellDef="let element" class="text-center browser" [matMenuTriggerFor]="partner">
+          <span title="{{ element.name }}">
+            {{ element.name }}
+          </span>
+          <mat-menu #partner="matMenu" yPosition="above">
+            <div class="bg"></div>
+            <div class="assigned_services">
+              <div class="data browser">
+                <mat-list>
+                  <div mat-subheader>Client</div>
+                  <mat-divider></mat-divider>
+                  <mat-list-item>
+                    <img src="{{url_image}}{{element.clientAvatar}}" matListAvatar alt="">
+                    <div mat-line>
+                      <a href="partner_client/{{element.clientId}}" class="browser" target="_blank">
+                        {{element.client}}
+                      </a>
+                    </div>
+                  </mat-list-item>
+               
+                </mat-list>
+                <mat-list>
+                  <div mat-subheader>Partner</div>
+                  <mat-divider></mat-divider>
+                  <mat-list-item>
+                    <img src="{{url_image}}{{element.partnerAvatar}}" matListAvatar alt="">
+                    <div mat-line>
+                      <a href="partner_client/{{element.partnerId}}" class="browser" target="_blank">
+                        {{element.name}}
+                      </a>
+                    </div>
+                  </mat-list-item>
+               
+                </mat-list>
+              </div>
+            </div>
+          </mat-menu>
+        </td>
+      </ng-container>
 
-        <!--ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container-->
+      <ng-container matColumnDef="assignee">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee Name
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <span title="{{ element.assigneeName }}" class="browser" [matMenuTriggerFor]="assigneeToolTip">
+            {{ element.assigneeName }}
+          </span>
+          <mat-menu #assigneeToolTip="matMenu" yPosition="above">
+            <div class="bg"></div>
+            <div class="assigned_services">
+              <div class="data browser">
+                <mat-list>
+                  <div mat-subheader>Dependents</div>
+                  <mat-divider></mat-divider>
+                  <ng-container *ngFor="let item of element?.assigneeInformations">
+                    <ng-container *ngIf="item.dependentInformations.length > 0">
+                      <mat-list-item *ngFor="let dependent of item.dependentInformations">
+                        <img src="{{url_image}}{{dependent.photo}}" matListAvatar alt="">
+                        <div mat-line><b>{{dependent.name}}</b></div>
+                        <div mat-line style="font-size: 10px;">{{dependent.phone}}</div>
+                        <div mat-line style="font-size: 10px;">{{dependent.relationship}}</div>
+                      </mat-list-item>
+                    </ng-container>
+                    <ng-container *ngIf="item.dependentInformations.length == 0">
+                      <mat-list-item>
+                        <div mat-line style="font-size: 10px;"><b>No Dependents</b></div>
+                      </mat-list-item>
+                    </ng-container>
+                  </ng-container>
+                  <div mat-subheader>Pets</div>
+                  <mat-divider></mat-divider>
+                  <ng-container *ngFor="let item of element?.assigneeInformations">
+                    <ng-container *ngIf="item.petsNavigation.length > 0">
+                      <mat-list-item *ngFor="let pet of item.petsNavigation">
+                        <img src="{{url_image}}{{pet.photo}}" matListAvatar alt="">
+                        <div mat-line><b>{{pet.name}}</b></div>
+                        <div mat-line style="font-size: 10px;">{{pet.color}}</div>
+                        <div mat-line style="font-size: 10px;">{{pet.relationship}}</div>
+                      </mat-list-item>
+                    </ng-container>
+                    <ng-container *ngIf="item.petsNavigation.length == 0">
+                      <mat-list-item>
+                        <div mat-line style="font-size: 10px;"><b>No Pets</b></div>
+                      </mat-list-item>
+                    </ng-container>
+                  </ng-container>
+                </mat-list>
+              </div>
+            </div>
+          </mat-menu>
+        </td>
+      </ng-container>
 
-        <ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="service">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Services</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="_user_rol == 1 || _user_rol == 19" class="browser cursor-pointer" (click)="getServices(element)">
+            {{ element.total_services }}
+          </span>
+          <span *ngIf="_user_rol == 3" class="browser cursor-pointer"
+            (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+            <ng-container *ngFor="let imm of element.supplierImm">
+              <span *ngIf="imm.userId == userData.id">
+                {{imm?.total_services}}
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let relo of element.supplierRelo">
+              <span *ngIf="relo?.userId == userData.id">
+                {{relo?.total_services}}
+              </span>
+            </ng-container>
+          </span>
 
-        <mat-menu #servicios="matMenu" xPosition="before">
-          <div>
-            <span *ngFor="let item of SR_WO">
-              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
-                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
-            </span>
-          </div>
-        </mat-menu>
+          <span *ngIf="_user_rol == 2" class="browser cursor-pointer" (click)="getServices(element)">
+            {{ element.total_services }}
+          </span>
+        </td>
+      </ng-container>
 
+      <ng-container matColumnDef="cordinador">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">Coordinator</th>
+        <td mat-cell *matCellDef="let element">
 
-        <ng-container matColumnDef="col_10">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">
-            <span *ngxPermissionsOnly="['3']">Coordinator</span>
-            <span *ngxPermissionsOnly="['2']">
-              Supplier<br />Consultant
+          <ng-container *ngIf="element.serviceLine=='Relocation' && _user_rol!=2">
+            <span class="text-center browser cursor-pointer" *ngIf="element.coordinatorRelo?.length > 1"
+              [matMenuTriggerFor]="coordinador"
+              (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+              {{element.coordinatorRelo?.length}}
             </span>
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span *ngxPermissionsOnly="['3']" title="{{ element.coordinator }}">
-              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
-            </span>
-            <span *ngxPermissionsOnly="['2']" title="{{ element.supplier }}">
-              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
-            </span>
-          </td>
-        </ng-container>
+            <span class="text-center browser cursor-pointer" *ngIf="element.coordinatorRelo?.length  == 1">
+              <span *ngIf="element.coordinatorRelo[0]?.accepted == 2" class="text__yellow">
+                <span [matMenuTriggerFor]="coordinador"
+                  (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                  {{element.coordinatorRelo[0]?.name}}
+                </span>
+              </span>
 
-        <ng-container matColumnDef="col_11">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Accept
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center" >
-            <span title="Accept" *ngIf="element.aceptar != null" style="cursor: pointer;" (click)="accept(element)">
-              <mat-icon style="color: #9d3292;">done</mat-icon>
+              <span *ngIf="element.coordinatorRelo[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                {{element.coordinatorRelo[0]?.name}}
+              </span>
+
+              <span *ngIf="element.coordinatorRelo[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                {{element.coordinatorRelo[0]?.name}}
+              </span>
             </span>
-          </td>
-        </ng-container>
 
-        <ng-container matColumnDef="col_12">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Reject
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center" >
-            <span title="Rejected" *ngIf="element.rechazar != null" style="cursor: pointer;" (click)="decline(element)">
-              <mat-icon style="color: #9d3292;">not_interested</mat-icon>
+            <span *ngIf="element.coordinatorRelo?.length  == 0">
+              Not assigned
             </span>
-          </td>
-        </ng-container>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="service_records_colums_x"></tr>
-        <tr mat-row *matRowDef="let row; columns: service_records_colums_x;"></tr>
-      </table>
+          <ng-container *ngIf="element.serviceLine=='Relocation' && _user_rol==2">
+            <span class="text-center browser cursor-pointer">
+              <span *ngIf="element.coordinatorRelo[0]?.accepted == 2" class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
 
+              <span *ngIf="element.coordinatorRelo[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+
+              <span *ngIf="element.coordinatorRelo[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+
+            <span *ngIf="element.coordinatorRelo?.length  == 0">
+              Not assigned
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='Immigration' && _user_rol!=2">
+
+            <span class="text-center browser cursor-pointer" *ngIf="element.coordinatorImm?.length > 1"
+              [matMenuTriggerFor]="coordinador"
+              (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+              {{element.coordinatorImm?.length}}
+            </span>
+            <span class="text-center browser cursor-pointer" *ngIf="element.coordinatorImm?.length  == 1">
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 2" class="text__yellow">
+
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)" *ngIf="_user_rol==2">
+                  {{element.coordinatorImm[0]?.name}}
+                </span>
+                <span *ngIf="_user_rol!=2" [matMenuTriggerFor]="coordinador"
+                  (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                  {{element.coordinatorImm[0]?.name}}
+                </span>
+              </span>
+
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                {{element.coordinatorImm[0]?.name}}
+              </span>
+
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 3" class="text__red" [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                {{element.coordinatorImm[0]?.name}}
+              </span>
+            </span>
+            <span *ngIf="element.coordinatorImm?.length  == 0">
+              Not assigned
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='Immigration' && _user_rol==2">
+
+            <span class="text-center browser cursor-pointer">
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 2" class="text__yellow">
+
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
+
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 3" class="text__red" [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+            <span *ngIf="element.coordinatorImm?.length  == 0">
+              Not assigned
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='I/R' && _user_rol!=2">
+            <span class="text-center browser cursor-pointer"
+              *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length > 1"
+              [matMenuTriggerFor]="coordinador"
+              (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+              <!-- {{ element.coordinator.length > 1 ? element.coordinator.length : element.coordinator[0].name }}   -->
+              {{element.coordinatorImm?.length + element.coordinatorRelo?.length}}
+            </span>
+            <span class="text-center browser cursor-pointer"
+              *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length  == 1">
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 2 || element.coordinatorRelo[0]?.accepted == 2"
+                class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)"
+                  *ngIf="_user_rol==2 || _user_rol==1">
+                  {{element.coordinatorImm[0]?.name}}{{element.coordinatorRelo[0]?.name}}
+                </span>
+                <span *ngIf="_user_rol!=2" [matMenuTriggerFor]="coordinador"
+                  (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                  {{element.coordinatorImm[0]?.name}}{{element.coordinatorRelo[0]?.name}}
+                </span>
+              </span>
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 1 || element.coordinatorRelo[0]?.accepted == 1"
+                class="text__green" [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                {{element.coordinatorImm[0]?.name}}{{element.coordinatorRelo[0]?.name}}
+              </span>
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 3 || element.coordinatorRelo[0]?.accepted == 3"
+                class="text__red" [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                {{element.coordinatorImm[0]?.name}}{{element.coordinatorRelo[0]?.name}}
+              </span>
+            </span>
+            <span *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length  == 0">
+              Not assigned
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='I/R' && _user_rol==2">
+
+            <span class="text-center browser cursor-pointer">
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 2 || element.coordinatorRelo[0]?.accepted == 2"
+                class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 1 || element.coordinatorRelo[0]?.accepted == 1"
+                class="text__green" [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+              <span *ngIf="element.coordinatorImm[0]?.accepted == 3 || element.coordinatorRelo[0]?.accepted == 3"
+                class="text__red" [matMenuTriggerFor]="coordinador"
+                (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+            <span *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length  == 0">
+              Not assigned
+            </span>
+          </ng-container>
+
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="supplier">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Supplier</th>
+        <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer">
+
+          <ng-container *ngIf="element.serviceLine=='Relocation' && _user_rol!=3">
+            <span class="text-center browser cursor-pointer" *ngIf="element.supplierRelo?.length > 1"
+              [matMenuTriggerFor]="supplierConsultant"
+              (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+              {{element.supplierRelo?.length}}
+            </span>
+            <span class="text-center browser cursor-pointer" *ngIf="element.supplierRelo?.length  == 1">
+              <span *ngIf="element.supplierRelo[0]?.accepted == 2" class="text__yellow">
+                <span *ngIf="_user_rol!=3" [matMenuTriggerFor]="supplierConsultant"
+                  (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                  {{element.supplierRelo[0]?.name}}
+                </span>
+              </span>
+              <span *ngIf="element.supplierRelo[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                {{element.supplierRelo[0]?.name}}
+              </span>
+
+              <span *ngIf="element.supplierRelo[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                {{element.supplierRelo[0]?.name}}
+              </span>
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='Relocation' && _user_rol==3">
+
+            <span class="text-center browser cursor-pointer">
+              <span *ngIf="element.supplierRelo[0]?.accepted == 2" class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <!-- {{element.supplierRelo[0]?.name}} -->
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
+              <span *ngIf="element.supplierRelo[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+
+              <span *ngIf="element.supplierRelo[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='Immigration' && _user_rol!=3">
+            <span class="text-center browser cursor-pointer" *ngIf="element.supplierImm?.length > 1"
+              [matMenuTriggerFor]="supplierConsultant"
+              (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+              {{element.supplierImm?.length}}
+            </span>
+            <span class="text-center browser cursor-pointer">
+              <span *ngIf="element.supplierImm[0]?.accepted == 2" class="text__yellow">
+                <span [matMenuTriggerFor]="supplierConsultant"
+                  (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                  {{element.supplierImm[0]?.name}}
+                </span>
+              </span>
+              <span *ngIf="element.supplierImm[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                {{element.supplierImm[0]?.name}}
+              </span>
+
+              <span *ngIf="element.supplierImm[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                {{element.supplierImm[0]?.name}}
+              </span>
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='Immigration' && _user_rol==3">
+            <span class="text-center browser cursor-pointer">
+              <span *ngIf="element.supplierImm[0]?.accepted == 2" class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <!-- {{element.supplierImm[0]?.name}} -->
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
+              <span *ngIf="element.supplierImm[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+
+              <span *ngIf="element.supplierImm[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='I/R' && _user_rol!=3">
+            <span class="text-center browser cursor-pointer"
+              *ngIf="element.supplierImm?.length + element.supplierRelo?.length > 1"
+              [matMenuTriggerFor]="supplierConsultant"
+              (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+              <!-- {{ element.coordinator.length > 1 ? element.coordinator.length : element.coordinator[0].name }}   -->
+              {{element.supplierImm?.length + element.supplierRelo?.length}}
+            </span>
+            <span class="text-center browser cursor-pointer"
+              *ngIf="element.supplierImm?.length + element.supplierRelo?.length  == 1">
+              <span *ngIf="element.supplierImm[0]?.accepted == 2 || element.supplierRelo[0]?.accepted == 2"
+                class="text__yellow">
+                <span [matMenuTriggerFor]="supplierConsultant"
+                  (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                  {{element.supplierImm[0]?.name}}{{element.supplierRelo[0]?.name}}
+                </span>
+              </span>
+              <span *ngIf="element.supplierImm[0]?.accepted == 1 || element.supplierRelo[0]?.accepted == 1"
+                class="text__green" [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                {{element.supplierImm[0]?.name}}{{element.supplierRelo[0]?.name}}
+              </span>
+
+              <span *ngIf="element.supplierImm[0]?.accepted == 3 || element.supplierRelo[0]?.accepted == 3"
+                class="text__red" [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                {{element.supplierImm[0]?.name}}{{element.supplierRelo[0]?.name}}
+              </span>
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="element.serviceLine=='I/R' && _user_rol==3">
+            <span class="text-center browser cursor-pointer" *ngIf="element.supplierImm[0]?.userId == userData.id">
+              <span *ngIf="element.supplierImm[0]?.accepted == 2" class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <!-- {{element.supplierImm[0]?.name}}{{element.supplierRelo[0]?.name}} -->
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
+              <span *ngIf="element.supplierImm[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+
+              <span *ngIf="element.supplierImm[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+            <span class="text-center browser cursor-pointer" *ngIf="element.supplierRelo[0]?.userId == userData.id">
+              <span *ngIf="element.supplierRelo[0]?.accepted == 2" class="text__yellow">
+                <span (click)="openAcceptantConsultorConsultor(element, _user_rol)">
+                  <!-- {{element.supplierImm[0]?.name}}{{element.supplierRelo[0]?.name}} -->
+                  <mat-icon style="font-size: 20px;">check_circle_outline</mat-icon>
+                </span>
+              </span>
+              <span *ngIf="element.supplierRelo[0]?.accepted == 1" class="text__green"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">check_circle</mat-icon>
+              </span>
+
+              <span *ngIf="element.supplierRelo[0]?.accepted == 3" class="text__red"
+                [matMenuTriggerFor]="supplierConsultant"
+                (click)="viewConsultant(element.supplierImm, element.supplierRelo)">
+                <mat-icon style="font-size: 20px;">remove_circle_outline</mat-icon>
+              </span>
+            </span>
+          </ng-container>
+
+          <span *ngIf="element.supplierImm?.length + element.supplierRelo?.length  == 0">
+            Not assigned
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="service_records_colums"></tr>
+      <tr mat-row *matRowDef="let row; columns: service_records_colums;" style="cursor: pointer;"
+        [ngClass]="{'urgent': row.urgent == true}"></tr>
+    </table>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div>
+        <div class="divIconContainer">
+          <mat-icon matListIcon class="dot__urgen spanicon">lens</mat-icon>
+          <span class="icon-text">Urgent</span>
+        </div>
+      </div>
+      <div>
+        <div class="divIconContainer">
+          <b class="dot__green_color icon-text">Accepted</b>&nbsp;&nbsp;&nbsp;|
+        </div>
+        <div class="divIconContainer">
+          <b class="dot__yellow_color icon-text">Pending Acceptance</b>&nbsp;&nbsp;&nbsp;|
+        </div>
+        <div class="divIconContainer">
+          <b class="dot__red_color icon-text">Rejected</b>&nbsp;&nbsp;&nbsp;
+        </div>
+        <!-- <div class="divIconContainer">
+          <b class="icon-text">All Accepted</b>
+        </div> -->
+      </div>
     </div>
-
-
-    <!--TABLAS SIN LAS COLUMNAS ACEPTAR Y RECHAZAR-->
-    <div class="page__section" id="export" *ngIf="show_table">
-
-
-      <table *ngxPermissionsOnly="['1','19','20','21']" mat-table matSort matTableExporter
-        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
-        <ng-container matColumnDef="col_0">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
-            {{ element.numberServiceRecord }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_1">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <div class="table-row__check">
-              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
-              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
-            </div>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_2">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.status }}">
-              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_3">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.initialAutho | date:'dd MMM yyy' }}
-          </td>
-        </ng-container>
-        <!--ng-container matColumnDef="col_4">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.hostCountry }}
-          </td>
-        </ng-container-->
-        <ng-container matColumnDef="col_5">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
-          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
-          (click)="viewCity(element)"  style="cursor: pointer">
-            {{ element.hostCity }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_6">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="name">Partner</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.partner }}">
-              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_7">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.client }}">
-              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_8">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.assigneeName }}">
-              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!--ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container-->
-
-        <ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container>
-
-        <mat-menu #servicios="matMenu" xPosition="before">
-          <div>
-            <span *ngFor="let item of SR_WO">
-              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
-                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
-            </span>
-          </div>
-        </mat-menu>
-
-        <mat-menu #servicios="matMenu" xPosition="before">
-          <div>
-            <span *ngFor="let item of SR_WO">
-              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
-                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
-            </span>
-          </div>
-        </mat-menu>
-
-
-        <ng-container matColumnDef="col_10">
-          <th mat-header-cell *matHeaderCellDef class="text-center">Coordinator</th>
-          <td mat-cell *matCellDef="let element" class="text-center" mat-sort-header="coordinator">
-            <span title="{{ element.coordinator }}">
-              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_11">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="supplier">Supplier<br />Consultant
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.supplier }}">
-              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
-            </span>
-          </td>
-        </ng-container>
-
-        
-        <tr mat-header-row *matHeaderRowDef="service_records_colums_"></tr>
-        <tr mat-row *matRowDef="let row; columns: service_records_colums_;"></tr>
-      </table>
-
-
-
-      <table *ngxPermissionsOnly="['3','2']" mat-table matSort matTableExporter
-        [dataSource]="service_records_table_data" #exporter="matTableExporter" class="main-table">
-        <ng-container matColumnDef="col_0">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberServiceRecord">Service Record
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center link" (click)="goToSR(element)" style="cursor: pointer;">
-            {{ element.numberServiceRecord }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_1">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="vip">VIP</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <div class="table-row__check">
-              <img src="assets/table-icons/check.png" *ngIf="element.vip" />
-              <img src="assets/table-icons/uncheck.png" *ngIf="!element.vip" />
-            </div>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_2">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="status">Status</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.status }}">
-              {{ element.status?.length > 10 ? ( element.status | slice:0:10 ) + '...' : element.status }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_3">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="initialAutho">Autho<br />Date</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.initialAutho | date:'dd MMM yyy' }}
-          </td>
-        </ng-container>
-        <!--ng-container matColumnDef="col_4">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="hostCountry">Country</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            {{ element.hostCountry }}
-          </td>
-        </ng-container-->
-        <ng-container matColumnDef="col_5">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="homeCity">City</th>
-          <td mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.hostCountry}}" [matMenuTriggerFor]="country"
-          (click)="viewCity(element)"  style="cursor: pointer">
-            {{ element.hostCity }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_6">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="partner">Partner</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.name }}">
-              {{ element.name?.length > 10 ? ( element.name | slice:0:10 ) + '...' : element.name }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_7">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">Client</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.client }}">
-              {{ element.client?.length > 10 ? ( element.client | slice:0:10 ) + '...' : element.client }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="col_8">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="assigneeName">Assignee<br />Name
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span title="{{ element.assigneeName }}">
-              {{ element.assigneeName?.length > 10 ? ( element.assigneeName | slice:0:10 ) + '...' : element.assigneeName }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!--ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container-->
-
-        <ng-container matColumnDef="col_9">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="standalone">Services</th>
-          <td mat-cell *matCellDef="let element" class="text-center link" class="font-purple-dark cursor-pointer" (click)="consulta(element)" [matMenuTriggerFor]="servicios">
-            <span class="font-purple-dark cursor-pointer">
-              {{ element.bundled?.length + element.standalone.length }}
-            </span>
-          </td>
-        </ng-container>
-
-        <mat-menu #servicios="matMenu" xPosition="before">
-          <div>
-            <span *ngFor="let item of SR_WO">
-              <button mat-menu-item style="font-size: 10px; color: #9d3292;"
-                >{{item.service_name}} / {{item.numberWorkOrder}} / {{item.number_server}}</button>
-            </span>
-          </div>
-        </mat-menu>
-        
-
-        <ng-container matColumnDef="col_10">
-          <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="coordinator">
-            <span *ngxPermissionsOnly="['3']">Coordinator</span>
-            <span *ngxPermissionsOnly="['2']">
-              Supplier<br />Consultant
-            </span>
-          </th>
-          <td mat-cell *matCellDef="let element" class="text-center">
-            <span *ngxPermissionsOnly="['3']" title="{{ element.coordinator }}">
-              {{ element.coordinator?.length > 10 ? ( element.coordinator | slice:0:10 ) + '...' : element.coordinator }}
-            </span>
-            <span *ngxPermissionsOnly="['2']" title="{{ element.supplier }}">
-              {{ element.supplier?.length > 10 ? ( element.supplier | slice:0:10 ) + '...' : element.supplier }}
-            </span>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="service_records_colums_x_"></tr>
-        <tr mat-row *matRowDef="let row; columns: service_records_colums_x_;"></tr>
-      </table>
-
-    </div>
-
-
-
-
-    <div class="page__section text-center paginator">
-      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
-      <!-- <mat-paginator
+    <div class="page__section">
+      <div class="page__section text-center paginator">
+        <mat-paginator [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
+        <!-- <mat-paginator
         (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
         #paginator #paginatorElement class="pagall" [pageSizeOptions]="[10, 20, 2147483647]" showFirstLastButtons>
       </mat-paginator> -->
+      </div>
     </div>
   </div>
-</div>
 
-
-<mat-menu #country="matMenu" xPosition="before">
-  <div class="bg"></div>
-  <div class="assigned_services">
-    <div class="data" style="padding: 10px;">
-      <span style="font-size: 10px;"><b>Country:</b> {{info_country.country}}</span>
-      <!--br-->
-      <!--span style="font-size: 10px;"><b>City:</b> {{info_country.city}}</span--->
+  <!-- seccón tooltip -->
+  <mat-menu #country="matMenu" yPosition="above">
+    <div class="bg"></div>
+    <div class="assigned_services">
+      <div class="data browser">
+        <mat-list>
+          <div mat-subheader>Home destination</div>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div mat-line><b>{{info_country.homeCountry}}</b></div>
+            <div mat-line style="font-size: 10px;">{{info_country.homeCity}}</div>
+          </mat-list-item>
+        </mat-list>
+        <mat-list>
+          <div mat-subheader>Host destination</div>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div mat-line><b>{{info_country.hostCountry}}</b></div>
+            <div mat-line style="font-size: 10px;">{{info_country.hostCity}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
     </div>
-  </div>
-</mat-menu>
+  </mat-menu>
+
+  <!-- tooltip para mostrar coordinadores -->
+  <mat-menu #coordinador="matMenu" xPosition="before">
+    <div class="bg"></div>
+    <div class="assigned_services">
+      <div class="data browser">
+        <mat-list *ngIf="_viewCoordinadorImm.length > 0">
+          <div mat-subheader>Immigration</div>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngFor="let item of _viewCoordinadorImm">
+            <img src="{{url_image}}{{item.avatar}}" matListAvatar alt="">
+            <div mat-line *ngIf="item.accepted == 2" class="text__yellow">{{item.name}}</div>
+            <div mat-line *ngIf="item.accepted == 1" class="text__green">{{item.name}}</div>
+            <div mat-line *ngIf="item.accepted == 3" class="text__red">{{item.name}}</div>
+            <div mat-line style="font-size: 12px;">{{item.coordinatorType}}</div>
+          </mat-list-item>
+        </mat-list>
+        <mat-list *ngIf="_viewCoordinadorRelo.length > 0">
+          <div mat-subheader>Relocation</div>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngFor="let item of _viewCoordinadorRelo">
+            <img src="{{url_image}}{{item.avatar}}" matListAvatar alt="">
+            <div mat-line *ngIf="item.accepted == 2" class="text__yellow">{{item.name}}</div>
+            <div mat-line *ngIf="item.accepted == 1" class="text__green">{{item.name}}</div>
+            <div mat-line *ngIf="item.accepted == 3" class="text__red">{{item.name}}</div>
+            <div mat-line style="font-size: 12px;">{{item.coordinatorType}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-menu>
+
+  <!-- tooltip para mostrar coordinadores -->
+  <mat-menu #supplierConsultant="matMenu" yPosition="above">
+    <div class="bg"></div>
+    <div class="assigned_services">
+      <div class="data browser">
+        <mat-list *ngIf="_viewSupplierImm.length > 0">
+          <div mat-subheader>Immigration</div>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngFor="let item of _viewSupplierImm">
+            <img src="{{url_image}}{{item.avatar}}" matListAvatar alt="">
+            <div mat-line *ngIf="item.accepted == 2" class="text__yellow" (click)="profilePage(item.id)">{{item.name}}
+            </div>
+            <div mat-line *ngIf="item.accepted == 1" class="text__green" (click)="profilePage(item.id)">{{item.name}}
+            </div>
+            <div mat-line *ngIf="item.accepted == 3" class="text__red" (click)="profilePage(item.id)">{{item.name}}
+            </div>
+            <div mat-line style="font-size: 10px;">{{item.email}}</div>
+            <div mat-line style="font-size: 10px;"> {{item.country}} </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-list *ngIf="_viewSupplierRelo.length > 0">
+          <div mat-subheader>Relocation</div>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngFor="let item of _viewSupplierRelo">
+            <img src="{{url_image}}{{item.avatar}}" matListAvatar alt="">
+            <div mat-line *ngIf="item.accepted == 2" class="text__yellow" (click)="profilePage(item.id)">{{item.name}}
+            </div>
+            <div mat-line *ngIf="item.accepted == 1" class="text__green" (click)="profilePage(item.id)">{{item.name}}
+            </div>
+            <div mat-line *ngIf="item.accepted == 3" class="text__red" (click)="profilePage(item.id)">{{item.name}}
+            </div>
+            <div mat-line style="font-size: 10px;">{{item.email}}</div>
+            <div mat-line style="font-size: 10px;"> {{item.country}} </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-menu>
+
+  <!-- tooltip para mostrar servicios -->
+  <!-- <mat-menu #servicios="matMenu" yPosition="above">
+    <div class="assigned_services">
+      <div style="text-align: left;">
+        <div mat-subheader *ngIf="homeImm.length > 0 || hostImm.length > 0">Immigration</div>
+        <mat-divider *ngIf="homeImm.length > 0 || hostImm.length > 0"></mat-divider>
+        <mat-list *ngIf="homeImm.length > 0">
+          <span style="text-transform: capitalize; font-size: 12px">Home - {{homeImm[0].country}}</span>
+          <mat-list-item *ngFor="let item of homeImm">
+            <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+            <div mat-line style="font-size: 10px;">
+              {{item.numberWorkOrder}},
+              {{item.number_server}}
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-list *ngIf="hostImm.length > 0">
+          <span style="text-transform: capitalize; font-size: 12px">Host - {{hostImm[0].country}}</span>
+          <mat-list-item *ngFor="let item of hostImm">
+            <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+            <div mat-line style="font-size: 10px;">
+              {{item.numberWorkOrder}},
+              {{item.number_server}}
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div mat-subheader *ngIf="homeRelo.length > 0 || hostRelo.length > 0">Relocation</div>
+        <mat-divider *ngIf="homeRelo.length > 0 || hostRelo.length > 0"></mat-divider>
+        <mat-list *ngIf="homeRelo.length > 0">
+          <span style="text-transform: capitalize; font-size: 12px">Home - {{homeRelo[0].country}}</span>
+          <mat-list-item *ngFor="let item of homeRelo">
+            <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+            <div mat-line style="font-size: 10px;">
+              {{item.numberWorkOrder}},
+              {{item.number_server}}
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-list *ngIf="hostRelo.length > 0">
+          <span style="text-transform: capitalize; font-size: 12px">Host - {{hostRelo[0].country}}</span>
+          <mat-list-item *ngFor="let item of hostRelo">
+            <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+            <div mat-line style="font-size: 10px;">
+              {{item.numberWorkOrder}},
+              {{item.number_server}}
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-menu> -->

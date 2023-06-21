@@ -63,7 +63,7 @@ fileEntry.file(file => {
 
     let ext = droppedFile.relativePath.split(".");
     this.temporalDocument.updateDate = new Date();
-    this.temporalDocument.documentName = droppedFile.relativePath;
+    this.temporalDocument.name = droppedFile.relativePath;
     this.temporalDocument.fileName = droppedFile.relativePath;
     this.temporalDocument.fileRequest = encoded;
     this.temporalDocument.fileExtension = ext[ext.length-1];

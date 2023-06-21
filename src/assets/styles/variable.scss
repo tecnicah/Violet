@@ -12,10 +12,10 @@ $headingfont: 'Poppins', sans-serif;
 
 @import '~@angular/material/theming';
 
-/*Material Theme Colors*/
+/*Material Theme Colors  $purple_light: #9d3292;  */
 
-$purple_light: #9d3292;
-$purple_dark: #56004e;
+$purple_light: #3A2337;
+$purple_dark: #3A2337;
 $purple_blue:  #4435a6;
 $gray_05: rgba(0, 0, 0, 0.5);
 $index_sections_gray: rgba(0, 0, 0, 0.85);
@@ -24,7 +24,7 @@ $orange_dot: #ff5858;
 $yellow_dot: #fbb03b;
 $green_dot: #009577;
 $blue_dot: #197ff4;
-$red_gradient:  linear-gradient(to bottom, #ff0000, #9d3292);
+$red_gradient:  linear-gradient(to bottom, #ff0000, #3A2337);
 $purple_gradient: linear-gradient(to bottom, $purple_light, $purple_dark);
 $red_as_index: #ffe0e0;
 $blue_calendar: linear-gradient(to bottom, #a0d1f3, #232182);

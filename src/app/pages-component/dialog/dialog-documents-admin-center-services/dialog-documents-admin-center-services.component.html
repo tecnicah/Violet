@@ -85,20 +85,20 @@
 
 
 
-      <!--mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_final" >
           <mat-label>Document Name</mat-label>
-          <input matInput required placeholder="Document Name"  #messagedos maxlength="500" [(ngModel)]="temporalDocument.documentName">
-          <mat-hint align="end">{{messagedos.value.length}} / 500</mat-hint>
+          <input matInput required placeholder="Document Name"  #messagedos maxlength="200" [(ngModel)]="temporalDocument.name">
+          <mat-hint align="end">{{messagedos.value.length}} / 200</mat-hint>
         </mat-form-field>
-      </mat-grid-tile-->
+      </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="!data.status">
-        <mat-form-field appearance="fill">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <!-- <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
           <input matInput placeholder="Description"  #message maxlength="500" [(ngModel)]="temporalDocument.description">
           <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-        </mat-form-field>
+        </mat-form-field> -->
       </mat-grid-tile>
 
     </mat-grid-list>

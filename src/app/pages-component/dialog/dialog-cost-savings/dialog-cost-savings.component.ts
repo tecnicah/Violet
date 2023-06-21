@@ -19,30 +19,35 @@ export class DialogCostSavingsComponent implements OnInit {
 
   //********************************************************//
   async ngOnInit() {
+    debugger;
     this.user = JSON.parse(localStorage.getItem('userData'));
     console.log("data que recibe el modal: ", this.data_);
     if(this.data_.operacion == 'edicion'){
-       this.data = this.data_.costSavingHomes[this.data_.i];
+      // this.data = this.data_.costSavingHomes[this.data_.i];
+
+      this.data = this.data_.element;
+
     }else if(this.data_.operacion == 'insertar'){
       this.data = {};
+      this.data.groupCostSavingId = this.data_.groupCostSavingId;
+      this.data.housingList = this.data_.id;
     }
-    this.data.housingList = this.data_.id;
-    //}
+
+    
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
   }
   //********************************************************//
   save_data() {
-    if (this.data_.operacion == 'insertar' && this.data_.id) {
+    debugger;//
+    if (this.data_.operacion == 'insertar') {
       this.insert_DB();
     }
 
-    if (this.data_.operacion == 'edicion' && this.data_.id) {
+    if (this.data_.operacion == 'edicion') {
       this.update_DB();
     }
 
-    if (this.data_.id == 0) {
-      this.agregar_objeto();
-    }
+    
 
   }
   //********************************************************//
@@ -54,6 +59,7 @@ export class DialogCostSavingsComponent implements OnInit {
     this.data.updateBy = this.user.id;
     this.data.updatedDate = new Date();
     this.data.id = 0;
+    this.data.idServiceDetail = this.data_.idServiceDetail_current;
     console.log("DATA A GUARDAR DE COST SAVINGS: ", this.data);
     this._services.service_general_post_with_url("HousingList/PostCostSavingHome", this.data).subscribe((data => {
       if (data.success) {
@@ -65,6 +71,8 @@ export class DialogCostSavingsComponent implements OnInit {
           },
           width: "350px"
         });
+        debugger;
+        this.data.id = data.result.id
         this.dialogRef.close(this.data);
       }
     }), (err) => {

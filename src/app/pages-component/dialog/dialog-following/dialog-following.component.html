@@ -16,7 +16,7 @@
           <mat-label>Search</mat-label>
           <input matInput placeholder="Search" (keyup)="applyFilter($event)" [(ngModel)]="data_filter.filter"
             type="text" />
-          <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+          <mat-icon matSuffix style="color:#3A2337">search</mat-icon>
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -166,10 +166,10 @@
           <mat-menu #servicioslist="matMenu">
             <div>
               <span *ngFor="let item of services_consult">
-                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                <button mat-menu-item *ngIf="item.serviceType == 'Standalone'" style="font-size: 10px; color: #3A2337;"
                   (click)="determinaModal(item)">{{item.service_name}} / {{item.numberWorkOrder}} /
                   {{item.number_server}}</button>
-                <!--button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #9d3292;"
+                <!--button mat-menu-item *ngIf="item.serviceType != 'Standalone'" style="font-size: 10px; color: #3A2337;"
                   (click)="openmodal(item, edit_sr_model.assigneeInformations[0].homeCountryId)">{{item.service_name}}
                   / {{item.numberWorkOrder}} / {{item.number_server}}</button-->
               </span>
@@ -200,7 +200,7 @@
 
     <div>
       <span *ngFor="let item of services_List">
-        <button mat-menu-item style="font-size: 10px; color: #9d3292;"
+        <button mat-menu-item style="font-size: 10px; color: #3A2337;"
           >{{item.serviceNumber}} - {{item.category}}  - Location {{item.location}}</button>
       </span>
     </div>

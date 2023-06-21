@@ -1,0 +1,311 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Property Inspection
+
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+                - Action Detail
+            </span>
+        </h2>
+
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+    <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;">
+        <mat-grid-list cols="4" rowHeight="70px">
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Repair Type</mat-label>
+                        <mat-select [(ngModel)]="repair.repairType">
+                            <mat-option *ngFor='let data of ca_repair'
+                                [value]='data.id'>{{data.repairType}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Payment Responsibility</mat-label>
+                        <mat-select [(ngModel)]="repair.paymentResponsibility">
+                            <mat-option *ngFor="let data of ca_resppayrep"
+                                [value]="data.id">{{data.responsable}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Total Days</mat-label>
+                        <input matInput placeholder="Total Days" type="number" min="0" [(ngModel)]="repair.totalDays">
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+            </mat-grid-tile>
+
+
+
+        </mat-grid-list>
+        <div>
+            <mat-grid-list cols="4" rowHeight="130px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div class="input_central textarea">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Repair Start Date</mat-label>
+                            <input matInput [matDatepicker]="pickertres_Repair" placeholder="Repair Start Date"
+                                [(ngModel)]="repair.repairStartDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickertres_Repair"></mat-datepicker-toggle>
+                            <mat-datepicker #pickertres_Repair></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div class="input_central textarea">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Repair End Date</mat-label>
+                            <input matInput [matDatepicker]="pickertres_RepairEnd" placeholder="Repair End Date"
+                                [(ngModel)]="repair.repairEndDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickertres_RepairEnd"></mat-datepicker-toggle>
+                            <mat-datepicker #pickertres_RepairEnd></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div class="input_central textarea">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Total Cost of Repair</mat-label>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input matInput placeholder="Total Cost of Repair" type="number" min="0"
+                                [(ngModel)]="repair.totalCostRepair">
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div class="input_central textarea">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Currency</mat-label>
+                            <mat-select [(ngModel)]="repair.currency">
+                                <mat-option *ngFor="let data of ca_currency"
+                                    [value]="data.id">{{data.currency}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div class="input_central textarea">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Supplier Partner</mat-label>
+                            <mat-select [(ngModel)]="repair.supplierPartner" (ngModelChange)="_supplier();">
+                                <mat-option *ngFor="let data of SupplierCompany_repairs" [value]="data.id">
+                                    {{data.comercialName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list cols="4" rowHeight="130px">
+                <mat-grid-tile [colspan]="4" [rowspan]="1">
+                    <div class="textarea">
+                        <br><br>
+                        <p>Comments</p>
+                        <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                            <textarea matInput #message maxlength="500" [(ngModel)]="repair.comments"></textarea>
+                            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <div>
+                        <p class="page__section-name" style="font-size: 14px;">Photos</p>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+
+
+
+            <ngx-file-drop style="display:none" class="file-drop" dropZoneLabel="Drop files here"
+                (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+                (onFileLeave)="fileLeave($event)" [multiple]="false">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    Drag and Drop or
+                    <p class="browser" id="doc_i" (click)="openFileSelector()">Browse File</p>
+                </ng-template>
+            </ngx-file-drop>
+            <div class="photos">
+                <div class="photo" *ngFor="let it of repair.documentRepairs; let p = index">
+
+                    <img src="assets/icons/quit.svg" class="delete" (click)="deletePhoto_ins(it.id, p, repair.documentRepairs)">
+                    <img src="{{pre_img}}{{it.fileRequest}}" class="img" alt="" *ngIf="it.id == 0">
+                    <img src="{{_services.url_images}}{{it.fileRequest}}" class="img" alt="" *ngIf="it.id != 0">
+                    <!--<img src="https://cdn.oldskull.net/wp-content/uploads/459636405_b8d2757a59_o.jpg" class="img" alt=""
+          *ngIf="it.id != 0">---->
+                </div>
+            </div>
+            <mat-grid-list cols="4" rowHeight="70px">
+                <mat-grid-tile [colspan]="4" [rowspan]="1">
+                    <div class="addPropperty">
+                        <div class="page__section-button page__section-button--big" *ngIf="data.edicion">
+                            <button class="button-icon button-icon--more" (click)="addFotosMoveInspec(0)">
+                                Photos
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <!-- <mat-grid-list cols="4" rowHeight="70px">
+                <mat-grid-tile [colspan]="4" [rowspan]="1">
+                    <div style="width: 100%;">
+                        <div>
+                            <p class="page__section-name">Upload Documents</p>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <div>
+                <mat-grid-list cols="1">
+                    <div class="page__section margin-top-min">
+                        <div *ngIf="repair.documentRepairs.length != 0" class="page__section">
+                            <div class="page__section-input page__section-input--6_1">
+                                <span class="documents__index documents__index--task">
+                                    Document Name
+                                </span>
+                            </div>
+                            <div class="page__section-input page__section-input--6_1">
+                                <span class="documents__index documents__index--task">
+
+                                </span>
+                            </div>
+                            <div class="page__section-input page__section-input--6_1">
+                                <span class="documents__index documents__index--task">
+
+                                </span>
+                            </div>
+                            <div class="page__section-input page__section-input--6_1">
+                                <span class="documents__index documents__index--task">
+
+                                </span>
+                            </div>
+                            <div class="page__section-input page__section-input--6_1">
+                                <span class="documents__index documents__index--task">
+
+                                </span>
+                            </div>
+                            <div class="page__section-input page__section-input--6_1">
+                                <span class="documents__index documents__index--task">
+
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="page__section documents__ascard"
+                            *ngFor="let doc of repair.documentRepairs; let j = index">
+                            <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+                                style="background: transparent!important;"
+                                (click)="deleteDocument_DB_inspec(i, j, doc, item)">
+                            <img src="../../../../assets/icons/eye-view.svg"
+                                class="page__section--card-closeButton delete"
+                                style="background: transparent!important; margin-right: 25px;" *ngIf="doc.id != 0"
+                                (click)="openRepairsFileOnWindow(doc.fileRequest)">
+                            <div class="page__section-input page__section-input--6_2 documents__ascard--task">
+                                {{(doc.fileName.length>30) ? (doc.fileName | slice:0:30)+'..':
+                                doc.fileName}}
+                            </div>
+                            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                            </div>
+                            <div class="page__section-input page__section-input--6_2 documents__ascard--task">
+                                {{doc.createdDate | date: "MM/dd/yyyy"}}
+                            </div>
+                            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                            </div>
+                            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                            </div>
+                            <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </mat-grid-list>
+            </div>
+
+            <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false"
+                [ngClass]="{'hide': repair.documentRepairs.length > 0}">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    Drag and Drop or
+                    <p class="browser" id="doc{{i}}" (click)="openFileSelector()">Browse File</p>
+                </ng-template>
+            </ngx-file-drop>
+
+            <div *ngIf="repair.documentRepairs.length > 0">
+                <mat-grid-list cols="4" rowHeight="70px">
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div class="addPropperty">
+                            <div class="page__section-button page__section-button--big"
+                                style="flex: 0 1 180px !important; ">
+                                <button class="button-icon button-icon--more" (click)='addDocument_1(i)'>
+                                    Document
+                                </button>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div> -->
+            <mat-grid-list cols="4" rowHeight="70px">
+
+                <mat-grid-tile [colspan]="4" [rowspan]="1">
+                    <div class="page__section-buttong"
+                        style="display: flex; justify-content: flex-start; flex: 0px !important;">
+                        <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;"
+                            (click)="saveRepairs();">
+                            Save
+                        </button>
+                    </div>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+        </div>
+    </div>
+
+    <!-- <mat-grid-list cols="4" rowHeight="70px">
+
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+            <div class="page__section-button page__section-button--big" *ngIf="data.edicion">
+                <button class="button-icon button-icon--more" (click)='addRepairs()'>
+                     Repair
+                </button>
+            </div>
+        </div>
+    </mat-grid-tile>
+
+</mat-grid-list> -->
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <!-- <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button *ngIf="data.edicion">Save </button>
+    </div> -->
+</mat-dialog-actions>

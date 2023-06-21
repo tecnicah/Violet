@@ -8,3 +8,18 @@
 th.mat-header-cell {
     text-align: center !important;
 }
+
+.documents__ascard {
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 5px 0 5px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 2px 2px rgb(0 0 0 / 20%);
+}
+
+.documents__ascard--task {
+    padding: 8px 15px;
+    font-size: 12px;
+}

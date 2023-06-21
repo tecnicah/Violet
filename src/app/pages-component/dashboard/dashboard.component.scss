@@ -20,7 +20,7 @@
 
         &--active {
             color: white;
-            background-image: linear-gradient(to bottom, #9d3292, #4435a6);
+            background-image: linear-gradient(to bottom, #3A2337, #4435a6);
         }
 
         &-text {
@@ -42,6 +42,19 @@
 
     }
 
+}
+
+.refresh{
+  animation: refreshed 2s;
+}
+
+@keyframes refreshed {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
 }
 
 .dash {
@@ -105,7 +118,6 @@
         }
 
         &--down {
-            margin-top: 2.5%;
             height: 95%;
         }
 
@@ -113,7 +125,7 @@
             top: 14px;
             left: 10px;
             position: absolute;
-            color: #9d3292;
+            color: #3A2337;
             font-size: 16px;
         }
 
@@ -133,7 +145,7 @@
            left: 50%;
            color: #353535;
            font-weight: bold;
-           font-size: 32px;
+           font-size:16px;
            transform: translate(-50%, -50%);
 
            &--fbig {
@@ -149,7 +161,7 @@
             left: 50%;
             width: 90%;
             color: #353535;
-            font-size: 14px;
+            font-size: 12px;
             text-align: center;
             transform: translate(-50%, -50%);
         }
@@ -162,7 +174,7 @@
            border-radius: 50%;
            width: 14px;
            height: 14px;
-           background-color: #9d3292;
+           background-color: #3A2337;
 
            & > span {
                position: absolute;
@@ -178,7 +190,7 @@
         &-sTitl {
             position: absolute;
             top: 50%;
-            color: #9d3292;
+            color: #3A2337;
             font-size: 16px;
             left: 10px;
             transform: translateY(-50%);
@@ -202,7 +214,7 @@
             right: 45px;
             border-radius: 50%;
             position: absolute;
-            background-color: #9d3292;
+            background-color: #3A2337;
             transform: translateY(-50%);
 
             & > span {
@@ -242,5 +254,116 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
 .index-blue { background-color: #2b01dd; }
 .index-orangered { background-color: #e33838; }
 .index-sky { background-color: #0c7bf5; }
-.index-purple { background-color: #9d3292; }
+.index-purple { background-color: #3A2337; }
 .index-demon { background-color: #4435a6; }
+
+.acot {
+    display: flex;
+    width: 120px;
+    height: 10px;
+    opacity: 0.8;
+    font-family: Lato;
+    font-size: 10px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .dot {
+
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+  
+    &--absolute {
+      position: absolute;
+      top: 40px;
+      left: 7.5px;
+    }
+  
+    &__green {
+      background: #009577;
+    }
+  
+    &__yellow {
+      background: #fbb03b;
+    }
+    &__urgen
+    {
+      color: #FFE0E0;
+    }
+    &__red {
+      background: #ff5858;
+    }
+    &__green_color {
+        color: #009577;
+      }
+    
+      &__yellow_color {
+        color: #fbb03b;
+      }
+    
+      &__red_color {
+        color: #ff5858;
+      }
+  }
+  
+  .mat-list-base .mat-list-item {
+    font-size: 12px;
+  }
+
+  .text__green {
+    color: #009577;
+  }
+  .text__yellow {
+    color: #fbb03b;
+  }
+  .text__red {
+    color: #ff5858;
+  }
+
+  .divIconContainer {
+    display: inline-block;
+    padding: 5px
+  }
+  
+  .icon-text{
+    clear: left;
+    text-align: right;
+    vertical-align: middle;
+    line-height:25px;
+    font-size: 12px;
+  }
+  
+  .spanicon
+  {
+    display:inline-block;
+    vertical-align:top;
+    font-size: 21px;
+  }
+
+  .view-table{
+    display: block;
+  }
+
+  .hide-table{
+    display: none;
+  }
+
+  .mat-subheader {
+    display: flex;
+    box-sizing: border-box;
+    padding: 10px 0 !important;
+    align-items: center;
+  }
+
+  .mat-form-field-infix {
+    display: block;
+    position: relative;
+    flex: auto;
+    min-width: 0;
+    width: 100% !important;
+}

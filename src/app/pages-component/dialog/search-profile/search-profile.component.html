@@ -39,12 +39,22 @@
           Assignee <br /> Name
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          {{ (element.name.length>10) ?  (element.name | slice:0:10)+'..': element.name}}
+          {{ (element.name.length>10) ? (element.name | slice:0:10)+'..': element.name}}
         </td>
       </ng-container>
-
       <!-- Position Column -->
       <ng-container matColumnDef="campo_2">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          Email
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <span (click)="toggleModalOver()">
+            {{ element.email }}
+          </span>
+        </td>
+      </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_3">
         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceLine">
           Service Line
         </th>
@@ -54,8 +64,8 @@
       </ng-container>
 
       <!-- Position Column -->
-      <ng-container matColumnDef="campo_3">
-        <th mat-header-cell *matHeaderCellDef class="text-center"  mat-sort-header="partner">
+      <ng-container matColumnDef="campo_4">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="partner">
           Partner
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
@@ -64,17 +74,17 @@
       </ng-container>
 
       <!-- Position Column -->
-      <ng-container matColumnDef="campo_4">
+      <ng-container matColumnDef="campo_5">
         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client">
           Client
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          {{ (element.client.length>10) ?  (element.client | slice:0:10)+'..': element.client}}
+          {{ (element.client.length>10) ? (element.client | slice:0:10)+'..': element.client}}
         </td>
       </ng-container>
 
       <!-- Position Column -->
-      <ng-container matColumnDef="campo_5">
+      <ng-container matColumnDef="campo_6">
         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="client.vip">
           VIP
         </th>
@@ -87,36 +97,26 @@
       </ng-container>
 
       <!-- Position Column -->
-      <ng-container matColumnDef="campo_6">
+      <ng-container matColumnDef="campo_7">
         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="city">
           Home City
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          {{element.city_home}}
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="campo_8">
+        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="country">
+          Host City
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           {{element.city}}
         </td>
       </ng-container>
 
-      <!-- Position Column -->
-      <ng-container matColumnDef="campo_7">
-        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="country">
-          Host City
-        </th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-          {{element.country}}
-        </td>
-      </ng-container>
 
-      <!-- Position Column -->
-      <ng-container matColumnDef="campo_8">
-        <th mat-header-cell *matHeaderCellDef class="text-center">
-          Last Assisted
-        </th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-          <span (click)="toggleModalOver()">
-            
-          </span>
-        </td>
-      </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="profile_table"></tr>
       <tr mat-row *matRowDef="let row; columns: profile_table;"></tr>

@@ -29,7 +29,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Search</mat-label>
             <input [(ngModel)]="search"  matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"/>
-            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+            <mat-icon matSuffix style="color:#3A2337">search</mat-icon>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -757,7 +757,7 @@
     <!-- partner -->
     <table *ngIf="tableCatalog === 'Partner status'" class="mat-elevation-z8 textarea" mat-table [dataSource]="dataPartner" #partner #sortpartner='matSort' matSort >
       <ng-container matColumnDef="Partner status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> Partner status </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> Supplier Status </th>
         <td mat-cell *matCellDef="let partner"> {{partner.status}} </td>
       </ng-container>
       <ng-container matColumnDef="Action">

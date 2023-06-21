@@ -1,4 +1,4 @@
-<div *ngIf="show">
+<div>
   <!-------------------------------------------------------------------------------------------->
   <!--OPEN HEADER-->
   <div fxLayout="row" fxLayoutGap="10px" fxLayoutGap="10px">
@@ -13,24 +13,49 @@
   <!--------------------------------------------------------------------------------------------->
   <mat-dialog-content class="mat-typography">
 
-    <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-list cols="5" rowHeight="70px">
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
-            <span class="text-mini gray_05">Service Order</span><br />
-            {{transportation.serviceNumber}}
+            <span class="text-mini gray_05">Service ID</span><br />
+            {{transportation?.serviceNumber}}
           </div>
         </div>
       </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final wid">
+          <mat-form-field color="accent" appearance="fill">
+            <mat-label>Completion</mat-label>
+            <input matInput [matDatepicker]="picker3" [(ngModel)]="transportation.serviceCompletionDate">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3 color="primary"></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final wid">
+          <div>
+            <span class="text-mini gray_05">Status</span><br />
+            <span style="background: none;
+                        border: none;
+                        color: blue;
+                        text-decoration: underline; cursor: pointer;" (click)="change_status_detail()">
+                              {{_texto_status}}</span>
+          </div>
+          <!-- <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="transportation.tpStatusId" [disabled]="disabled_by_permissions">
+              <mat-option *ngFor="let data of ca_estatus" [value]="data.id">{{data.status}}</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+        </div>
+      </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
             <span class="text-mini gray_05">Deliver To</span><br />
-            {{transportation.relationship}}
+            {{transportation.relationship}}/{{transportation.name}}
           </div>
         </div>
       </mat-grid-tile>
@@ -43,304 +68,373 @@
           </div>
         </div>
       </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div>
+          <div *ngIf="this.data.data.country">
             <span class="text-mini gray_05">Country</span><br />
-            {{transportation.country}}
+            {{country_text}}
           </div>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div>
+          <div *ngIf="this.data.data.location">
             <span class="text-mini gray_05">City</span><br />
-            {{transportation.city}}
+            {{location}}
           </div>
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="wid" style="height: 40%;" *ngIf="transportation.coordination">
+          <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
+          <mat-checkbox disabled class="example-margin" [(ngModel)]="transportation.coordination">
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field color="accent" appearance="fill">
+            <mat-label>Budget</mat-label>
+            <input matInput required placeholder="Budget" type="number" min="0"
+              [(ngModel)]="transportation.budget">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Time Allotted</mat-label>
+            <mat-select [(ngModel)]="transportation.totalTimeAllowed">
+              <mat-option *ngFor="let item of Numbers" [value]="item">{{item}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile> 
 
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill" class="formFild">
+            <mat-label></mat-label>
+            <mat-label>Period</mat-label>
+            <mat-select [(ngModel)]="transportation.totalTimeAllowedId">
+              <mat-option *ngFor="let item of ca_duracion" [value]="item.id">{{item.duration}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
 
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data wid font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Autho</span><br />
+            {{ transportation.creationDate | date:'dd MMM yyy' }}
+          </div>
+
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class=" widpage__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Autho Acceptance</span><br />
+            {{ transportation.acceptance | date:'dd MMM yyy'}}
+          </div>
+
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="page__section-name">
+      Transport Service
+    </div>
+    <div *ngFor="let service of transportation.airportTransportPickup" style="padding: 5px">
+      <div class="mat-elevation-z5" style="padding: 15px;">
+
+        <mat-grid-list cols="4" rowHeight="70px">
+  
+          <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Budget</mat-label>
+                <input matInput required placeholder="Budget" type="number" min="0"
+                  [(ngModel)]="transportation.transportService[0].budget">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile> -->
+  
+          <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="addPropperty" *ngIf="!hide_complete && !hide_by_permissions">
+              <div class="page__section-button page__section-button--big" style="left: 6px;">
+                <button *ngIf="show_completed" class="button-icon button-icon--follow" (click)="change_button()">
+                  Complete
+                </button>
+                <button *ngIf="show_progress" class="button-icon button-icon--flag" (click)="change_button()">
+                  Start
+                </button>
+              </div>
+            </div>
+          </mat-grid-tile> -->
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+          
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+          
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_final wid">
+              <mat-form-field appearance="fill">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="service.tpStatusId" [disabled]="disabled_by_permissions">
+                  <mat-option *ngFor="let data of ca_statustp" [value]="data.id">{{data.status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field appearance="fill">
+                <mat-label>Transport Type</mat-label>
+                <mat-select [(ngModel)]="service.tpTransportType">
+                  <mat-option *ngFor="let data of ca_transportType" [value]="data.id">{{data.transportType}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Service Date</mat-label>
+                <input matInput [min]="today" [matDatepicker]="picker_" [(ngModel)]="service.tpServiceDate">
+                <mat-datepicker-toggle matSuffix [for]="picker_"></mat-datepicker-toggle>
+                <mat-datepicker #picker_ color="primary"></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div style="display: flex; justify-content: space-around;" class="input_central wid">
+              <mat-form-field appearance="fill" style="width: 49% !important;">
+                <mat-label>Time of Service</mat-label>
+                <mat-select [(ngModel)]="service.tpTimeServicesHour">
+                  <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+  
+              <mat-form-field appearance="fill" class="formFild" style="width: 40% !important;">
+                <mat-label>Minutes</mat-label>
+                <mat-select [(ngModel)]="service.tpTimeServicesMinute">
+                  <mat-option *ngFor="let item of caNumbersMin" [value]="item">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_final wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Service Completion Date</mat-label>
+                <input matInput [matDatepicker]="serviceCompletionDate" [(ngModel)]="service.tpServiceCompletionDate">
+                <mat-datepicker-toggle matSuffix [for]="serviceCompletionDate"></mat-datepicker-toggle>
+                <mat-datepicker #serviceCompletionDate color="primary"></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+             <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Projected Fee</mat-label>
+                <input matInput type="number" min="0" [(ngModel)]="service.tpProjectFee">
+              </mat-form-field>
+            </div> 
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Pick Up Location</mat-label>
+                <input matInput [(ngModel)]="service.tpPickUpLocation">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Drop-Off Location</mat-label>
+                <input matInput [(ngModel)]="service.tpDropOffLocation">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central textarea wid">
+              <mat-form-field appearance="fill">
+                <mat-label>Family Members</mat-label>
+                <mat-select multiple [(ngModel)]="service.family">
+                  <mat-option *ngFor="let item of family" [value]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="wid" style="height: 40%;">
+              <p class="subtitle" style="font-size: 8px; margin: 0;">Pets Travelling</p>
+              <mat-checkbox class="example-margin" [(ngModel)]="service.tpPet" [checked]="service.pet"></mat-checkbox>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+          
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field appearance="fill">
+                <mat-label>Supplier Partner</mat-label>
+                <mat-select [(ngModel)]="service.tpSupplierPartner" (ngModelChange)='getInfo();'>
+                  <mat-option *ngFor="let item of supplier_get" [value]="item.id">{{item.comercialName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <img style="cursor:pointer;" src="/assets/icons/perfil.svg" *ngIf="service.supplierPartner != null" alt=""
+              style="position: absolute; right: 20px; cursor:pointer;" [matMenuTriggerFor]="supplier">
+          </mat-grid-tile>
+  
+  
+          <mat-menu #supplier="matMenu" xPosition="before">
+            <div class="bg"></div>
+            <div class="assigned_services wid">
+              <div class="perfil">
+                <img src={{_services.url_images}}{{info.photo}} alt="">
+                <div class="title">
+                  VIP
+                  <br>
+                  <mat-checkbox disabled  class="example-margin" [checked]="info.luxuryVip">
+                  </mat-checkbox>
+                </div>
+              </div>
+              <br>
+              <div class="data wid">
+                <span class="title">Service Line</span>
+                <br>
+                <mat-checkbox disabled class="example-margin" [checked]='true'>
+                  <p class="subtitle" style="font-size: 8px; margin: 0;">Relocation </p>
+                </mat-checkbox>
+                <br>
+  
+                <span class="title">Comercial Name</span>
+                <p>{{info.comercialName}}</p>
+                <span class="title">Legal Name</span>
+                <p>{{info.legalName}}</p>
+                <span class="title">Supplier Since</span>
+                <p>{{info.supplierSince | date: 'MM/dd/yyyy'}}</p>
+              </div>
+              <div class="pie" style="text-align: end;">
+                <!-- <span style="width: 100%;">View Profile</span> -->
+              </div>
+            </div>
+          </mat-menu>
+  
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Driver</mat-label>
+                <input matInput [(ngModel)]="service.tpDriverName">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Driver Contact</mat-label>
+                <input matInput [(ngModel)]="service.tpDriverContact">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Make / Model</mat-label>
+                <input matInput [(ngModel)]="service.tpVehicle">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Plate Number</mat-label>
+                <input matInput [(ngModel)]="service.tpPlateNumber">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field color="accent" appearance="fill">
+                <mat-label>Vehicle Color</mat-label>
+                <input matInput [(ngModel)]="service.tpVehicleColor">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          </mat-grid-tile>
+        </mat-grid-list>
+  
+      </div>
+    </div>
+    
+    <mat-grid-list cols="4" rowHeight="70px">
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid">
-          <p class="page__section-name">Transport Service</p>
+        <div class="addPropperty">
+          <div class="page__section-buttong"
+            style="flex: 0 1 180px !important;">
+            <button (click)="AddTransportService()">
+              Add Transport Service
+            </button>
+          </div>
         </div>
       </mat-grid-tile>
 
     </mat-grid-list>
-
-    <div class="mat-elevation-z5" *ngFor="let service of transportation.transportService" style="padding: 15px;">
-
-      <mat-grid-list cols="4" rowHeight="70px">
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-            <div>
-              <span class="text-mini gray_05">Autho Date</span><br />
-              {{ service.authoDate | date:'dd MMM yyy' }}
-            </div>
-
-            <div style="text-align:end; width: auto !important;">
-              <mat-icon class="calendar">calendar_today</mat-icon>
-            </div>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-            <div class="wid">
-              <span class="text-mini gray_05">Autho Acceptance Date</span><br />
-              {{ service.authoAcceptanceDate | date:'dd MMM yyy'}}
-            </div>
-
-            <div style="text-align:end; width: auto !important;">
-              <mat-icon class="calendar">calendar_today</mat-icon>
-            </div>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="wid" style="height: 40%;">
-            <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
-            <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [(ngModel)]="service.coordination"></mat-checkbox>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_final wid">
-            <mat-form-field appearance="fill">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="service.statusId">
-                <mat-option *ngFor="let data of ca_estatus" [value]="data.id">{{data.status}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field appearance="fill">
-              <mat-label>Transport Type</mat-label>
-              <mat-select [disabled]="user.role.id == 3" [(ngModel)]="service.transportType">
-                <mat-option *ngFor="let data of ca_transportType" [value]="data.id">{{data.transportType}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Service Date</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [matDatepicker]="picker_" [(ngModel)]="service.serviceDate">
-              <mat-datepicker-toggle matSuffix [for]="picker_"></mat-datepicker-toggle>
-              <mat-datepicker #picker_ color="primary"></mat-datepicker>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div style="display: flex; justify-content: space-around;" class="input_central wid">
-            <mat-form-field appearance="fill" style="width: 49% !important;">
-              <mat-label>Time of Service</mat-label>
-              <mat-select  [disabled]="user.role.id == 3" [(ngModel)]="service.timeServicesHour">
-                <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="formFild" style="width: 40% !important;">
-              <mat-label></mat-label>
-              <mat-select [disabled]="user.role.id == 3"  [(ngModel)]="service.timeServicesMinute">
-                <mat-option *ngFor="let item of caNumbersMin" [value]="item">{{item}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_final wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Completion Date</mat-label>
-              <input [disabled]="user.role.id == 3" matInput disabled [matDatepicker]="picker3" [(ngModel)]="service.serviceCompletionDate">
-              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-              <mat-datepicker #picker3 color="primary"></mat-datepicker>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Projected Fee</mat-label>
-              <input [disabled]="user.role.id == 3" matInput type="number" min="0" [(ngModel)]="service.projectFee">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Filght Number</mat-label>
-              <input [disabled]="user.role.id == 3" matInput type="number" min="0" [(ngModel)]="service.flightNumber">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Pick Up Location</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.pickUpLocation">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_final wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Drop-Off Location</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.dropOffLocation">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central textarea wid">
-            <mat-form-field appearance="fill">
-              <mat-label>Family Members</mat-label>
-              <mat-select [disabled]="user.role.id == 3" [formControl]="toppings" multiple [(ngModel)]="service.family">
-                <mat-option *ngFor="let item of family" [value]="item.id">{{item.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Number of Luggage</mat-label>
-              <input  [disabled]="user.role.id == 3" matInput type="number" [(ngModel)]="service.numberLuggage">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="wid" style="height: 40%;">
-            <p class="subtitle" style="font-size: 8px; margin: 0;">Pets Travelling</p>
-            <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [(ngModel)]="service.pet" [checked]="service.pet"></mat-checkbox>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field appearance="fill">
-              <mat-label>Supplier Partner</mat-label>
-              <mat-select [disabled]="user.role.id == 3" [(ngModel)]="service.supplierPartner" (ngModelChange)='getInfo();'>
-                <mat-option *ngFor="let item of supplier_get" [value]="item.id">{{item.legalName}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <img src="/assets/icons/perfil.svg" alt="" style="position: absolute; right: 20px;"
-            [matMenuTriggerFor]="supplier">
-        </mat-grid-tile>
-
-        <mat-menu #supplier="matMenu" xPosition="before">
-          <div class="bg"></div>
-          <div class="assigned_services wid">
-            <div class="perfil wid">
-              <img src={{_services.url_images}}{{info.photo}} alt="">
-              <div class="title">
-                VIP
-                <br>
-                <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [checked]="info.luxuryVip">
-                </mat-checkbox>
-              </div>
-            </div>
-            <br>
-            <div class="data wid">
-              <span class="title">Service Line</span>
-              <br>
-              <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [checked]='true' *ngIf="info.serviceLineId == 1">
-                <p class="subtitle" style="font-size: 8px; margin: 0;">Immigration</p>
-              </mat-checkbox>
-
-              <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [checked]='true' *ngIf="info.serviceLineId == 2">
-                <p class="subtitle" style="font-size: 8px; margin: 0;">Relocation </p>
-              </mat-checkbox>
-              <br>
-
-              <span class="title">Comercial Name</span>
-              <p>{{info.comercialName}}</p>
-              <span class="title">Legal Name</span>
-              <p>{{info.legalName}}</p>
-              <span class="title">Supplier Since</span>
-              <p>{{info.supplierSince}}</p>
-            </div>
-            <div class="pie wid" style="text-align: end;">
-              <span style="width: 100%;">View Profile</span>
-            </div>
-          </div>
-        </mat-menu>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Driver</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.driverName">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Driver Contact</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.driverContact">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Make / Model</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.vehicle">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Plate Number</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.plateNumber">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central wid">
-            <mat-form-field color="accent" appearance="fill">
-              <mat-label>Vehicle Color</mat-label>
-              <input [disabled]="user.role.id == 3" matInput [(ngModel)]="service.vehicleColor">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-
-    </div>
-
     <!--UPLOAD DOCUMENT-->
     <mat-grid-list cols="1">
       <div class="page__section margin-top-min">
@@ -381,10 +475,9 @@
           </div>
         </div>
 
-        <div class="page__section documents__ascard"
-          *ngFor="let item of transportation.documentAirportTransportationServices">
+        <div class="page__section documents__ascard" *ngFor="let item of transportation.documentTransportations">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" [disabled]="user.role.id == 3" (click)="deleteDocument_DB(item.id)">
+            style="background: transparent!important;" (click)="deleteDocument_DB(item.id)">
           <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important; margin-right: 25px;" (click)="showDocumentDialogDetails(item)">
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
@@ -437,8 +530,8 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big"
-            style="flex: 0 1 180px !important; left: 6px !important;">
-            <button class="button-icon button-icon--more" [disabled]="user.role.id == 3" (click)="addDocument()">
+            style="flex: 0 1 180px !important;">
+            <button class="button-icon button-icon--more" (click)="addDocument()">
               Add New Document
             </button>
           </div>
@@ -451,9 +544,9 @@
     <!-- Request Payment  -->
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid">
+        <!-- <div class="wid">
           <p class="page__section-name">Requested Payments</p>
-        </div>
+        </div> -->
       </mat-grid-tile>
     </mat-grid-list>
     <!--mat-grid-list cols="4" rowHeight="40px">
@@ -474,20 +567,21 @@
     </mat-grid-list-->
     <!----------------------------------------------------------------------------------------->
     <!--START TABLE PAYMENT-->
-    <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
-      <!-- Position Column -->
+    <!-- <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
+     
       <ng-container matColumnDef="Payment">
         <th mat-header-cell *matHeaderCellDef> Payment </th>
         <td mat-cell *matCellDef="let element">
 
         </td>
       </ng-container>
-      <!-- Name Column -->
+      
       <ng-container matColumnDef="Amount">
         <th mat-header-cell *matHeaderCellDef> Amount </th>
         <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
       </ng-container>
-      <!-- Weight Column -->
+      
+      
       <ng-container matColumnDef="ManagementFee">
         <th mat-header-cell *matHeaderCellDef> Management Fee </th>
         <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
@@ -496,29 +590,28 @@
         <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
         <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
       </ng-container>
-      <!-- Symbol Column -->
+     
       <ng-container matColumnDef="AdvanceFee">
         <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
         <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
       </ng-container>
-      <!-- Symbol Column -->
+      
       <ng-container matColumnDef="Service">
         <th mat-header-cell *matHeaderCellDef> Total </th>
         <td mat-cell *matCellDef="let element">  </td>
       </ng-container>
-      <!-- Symbol Column -->
+      
       <ng-container matColumnDef="Recurrence">
         <th mat-header-cell *matHeaderCellDef> Recurrence </th>
         <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
       </ng-container>
-      <!-- Symbol Column -->
 
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
-          <img src="assets\icons\pencil.png" [disabled]="user.role.id == 3" style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
+          <img  src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
           <span>&nbsp;</span>
-          <img src="assets\icons\delete.png" [disabled]="user.role.id == 3" style="width: 18px; cursor: pointer;"
+          <img   src="assets\icons\delete.png" style="width: 18px; cursor: pointer;"
             (click)="deletePaymentConcept(element)">
         </td>
       </ng-container>
@@ -528,24 +621,24 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;" [ngClass]="{'urgente': row.urgent == true}">
       </tr>
     </table>
-    <br><br>
+    <br><br> -->
     <!--CLOSE TABLE PAYMENT-->
-    <mat-grid-list cols="4" rowHeight="30px">
+    <!-- <mat-grid-list cols="4" rowHeight="30px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div>
             <div class="acot">
-              <div class="dot"></div>&nbsp;Urgent
+              <div class="dot"></div>&nbsp;&nbsp;Urgent
             </div>
-            <!--span class="browser">TOTAL: {{calculo.total | currency}}</span-->
+            span class="browser">TOTAL: {{calculo.total | currency}}</span
           </div>
           <div class="page__section-butuonc" style="left: 6px;">
-            <button class="button-icon button-icon--money" [disabled]="user.role.id == 3"  (click)="addPayment(null)">Request Payment</button>
+            <button class="button-icon button-icon--money"  (click)="addPayment(null)">Request Payment</button>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <br><br>
+    <br><br> -->
     <!----------------------------------------------------------------------------------------->
     <mat-grid-list cols="10" rowHeight="80px">
       <mat-grid-tile [colspan]="10" [rowspan]="1">
@@ -559,11 +652,6 @@
       <mat-grid-list cols="10" rowHeight="80px">
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <!-- <div>
-            <img class="avatar" src="{{_services.url_images}}{{data.user.avatar}}" alt=""
-              *ngIf="data.user.avatar != null">
-            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.user.avatar === null"></div>
-          </div> -->
           <div class="pageAvatarServicio__section pageAvatarServicio__section-inputs no-padding-tbAvatarServicio">
             <div class="pageAvatarServicio__section pageAvatarServicio__section-inputs no-padding-tbAvatarServicio">
               <div class="pageAvatarServicio__section pageAvatarServicio__section-input--x no-padding-tbAvatarServicio">
@@ -576,7 +664,11 @@
               </div>
             </div>
           </div>
-
+          <!-- <div>
+            <img class="avatar" src="{{_services.url_images}}{{data.user.avatar}}" alt=""
+              *ngIf="data.user.avatar != null">
+            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.user.avatar === null"></div>
+          </div> -->
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="2" [rowspan]="1">
@@ -614,9 +706,6 @@
       <mat-grid-list cols="4" rowHeight="160px">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
-            <br><br>
-            <p *ngIf="i == 0">Comment</p>
-            <p *ngIf="i > 0">Reply</p>
             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
               <textarea matInput (change)="data.reply = $event.target.value" #message maxlength="500"
                 [disabled]="data.id > 0">{{data.reply}}</textarea>
@@ -632,8 +721,8 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button (click)="addReply()" [disabled]="user.role.id == 3" class="button-icon button-icon--more">
-              Add {{cr}}
+            <button (click)="addReply()" class="button-icon button-icon--more">
+              Add Comment
             </button>
           </div>
         </div>
@@ -661,9 +750,12 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="input_central wid">
             <mat-form-field appearance="fill">
-              <mat-label>Reminder Date</mat-label>
-              <input  [disabled]="user.role.id == 3" matInput required [matDatepicker]="pickerocho" placeholder="Reminder Date"
+              <mat-label>Reminder</mat-label>
+              <input matInput [min]="today" required [matDatepicker]="pickerocho" placeholder="Reminder Date"
                 [(ngModel)]="data.reminderDate">
+              <span class="label-error" *ngIf="data.reminderDate == '' || data.reminderDate == null">
+                Field is required
+              </span>
               <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
               <mat-datepicker #pickerocho></mat-datepicker>
             </mat-form-field>
@@ -674,9 +766,12 @@
           <div class="input_central wid">
             <mat-form-field appearance="fill">
               <mat-label>Reminder Comments</mat-label>
-              <input  [disabled]="user.role.id == 3" matInput required placeholder="Reminder Comments" #message_reminder maxlength="500"
+              <input matInput required placeholder="Reminder Comments" #message_reminder maxlength="199"
                 [(ngModel)]="data.reminderComments">
-              <mat-hint align="end">{{message_reminder.value.length}} / 500</mat-hint>
+              <mat-hint align="end">{{message_reminder.value.length}} / 200</mat-hint>
+              <span class="label-error" *ngIf="data.reminderComments == '' || data.reminderComments == null">
+                Field is required
+              </span>
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -687,23 +782,25 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button (click)="addReminder()" [disabled]="user.role.id == 3" class="button-icon button-icon--more">
+            <button (click)="addReminder()" class="button-icon button-icon--more">
               Add Reminder
             </button>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
-    <!--  Service Client Documents -->
-    <mat-grid-list cols="1" *ngIf="serviceScope">
+    <!--  //////////////////////////////// Service Client Documents //////////////////////////////-->
+    <mat-grid-list cols="1" *ngIf="serviceScope != null">
       <div class="page__section margin-top-min">
         <div class="subtitledos">
-          Scope Client Service
+          Client Service Documents
+        </div> <br><br>
+        <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+          <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+            No Client Service Documents loaded
+          </div>
         </div>
-        <br><br>
-
-        <div *ngIf="serviceScope.documentcountries.length != 0" class="page__section">
+        <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
           <div class="page__section-input page__section-input--6_1-local">
             <span class="documents__index documents__index--task">
               Document Type
@@ -711,52 +808,57 @@
           </div>
           <div class="page__section-input page__section-input--6_1-local">
             <span class="documents__index documents__index--task">
-              Status
+              Upload
             </span>
           </div>
           <div class="page__section-input page__section-input--6_1-local">
             <span class="documents__index documents__index--task">
-              Privacy
+              Status
             </span>
           </div>
-
         </div>
         <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
-          <!-- (click)="DeleteOnline(item.id)" -->
           <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
-          style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
-          <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
+            style="background: transparent!important;" style="right: 40px;"
+            (click)="openFileOnWindow(item.fileRequest)">
           <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
             {{item.documentType}}
           </div>
           <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-            {{item.status}}
+            {{item.updated_date | date:'dd MMM yyy'}}
           </div>
           <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-            {{item.privacy}}
+            {{item.status}}
           </div>
         </div>
       </div>
     </mat-grid-list>
-    <!-- Scope Client Service -->
-    <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid">
-          <p class="subtitledos">Client Service Scope</p>
+
+
+    <!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
+
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="serviceScope != null">
+      <br><br>
+      <div class="wid">
+        <p class="subtitledos">Client Service Scope</p>
+      </div>
+      <div *ngIf="serviceScope.scopeDescription.length > 0" [innerHTML]="serviceScope.scopeDescription">
+      </div>
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope != null">
+        <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+          Client Service Scope not captured or empty.
+        </div>
+        <div class="textarea" *ngIf="serviceScope.scopeDescription == null">
+          Client Service Scope not captured or empty.
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
         <div class="textarea">
-          <p [innerHTML]="serviceScope.scopeDescription"></p>
+          Client Service Scope not captured or empty.
         </div>
       </mat-grid-tile>
     </mat-grid-list>
     <br><br>
-
-
-
-
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

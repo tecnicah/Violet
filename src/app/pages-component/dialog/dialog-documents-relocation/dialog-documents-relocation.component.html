@@ -55,8 +55,18 @@
         </mat-form-field>
       </div>
     </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Document Commnents</mat-label>
+          <input matInput required placeholder="Reminder Comments" 
+          [(ngModel)]="documents.comment"  maxlength="200">
+          <mat-hint align="end">{{documents.comment.length}} / 200</mat-hint> 
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central">
         <mat-form-field appearance="fill">
           <mat-label>Expiration Date</mat-label>
@@ -65,9 +75,9 @@
           <mat-datepicker #pickeruno></mat-datepicker>
         </mat-form-field>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central">
         <mat-form-field appearance="fill">
           <mat-label>Privacy</mat-label>
@@ -78,7 +88,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
   </mat-grid-list>
 

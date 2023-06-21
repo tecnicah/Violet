@@ -1,0 +1,54 @@
+<div class="page__section">
+    <div class="dash dash--100">
+        <div class="dash__cell dash__cell--20" (click)="SeeDocumentsService();">
+            <div class="dash__card dash__card--up cursor-pointer">
+                <span class="dash__card--flag index-darckpurple" style="background-color: #3A2337;"></span>
+                <div class="dash__card-sTitl" style="font-size: 14px;">Service Documents </div>
+                <img src="../../../assets/icons/sdocuments.png" class="dash__card-sIcon" />
+                <div class="dash__card-sMini" style="background-color: #3A2337;">
+                    <span>{{serviceGeneralItems.documentsServiceDetails.length}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="dash__cell dash__cell--20">
+            <div class="dash__card dash__card--up cursor-pointer" (click)="SeeCommentsService();">
+                <span class="dash__card--flag index-darckpurple" style="background-color: #3A2337;"></span>
+                <div class="dash__card-sTitl" style="font-size: 14px;">Comments</div>
+                <img src="../../../assets/icons/messages.png" class="dash__card-sIcon" />
+                <div class="dash__card-sMini" style="background-color: #3A2337;">
+                    <span>{{serviceGeneralItems.commentServiceDetails.length}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="dash__cell dash__cell--20" (click)="SeeRemindersService();">
+            <div class="dash__card dash__card--up cursor-pointer" style="color: #2B01DD">
+                <span class="dash__card--flag index-darckpurple" style="background-color: #3A2337;"></span>
+                <div class="dash__card-sTitl" style="font-size: 14px;">Reminders </div>
+                <img src="../../../assets/icons/reminders.png" class="dash__card-sIcon" />
+                <div class="dash__card-sMini" style="background-color: #3A2337;">
+                    <span>{{serviceGeneralItems.reminderServiceDetails.length}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="dash__cell dash__cell--20">
+            <div class="dash__card dash__card--up cursor-pointer" (click)="SeeClientDocuments();">
+                <span class="dash__card--flag index-darckpurple" style="background-color: #3A2337;"></span>
+                <div class="dash__card-sTitl" style="font-size: 14px;">Client S. Documents</div>
+                <img src="../../../assets/icons/cdocuments.png" class="dash__card-sIcon" />
+                <div class="dash__card-sMini" style="background-color: #3A2337;">
+                    <span>{{serviceScope.documentcountries.length}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="dash__cell dash__cell--20" (click)="SeeClientScope();">
+            <div class="dash__card dash__card--up cursor-pointer">
+                <span class="dash__card--flag index-darckpurple" style="background-color: #3A2337;"></span>
+                <div class="dash__card-sTitl" style="font-size: 14px;">Client S. Scope </div>
+                <img src="../../../assets/icons/scope.png" class="dash__card-sIcon" />
+                <!-- <div class="dash__card-sMini">
+                    <span>2</span>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>

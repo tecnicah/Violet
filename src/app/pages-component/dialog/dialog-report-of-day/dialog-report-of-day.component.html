@@ -17,19 +17,30 @@
     <tr>
       <td class="head">Service</td>
       <td class="head">Service ID</td>
-      <td class="head">Time Remaining</td>
+      <!-- <td class="head">Time Remaining</td> -->
       <td class="head">Report Status</td>
     </tr>
 
-    <tr style="height: 50px;" *ngFor="let item of data.reportSummaries">
-      <td><b style="font-weight: 900; color: black;">{{item.service}}</b></td>
+    <tr style="height: 50px;" *ngFor="let item of data.data.reportSummaries">
+      <td><b style="font-weight: 900; color: black;">{{item.service == '' ? 'Bundle' : item.service}}</b></td>
       <td>{{item.serviceId}}</td>
-      <td>{{item.timeRemining}}</td>
+      <!-- <td>{{item.timeRemining}}</td> -->
       <td>{{item.saved}}</td>
     </tr>
 
   </table>
-
+  <br>
+  <b *ngIf="this.data.serviceLine == 2">
+    <span style="color: red;">Remember!</span><br>
+    If you need additional time for any service, use the request additional time button in the Activity Tab of the SR section
+    <br>
+    <img src="../../../../assets/boton_additional_time.png" style="height: auto; width: 40%;"/>
+  </b>
+  <!-- <div class="page__section-button page__section-button--biggerx" *ngIf="__userlog__.role.id == 3 || __userlog__.role.id == 19">
+    <button class="button-icon button-icon--time page__section-button--lineButtons--bigger">
+      Request Additional Time
+    </button>
+  </div> -->
   <!-- <div style="color: #ff0000; margin-top: 20px; text-align: center;">
 
     <span style="font-size: 12px;">

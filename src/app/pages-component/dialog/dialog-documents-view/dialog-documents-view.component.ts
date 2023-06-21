@@ -7,7 +7,6 @@ import { DialogRequestPaymentComponent } from '../dialog-request-payment/dialog-
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 import { DialogAddpaymentComponent } from '../dialog-addpayment/dialog-addpayment.component';
-import { url } from 'inspector';
 
 @Component({
   selector: 'dialog-documents-view',
@@ -26,6 +25,7 @@ export class DialogDocumentsView implements OnInit {
     ) {}
 
     ngOnInit() {
+        debugger;
         if(this.data.name_section == "only_one_service"){
             console.log(this.data);
             this.library_data.comment = this.data.document.comment;

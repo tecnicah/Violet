@@ -11,14 +11,41 @@
 <mat-dialog-content class="mat-typography">
   <!--------------------------------------------------->
   <!--INSERT NEW SCHOOL-->
-  <div class="contenedor" *ngIf="data.id == 0">
+  <div class="contenedor">
     <mat-grid-list cols="4" rowHeight="70px">
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div style="display: flex;" class="input_central comments">
+          <div>
+            <p class="subtitle">Work Order</p>
+            <p class="title">{{data.wo_}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div style="display: flex;" class="input_central comments">
+          <div>
+            <p class="subtitle">Service</p>
+            <p class="title">{{data.sr_}}</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="SchoolDetails.schoolingStatus">
+              <mat-option *ngFor="let data of ca_status" [value]="data.id">{{data.status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="SchoolDetails.schoolingStatus != 1 && SchoolDetails.schoolingStatus != 5 && SchoolDetails.schoolingStatus != 4 && SchoolDetails.schoolingStatus != 2">
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Visit Date</mat-label>
@@ -29,52 +56,35 @@
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
-          <mat-form-field appearance="fill">
-            <mat-label>Schooling Status</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.schoolingStatus">
-              <mat-option *ngFor="let data of ca_status" [value]="data.id">{{data.status}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Work Order</p>
-            <p class="title">{{data.workOrderId}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Service</p>
-            <p class="title">{{data.service}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="4" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="SchoolDetails.schoolingStatus != 1 && SchoolDetails.schoolingStatus != 5 && SchoolDetails.schoolingStatus != 4 && SchoolDetails.schoolingStatus != 2">
         <div class="input_central">
           <mat-form-field appearance="fill">
-            <mat-label>Dependent</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.dependent">
-              <mat-option *ngFor="let item of ca_dependent" [value]="item.dependentId">{{item.name}} /
-                {{item.relationship}}</mat-option>
+            <mat-label>Visit Time</mat-label>
+            <input matInput required placeholder="Visit Time" type="time"
+             [(ngModel)]="SchoolDetails.visitDateTime">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Child</mat-label>
+            <mat-select [(ngModel)]="SchoolDetails.dependent" *ngIf="data.id == 0">
+              <mat-option *ngFor="let item of ca_dependent" [value]="item.dependentId">
+                {{item.name}}
+              </mat-option>
+            </mat-select>
+            <mat-select [(ngModel)]="SchoolDetails.dependent" *ngIf="data.id != 0">
+              <mat-option *ngFor="let item of ca_dependent" [value]="item.dependentId">
+                {{item.name}}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="3" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>School Name</mat-label>
@@ -82,9 +92,9 @@
             <mat-hint align="end">{{message.value.length}} / 100</mat-hint>
           </mat-form-field>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Country</mat-label>
@@ -96,7 +106,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
+        <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>City</mat-label>
             <mat-select [(ngModel)]="SchoolDetails.city">
@@ -104,9 +114,34 @@
             </mat-select>
           </mat-form-field>
         </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <!-- <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Other Langauge</mat-label>
+            <input matInput placeholder="Address" #message_address maxlength="50" [(ngModel)]="SchoolDetails.otherLangauge">
+          </mat-form-field>
+        </div> -->
+        <div class="input_central" *ngIf="data.id == 0">
+          <mat-form-field appearance="fill">
+            <mat-label>School Name</mat-label>
+            <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
+              <mat-option *ngFor="let item of SupplierCompany" [value]="item"> {{item.comercialName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="input_central" *ngIf="data.id != 0">
+          <mat-form-field appearance="fill">
+            <mat-label>School Name</mat-label>
+            <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
+              <mat-option *ngFor="let item of SupplierCompany" [value]="item.id"> {{item.comercialName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Address</mat-label>
@@ -130,7 +165,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
-            <mat-label>Langauges</mat-label>
+            <mat-label>Langauge</mat-label>
             <mat-select [(ngModel)]="SchoolDetails.languages">
               <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{data.name}}</mat-option>
             </mat-select>
@@ -138,16 +173,18 @@
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
-            <mat-label>Web Site</mat-label>
-            <input matInput placeholder="Web Site" [(ngModel)]="SchoolDetails.webSite">
+            <mat-label>Langauge</mat-label>
+            <mat-select [(ngModel)]="SchoolDetails.schoolingListLanguanges" [formControl]="toppings" multiple>
+              <mat-option *ngFor="let data of ca_languages" [value]="data.id">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      </mat-grid-tile> -->
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div style="height: 100%; ">
@@ -158,21 +195,67 @@
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">Uniform?</p>
+          <p class="subtitle" style="font-size: 8px; margin: 0;">Uniform</p>
           <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.uniform"></mat-checkbox>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">Medical Records Needed?</p>
+          <p class="subtitle" style="font-size: 8px; margin: 0; ">Medical Records Needed</p>
           <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.medicalRecordNeeded"></mat-checkbox>
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
       <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div style="height: 100%; ">
+          <p class="subtitle" style="font-size: 8px; margin: 0; ">Transportation Offered</p>
+          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.transportationOffered"></mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Registered Partner School</mat-label>
+            <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
+              <mat-option *ngFor="let item of SupplierCompany" [value]="item.id"> {{item.comercialName}}</mat-option>
+              <mat-option [value]=0> Other </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> 
+      </mat-grid-tile>-->
+      
+      <!--<mat-grid-tile [colspan]="1" [rowspan]="1">
+         <div class="input_central" *ngIf="data.supplierPartner != null && data.supplierPartner != 0">
+          <mat-form-field appearance="fill">
+            <mat-label>Contact</mat-label>
+            <mat-select [(ngModel)]="data.supplier">
+              <mat-option [value]=null>No Contact Person</mat-option>
+              <mat-option *ngFor="let item of Supplier" [value]="item.id"> {{item.contactName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>  -->
+        <!-- <div class="input_central" *ngIf="SchoolDetails.supplierPartner == null || SchoolDetails.supplierPartner == 0">
+          <mat-form-field appearance="fill">
+            <mat-label>External Partner School</mat-label>
+            <input matInput placeholder="Conctat Name" #message maxlength="100" [(ngModel)]="SchoolDetails.othersupplier">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>URL</mat-label>
+            <input matInput placeholder="Web Site" [(ngModel)]="SchoolDetails.webSite">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      
+
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Admissions</mat-label>
@@ -200,7 +283,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
+        <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Fees & Enrollment</mat-label>
             <input matInput type="number" placeholder="Fees & Enrollment" type="number" min="0" [(ngModel)]="SchoolDetails.feesEnrollment">
@@ -217,7 +300,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="input_central">
@@ -232,218 +315,7 @@
     </mat-grid-list>
   </div>
   <!------------------------------------------------------------------------->
-  <!--EDIT REGISTER-->
-  <div class="contenedor" *ngIf="data.id != 0">
-    <mat-grid-list cols="4" rowHeight="70px">
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Visit Date</p>
-            <p class="title">{{SchoolDetails.visitDate | date:'dd MMM yyy'}}</p>
-          </div>
-
-          <div style="text-align:end; width: auto !important;">
-            <mat-icon class="calendar">calendar_today</mat-icon>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
-          <mat-form-field appearance="fill">
-            <mat-label>Schooling Status</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.schoolingStatus">
-              <mat-option *ngFor="let data of ca_status" [value]="data.id">{{data.status}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Work Order</p>
-            <p class="title">{{SchoolDetails.workOrder}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Service</p>
-            <p class="title">{{SchoolDetails.service}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="4" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Dependent</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.dependent">
-              <mat-option *ngFor="let item of ca_dependent" [value]="item.dependentId">{{item.name}} / {{item.relationship}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">School Name</p>
-            <p class="title">{{SchoolDetails.schoolName}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Country</p>
-            <p class="title">{{getNameCountry(SchoolDetails.country)}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">City</p>
-            <p class="title">{{SchoolDetails.city}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Address</p>
-            <p class="title">{{SchoolDetails.address}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Grade</p>
-            <p class="title">{{getGrade(SchoolDetails.grade)}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Languages</p>
-            <p class="title">{{getLanguage(SchoolDetails.languages)}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Web Site</p>
-            <p class="title">{{SchoolDetails.webSite}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">IB</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.ib"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">Uniform?</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.uniform"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">Medical Records Needed?</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.medicalRecordNeeded"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Admissions</p>
-            <p class="title">{{SchoolDetails.admision}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">$ Per Month</p>
-            <p class="title">{{SchoolDetails.perMonth}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">$ For Enrollment</p>
-            <p class="title">{{SchoolDetails.forEnrollment}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_final comments">
-          <div>
-            <p class="subtitle">Fees & Enrollment</p>
-            <p class="title">{{SchoolDetails.feesEnrollment}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Currency</p>
-            <p class="title">{{getCurrency(SchoolDetails.currency)}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div style="display: flex;" class="input_central comments">
-          <div>
-            <p class="subtitle">Additional Comments</p>
-            <p class="title">{{SchoolDetails.additionalComments}}</p>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-    </mat-grid-list>
-  </div>
-  <!-------------------------------------------------------------------------->
+  
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

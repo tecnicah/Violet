@@ -1,0 +1,102 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">Add Service Document </h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  
+  <!-----------------------------------content-------------------------------------->
+  <mat-dialog-content class="mat-typography">
+    <mat-grid-list cols="4" rowHeight="160px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div>
+          <div style="display: flex; justify-content: space-between;">
+            <p class="subtitle">Upload Documents</p>
+            <p class="subtitle">Location {{data.location}}</p>
+            <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyy' }}</b></p>
+          </div>
+          <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+            (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+              Drag and Drop or
+              <p class="browser" (click)="openFileSelector()">Browse File</p>
+            </ng-template>
+          </ngx-file-drop>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="upload-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="upload-name-style">
+          <tr>
+            <td class="subtitle">{{ temporalDocument.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-----------------------------------primera seccion-------------------------------------->
+    <mat-grid-list cols="3" rowHeight="70px">
+  
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Type</mat-label>
+            <mat-select [(ngModel)]="documents.documentType">
+              <mat-option *ngFor="let item of caDocumentType" [value]="item.id"> {{item.documentType}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Commnents</mat-label>
+            <input matInput required placeholder="Reminder Comments" 
+            [(ngModel)]="documents.comment"  maxlength="200">
+            <mat-hint align="end">{{documents.comment.length}} / 200</mat-hint> 
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+  
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Expiration Date</mat-label>
+            <input matInput [matDatepicker]="pickeruno" placeholder="Expiration Date" [(ngModel)]="documents.expirationDate">
+            <mat-datepicker-toggle matSuffix [for]="pickeruno"></mat-datepicker-toggle>
+            <mat-datepicker #pickeruno></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile> -->
+  
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <mat-form-field appearance="fill">
+            <mat-label>Privacy</mat-label>
+            <mat-select [(ngModel)]="documents.privacy">
+              <mat-option *ngFor="let item of ca_privacy" [value]="item.id">
+                {{item.privacy}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile> -->
+  
+    </mat-grid-list>
+  
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <div class="page__section-buttong">
+      <button (click)="save()">Save</button>
+    </div>
+  </mat-dialog-actions>
+  

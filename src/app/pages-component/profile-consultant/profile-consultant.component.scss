@@ -247,3 +247,19 @@
   color:#e91e63;
   font-size: 12px;
 }
+
+.no-input{
+  width: 100%;
+  margin-bottom: auto;
+  label{
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  div{
+    font-size: 14px;
+  }
+}
+
+.eye{
+  transform: scale(1.5)!important;
+}

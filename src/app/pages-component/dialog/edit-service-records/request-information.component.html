@@ -30,17 +30,7 @@
               matInput
               placeholder="External User Email"
               type="text"
-              (change)="
-                removeErrorLabel( $event.target.value, {handler: form_data, field: 'no_send'} );
-                validEmailSentTo( $event.target.value );
-              "
               [(ngModel)]="new_request_data.sentTo" />
-          <span class="label-error" *ngIf="form_data.no_send">
-              Field is required
-          </span>
-          <span class="label-error" *ngIf="form_data.no_mail_valid && !form_data.no_send">
-              Email format not valid
-          </span>
       </mat-form-field>
     </div>
 
@@ -76,16 +66,8 @@
             Needs Assessment
         </mat-checkbox>
     </div>
-    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
-        <mat-checkbox
-          [disabled]="profileImmi?.length == 0"
-          class="example-margin"
-          [(ngModel)]="new_request_data.immigrationProfile"
-          (change)="formSelected()">
-          Immigration Profile
-        </mat-checkbox>
-    </div>
-    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
+   
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100" *ngIf="data_income.relo">
         <mat-checkbox
             class="example-margin"
             [(ngModel)]="new_request_data.housingSpecification"
@@ -93,6 +75,8 @@
             Housing Specifications
         </mat-checkbox>
     </div>
+    
+
     <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100" *ngIf="new_request_data.housingSpecification != false">
         <mat-grid-list cols="1" rowHeight="60px" class="example-margin">
             <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -108,6 +92,20 @@
             </span>
         </mat-grid-list>
     </div>
+
+    <div *ngIf="data_income.immi" fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-checkbox
+          class="example-margin"
+          [(ngModel)]="new_request_data.immigrationProfile"
+          (change)="formSelected()">
+          Immigration Profile
+        </mat-checkbox>
+    </div>
+
+    <div *ngIf="!data_income.immi" fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
+       
+    </div>
+
     <span class="label-error" *ngIf="form_data.no_file">
         You must choose select one file
     </span>

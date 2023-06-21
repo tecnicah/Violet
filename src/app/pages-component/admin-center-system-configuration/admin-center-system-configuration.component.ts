@@ -36,9 +36,9 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
   @ViewChild('immisort') immisort: MatSort;
   @ViewChild('relosort') relosort: MatSort;
 
-  @ViewChild(MatPaginator) immipag: MatPaginator;
+  @ViewChild('immipag') immipag: MatPaginator;
   @ViewChild('paginatorserimmiElement', {read: ElementRef}) paginatorserimmiHtmlElement: ElementRef;
-  @ViewChild(MatPaginator) relopag: MatPaginator;
+  @ViewChild('relopag') relopag: MatPaginator;
   @ViewChild('paginatorserreloElement', {read: ElementRef}) paginatorserreloHtmlElement: ElementRef;
   // upcoming
   @ViewChild('sortupcoming') sortupcoming: MatSort;
@@ -65,12 +65,15 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
   dataSlider: any;
   country_catalogue: any;
   country_city: any;
+  service_immi: any[] = [];
+  service_relo: any[] = [];
+  cities_Data_view: any[] = [];
 
   tableCatalog: string;
   classCard;
   search;
   selectCatalogs = [
-    { value: 'countries', name: 'Country' },
+    { value: 'countries', name: 'Countries' },
     { value: 'emergency response', name: 'Emergency Response' },
     { value: 'offices', name: 'Offices' },
     { value: 'services', name: 'Services' },
@@ -117,11 +120,13 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
   }
   public info_row : any = {};
   viewData(data) {
-    this.info_row.country  =  data.countriesName;
+    console.log(data);
+    this.info_row  =  data;
   }
   //*********************************************//
 
   get_catalogos() {
+    this.__loader__.showLoader();
     console.log('se eligio el catalogo', this.tableCatalog);
     if (this.tableCatalog == 'offices') {
       this.__loader__.showLoader();
@@ -138,7 +143,6 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
       this.__loader__.hideLoader();
     }
     if (this.tableCatalog == 'countries') {
-      this.__loader__.showLoader();
       this._services.service_general_get('CountryAdminCenter/GetCountry').subscribe(rCountry => {
         console.log('catalogo country', rCountry);
         if (rCountry.success) {
@@ -148,15 +152,16 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
           console.log('dataTable', this.dataCountries);
 
           this.search = '';
+          this.__loader__.hideLoader();
         }
       });
-      this.__loader__.hideLoader();
     }
     if (this.tableCatalog == 'services') {
       this.__loader__.showLoader();
       this._services.service_general_get('AdminCenter/GetAllServices/1').subscribe(rimi => {
         console.log('catalogo imigration', rimi);
         if (rimi.success) {
+          this.service_immi = rimi.result;
           this.serviceLocationsimmi = new  MatTableDataSource(rimi.result);
           this.serviceLocationsimmi.paginator = this.immipag;
           this.serviceLocationsimmi.sort = this.immisort;
@@ -168,6 +173,7 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
       });
       this._services.service_general_get('AdminCenter/GetAllServices/2').subscribe(r=>{
         if(r.success){
+          this.service_relo = r.result;
           this.serviceLocationsrelo = new  MatTableDataSource(r.result);
           this.serviceLocationsrelo.paginator = this.relopag;
           this.serviceLocationsrelo.sort = this.relosort;
@@ -214,6 +220,25 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
       this.__loader__.hideLoader();
     }
   }
+
+  getRelocationServices(event){
+    console.log(event);
+    this.__loader__.showLoader();
+    this._services.service_general_get('AdminCenter/GetAllServices/2').subscribe(r=>{
+      if(r.success){
+        this.serviceLocationsrelo = new  MatTableDataSource(r.result);
+        debugger;
+        this.serviceLocationsrelo.paginator = this.relopag;
+        this.serviceLocationsrelo.sort = this.relosort;
+         // ++
+
+         this.search = '';
+         this.__loader__.hideLoader();
+      }
+    })
+    this.__loader__.hideLoader();
+  }
+
   //GET COUNTRY ORIGIN NAME//
   getCountryOriginName(id){
     for(let i = 0; i < this.country_catalogue.length; i++){
@@ -354,7 +379,7 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
   }
   // countries add and delete
   addCountry(){
-    console.log("ABRE MODAL COUNTRY");
+  //  console.log("ABRE MODAL COUNTRY");
     const dialogRef = this._dialog.open(DialogAdminCenterCountriesComponent, {
       data: { id : 0, origin : 'systemConfiguration'},
       width: "95%"
@@ -435,7 +460,7 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
 
   addService(id){
     const dialogRef = this._dialog.open(DialogAddServiceAdminCenterComponent, {
-      data: {id: id},
+      data: {id: id, serviceImm: this.service_immi, serviceRelo: this.service_relo},
       width: '90%'
     });
 
@@ -529,5 +554,11 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
         this.get_catalogos();
       }
     });
+  }
+
+  getCities(obj){
+    
+    this.cities_Data_view = obj;
+    console.log(this.cities_Data_view);
   }
 }

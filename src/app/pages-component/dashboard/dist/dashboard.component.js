@@ -251,7 +251,7 @@ var DashboardComponent = /** @class */ (function () {
     };
     DashboardComponent.prototype.filterTableByCard = function (card_selector) {
         var is_filter_active = (this.filter_cards_selected.indexOf(card_selector) > -1), card_container = document.getElementById(card_selector + "_filter_card"), params_used = this.dash_table_params == '' ? '' : "?" + this.dash_table_params.substring(1);
-        debugger;
+        // debugger;
         if (is_filter_active) {
             card_container.classList.remove('filterCard__card--active');
             this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);

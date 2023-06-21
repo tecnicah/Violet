@@ -1,5 +1,4 @@
-import { relative } from '@angular-devkit/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FullComponent } from 'app/layouts/full/full.component';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
@@ -7,7 +6,7 @@ import { FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry } from 
 import { DialogNewChatComponent } from '../dialog/dialog-new-chat/dialog-new-chat.component';
 import { DialogGeneralMessageComponent } from '../dialog/general-message/general-message.component';
 import { GeneralConfirmationComponent } from '../dialog/general-confirmation/general-confirmation.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-messenger-center',
@@ -16,9 +15,23 @@ import { Router } from '@angular/router';
 })
 export class MessengerCenterComponent implements OnInit {
 
+    ////Media querys
+  
+    _noConversation = "";
+    _innerHeight = "";
+    _chat = "";
+    _comment = "";
+    _header = "";
+    _headerName = "";
+
   constructor(public _services: ServiceGeneralService,
     public dialog: MatDialog, public router: Router,
-    public fullComponent: FullComponent) { }
+    public fullComponent: FullComponent,
+    private _ngZone: NgZone,
+    public rutaActiva: ActivatedRoute) {
+      this.suscribirEventos();
+    }
+     
   userData: any = {};
   displayedColumns: string[] = ['user'];
   table_contacts: any = [];
@@ -28,26 +41,75 @@ export class MessengerCenterComponent implements OnInit {
   actual_user: any = {};
   continuemesage: any = {};
   sending: boolean = false;
+  scrollInicial: number = 0;
+  isScrollable: boolean = false;
   contact = {
     name: ''
   }
 
   ngOnInit(): void {
+  
     this.userData = JSON.parse(localStorage.getItem('userData'));
-    this.conversationId = Number(localStorage.getItem('conversationId'));
-    console.log(this.conversationId, "con");
 
-    this._services.retrieveMappedObject().subscribe((receivedObj: any) => {
-      console.log(receivedObj);
+    //this.getResient();
+    if(this.rutaActiva.snapshot.params.id == 0)
+    {
       this.getResient();
-      if (this.conversationId != 0) {
-        this.getConversation(this.conversationId, 0);
-      }
-    });
-    this.getResient();
-    if (this.conversationId != 0) {
-      this.getConversation(this.conversationId, 0);
     }
+    else{
+      this.getConversation(this.rutaActiva.snapshot.params.id, 0);
+      this._services.service_general_get("Chat/SeeChatsById?user="+this.userData.id+"&conversationId="+ this.rutaActiva.snapshot.params.id)
+      .subscribe((data => {
+        console.log("AVATAR: ", data);
+          if (data.success) {
+            console.log("AVATAR: ", data);
+            this.header = data.result.value[0];
+
+          }
+        }))
+    }
+    
+    this._innerHeight  = window.innerHeight - 190 + "px";
+    this._header = (window.innerHeight - (window.innerHeight - 56))  + "px";
+    this._headerName = (window.innerHeight - (window.innerHeight - 116))  + "px";
+    this._chat = window.innerHeight - 204 + "px";
+    this._comment = (window.innerHeight - (window.innerHeight - 60))  + "px";
+    this._noConversation = window.innerHeight - 75 + "px";
+
+    window.addEventListener("resize", () => {
+      document.getElementById('divUsers').style.height = window.innerHeight - 190 + "px";
+      document.getElementById('divHeaderName').style.height = (window.innerHeight - (window.innerHeight - 116))  + "px";
+      if(document.getElementById('divHeader') != null){
+        document.getElementById('divChat').style.height = window.innerHeight - 204 + "px";
+        if(this.temporalDocument.length > 0){
+          document.getElementById('divHeader').style.height = (window.innerHeight - (window.innerHeight -26)) + "px"; 
+          document.getElementById('divComments').style.height = (window.innerHeight - (window.innerHeight - 90)) + "px";  
+        }
+        else
+        {
+          document.getElementById('divHeader').style.height = (window.innerHeight - (window.innerHeight - 56))  + "px";
+          document.getElementById('divComments').style.height = (window.innerHeight - (window.innerHeight - 60))  + "px";
+        }
+       
+      }
+      else{
+        document.getElementById('divNoConversation').style.height = window.innerHeight - 75 + "px";
+      }
+      
+    });
+    
+    //this.getResient();
+    // if (this.conversationId != 0) {
+    //     this.getConversation(this.conversationId, 0);
+    //   }
+  }
+
+  private suscribirEventos() {
+    this._services.avisoAdmin.subscribe(data => {
+      this._ngZone.run(() => {
+        this.getConversation(this.conversationId, 0);
+      });
+    });
   }
 
   ngOnDestroy() {
@@ -55,50 +117,79 @@ export class MessengerCenterComponent implements OnInit {
     localStorage.removeItem('conversationId');
   }
 
+  onScroll(event: any) {
+
+    if (event.target.scrollTop == 0 && !this.isScrollable) {
+      this._services.service_general_get('Chat/GetConversationComplete/' + this.conversationId + '/' + this.userData.id).subscribe(n => {
+        if (n.success) {
+          console.log("scrollHeightInicial", this._chat);
+          console.log("scrollHeight", event.target.scrollHeight);
+          
+          this.chat = n.result.value;
+          setTimeout(() => {
+            var objDiv = document.getElementById("divChat");
+            objDiv.scrollTop = objDiv.scrollHeight - this.scrollInicial;
+            this.isScrollable = true;
+          }, 100);
+        }
+      });
+    }
+  }
+
   getResient() {
     this._services.service_general_get('Chat/SeeChats?user=' + this.userData.id).subscribe(n => {
       if (n.success) {
         this.table_contacts = n.result.value;
-        console.log(this.table_contacts);
-        if (this.conversationId != 0) {
-          for (let i = 0; i < this.table_contacts.length; i++) {
-            const element = this.table_contacts[i];
-            if (element.conversationId == this.conversationId) {
-              this.actual_user = element;
-              console.log(this.actual_user);
-            }
-          }
-        }
-      }
+        console.log("table_contacts", this.table_contacts);
+      //   if (this.conversationId != 0) {
+      //     for (let i = 0; i < this.table_contacts.length; i++) {
+      //       const element = this.table_contacts[i];
+      //       if (element.conversationId == this.conversationId) {
+      //         this.actual_user = element;
+      //         console.log(this.actual_user);
+      //       }
+      //     }
+      //   }
+       }
     })
   }
 
-  getConversation(id, element) {
+  header: any;
+  getAvatar(element){
+    console.log(element);
+    this.header = element;
+  }
+
+  getConversation(id, element, user?) {
     this.conversationId = id;
     this._services.service_general_get('Chat/GetConversation/' + id + '/' + this.userData.id).subscribe(n => {
-      if (n.success) {
-        this.fullComponent.ngAfterViewInit();
+      if (n.success) {        
         this.chat = n.result.value;
-        let chats = n.result.value;
-        let new_array = chats.splice(chats.length - element);
-        console.log("MENSAJES NO LEIDOS: ", new_array)
-        
-        for (let j = 0; j < new_array.length; j++) {
-        this._services.service_general_put("Chat/Check/"+new_array[j].id+"/"+this.userData.id,'').subscribe((data => {
-          if (data.success) {
-            console.log("MENSAJE MARCADO COMO LEIDO: ", data);
-          }
-          }))
-        }
         this.getResient();
+        let chats = n.result.value.filter(x => x.unreadMessages == 0 && x.userId != this.userData.id);
+        //let new_array = chats.splice(chats.length - element);
+        console.log("MENSAJES NO LEIDOS: ", chats)
         
+        let _user = user == null || undefined ? 0 : user;
+        for (let j = 0; j < chats.length; j++) {
+          //1760/1752?conversationId=119&userReciver=279
+          this._services.service_general_put("Chat/Check/"+chats[j].id+"/"+this.userData.id +"?conversationId=" + id + "&userReciver="+ _user,'')
+          .subscribe((data => {
+            if (data.success) {
+              console.log("MENSAJE MARCADO COMO LEIDO: ", data);
+            }
+            }));
+        }
 
-        console.log(this.chat);
         setTimeout(() => {
-          var objDiv = document.getElementById("texting");
+          var objDiv = document.getElementById("divChat");
           objDiv.scrollTop = objDiv.scrollHeight;
-          console.log(objDiv);
-        }, 1000);
+          this.scrollInicial = objDiv.scrollHeight;
+        }, 200);
+        
+        
+        //this.fullComponent.ngAfterViewInit();
+        //this.getResient();
         
       }
     })
@@ -107,11 +198,22 @@ export class MessengerCenterComponent implements OnInit {
   newMessage() {
     const dialogRef = this.dialog.open(DialogNewChatComponent, {
       data: {},
-      width: "60%"
+      width: "20%",
+      height: "80%"
     });
 
     dialogRef.afterClosed().subscribe((so_added: any) => {
+      debugger;
       console.log(so_added);
+      this._services.service_general_get("Chat/SeeChatsById?user="+this.userData.id+"&conversationId="+ so_added[0].id)
+      .subscribe((data => {
+        console.log("AVATAR: ", data);
+          if (data.success) {
+            console.log("AVATAR: ", data);
+            this.header = data.result.value[0];
+
+          }
+        }))
       this.getConversation(so_added[0].id, 0);
       this.getResient();
     });
@@ -157,12 +259,19 @@ export class MessengerCenterComponent implements OnInit {
               let ext = droppedFile.relativePath.split(".");
               this.temporalDocument.push({
                 "id": 0,
+                "name": droppedFile.relativePath,
                 "message": this.conversationId,
                 "filePath": encoded,
                 "fileExtension": ext[1],
                 "date": new Date(),
                 "status": true
-              })
+              });
+              if(this.temporalDocument.length > 0){
+                document.getElementById('divHeader').style.height = (window.innerHeight - (window.innerHeight - 26)) + "px"; 
+                document.getElementById('divComments').style.height = (window.innerHeight - (window.innerHeight - 90)) + "px";  
+              }
+              
+              console.log("Envio archivo");
               //this.continuemesage.message = droppedFile.relativePath;
               //this.sendMessage();
             };
@@ -213,24 +322,44 @@ export class MessengerCenterComponent implements OnInit {
 
 
   sendMessage() {
-    this.sending = true;
-    this.continuemesage = {
-      "id": 0,
-      "conversation": this.conversationId,
-      "userId": this.userData.id,
-      "message1": this.continuemesage.message,
-      "time": new Date(),
-      "status": false,
-      "documentMessages": this.temporalDocument
+    
+    if(this.temporalDocument.length > 0){
+      this.sending = true;
+      console.log(this.temporalDocument);
+      this.continuemesage = {
+        "id": 0,
+        "conversation": this.conversationId,
+        "userId": this.userData.id,
+        "message1": (this.continuemesage.message == null || this.continuemesage.message == undefined 
+          ? '' 
+          : this.continuemesage.message) == '' ? this.temporalDocument[0].name : this.continuemesage.message,
+        "time": new Date(),
+        "status": false,
+        "documentMessages": this.temporalDocument
+      }
     }
-    if (this.continuemesage.message1 == null || this.continuemesage.message1 == undefined) {
-      this.continuemesage.message1 = '';
+    else
+    {
+      this.continuemesage = {
+        "id": 0,
+        "conversation": this.conversationId,
+        "userId": this.userData.id,
+        "message1": this.continuemesage.message == null || this.continuemesage.message == undefined ? '' : this.continuemesage.message,
+        "time": new Date(),
+        "status": false,
+        "documentMessages": this.temporalDocument
+      }
     }
+   
+    // if (this.continuemesage.message1 == null || this.continuemesage.message1 == undefined) {
+    //   this.continuemesage.message1 = '';
+    // }
     console.log(this.continuemesage);
 
-    this._services.service_general_post_with_url('Chat/SentMessage', this.continuemesage).subscribe(n => {
+    this._services.service_general_post_with_url('Chat/SentMessage', this.continuemesage)
+    .subscribe(n => {
       console.log(n);
-      this.temporalDocument = [];
+      
       this.continuemesage = {
         "id": 0,
         "conversation": 0,
@@ -239,7 +368,12 @@ export class MessengerCenterComponent implements OnInit {
         "time": "",
         "status": true,
       }
-      this.sending = false;
+      if(this.temporalDocument.length > 0){
+        this.sending = false;
+        this.temporalDocument = [];
+        document.getElementById('divHeader').style.height = (window.innerHeight - (window.innerHeight - 56))  + "px";
+        document.getElementById('divComments').style.height = (window.innerHeight - (window.innerHeight - 60))  + "px";
+      }
     })
   }
 

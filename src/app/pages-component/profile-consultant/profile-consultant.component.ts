@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderComponent } from 'app/shared/loader';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DialogConfirmComponent } from '../dialog/dialog-confirm/dialog-confirm.component';
 
 
 @Component({
@@ -61,10 +62,122 @@ export class ProfileConsultantComponent implements OnInit {
   public filterCountry: any = { name: '' };
   public filterCity: any = { city: '' };
   public filterCountry2: any = { name: '' };
-  public filterCity2: any = { city: '' };
+  public filterCity2: any = { name: '' };
+  public filterNat: any = { name: '' };
+  public filterNat2: any = { name: '' };
 
-
-
+  public ca_nat: any = [{ name: 'Afghan', value:'Afghan' }
+  ,{ name: 'Albanian', value:'Albanian' }
+  ,{ name: 'Algerian', value:'Algerian' }
+  ,{ name: 'Argentinian', value:'Argentinian' }
+  ,{ name: 'Australian', value:'Australian' }
+  ,{ name: 'Austrian', value:'Austrian' }
+  ,{ name: 'Bangladeshi', value:'Bangladeshi' }
+  ,{ name: 'Belgian', value:'Belgian' }
+  ,{ name: 'Bolivian', value:'Bolivian' }
+  ,{ name: 'Batswana', value:'Batswana' }
+  ,{ name: 'Brazilian', value:'Brazilian' }
+  ,{ name: 'Bulgarian', value:'Bulgarian' }
+  ,{ name: 'Cambodian', value:'Cambodian' }
+  ,{ name: 'Cameroonian', value:'Cameroonian' }
+  ,{ name: 'Canadian', value:'Canadian' }
+  ,{ name: 'Chilean', value:'Chilean' }
+  ,{ name: 'Chinese', value:'Chinese' }
+  ,{ name: 'Colombian', value:'Colombian' }
+  ,{ name: 'Costa Rican', value:'Costa Rican' }
+  ,{ name: 'Croatian', value:'Croatian' }
+  ,{ name: 'Cuban', value:'Cuban' }
+  ,{ name: 'Czech', value:'Czech' }
+  ,{ name: 'Danish', value:'Danish' }
+  ,{ name: 'Dominican', value:'Dominican' }
+  ,{ name: 'Ecuadorian', value:'Ecuadorian' }
+  ,{ name: 'Egyptian', value:'Egyptian' }
+  ,{ name: 'Salvadorian', value:'Salvadorian' }
+  ,{ name: 'English', value:'English' }
+  ,{ name: 'Estonian', value:'Estonian' }
+  ,{ name: 'Ethiopian', value:'Ethiopian' }
+  ,{ name: 'Fijian', value:'Fijian' }
+  ,{ name: 'Finnish', value:'Finnish' }
+  ,{ name: 'French', value:'French' }
+  ,{ name: 'German', value:'German' }
+  ,{ name: 'Ghanaian', value:'Ghanaian' }
+  ,{ name: 'Greek', value:'Greek' }
+  ,{ name: 'Guatemalan', value:'Guatemalan' }
+  ,{ name: 'Haitian', value:'Haitian' }
+  ,{ name: 'Honduran', value:'Honduran' }
+  ,{ name: 'Hungarian', value:'Hungarian' }
+  ,{ name: 'Icelandic', value:'Icelandic' }
+  ,{ name: 'Indian', value:'Indian' }
+  ,{ name: 'Indonesian', value:'Indonesian' }
+  ,{ name: 'Iranian', value:'Iranian' }
+  ,{ name: 'Iraqi', value:'Iraqi' }
+  ,{ name: 'Irish', value:'Irish' }
+  ,{ name: 'Israeli', value:'Israeli' }
+  ,{ name: 'Italian', value:'Italian' }
+  ,{ name: 'Jamaican', value:'Jamaican' }
+  ,{ name: 'Japanese', value:'Japanese' }
+  ,{ name: 'Jordanian', value:'Jordanian' }
+  ,{ name: 'Kenyan', value:'Kenyan' }
+  ,{ name: 'Kuwaiti', value:'Kuwaiti' }
+  ,{ name: 'Lao', value:'Lao' }
+  ,{ name: 'Latvian', value:'Latvian' }
+  ,{ name: 'Lebanese', value:'Lebanese' }
+  ,{ name: 'Libyan', value:'Libyan' }
+  ,{ name: 'Lithuanian', value:'Lithuanian' }
+  ,{ name: 'Malagasy', value:'Malagasy' }
+  ,{ name: 'Malaysian', value:'Malaysian' }
+  ,{ name: 'Malian', value:'Malian' }
+  ,{ name: 'Maltese', value:'Maltese' }
+  ,{ name: 'Mexican', value:'Mexican' }
+  ,{ name: 'Mongolian', value:'Mongolian' }
+  ,{ name: 'Moroccan', value:'Moroccan' }
+  ,{ name: 'Mozambican', value:'Mozambican' }
+  ,{ name: 'Namibian', value:'Namibian' }
+  ,{ name: 'Nepalese', value:'Nepalese' }
+  ,{ name: 'Dutch', value:'Dutch' }
+  ,{ name: 'New Zealand', value:'New Zealand' }
+  ,{ name: 'Nicaraguan', value:'Nicaraguan' }
+  ,{ name: 'Nigerian', value:'Nigerian' }
+  ,{ name: 'Norwegian', value:'Norwegian' }
+  ,{ name: 'Pakistani', value:'Pakistani' }
+  ,{ name: 'Panamanian', value:'Panamanian' }
+  ,{ name: 'Paraguayan', value:'Paraguayan' }
+  ,{ name: 'Peruvian', value:'Peruvian' }
+  ,{ name: 'Philippine', value:'Philippine' }
+  ,{ name: 'Polish', value:'Polish' }
+  ,{ name: 'Portuguese', value:'Portuguese' }
+  ,{ name: 'Romanian', value:'Romanian' }
+  ,{ name: 'Russian', value:'Russian' }
+  ,{ name: 'Saudi', value:'Saudi' }
+  ,{ name: 'Scottish', value:'Scottish' }
+  ,{ name: 'Senegalese', value:'Senegalese' }
+  ,{ name: 'Serbian', value:'Serbian' }
+  ,{ name: 'Singaporean', value:'Singaporean' }
+  ,{ name: 'Slovak', value:'Slovak' }
+  ,{ name: 'South African', value:'South African' }
+  ,{ name: 'Korean', value:'Korean' }
+  ,{ name: 'Spanish', value:'Spanish' }
+  ,{ name: 'Sri Lankan', value:'Sri Lankan' }
+  ,{ name: 'Sudanese', value:'Sudanese' }
+  ,{ name: 'Swedish', value:'Swedish' }
+  ,{ name: 'Swiss', value:'Swiss' }
+  ,{ name: 'Syrian', value:'Syrian' }
+  ,{ name: 'Taiwanese', value:'Taiwanese' }
+  ,{ name: 'Tajikistani', value:'Tajikistani' }
+  ,{ name: 'Thai', value:'Thai' }
+  ,{ name: 'Tongan', value:'Tongan' }
+  ,{ name: 'Tunisian', value:'Tunisian' }
+  ,{ name: 'Turkish', value:'Turkish' }
+  ,{ name: 'Ukrainian', value:'Ukrainian' }
+  ,{ name: 'Emirati', value:'Emirati' }
+  ,{ name: 'British', value:'British' }
+  ,{ name: 'American', value:'American' }
+  ,{ name: 'Uruguayan', value:'Uruguayan' }
+  ,{ name: 'Venezuelan', value:'Venezuelan' }
+  ,{ name: 'Vietnamese', value:'Vietnamese' }
+  ,{ name: 'Welsh', value:'Welsh' }
+  ,{ name: 'Zambian', value:'Zambian' }
+  ,{ name: 'Zimbabwean', value:'Zimbabwean' }];
 
 
 
@@ -86,13 +199,15 @@ export class ProfileConsultantComponent implements OnInit {
 
   public id_pais:any = 0;
   public disabled_select:boolean = false;
-  
+  minDate: any = null;
   ngOnInit(): void {
+    this.minDate = new Date();
+    
     this.loader.showLoader();
     // limpiar buscadorprefix
     this.typePrefix.countriesName = '';
     this.typePrefixPersonal.countriesName = '';
-
+    this.data_consultant.createdDate = new Date();
     this.initPageSettings()
     this.user = JSON.parse(localStorage.getItem('userData'));
     this.id_covertura = Number(localStorage.getItem('id_coverture'));
@@ -100,6 +215,7 @@ export class ProfileConsultantComponent implements OnInit {
     this.id = this._routerParams.snapshot.params.id;
     console.log(this.id);
     console.log(this.id_covertura);
+    console.log(this.user);
     if(this.id_covertura != 0){
       if(this.id_pais != 0){ 
         this.disabled_select = true; 
@@ -115,6 +231,7 @@ export class ProfileConsultantComponent implements OnInit {
         if (data.success) {
           console.log(data.result);
           this.data_consultant = data.result;
+          this.data_consultant.supplierType = 1;
           if(this.id_pais != 0){
             this.disabled_select = true; 
             this.data_consultant.country = this.id_pais;
@@ -199,6 +316,7 @@ export class ProfileConsultantComponent implements OnInit {
       }))
     }else{
       this.data_consultant.id = 0;
+      this.data_consultant.supplierType = 1;
       this.catalogos();
       this.paymentMethod();
       this.loader.hideLoader();
@@ -273,6 +391,7 @@ export class ProfileConsultantComponent implements OnInit {
   ca_documentStatus = [];
   ca_relation = [];
   ca_supplierType = [];
+  ca_countryPersonelInfo:Array<any> = [];
   async catalogos() {
     this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
     //this.ca_relation = await this._services.getCatalogueFrom('GetRelationship');
@@ -287,7 +406,9 @@ export class ProfileConsultantComponent implements OnInit {
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
     this.ca_office = await this._services.getCatalogueFrom('GetOffice');
     this.ca_title = await this._services.getCatalogueFrom('GetTitle');
+    this.data_consultant.title = 32;
     this.ca_country = await this._services.getCatalogueFrom('GetCountry');
+    this.ca_countryPersonelInfo = await this._services.getCatalogueFrom('Generic/Countries');
     this.ca_languages = await this._services.getCatalogueFrom('GetLanguages');
     this.ca_languages = await this._services.getCatalogueFrom('GetLanguages');
     this.ca_benefit = await this._services.getCatalogueFrom('GetBenefit');
@@ -330,7 +451,7 @@ export class ProfileConsultantComponent implements OnInit {
   //CONSULTA CIUDAD//
   ca_city_ = [];
   getCity_(){
-    this._services.service_general_get('Catalogue/GetState?country=' + this.data_consultant.personalInformation.country).subscribe((data => {
+    this._services.service_general_get('CountryAdminCenter/GetCityByCountryId?countryId=' + this.data_consultant.personalInformation.country).subscribe((data => {
       if (data.success) {
           this.ca_city_ = data.result;
       }
@@ -382,7 +503,12 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if(result.success){
-        this.data_consultant.vehicleConsultants.push(result);
+        if(this.id != "New"){
+          this.data_consultant.vehicleConsultants.push(result);
+          this.save();
+        }else{
+          this.data_consultant.vehicleConsultants.push(result);
+        }
       }
     });
   }
@@ -396,7 +522,43 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if(result.success){
-         this.data_consultant.vehicleConsultants[i] = result;
+        if(this.id != "New"){
+          this.loader.showLoader();
+          this._services.service_general_put('Profile/UpdateVehicle',result).subscribe((r)=>{
+            console.log(r);
+            if(r.success){
+              this.data_consultant.vehicleConsultants[i] = r.result.value;
+            }
+            this.loader.hideLoader();
+          })
+        }else{
+          this.data_consultant.vehicleConsultants[i] = result;
+        }
+      }
+    });
+  }
+    //*********************************************************************************//
+  //FUNCION PARA eliminar un contacto//
+  deleteVehicle(data,i){
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      width: "350px",
+      data: {header: 'Delete record', body: 'do you want to proceed now?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if(result){
+        if(this.id != "New"){
+          this.loader.showLoader();
+          this._services.service_general_put('Profile/DeleteVehicle?id='+data.id,'').subscribe((r)=>{
+            if(r.success){
+              this.data_consultant.vehicleConsultants.splice(i, 1);
+            }
+            this.loader.hideLoader();
+          })
+        }else{
+          this.data_consultant.vehicleConsultants.splice(i, 1);
+        }
       }
     });
   }
@@ -410,7 +572,11 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result.success) {
+        result.id = 0;
         this.data_consultant.personalInformation.emergencyContacts.push(result);
+        if(this.id != "New"){
+          this.save();
+        }
       }
       else {
         console.log(result);
@@ -428,10 +594,46 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if(result.success){
-        this.data_consultant.personalInformation.emergencyContacts[i] = result;
+        if(this.id != "New"){
+          this.loader.showLoader();
+          this._services.service_general_put('Profile/UpdateEmergemcyContact',result).subscribe((r)=>{
+            if(r.success){
+              this.data_consultant.personalInformation.emergencyContacts[i] = r.result.value;
+            }
+            this.loader.hideLoader();
+          })
+        }else{
+          this.data_consultant.personalInformation.emergencyContacts[i] = result;
+        }
       }
     });
   }
+  //*********************************************************************************//
+  //FUNCION PARA eliminar un contacto//
+  deleteContact(data,i){
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      width: "350px",
+      data: {header: 'Delete record', body: 'do you want to proceed now?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if(result){
+        if(this.id != "New"){
+          this.loader.showLoader();
+          this._services.service_general_put('Profile/DeleteEmergencyContact?id='+data.id,'').subscribe((r)=>{
+            if(r.success){
+              this.data_consultant.personalInformation.emergencyContacts.splice(i, 1);
+            }
+            this.loader.hideLoader();
+          })
+        }else{
+          this.data_consultant.personalInformation.emergencyContacts.splice(i, 1);
+        }
+      }
+    });
+  }
+
   //*********************************************************************************//
   //FUNCION PARA AGREGAR NUEVO BENEFIT//
   addBenefit(){
@@ -458,6 +660,9 @@ export class ProfileConsultantComponent implements OnInit {
       console.log(result);
       if(result.success){
         this.temporalDocument.push(result);
+        if(this.id != 'New'){
+          this.save();
+        }
       }
     });
   }
@@ -475,6 +680,29 @@ export class ProfileConsultantComponent implements OnInit {
       console.log(result);
       if (result) {
         this.temporalDocument.splice(i,1);
+      }
+    })
+  }
+  
+  deleteDocs(id, i){
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      data: {
+        header: "Delete confirmation",
+        body: "Are you sure to delete this document?"
+      },
+      width: "350px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.loader.showLoader()
+        this._services.service_general_put('Profile/DeleteDocumentConsultantContactsConsultants?id='+id,'').subscribe((r)=>{
+          if(r.success){
+            this.data_consultant.documentConsultantContactsConsultants.splice(i,1);
+          }
+          this.loader.hideLoader()
+        })
       }
     })
   }
@@ -622,7 +850,7 @@ export class ProfileConsultantComponent implements OnInit {
       console.log("data a guardar: ", this.data_consultant);
       console.log("data a guardar: ", JSON.stringify(this.data_consultant));
       this.data_consultant.createdBy = this.user.id
-      this.data_consultant.createdDate = new Date();
+      //this.data_consultant.createdDate = new Date();
       this._services.service_general_post_with_url("Profile/AddProfile", this.data_consultant).subscribe((data => {
         if(data.success){
           console.log(data);
@@ -690,7 +918,7 @@ export class ProfileConsultantComponent implements OnInit {
               this.ngOnInit();
         }
       }),(err)=>{
-        console.log("error: ", err);
+        console.log("error al actualizar los datos: ", err);
       })
   }
 
@@ -807,7 +1035,9 @@ export class ProfileConsultantComponent implements OnInit {
   activelanguages:boolean = false;
   activePrefixP:boolean = false;
   alergic:boolean = false;
+
  valida_form(){
+  debugger;
    if(this.data_consultant.responsablePremierOffice == undefined || this.data_consultant.responsablePremierOffice == null || this.data_consultant.responsablePremierOffice == ''){
     this.contador++;
      this.active_responsablePremierOffice = true;
@@ -973,6 +1203,13 @@ validate(){
     this.activeNumberLongitud = false; 
   }
 
+  getSupName(id){
+    for (const iterator of this.ca_supplierType) {
+      if(id == iterator.id){
+        return iterator.supplierType;
+      }
+    }
+  }
  
 }
 

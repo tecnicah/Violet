@@ -15,8 +15,12 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central">
         <mat-form-field appearance="fill">
+          <!-- <mat-label>Item</mat-label>
+          <input matInput placeholder="Item" [(ngModel)]="inventorye.item"> -->
           <mat-label>Item</mat-label>
-          <input matInput placeholder="Item" [(ngModel)]="inventorye.item">
+          <mat-select [(ngModel)]="inventorye.item">
+            <mat-option *ngFor='let data of all_items' [value]='data.id'>{{data.item}}</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -48,8 +52,8 @@
   </mat-grid-list>
 
   <div class="photos">
-      <div class="photo" *ngFor="let item of inventorye.photosInventories">
-        <img src="assets/icons/quit.svg" class="delete" *ngIf="item.id == 0">
+      <div class="photo" *ngFor="let item of inventorye.photosInventories; let p = index">
+        <img src="assets/icons/quit.svg" class="delete" (click)="deletePhoto(p, item.id)">
         <img src="{{item.base64}}" class="img" alt="" *ngIf="item.id == 0">
         <img src="{{_services.url_images}}{{item.photo}}" class="img" alt="" *ngIf="item.id != 0">
       </div>

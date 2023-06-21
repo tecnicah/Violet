@@ -22,19 +22,20 @@
               "src/favicon.ico"
             ],
             "styles": [
-              {
-                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
-              },
               "node_modules/angular-calendar/css/angular-calendar.css",
               "node_modules/chartist/dist/chartist.css",
               "src/styles.css",
               "src/assets/styles/style.scss",
               "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css"
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+              "./node_modules/quill/dist/quill.bubble.css",
+              "./node_modules/quill/dist/quill.snow.css",
+              "./node_modules/quill/dist/quill.core.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/owl.carousel/dist/owl.carousel.min.js"
+              "./node_modules/owl.carousel/dist/owl.carousel.min.js",
+              "./node_modules/quill/dist/quill.js"
             ]
           },
           "configurations": {
@@ -42,7 +43,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "12mb"
                 }
               ],
               "optimization": true,

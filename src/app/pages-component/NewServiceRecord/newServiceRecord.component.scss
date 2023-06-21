@@ -33,5 +33,13 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
 	width: 65px !important;
 }
 
+.mat-list-base .mat-list-item {
+  font-size: 12px;
+}
 
-
+.mat-subheader {
+  display: flex;
+  box-sizing: border-box;
+  padding: 10px 0 !important;
+  align-items: center;
+}

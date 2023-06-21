@@ -21,7 +21,7 @@
         </div>
       </mat-grid-tile>
 
-       <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.id == 0">
         <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
@@ -30,8 +30,10 @@
                 <mat-label>Country</mat-label>
                 <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
               </mat-form-field>
-              <mat-option *ngFor="let item of catalogoCountry| filterBy: filterCountry" [value]="item"> {{item.name}}</mat-option>
-              <mat-option disabled *ngIf="(catalogoCountry | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+              <mat-option *ngFor="let item of catalogoCountry| filterBy: filterCountry" [value]="item.name">
+                {{item.name}}</mat-option>
+              <mat-option disabled *ngIf="(catalogoCountry | filterBy: filterCountry).length === 0">No matching elements
+              </mat-option>
             </mat-select>
             <mat-error>Field is required</mat-error>
           </mat-form-field>
@@ -43,11 +45,21 @@
         </div>
       </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.id != 0">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <input matInput placeholder="Country" [(ngModel)]="data.country" [disabled]="true">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
       <mat-grid-tile [colspan]="2" [rowspan]="1">
         <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Description</mat-label>
-            <input matInput placeholder="Description" [(ngModel)]="data_.description" [disabled]="data.origin == 'violetApp'">
+            <input matInput placeholder="Description" [(ngModel)]="data_.description"
+              [disabled]="data.origin == 'violetApp'">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -74,18 +86,18 @@
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="data.origin != 'violetApp'">
+      <!-- <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="data.origin != 'violetApp'">
         <div class="textarea">
           <p class="page__section-name">Country Leaders</p>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
     </mat-grid-list>
     <!----------------------------------------------------------------------------------------->
-     <!-- inicio seccion country leaders -->
+    <!-- inicio seccion country leaders -->
 
-     <!--START TABLE  country leaders-->
-    <table class="mat-elevation-z8 textarea mat-table" *ngIf="data.origin != 'violetApp'">
+    <!--START TABLE  country leaders-->
+    <!-- <table class="mat-elevation-z8 textarea mat-table" *ngIf="data.origin != 'violetApp'">
       <tr class="mat-header-row">
         <th class="mat-header-cell">Profile</th>
         <th class="mat-header-cell">Name</th>
@@ -99,10 +111,10 @@
           <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteLeader(item.leader)">
         </td>
       </tr>
-    </table>
+    </table> -->
     <!--CLOSE TABLE country leaders-->
     <mat-grid-list cols="4" rowHeight="70px" *ngIf="data.origin != 'violetApp'">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
             <button class="button-icon button-icon--more" (click)="addLeader()">
@@ -110,7 +122,7 @@
             </button>
           </div>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
           <p class="page__section-name">Cities</p>
@@ -142,10 +154,10 @@
     </table>
     <!--CLOSE TABLE CITY-->
     <!----------------------------------------------------------------------------------------->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="data.origin != 'violetApp'">
+    <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <div *ngIf="ddlCountry" class="page__section-button page__section-button--big">
             <button class="button-icon button-icon--more" (click)="addCity()">
               Add City
             </button>
@@ -162,6 +174,11 @@
           Working Documents
         </div>
         <div class="page__section" *ngIf="data_.countryDocuments.length > 0 || document.length > 0">
+          <div class="page__section-input page__section-input--6_2">
+            <span class="documents__index documents__index--task">
+              Document Name
+            </span>
+          </div>
           <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
               Document Type
@@ -172,7 +189,7 @@
               Uploaded Date
             </span>
           </div>
-          <div class="page__section-input page__section-input--6_1">
+          <!-- <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
               Expiration Date
             </span>
@@ -181,12 +198,12 @@
             <span class="documents__index documents__index--task">
               Location
             </span>
-          </div>
-          <div class="page__section-input page__section-input--6_1">
+          </div> -->
+          <!-- <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
               Status
             </span>
-          </div>
+          </div> -->
           <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
               Privacy
@@ -197,21 +214,27 @@
         <div class="page__section documents__ascard" *ngFor="let item of data_.countryDocuments">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important;" (click)="deleteDocumentCountry(item)">
+          <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+            style="background: transparent!important; margin-right: 25px;" *ngIf="item.id != 0"
+            (click)="openRepairsFileOnWindow(item.fileRequest)">
+          <div class="page__section-input page__section-input--6_2 documents__ascard--task">
+            {{(item.fileName.length>30) ? (item.fileName | slice:0:30)+'..': item.fileName}}
+          </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
              {{getName(item.idDocumentType)}}
           </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{item.uploadDate | date: 'dd MMM yyyy'}}
           </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <!-- <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{item.expirationDate | date: 'dd MMM yyyy'}}
           </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{item.location}}
-          </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          </div> -->
+          <!-- <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{getStatus(item.idStatus)}}
-          </div>
+          </div> -->
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{getPrivacy(item.idPrivacy)}}
           </div>
@@ -220,13 +243,16 @@
         <div class="page__section documents__ascard" *ngFor="let item of document;let i = index">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important;" (click)="deleteTemporal(i)">
+            <div class="page__section-input page__section-input--6_2 documents__ascard--task">
+              {{(item.fileName.length>30) ? (item.fileName | slice:0:30)+'..': item.fileName}}
+            </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
               {{getName(item.idDocumentType)}}
           </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{item.uploadDate | date: 'dd MMM yyyy'}}
           </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <!-- <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{item.expirationDate | date: 'dd MMM yyyy'}}
           </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
@@ -234,7 +260,7 @@
           </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{getStatus(item.idStatus)}}
-          </div>
+          </div> -->
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{getPrivacy(item.idPrivacy)}}
           </div>

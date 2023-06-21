@@ -1,166 +1,234 @@
-  <div *ngIf="data.appointmentId == 0">
-    <div fxLayout="row" fxLayoutGap="10px">
-      <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
-        <h2 mat-dialog-title class="modal-form__title">New Appointment</h2>
-      </div>
-      <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
-        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
-      </div>
+<div *ngIf="data.appointmentId == 0">
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">New Appointment</h2>
     </div>
-    <!----------------------------------------------------------------------------------------------------------->
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <!----------------------------------------------------------------------------------------------------------->
 
-    <mat-dialog-content class="mat-typography">
+  <mat-dialog-content class="">
 
-      <div class="mat-elevation-z5" style="margin: 15px 0 15px 0; padding: 15px;"
-        *ngFor="let item of appointment; let i = index">
+    <div *ngFor="let item of appointment; let i = index">
 
-        <mat-grid-list cols="9" rowHeight="70px">
+      <div id="card-{{i}}" class="mat-elevation-z5" style="margin: 15px 0 15px 0; padding: 15px;">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+          <div class="subtitledos" style="padding-bottom: 15px;">
+            Appointment {{i + 1}}
+          </div>
+          <div class="font-purple-dark cursor-pointer" (click)="lessAppointment(i)">
+            <mat-icon *ngIf="i>0">delete_forever</mat-icon>
+          </div>
+        </div>
 
-          <!--mat-grid-tile [colspan]="3" [rowspan]="1">
-            <div class="input_central textarea">
-              <mat-form-field appearance="fill">
-                <mat-label>Status</mat-label>
-                <mat-select [(ngModel)]="item.status">
-                  <mat-option [value]="true">Active</mat-option>
-                  <mat-option [value]="false">Inactive</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile-->
-
-          <mat-grid-tile [colspan]="3" [rowspan]="1">
-            <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-              <div class="textarea">
-                <span class="text-mini gray_05">Status</span><br />
-                 <p>Active</p>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-          <!--mat-grid-tile [colspan]="3" [rowspan]="1">
-            <div class="input_central textarea">
-              <mat-form-field appearance="fill">
-                <mat-label>Work Order</mat-label>
-                <mat-select [(ngModel)]="item.workOrder">
-                  <mat-option *ngFor="let data of data_work" [value]="data.id">{{data.numberWorkOrder}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile-->
-
-          <mat-grid-tile [colspan]="3 " [rowspan]="1">
-            <div class="input_central textarea">
+        <mat-divider></mat-divider>
+        <br>
+        <br>
+        <mat-grid-list cols="12" rowHeight="70px">
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
               <mat-form-field appearance="fill">
                 <mat-label>Date</mat-label>
-                <input matInput required [matDatepicker]="picker"  [min]="date" (dateChange)="getDay(i,$event)" [(ngModel)]="item.date">
+                <input id="txt-{{i}}" matInput required [matDatepicker]="picker" #dates="ngModel" [min]="date"
+                  (dateChange)="getDay(i,$event); validate_starttime(i, item);" [(ngModel)]="item.date"
+                  (change)="object_valid[i].valid_date = true;">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="3 " [rowspan]="1">
-            <div class="input_central textarea">
-              <mat-form-field appearance="fill">
-                <mat-label>Start time</mat-label>
-                <input matTimepicker #t2="matTimepicker" #time2="ngModel" [minDate]="_minValue" [maxDate]="_maxValue"
-                  id="timepicker-example-2" mode="12h" ngModel placeholder="Please select time..." name="time-2">
-                <mat-icon matSuffix (click)="t2.showDialog()">access_time</mat-icon>
-                <mat-error *ngIf="time2.touched && time2.invalid">Invalid Date</mat-error>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-          
-          <mat-grid-tile [colspan]="3" [rowspan]="1">
-            <div class="input_central textarea">
-              <mat-form-field appearance="fill">
-                <mat-label>To</mat-label>
-                <mat-select [(ngModel)]="item.to" (ngModelChange)="getavailabitily(i)" [disabled]='item.date == null'>
-                  <mat-option *ngFor="let data of ca_supplier" [value]="data.userId">{{data.name}}</mat-option>
-                </mat-select>
+                <span class="label-error" *ngIf="dates.invalid && !object_valid[i].valid_date">
+                  Field is invalid
+                </span>
               </mat-form-field>
             </div>
           </mat-grid-tile>
 
-          <!-- <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile> -->
-          <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="isConsultant">
-            <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-              <div class="textarea" style="cursor: pointer;">
-                <span class="text-mini gray_05">Availability Consultant</span><br />
-                 <p [matMenuTriggerFor]="menu" style="color: #9d3292;">Check Availability</p>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item *ngFor="let item of available">{{item.title}} - {{item.dia}} - {{item.startTime}} - {{item.endTime}}</button>
-            <button mat-menu-item *ngFor="let item of NoAvailable">{{item.title}} - {{item.dia}}. {{item.startTime}} - {{item.endTime}}</button>
-          </mat-menu>
-
-          <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="isConsultant">
-            <div class="input_central textarea">
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
               <mat-form-field appearance="fill">
                 <mat-label>Start Time</mat-label>
-                <mat-select [(ngModel)]="item.startTime">
-                  <mat-option *ngFor="let data of tiempo" [value]="data">{{data}}</mat-option>
-                </mat-select>
+                <input matInput required placeholder="Start Time" type="time" [(ngModel)]="item.startTime"
+                  (change)="validate_starttime(i, item)">
+                <span class="label-error" *ngIf="!object_valid[i].valid_stat">
+                  Time is invalid
+                </span>
               </mat-form-field>
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="isConsultant">
-            <div class="input_central textarea">
-                <mat-form-field appearance="fill">
-                  <mat-label>End Time</mat-label>
-                  <mat-select [(ngModel)]="item.endTime">
-                    <mat-option *ngFor="let data of tiempo" [value]="data">{{data}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="!isConsultant">
-            <div class="input_central textarea">
-              <mat-form-field appearance="fill">
-                <mat-label>Start Time</mat-label>
-                <input matInput required placeholder="Start Time" type="time" [(ngModel)]="item.startTime">
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="!isConsultant">
-            <div class="input_central textarea">
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
               <mat-form-field appearance="fill">
                 <mat-label>End Time</mat-label>
-                <input matInput required placeholder="End Time" type="time" [(ngModel)]="item.endTime">
+                <input matInput required placeholder="End Time" type="time" min="item.startTime"
+                  [(ngModel)]="item.endTime" min="item.startTime" (change)="validate_endtime(i, item)">
+                <span class="label-error" *ngIf="!object_valid[i].valid_end">
+                  Time is invalid
+                </span>
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-        </mat-grid-list>
-        <!------------------------------------------------------------------------------------------------>
-        <!--SERVICIOS ITERADOS-->
 
-        <mat-grid-list cols="3" rowHeight="70px">
-          <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let data of item.services; let j = index">
-            <div class="textarea">
-              <mat-checkbox (change)="pushCheckbox(i, j, $event , data)">
-                <span style="font-size: 12px;"> {{data.serviceNumber}} </span>
-              </mat-checkbox>
+          <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+              <mat-form-field appearance="fill">
+                <mat-label>Supplier</mat-label>
+                <mat-select [(ngModel)]="item.to" (ngModelChange)="getavailabitily(i); object_valid[i].valid_to = true;"
+                  [disabled]='(user.role.id == 3) || (!item.date)' (change)="object_valid[i].valid_to = true">
+                  <mat-option *ngFor="let data of ca_supplier" [value]="data.userId">
+                    {{data.name}}
+                  </mat-option>
+                </mat-select>
+                <span class="label-error" *ngIf="!object_valid[i].valid_to">
+                  Field is invalid
+                </span>
+              </mat-form-field>
             </div>
           </mat-grid-tile>
-        </mat-grid-list>
 
-        <!------------------------------------------------------------------------------------------------>
-        <mat-grid-list cols="9" rowHeight="30px">
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div class="textarea">
-              <p class="subtitle">Upload Documents</p>
+          <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+              <mat-form-field appearance="fill">
+                <mat-label>Related services</mat-label>
+                <mat-select multiple [disabled]='item.date == null'>
+                  <ng-container *ngFor="let data of item.services; let z = index">
+                    <mat-option #thisSelected
+                      (click)="pushCheckbox(i, z, thisSelected , data); object_valid[i].valida_servicios = true;"
+                      [value]="item.id">
+                      <span style="min-width: 180px;">
+                        {{data.serviceNumber}}
+                      </span>
+                    </mat-option>
+                  </ng-container>
+                </mat-select>
+                <span class="label-error" *ngIf="!object_valid[i].valida_servicios">
+                  Field is invalid
+                </span>
+              </mat-form-field>
             </div>
           </mat-grid-tile>
+
         </mat-grid-list>
 
+
+        <!------------------------------------------------------------------------------------------------>
+        <!-- school List -->
+        <div *ngIf="dataSourceSchool[i]?.length > 0">
+          <br />
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            Schools to visit
+          </div>
+          <br />
+
+          <!---------------------------------------------------------------------- TABLA ESCUELAS  ------------------------------------------>
+
+          <table mat-table [dataSource]="dataSourceSchool[i]" class="mat-elevation-z8 textarea">
+
+            <ng-container matColumnDef="School Name">
+              <th mat-header-cell *matHeaderCellDef>School Name</th>
+              <td mat-cell *matCellDef="let element" class="browser" (click)="editSchool(element)">
+                {{element.schoolName}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="School No.">
+              <th mat-header-cell *matHeaderCellDef>Adress</th>
+              <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Dependent">
+              <th mat-header-cell *matHeaderCellDef> Dependent </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element; let i = index;">
+                <mat-checkbox (change)="setSchoolByAddSchool($event, element.id, i)"
+                              [checked]="element.relAppointmentHousingLists">
+                </mat-checkbox>
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="Schooling Status">
+              <th mat-header-cell *matHeaderCellDef> Schooling Status </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status == 'School Selected'" style="font-weight: bolder;">
+                  {{element.status}}
+                </span>
+                <span *ngIf="element.status != 'School Selected'">
+                  {{element.status}}
+                </span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsSchool"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsSchool;"></tr>
+          </table>
+        </div>
+
+        <!------------------------------------------------------------------------------------------------>
+        <!-- Housing List -->
+        <div *ngIf="dataSourceHousing[i]?.length > 0">
+          <br />
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            Houses to visit
+          </div>
+          <br />
+
+          <!---------------------------------------------------------------------- TABLA CASAS  ------------------------------------------>
+
+          <table mat-table [dataSource]="dataSourceHousing[i]" class="mat-elevation-z8 textarea">
+            <ng-container matColumnDef="Property Type">
+              <th mat-header-cell *matHeaderCellDef> Property Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Address">
+              <th mat-header-cell *matHeaderCellDef> Address </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.address}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Neighborhood">
+              <th mat-header-cell *matHeaderCellDef> Neighborhood </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.neighborhood}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Price">
+              <th mat-header-cell *matHeaderCellDef> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.price | currency }} </td>
+            </ng-container>
+            <ng-container matColumnDef="Currency">
+              <th mat-header-cell *matHeaderCellDef> Currency </th>
+              <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Housing Status">
+              <th mat-header-cell *matHeaderCellDef> Housing Status </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status == 'Permanent Property'"
+                  style="font-weight: bolder;">{{element.status}}</span>
+                <span *ngIf="element.status != 'Permanent Property'">{{element.status}}</span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsHousing"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsHousing;"></tr>
+          </table>
+        </div>
+        <br>
+        <mat-grid-list cols="4" rowHeight="120px">
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            Appointment Message
+          </div>
+          <mat-form-field appearance="outline" style="width: 100% !important">
+            <textarea matInput [(ngModel)]="item.description" #message maxlength="500"
+              (change)="object_valid[i].valid_desc = true"></textarea>
+
+            <mat-hint style="color:red; font-size: 12px;"
+              *ngIf="message.value.length < 1 && !object_valid[i].valid_desc">
+              Message is invalid</mat-hint>
+          </mat-form-field>
+        </mat-grid-list>
+        <br>
+        <!-------------------------------------------------------- DOCUMENTOSTO ------------------------------------------------------------>
 
         <mat-grid-list cols="4" rowHeight="150px">
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            Upload Documents
+          </div>
           <mat-grid-tile [colspan]="4" [rowspan]="1">
 
             <ngx-file-drop class="file-drop textarea" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, i)"
@@ -174,8 +242,7 @@
           </mat-grid-tile>
         </mat-grid-list>
 
-
-        <mat-grid-list cols="1">
+        <mat-grid-list cols="2">
           <div class="page__section margin-top-min">
             <div *ngIf="item.documentAppointments.length != 0" class="page__section">
               <div class="page__section-input page__section-input--6_1">
@@ -210,7 +277,8 @@
               </div>
             </div>
 
-            <div class="page__section documents__ascard" *ngFor="let element of item.documentAppointments; let k = index">
+            <div class="page__section documents__ascard"
+              *ngFor="let element of item.documentAppointments; let k = index">
               <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
                 style="background: transparent!important;" (click)="deleteDocument(i,k)">
               <div class="page__section-input page__section-input--6_1 documents__ascard--task">
@@ -234,298 +302,365 @@
             </div>
           </div>
         </mat-grid-list>
+      </div>
+    </div>
+  </mat-dialog-content>
 
-        <mat-grid-list cols="4" rowHeight="50px">
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div class="textarea">
-              <p class="subtitle">Notification Message</p>
+  <mat-dialog-actions align="end" style="margin: 10px;">
+
+    <!-- <div class="page__section-buttong">
+        <button (click)="addAppointment()">Add Another Appointment</button>
+      </div> -->
+
+
+    <div class="page__section-buttong">
+      <button (click)="addAppointment()">Add Another Appointment</button>
+    </div>
+    &nbsp;&nbsp;
+    <div class="page__section-buttong">
+      <button (click)="save()">Create Appointment</button>
+    </div>
+
+  </mat-dialog-actions>
+</div>
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!------------------------------END INSERT APPOINNTMENT--------------------------------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!------------------------------START UPDATE APPOINTMENT-------------------------------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<div *ngIf="data.appointmentId != 0">
+  <!---------------------------------------------------------------------------------------->
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="modal-form__title">Appointment</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <!---------------------------------------------------------------------------------------->
+  <mat-dialog-content class="mat-typography">
+    <div *ngFor="let item of appointment; let i = index">
+      <div class="mat-elevation-z5" style="margin: 15px 0 15px 0; padding: 15px;">
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-xs="200" fxFlex="200" class="input_central textarea"
+            style="padding: 20px;">
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="item.status" [disabled]='item.date == null'>
+                <mat-option *ngFor="let data of status_appointment" [value]="data.id">
+                  {{data.status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="item.status == 3">
+          <div class="textarea">
+            <p class="Section-Name">Cancelation Comment</p>
+            <br>
+            <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+              <textarea matInput [(ngModel)]="item.commentCancel">{{item.commentCancel}}</textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-grid-list cols="12" rowHeight="70px">
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+              <mat-form-field appearance="fill">
+                <mat-label>Creation date</mat-label>
+                <input matInput [matDatepicker]="picker" #dates="ngModel" [min]="date" (dateChange)="getDay(i,$event);"
+                  [(ngModel)]="item.date" [disabled]="true">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
             </div>
           </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+              <mat-form-field appearance="fill">
+                <mat-label>Start Time</mat-label>
+                <input matInput required placeholder="Start Time" type="time" [(ngModel)]="item.startTime">
+                <span class="label-error" *ngIf="!valid_stat">
+                  Field is invalid
+                </span>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+              <mat-form-field appearance="fill">
+                <mat-label>End Time</mat-label>
+                <input matInput required placeholder="End Time" type="time" [(ngModel)]="item.endTime"
+                  min="item.startTime">
+                <span class="label-error" *ngIf="!valid_end">
+                  Field is invalid
+                </span>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+              <mat-form-field appearance="fill">
+                <mat-label>Supplier</mat-label>
+                <mat-select [(ngModel)]="item.to" [disabled]="true">
+                  <mat-option *ngFor="let data of ca_supplier" [value]="data.userId">
+                    {{data.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <div class="input_central textarea" style="padding: 10px;">
+
+              <mat-form-field appearance="fill">
+                <mat-label>Related services</mat-label>
+                <mat-select multiple [(ngModel)]="appointment[0].services">
+                  <ng-container *ngFor="let data of caService; let z = index">
+                    <mat-option #thisSelected (click)="pushCheckboxUpdate(i, z, thisSelected , data);"
+                      [value]="data.service">
+                      <span style="min-width: 180px;">
+                        {{data.serviceNumber}}
+                      </span>
+                    </mat-option>
+                  </ng-container>
+                </mat-select>
+                <span class="label-error" *ngIf="!valida_servicios_e">
+                  Field is invalid
+                </span>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <!------------------------------------------------------------------------------------------------>
+        <!-- Schooling List -->
+
+        <div *ngIf="dataSourceSchool[0]?.length > 0">
+          <br />
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            School List
+          </div>
+          <br />
+          <table mat-table [dataSource]="dataSourceSchool[0]" class="mat-elevation-z8 textarea">
+
+            <ng-container matColumnDef="School Name">
+              <th mat-header-cell *matHeaderCellDef>School Name</th>
+              <td mat-cell *matCellDef="let element" class="browser" (click)="editSchool(element)">
+                {{element.schoolName}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="School No.">
+              <th mat-header-cell *matHeaderCellDef>Adress</th>
+              <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Dependent">
+              <th mat-header-cell *matHeaderCellDef> Dependent </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element; let i = index;">
+                <mat-checkbox (change)="setSchoolByAddSchool($event, element.id, i)"
+                              [checked]="element.relAppointmentHousingLists">
+                </mat-checkbox>
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="Schooling Status">
+              <th mat-header-cell *matHeaderCellDef> Schooling Status </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status == 'School Selected'" style="font-weight: bolder;">
+                  {{element.status}}
+                </span>
+                <span *ngIf="element.status != 'School Selected'">
+                  {{element.status}}
+                </span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsSchool"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsSchool;"></tr>
+          </table>
+        </div>
+
+         <!------------------------------------------------------------------------------------------------>
+        <!-- Housing List -->
+        <div *ngIf="dataSourceHousing[i]?.length > 0">
+          <br />
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            Houses to visit
+          </div>
+          <br />
+
+          <!---------------------------------------------------------------------- TABLA CASAS  ------------------------------------------>
+
+          <table mat-table [dataSource]="dataSourceHousing[i]" class="mat-elevation-z8 textarea">
+            <ng-container matColumnDef="Property Type">
+              <th mat-header-cell *matHeaderCellDef> Property Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Address">
+              <th mat-header-cell *matHeaderCellDef> Address </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.address}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Neighborhood">
+              <th mat-header-cell *matHeaderCellDef> Neighborhood </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.neighborhood}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Price">
+              <th mat-header-cell *matHeaderCellDef> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.price | currency }} </td>
+            </ng-container>
+            <ng-container matColumnDef="Currency">
+              <th mat-header-cell *matHeaderCellDef> Currency </th>
+              <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Housing Status">
+              <th mat-header-cell *matHeaderCellDef> Housing Status </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status == 'Permanent Property'"
+                  style="font-weight: bolder;">{{element.status}}</span>
+                <span *ngIf="element.status != 'Permanent Property'">{{element.status}}</span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsHousing"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsHousing;"></tr>
+          </table>
+        </div>
+        <!------------------------------------------------------------------------------------------------>
+        <!--SERVICIOS ITERADOS-->
+
+        <mat-grid-list cols="3" rowHeight="70px">
+          <div *ngFor="let checks of item.services">
+            <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="checks.serviceNumber != null">
+              <div class="textarea">
+                <mat-checkbox [checked]="true" [disabled]="true">
+                  <span style="font-size: 12px;"> {{checks.serviceNumber}} </span>
+                </mat-checkbox>
+              </div>
+            </mat-grid-tile>
+          </div>
         </mat-grid-list>
 
         <mat-grid-list cols="4" rowHeight="120px">
+          <div class="subtitledos" style="padding-bottom: 5px;">
+            Appointment Message
+          </div>
           <mat-form-field appearance="outline" style="width: 100% !important">
             <textarea matInput [(ngModel)]="item.description" #message maxlength="500"></textarea>
-            <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+            <mat-hint style="color:red; font-size: 12px;" *ngIf="message.value.length < 1 && !valid_desc">Field is
+              is invalid</mat-hint>
           </mat-form-field>
         </mat-grid-list>
 
-      </div>
+        <!------------------------------------------------------------------------------------------------>
+        <!--START DOCUMENTOS-->
+        <div *ngIf="item.documentAppointments.length > 0">
+          <mat-grid-list cols="1">
+            <div class="page__section margin-top-min">
+              <div class="subtitledos">
+                Service Documents
+              </div>
+              <div class="page__section">
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task">
+                    Document Type
+                  </span>
+                </div>
 
-      <mat-grid-list cols="4" rowHeight="70px">
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task">
+                    created Date
+                  </span>
+                </div>
 
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="addPropperty textarea">
-            <div class="page__section-button page__section-button--big" style="left: 6px;">
-              <button class="button-icon button-icon--more" (click)="addAppointment()">
-                Add Appointment
-              </button>
+                <div class="page__section-input page__section-input--6_1">
+                  <span class="documents__index documents__index--task">
+
+                  </span>
+                </div>
+
+                <div class="page__section-input page__section-input--6_1" style="text-align: end;">
+                  <span class="documents__index documents__index--task" style="text-align: end;">
+                  </span>
+                </div>
+              </div>
+              <div class="page__section documents__ascard" *ngFor="let doc of item.documentAppointments">
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{doc.fileName}}
+                </div>
+
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                  {{doc.createdDate | date: 'dd MMM yyy'}}
+                </div>
+
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+                </div>
+
+                <div class="page__section-input page__section-input--6_1 documents__ascard--task"
+                  style="text-align: end; padding-right: 40px;">
+                  <a target="_blank" [href]="image_path + doc.fileRequest">
+                    <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+                      style="background: transparent!important; margin-right: 25px;">
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-    </mat-dialog-content>
-
-    <mat-dialog-actions align="end" style="margin-bottom:15px">
-      <div class="page__section-buttong">
-        <button (click)="save()">Create Appointment</button>
-      </div>
-    </mat-dialog-actions>
-  </div>
-  <!--END INSERT APPOINNTMENT-->
-  <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-  <!--START UPDATE APPOINTMENT-->
-  <div *ngIf="data.appointmentId != 0">
-    <!---------------------------------------------------------------------------------------->
-    <div fxLayout="row" fxLayoutGap="10px">
-      <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
-        <h2 mat-dialog-title class="modal-form__title">Appointment</h2>
-      </div>
-      <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
-        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
-      </div>
-    </div>
-    <!---------------------------------------------------------------------------------------->
-    <mat-dialog-content class="mat-typography">
-      <div *ngFor="let item of appointment; let i = index">
-        <div class="mat-elevation-z5" style="margin: 15px 0 15px 0; padding: 15px;">
-          <mat-grid-list cols="4" rowHeight="70px">
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div class="textarea">
-                  <span class="text-mini gray_05">Status</span><br />
-                   <p *ngIf="item.status">Active</p>
-                   <p *ngIf="!item.status">Inactive</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div class="textarea">
-                  <span class="text-mini gray_05">Work Order</span><br />
-                  {{item.services[0].serviceNumber}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div class="textarea">
-                  <span class="text-mini gray_05">Date</span><br />
-                  {{item.date | date: 'dd MMM yyy'}}
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">calendar_today</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div class="textarea">
-                  <span class="text-mini gray_05">To</span><br />
-                  {{data.supplier}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-
-            <!--mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div style="display: flex;" class="input_central comments textarea">
-                <div>
-                  <p class="subtitle">Start Time</p>
-                  <p class="title">{{item.startTime}}</p>
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">schedule</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div style="display: flex;" class="input_central comments textarea">
-                <div>
-                  <p class="subtitle">End Time</p>
-                  <p class="title">{{item.endTime}}</p>
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">schedule</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile-->
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="input_central textarea">
-                <mat-form-field appearance="fill">
-                  <mat-label>Start Time</mat-label>
-                  <input matInput required placeholder="Start Time" type="time" [(ngModel)]="item.startTime">
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="input_central textarea">
-                <mat-form-field appearance="fill">
-                  <mat-label>End Time</mat-label>
-                  <input matInput required placeholder="End Time" type="time" [(ngModel)]="item.endTime">
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-
-          <!------------------------------------------------------------------------------------------------>
-          <!--SERVICIOS ITERADOS-->
-
-          <mat-grid-list cols="3" rowHeight="70px">
-            <div *ngFor="let checks of item.services">
-              <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="checks.serviceNumber != null">
-                <div class="textarea">
-                  <mat-checkbox [checked]="true" [disabled]="true">
-                    <span style="font-size: 12px;"> {{checks.serviceNumber}} </span>
-                  </mat-checkbox>
-                </div>
-              </mat-grid-tile>
-            </div>
-          </mat-grid-list>
-
-          <!------------------------------------------------------------------------------------------------>
-          <!--START DOCUMENTOS-->
-          <div *ngIf="item.documentAppointments.length > 0">
-            <mat-grid-list cols="1">
-              <div class="page__section margin-top-min">
-                <div class="subtitledos">
-                  Service Documents
-                </div>
-                <div class="page__section">
-                  <div class="page__section-input page__section-input--6_1">
-                    <span class="documents__index documents__index--task">
-                      Document Type
-                    </span>
-                  </div>
-
-                  <div class="page__section-input page__section-input--6_1">
-                    <span class="documents__index documents__index--task">
-                      created Date
-                    </span>
-                  </div>
-
-                  <div class="page__section-input page__section-input--6_1">
-                    <span class="documents__index documents__index--task">
-
-                    </span>
-                  </div>
-
-                  <div class="page__section-input page__section-input--6_1" style="text-align: end;">
-                    <span class="documents__index documents__index--task" style="text-align: end;">
-                    </span>
-                  </div>
-                </div>
-                <div class="page__section documents__ascard" *ngFor="let doc of item.documentAppointments">
-                  <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-                    {{doc.fileName}}
-                  </div>
-
-                  <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-                    {{doc.createdDate | date: 'dd MMM yyy'}}
-                  </div>
-
-                  <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-                  </div>
-
-                  <div class="page__section-input page__section-input--6_1 documents__ascard--task" style="text-align: end; padding-right: 40px;">
-                    <a target="_blank" [href]="image_path + doc.fileRequest">
-                      <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete" style="background: transparent!important; margin-right: 25px;" >
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </mat-grid-list>
-          </div>
-          <!--FINAL DOCUMENTOS-->
-          <!----------------------------------------------------------------------------------------------------------------------------->
-          <mat-grid-list cols="4" rowHeight="70px">
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="addPropperty textarea">
-                <div class="page__section-button page__section-button--big" style="left: 6px;">
-                  <button class="button-icon button-icon--more" (click)="addDocument()">
-                    Add New Document
-                  </button>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="textarea">
-                <p class="Section-Name">Notification Message</p>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <mat-grid-list cols="4" rowHeight="100px">
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="textarea">
-                <br>
-                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-                  <textarea matInput [disabled]="true">{{item.description}}</textarea>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
           </mat-grid-list>
         </div>
-        <div class="page__section-buttong" style="margin-bottom:15px;">
+        <!--FINAL DOCUMENTOS-->
+        <!----------------------------------------------------------------------------------------------------------------------------->
+        <mat-grid-list cols="4" rowHeight="70px">
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="addPropperty textarea">
+              <div class="page__section-button page__section-button--big">
+                <button class="button-icon button-icon--more" (click)="addDocument()">
+                  Document
+                </button>
+              </div>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+
+      </div>
+      <!-- <div class="page__section-buttong" style="margin-bottom:15px;" *ngIf="user.role.id == 3">
           <button style="width: 30%;" *ngIf="item.start == false && item.ended == false" (click)="startAppoitment(item)">Start</button>
           <button style="width: 30%;" *ngIf="item.start == true && item.ended == false" (click)="endAppoitment(item)">End</button>
-        </div>
+        </div> -->
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <!-- <div class="page__section-buttong">
+        <button *ngIf="data.isVisible" (click)="deleteAppointment()">Delete Appointment</button>
       </div>
-    </mat-dialog-content>
+      &nbsp;&nbsp; -->
+    <div class="page__section-buttong">
+      <button (click)="update()" *ngIf="data.isVisible">Update Appointment</button>
+    </div>
+  </mat-dialog-actions>
 
-    <mat-dialog-actions align="end">
-      <div class="page__section-buttong">
-        <button (click)="update()">Update Appointment</button>
-      </div>
-    </mat-dialog-actions>
-
-
-    <div style="display: none;">
-      <ngx-file-drop class="file-drop textarea" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 0)"
-        (onFileOver)="fileOver($event, 0)" (onFileLeave)="fileLeave($event, 0)">
-        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-          Drag and Drop or
-          <p class="browser" id='documento' (click)="openFileSelector()">Browse File</p>
-        </ng-template>
-      </ngx-file-drop>
+  <div style="display: none;">
+    <ngx-file-drop class="file-drop textarea" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 0)"
+      (onFileOver)="fileOver($event, 0)" (onFileLeave)="fileLeave($event, 0)">
+      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        Drag and Drop or
+        <p class="browser" id='documento' (click)="openFileSelector()">Browse File</p>
+      </ng-template>
+    </ngx-file-drop>
   </div>
+</div>

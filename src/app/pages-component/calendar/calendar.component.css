@@ -16,7 +16,7 @@ h3 {
 
   .color_button {
     border: transparent;
-    color: #9d3292;
+    color: #3A2337;
     background:#f9f9f9;
     padding: 10px 18px 10px 18px;
     border: solid 1px #dbdbdb;
@@ -24,7 +24,7 @@ h3 {
   }
   .color_button_active {
     border: transparent;
-    background: linear-gradient(#9d3292, #4435a6);
+    background: linear-gradient(#3A2337, #4435a6);
     padding: 10px 18px 10px 18px;
     color: white;
   }

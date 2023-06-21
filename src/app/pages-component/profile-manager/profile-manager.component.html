@@ -34,13 +34,13 @@
         <div class="page__sectionConsultant page__section-inputs no-padding-tb">
           <div class="page__sectionConsultant page__section-inputs no-padding-tb">
             <div class="page__sectionConsultant page__section-input--x no-padding-tb">
-              <input type="file" id="file" name="file" class="display-none" accept="image/*" (change)="img( $event)" />
+              <!-- <input type="file" id="file" name="file" class="display-none" accept="image/*" (change)="img( $event)" /> -->
               <div class="input__image">
                 <label for="file" class="input__image-label">
                   <div class="input__image-label--cardConsultant">
                     <img id="lead_client_avatar" src="assets/images/users/avatar.png" />
                   </div>
-                  <span class="input__image-label--cardSpanConsultant">Edit Photo</span>
+                  <span class="input__image-label--cardSpanConsultant" (click)="img( $event)">Edit Photo</span>
                 </label>
               </div>
             </div>

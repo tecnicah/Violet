@@ -1,0 +1,77 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Payments
+           
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+               - Lease Summary
+            </span>  
+        </h2>
+        
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+        <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">   
+            <div >
+                <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+                    <table class="mat-elevation-z8 textarea mat-table" id="payments">
+                        <tr class="mat-header-row">
+        
+                            <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('payments',0);">Payment Type
+                                <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;">
+                            </th>
+                            <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('payments',1);">Responsible
+                                <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;"></th>
+                            <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('payments',2);">Amount <img
+                                    src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;"></th>
+                            <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('payments',3);">Currency
+                                <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;"></th>
+                            <th class="mat-header-cell" style="cursor: pointer;" (click)="sortTable('payments',4);">Description
+                                <img src="../../../../assets/icons/arrow-227-xxl.png" style="width: 14px;"></th>
+                            <th class="mat-header-cell"></th>
+                        </tr>
+                        <tr class="mat-row" *ngFor="let item of paymentHousings; let i = index">
+                            <td class="mat-cell">{{getPayment(item.paymentType)}}</td>
+                            <td class="mat-cell">{{getResponsable(item.responsible)}}</td>
+                            <td class="mat-cell">{{item.amount | currency}}</td>
+                            <td class="mat-cell">{{getCurrency(item.currency)}}</td>
+                            <td class="mat-cell">{{item.description}}</td>
+                            <td class="mat-cell">
+                                <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editPaymentType(item, i)">
+                                &nbsp;&nbsp;
+                                <img *ngIf="edicion" src="assets/icons/delete.png" style="width: 20px;" (click)="deletePayment(item)">
+                            </td>
+                        </tr>
+                    </table>
+        
+        
+                    <!--CLOSE TABLE PAYMENTS-->
+                    <!----------------------------------------------------------------------------------------->
+                    <mat-grid-list cols="4" rowHeight="70px">
+                        <mat-grid-tile [colspan]="4" [rowspan]="1">
+                            <div class="addPropperty">
+                                <div class="page__section-button page__section-button--big" style="left: 6px;">
+                                    <button *ngIf="edicion" class="button-icon button-icon--more" (click)="addPaymentType()">
+                                        Add Payment
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </div>
+                <!---------------------------------- PINTAR CONTRACTS PASADOS ----------------------------->
+            </div>
+        </div>
+  
+</mat-dialog-content>
+
+<!-- <mat-dialog-actions align="end">
+
+
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button  (click)="save_BD();" >Save </button>
+    </div>  
+</mat-dialog-actions> -->

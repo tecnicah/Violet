@@ -168,7 +168,7 @@
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Assignee</span><br />
-            {{data.assignee}}
+            {{data.assigneeName}}
           </div>
         </div>
       </mat-grid-tile>
@@ -177,7 +177,7 @@
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Partner</span><br />
-            {{data.partner}}
+            {{data.partnerName}}
           </div>
         </div>
       </mat-grid-tile>
@@ -186,26 +186,26 @@
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Client</span><br />
-            {{data.client}}
+            {{data.clientName}}
           </div>
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Supplier </span><br />
             {{data.supplier}}
           </div>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Service Record</span><br />
-            {{data.serviceRecord}}
+            {{data.numberServiceRecord}}
           </div>
         </div>
       </mat-grid-tile>
@@ -219,20 +219,20 @@
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Work Order</span><br />
             {{data.workOrder}}
           </div>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 80%;">
           <div>
             <span class="text-mini gray_05">Service ID</span><br />
-            {{data.serviceId}}
+            {{data.serviceNumber}}
           </div>
         </div>
       </mat-grid-tile>
@@ -256,7 +256,7 @@
           <br><br>
           <p>Comment</p>
           <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-            <textarea matInput #message maxlength="500" disabled>{{data.comment}}</textarea>
+            <textarea matInput #message maxlength="500" disabled>{{data.reminderComments}}</textarea>
             <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
           </mat-form-field>
         </div>

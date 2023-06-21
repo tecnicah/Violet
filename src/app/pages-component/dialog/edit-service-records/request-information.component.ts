@@ -150,6 +150,7 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
       }
 
       console.log('Construyendo OBJ => ', this.new_request_data);
+      console.log(JSON.stringify(this.new_request_data));
         //if( form_validations.main_form && form_validations.docs_forms ) {
       if( form_validations.main_form ) {
         const working_request:any = new Promise( (resolve:any) => {

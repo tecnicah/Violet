@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-client/dialog-documents-lead-client.component';
+import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 
 @Component({
   selector: 'app-dialog-contract-pricing-info',
@@ -50,10 +51,32 @@ export class DialogContractPricingInfoComponent implements OnInit {
     if(this.data.documentGeneralContractPricingInfos){}else{
       this.data.documentGeneralContractPricingInfos = [];
     }
+    this.data.idReferralFee = 1;
     this.catalogos();
   }
 
+  caReferralPaymentType:Array<any> = [];
+  caServicePaymentRecurrence:Array<any> = [];
+  caThirdPartyPaymentRecurrence:Array<any> = [];
   async catalogos(){
+    this._services.service_general_get('Catalogue/GetReferralPaymentType').subscribe((r)=>{
+      console.warn(r);
+      if(r.success){
+        this.caReferralPaymentType = r.result.value;
+      }
+    })
+    this._services.service_general_get('Catalogue/GetServicePaymentRecurrence').subscribe((r)=>{
+      console.warn(r);
+      if(r.success){
+        this.caServicePaymentRecurrence = r.result.value;
+      }
+    })
+    this._services.service_general_get('Catalogue/GetThirdPartyPaymentRecurrence').subscribe((r)=>{
+      console.warn(r);
+      if(r.success){
+        this.caThirdPartyPaymentRecurrence = r.result.value;
+      }
+    })
     this.caCompanyType = await this._services.getCatalogueFrom('GetCompanyType');
     this.caResponsiblePremierOffice = await this._services.getCatalogueFrom('GetResponsiblePremierOffice');
     this.caLifeCircle = await this._services.getCatalogueFrom('GetLifeCircle');
@@ -119,12 +142,121 @@ export class DialogContractPricingInfoComponent implements OnInit {
   });
   }
 
+  isValid:boolean = false;
+      //*************************************************************//
+  //VALIDACIONES//
+  active_contractEffectiveDate:boolean = false;
+  active_contractExpirationDate:boolean = false;
+  active_idReferralFee :boolean = false;
+  active_idReferralFeeType :boolean = false;
+  active_idPricingSchedule :boolean = false;
+  active_idPaymentRecurrence :boolean = false;
+  active_IdServicePaymentRecurrence :boolean = false;
+  active_IdThirdPartyPaymentRecurrence :boolean = false;
+  active_description :boolean = false;
+
+  valida_form(){
+
+
+
+    if(this.data.contractEffectiveDate == undefined || this.data.contractEffectiveDate.length == 0){
+      this.active_contractEffectiveDate = true;
+    }
+
+    if(this.data.contractExpirationDate == undefined || this.data.contractExpirationDate.length == 0){
+      this.active_contractExpirationDate = true;
+    }
+
+    if(this.data.idReferralFee == undefined || this.data.idReferralFee.length == 0){
+      this.active_idReferralFee = true;
+    }
+    
+    if(this.data.IdReferralPaymentType == undefined || this.data.IdReferralPaymentType.length == 0){
+      this.active_idReferralFeeType = true;
+    }
+
+    if(this.data.idPricingSchedule  == undefined || this.data.idPricingSchedule .length == 0){
+      this.active_idPricingSchedule = true;
+    }
+
+
+    if(this.data.idPaymentRecurrence == undefined || this.data.idPaymentRecurrence.length == 0){
+      this.active_idPaymentRecurrence = true;
+    }
+    
+    if(this.data.IdServicePaymentRecurrence == undefined || this.data.IdServicePaymentRecurrence.length == 0){
+      this.active_IdServicePaymentRecurrence = true;
+    }
+   
+    if(this.data.IdThirdPartyPaymentRecurrence == undefined || this.data.IdThirdPartyPaymentRecurrence.length == 0){
+      this.active_IdThirdPartyPaymentRecurrence = true;
+    }
+
+    if(this.data.description == undefined || this.data.description.length == 0){
+      this.active_description = true;
+    }
+
+
+    if(this.validationForm())
+    {
+      
+      this.isValid =true;
+      let referal = this.getReferralFerr(this.data.idReferralFee);
+      this.data['referralFee'] = referal;
+      console.log(referal);
+      this.data.success = true;
+      this.dialogRef.close(this.data);
+    }else{
+      console.log("Faltan datos");
+      this.isValid =false;
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Error",
+          body: "It is required to complete the missing information"
+        },
+        width: "350px"
+      });
+
+    }
+
+
+  }
+
+  validationForm()
+  {
+    if(this.data.contractEffectiveDate == undefined || this.data.contractEffectiveDate == null){
+      return false
+    }
+
+    if(this.data.contractExpirationDate == undefined || this.data.contractExpirationDate == null){
+      return false
+    }
+
+    if(this.data.idReferralFee == undefined || this.data.idReferralFee == null){
+      return false
+    }
+
+    if(this.data.idPricingSchedule == undefined || this.data.idPricingSchedule == null){
+      return false
+    }
+
+    if(this.data.idPaymentRecurrence == undefined || this.data.idPaymentRecurrence == null){
+      return false
+    }
+    if(this.data.description == undefined || this.data.description == ''){
+      return false
+    }
+
+    return true;
+  }
   save() {
-    let referal = this.getReferralFerr(this.data.idReferralFee);
-    this.data['referralFee'] = referal;
-    console.log(referal);
-    this.data.success = true;
-    this.dialogRef.close(this.data);
+    console.log('data',this.data);
+
+    this.valida_form();
+
+
+
+
   }
 
 }

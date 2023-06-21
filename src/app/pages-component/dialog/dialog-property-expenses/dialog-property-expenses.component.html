@@ -11,7 +11,7 @@
 
 <!---------------------------------OPEN CONTENT--------------------------------------->
 <mat-dialog-content class="mat-typography">
-  <mat-grid-list cols="4" rowHeight="70px">
+  <mat-grid-list cols="3" rowHeight="70px">
 
     <mat-grid-tile [colspan]="2" [rowspan]="1">
       <div class="input_central textarea">
@@ -22,16 +22,17 @@
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Amount</mat-label>
+          <span matPrefix>$ &nbsp;</span>
           <input matInput required placeholder="Amount" type="number" min="0" [(ngModel)]="data.amount" type="number">
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Currency</mat-label>
@@ -42,21 +43,25 @@
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Recurrence</mat-label>
           <mat-select [(ngModel)]="data.recurrence">
-            <mat-option *ngFor="let data of ca_recurrence" [value]="data.id">{{data.recurrence}}</mat-option>
+            <mat-option value="Monthly">Monthly</mat-option>
+            <mat-option value="Bimonthly">Bimonthly</mat-option>
+            <mat-option value="Quarterly">Quarterly</mat-option>
+            <mat-option value="Annually">Annually</mat-option>
+            <mat-option value="Biannually">Biannually</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
-          <mat-label>Included</mat-label>
+          <mat-label>Included In Rent</mat-label>
           <mat-select [(ngModel)]="data.included">
             <mat-option [value]=true>Yes</mat-option>
             <mat-option [value]=false>No</mat-option>
@@ -71,6 +76,6 @@
 
 <mat-dialog-actions align="end">
   <div class="page__section-buttong">
-    <button (click)="save()">Save</button>
+    <button *ngIf="data_.edicion" (click)="save()">Save</button>
   </div>
 </mat-dialog-actions>

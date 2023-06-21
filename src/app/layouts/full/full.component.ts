@@ -20,6 +20,7 @@ import { LoaderComponent } from 'app/shared/loader';
 import { DialogGeneralMessageComponent } from 'app/pages-component/dialog/general-message/general-message.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardComponent } from 'app/pages-component/dashboard/dashboard.component';
+import {  } from '../../../environments/environment'
 
 /** @title Responsive sidenav */
 @Component({
@@ -45,18 +46,18 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     public menuItems: MenuItems,
     public menuItemsSide: MenuItemsSide,
     public menu: ServiceGeneralService,
-    public _router: Router, public _services: ServiceGeneralService
-    
-  ) {
+    public _router: Router, public _services: ServiceGeneralService,
+    private _ngZone: NgZone) {
+    //this.suscribirEventos();
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.userData = JSON.parse(localStorage.getItem('userData'));
-    this.menu.retrieveMappedObject().subscribe((receivedObj: any) => {
-      console.log(receivedObj);
-      this.get_Chats();
-      this.get_Notification();
-    });
+    // this.menu.retrieveMappedObject().subscribe((receivedObj: any) => {
+    //   console.log(receivedObj);
+    //   this.get_Chats();
+    //   this.get_Notification();
+    // });
 
   }
   id: number = 0;
@@ -67,15 +68,24 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
+  // private suscribirEventos() {
+  //   this._services.avisoAdmin.subscribe(data => {
+  //     this._ngZone.run(() => {
+  //       this.get_Chats();
+  //       this.get_Notification();
+  //     });
+  //   });
+  // }
+
   viewMessage(id) {
     console.log(id);
-    localStorage.setItem("conversationId", id);
-    this._router.navigateByUrl('/messenger-center');
+    //localStorage.setItem("conversationId", id);
+    this._router.navigateByUrl('/messenger-center/'+id);
   }
   redirecMessage() {
     // console.log(id);
     // localStorage.setItem("conversationId", id);
-    this._router.navigateByUrl('/messenger-center');
+    this._router.navigateByUrl('/messenger-center/0');
   }
 
   public destroySession(): void {
@@ -188,13 +198,15 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this.ca_notificationView = 0;
     //this.get_NotificationView();
     let notificaciones = [];
-    this.menu.service_general_get('Notification/GetNotificationCenter/' + this.userData.id).subscribe((data => { //this.area_orientation.workOrderServicesId
+    this.menu.service_general_get('Notification/GetAllNotifications/' + this.userData.id).subscribe((data => { //this.area_orientation.workOrderServicesId
       if (data.success) {
         console.log('DATA CONSULTA NOTIFICACIONES:', data);
-        notificaciones = data.result.value.sort(function (a, b) {
-          return b.createdDate.localeCompare(a.createdDate);
-        });
-
+        // notificaciones = data.result.value.sort(function (a, b) {
+        //   return b.createdDate.localeCompare(a.createdDate);
+        // });
+        var notificaciones = data.result.value.today;
+        // var notificaciones = data.result.value.previous.concat(data.result.value.today)
+      //  notificaciones = data.result.value;
         let uux_notificaciones = []
         for (let i = 0; i < notificaciones.length; i++) {
           if ((notificaciones[i].archive == false && notificaciones[i].view == false)) {
@@ -210,6 +222,14 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     }));
   }
 
+  leerNotificaciones(){
+    this.menu.service_general_put('Notification/PutViewAll/?userId=' + this.userData.id, '').subscribe((data => {
+      // this.menu.service_general_put(`Notification/PutViewed/${data.id}/true`).subscribe((data => {
+      if (data.success) {
+        this.get_Notification();
+      }
+    }));
+  }
 
   //*************************************************************//
   ca_notificationView = 0;
@@ -268,6 +288,12 @@ export class FullComponent implements OnDestroy, AfterViewInit {
         }
       }));
     }
+  }
+
+  goto(url_){
+    //alert(url);
+    let url = this._router.createUrlTree([url_]);
+    window.open(url.toString(), '_blank');
   }
 
   //ACEPTAMOS NOTIFICACION//

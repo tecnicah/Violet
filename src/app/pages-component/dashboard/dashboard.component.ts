@@ -20,6 +20,9 @@ import { DialogAvailabilityCalendarComponent } from '../dialog/dialog-availabili
 import { FormControl, FormGroup } from '@angular/forms';
 import { DialogGeneralMessageComponent } from '../dialog/general-message/general-message.component';
 import { FullComponent } from 'app/layouts/full/full.component';
+import { environment } from 'environments/environment';
+import { DialogAcceptedComponent } from '../dialog/dialog-accepted/dialog-accepted.component';
+import { DialogDasboardServiceComponent } from '../dialog/dialog-dasboard-service/dialog-dasboard-service.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,15 +30,41 @@ import { FullComponent } from 'app/layouts/full/full.component';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
+  services: any = {
+    service_name: '',
+    numberWorkOrder: '',
+    number_server: ''
+  };
+  public __loader__: LoaderComponent = new LoaderComponent();
+  services_consult: any = {
+    country: '',
+    service: this.services = []
+  };
+  filteruno: boolean = false;
+  url_image: string;
+  card_selector: string = "";
+  public _user_rol: number = 0;
+  public _viewCoordinadorImm: string[] = [];
+  public _viewCoordinadorRelo: string[] = [];
+  public _viewSupplierImm: string[] = [];
+  public _viewSupplierRelo: string[] = [];
+  public hostImm = [];
+  public hostRelo = [];
+  public homeImm = [];
+  public homeRelo = [];
+  public _statusSupplier: any;
   constructor(
-	public full: FullComponent,
+    public full: FullComponent,
     public _services: ServiceGeneralService,
     public _router: Router,
     public _dialog: MatDialog,
     private _permissions: NgxPermissionsService,
     public fullC: FullComponent
-  ) {}
+  ) { }
+
+  public __todaydate__: Date = new Date();
+  public __months__: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  public __userlog__: any = JSON.parse(localStorage.getItem('userData'));
 
   public range = new FormGroup({
     start: new FormControl(),
@@ -62,12 +91,12 @@ export class DashboardComponent implements OnInit {
     coordinator: ''
   };
   public filterSupplier: any = {
-    comercialName: ''
+    name: ''
   };
   counts;
 
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   // @ViewChild('paginatorElement', {
   //   read: ElementRef
   // }) paginatorHtmlElement: ElementRef;
@@ -78,11 +107,41 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-    this.consultaPermisos();
-    this.initPageSettings();
+    this.__loader__.showLoader();
+    this.url_image = environment.images_path;
+    setTimeout(() => {
+      this.consultaPermisos();
+      this.initPageSettings();
+      this.requestDashboarData();
+      this.removeColumn();
+    }, 500);
+    
   }
+
+
+  removeColumn() {
+    //debugger;
+    switch (this._user_rol) {
+      case 2:
+        if (this.service_records_colums.length) {
+          //this.service_records_colums.splice(0,1);
+          this.service_records_colums.splice(9, 1);
+        }
+        break;
+      case 3:
+        if (this.service_records_colums.length) {
+          //this.service_records_colums.splice(0,1);
+          this.service_records_colums.splice(10, 1);
+        }
+        break;
+      default:
+      // code block
+    }
+  }
+
+
   getPageSizeOptions() {
-    if (this.service_records_table_data?.paginator.length > this.maxall) {
+    if (this.service_records_table_data?.paginator?.length > this.maxall) {
       return [10, 20, this.service_records_table_data?.paginator.length];
     }
     else {
@@ -90,245 +149,162 @@ export class DashboardComponent implements OnInit {
     }
 
   }
-  ca_notification = [];
-  get_Notification() {
-    //this.get_NotificationView();
-    let notificaciones = [];
-    this._services.service_general_get('Notification/GetNotificationCenter/' + this.userData.id).subscribe((data => { //this.area_orientation.workOrderServicesId
-      if (data.success) {
-        console.log('DATA CONSULTA NOTIFICACIONES:', data);
-        notificaciones = data.result.value.sort(function (a, b) {
-          return b.createdDate.localeCompare(a.createdDate);
-        });
 
-        let uux_notificaciones = []
-        for (let i = 0; i < notificaciones.length; i++) {
-          if ((notificaciones[i].archive == false && notificaciones[i].view == false)) {
-            uux_notificaciones.push(notificaciones[i])
-          }
-        }
-
-        this.ca_notification = uux_notificaciones;
-        this.requestDashboarData();
-        console.log("NOTIFICACIONES: ", this.ca_notification);
-      }
-    }));
-  }
-
-
-
-  public __todaydate__: Date = new Date();
-  public __months__: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  public __loader__: LoaderComponent = new LoaderComponent();
-  public __userlog__: any = JSON.parse(localStorage.getItem('userData'));
-
-   public async initPageSettings() {
-
+  public async initPageSettings() {
+    debugger;
     this.userData = JSON.parse(localStorage.getItem('userData'));
 
     const user_rol: string[] = [this.__userlog__.role.id];
+    this._user_rol = this.__userlog__.role.id;
     this._permissions.loadPermissions(user_rol);
-	  await this.get_Notification();
+    //await this.get_Notification();
     await this.initCataloguesRequest();
 
   }
 
-
-  //ACEPTAMOS NOTIFICACION//
-  async accept(data_) {
-    console.log(status);
-    this._services.service_general_putnoapi(data_.aceptar, '').subscribe((async resp => {
-      if (resp.success) {
-        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-          data: {
-            header: "Success",
-            body: "Service Record was accepted."
-          },
-          width: "350px"
-        });
-	    	let event = true;
-        await this.archivar(data_, event);
-      }
-    }))
-  }
-  //DECLINAMOS NOTIFICACION//
-  async decline(data_) {
-	console.log(status);
-    this._services.service_general_putnoapi(data_.rechazar, '').subscribe((async data => {
-      console.log(data);
-      if (data.success) {
-        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-          data: {
-            header: "Success",
-            body: "Service Record was declined."
-          },
-          width: "350px"
-        });
-	   	let event = true;
-        await this.archivar(data_, event);
-      }
-    }))
-  }
-
-  archivar(data, event) {
-    console.log(data);
-      this._services.service_general_put('Notification/PutArchive/' + data.notificationId + '/' + true, '').subscribe((_data_ => {
-        if (_data_.success) {
-			    console.log("Archivada : ", _data_);
-          this.marcarLeida(data)
-        }
-      }));
-  }
-
-  marcarLeida(data) {
-    console.log(data);
-      let viewt = true;
-      this._services.service_general_put('Notification/PutViewed/' + data.notificationId + '/' + viewt, '').subscribe((data => {
+  openAcceptantConsultorConsultor(element, tipo) {
+    console.log(element);
+    debugger;
+    if (element.total_services == 0) {
+      const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Warning",
+          body: "To be able to accept services you must first have assigned services."
+        },
+        width: "350px"
+      });
+    }
+    else {
+      this._services.service_general_get('MyDashboard/GetDashboardAdminSupplier/' + element.id+ '/'+ this.userData.id).subscribe(data => {
         if (data.success) {
-			    console.log("leida : ", data);
-          this.fullC.get_Notification();
-          this.initPageSettings();
+          
+          console.log('GetDashboardAdminSupplier', data);
+          const dialogRef = this._dialog.open(DialogAcceptedComponent, {
+            width: '400px',
+            data: { datos: data.map.value[0], tipo: tipo },
+          });
+  
+          dialogRef.afterClosed().subscribe(result => {
+            debugger;
+            console.log('The dialog was closed');
+            //this.animal = result;
+            if (result != undefined) {
+              this.service_records_table_data = [];
+              setTimeout(() => {
+                this.requestDashboarData();
+              }, 800);
+            }
+          });
         }
-      }));
+      });
+    }
   }
 
   contador_sr_pendientes = 0;
-  show_table:boolean = false;
-  public requestDashboard(): void {
-    console.log("ENTRA A CONSULTAR INFORMACION");
-    this.contador_sr_pendientes = 0;
-    let serv_line: string = this.filter_data.serviceLine,
-      user_id: number = this.__userlog__.id;
-
-    console.log(user_id);
-    console.log(serv_line);
-    this.__loader__.showLoader();
-
-    this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}/${serv_line}`)
-      .subscribe((response: any) => {
-
-        if (response.success) {
-
-          console.log("DASHBOARD RESPONSE: ", response);
-          this.dash_data = new DashDataModel;
-          this.dash_data = response.map.value;
-          this.counts = response.map.value.counts;
-          console.log('this.dash_data ==> ', this.dash_data);
-
-		  for (let i = 0; i < this.dash_data.board.length; i++) {
-			this.dash_data.board[i].aceptar = null;
-			this.dash_data.board[i].rechazar = null;
-			this.dash_data.board[i].notificationId = null;
-		  }
-
-		  console.log(this.dash_data);
-		  console.log(this.ca_notification);
-      
-		  for (let i = 0; i < this.dash_data.board.length; i++) {
-			for (let j = 0; j < this.ca_notification.length; j++) {
-			  if((this.ca_notification[j].notificationType == 2 || this.ca_notification[j].type == "New Service Record Assigned." || this.ca_notification[j].type == "Supplier Accepted Service.") &&  this.dash_data.board[i].numberServiceRecord === this.ca_notification[j].serviceRecord){
-				console.log("ENTRA A CONDICIONAL");
-				this.dash_data.board[i].aceptar = this.ca_notification[j].actionCall.accept;
-				this.dash_data.board[i].rechazar = this.ca_notification[j].actionCall.rejected;
-				this.dash_data.board[i].notificationId = this.ca_notification[j].id;
-        this.contador_sr_pendientes++;
-			  }
-			}
-		  }
-      if(this.contador_sr_pendientes == 0){
-        console.log("NO HAY SR POR ACEPTAR");
-        this.show_table = true;
-      }else{
-        this.show_table = false;
-        console.log("HAY SR POR ACEPTAR");
-      }
-		  console.log("DATA PARA TABLA: ", this.dash_data);
-
-          this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board));
-          this.service_records_table_data.paginator = this.paginator;
-          this.service_records_table_data.sort = this.sort;
-          this.View_All = this.service_records_table_data.filteredData.length;
-        }
-
-        this.__loader__.hideLoader();
-
-      }, (error: any) => {
-
-        console.error('Error => ', error);
-
-        this.__loader__.hideLoader();
-
-      });
-
-  }
+  show_table: boolean = false;
 
   public service_records_table_data: any = undefined;
-  public service_records_colums: string[] = ['col_0', 'col_1', 'col_2', 'col_3',  'col_5', 'col_6', 'col_7', 'col_8', 'col_9', 'col_10', 'col_11', 'col_12','col_13' ];
-  public service_records_colums_: string[] = ['col_0', 'col_1', 'col_2', 'col_3', 'col_5', 'col_6', 'col_7', 'col_8', 'col_9', 'col_10', 'col_11' ];
-  public service_records_colums_x: string[] = ['col_0', 'col_1', 'col_2', 'col_3', 'col_5', 'col_6', 'col_7', 'col_8', 'col_9', 'col_10', 'col_11', 'col_12'];
-  public service_records_colums_x_: string[] = ['col_0', 'col_1', 'col_2', 'col_3', 'col_5', 'col_6', 'col_7', 'col_8', 'col_9', 'col_10'];
+  public service_records_colums: string[] = ['sr', 'service_line', 'vip', 'status', 'date', 'city', 'partner', 'assignee', 'service', 'cordinador', 'supplier'];
+  //public service_records_colums_new: string[] = ['sr', 'service_line', 'vip', 'status', 'date', 'city', 'partner', 'assignee', 'service', 'cordinador', 'supplier'];
   public dash_data: DashDataModel = new DashDataModel();
   public View_All: number = 0;
+
+  viewCoordinador(elementImm, elementRelo) {
+    console.log(elementImm, elementRelo)
+    this._viewCoordinadorImm = [];
+    this._viewCoordinadorRelo = [];
+    if (elementImm.length > 0) {
+      elementImm.forEach(element => {
+        this._viewCoordinadorImm.push(element);
+      });
+    }
+    if (elementRelo.length > 0) {
+      elementRelo.forEach(element => {
+        this._viewCoordinadorRelo.push(element);
+      });
+    }
+  }
+
+  viewConsultant(elementImm, elementRelo) {
+    
+    console.log("Imm",elementImm, "Relo", elementRelo)
+    this._viewSupplierImm = [];
+    this._viewSupplierRelo = [];
+    if (elementImm.length > 0) {
+      elementImm.forEach(element => {
+        this._viewSupplierImm.push(element);
+      });
+    }
+    if (elementRelo.length > 0) {
+      elementRelo.forEach(element => {
+        this._viewSupplierRelo.push(element);
+      });
+    }
+  }
+
   public requestDashboarData(url_params: string = ''): void {
     this.contador_sr_pendientes = 0;
-    console.log("ENTRA A CONSULTAR INFORMACION");
-    console.log("ENTRA A EJECUTAR DESDE FULL COMPONENET");
+    //console.log("ENTRA A CONSULTAR INFORMACION");
+    //console.log("ENTRA A EJECUTAR DESDE FULL COMPONENET");
     let serv_line: string = this.filter_data.serviceLine,
       user_id: number = this.__userlog__.id;
 
-    console.log(user_id);
-    console.log(serv_line);
-    console.log(url_params);
+    //console.log(user_id);
+    //console.log(serv_line);
+    //console.log(url_params);
     this.__loader__.showLoader();
+    
 
-    this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}/${serv_line}${url_params}`)
+    debugger;
+    this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}` + url_params)
       .subscribe((response: any) => {
-
+        debugger;
         if (response.success) {
 
           console.log("DASHBOARD RESPONSE: ", response);
-          this.dash_data = new DashDataModel;
-          this.dash_data = response.map.value;
+            // this.dash_data = new DashDataModel;
+
+            // this.dash_data = response.map.value;
+            // this.dash_data.pendngAcceptance = this.dash_data.board.filter(x => x.status == "Pending Acceptance").length;            
+            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards( response.map.value.board));
+            this.service_records_table_data.paginator = this.paginator;
+            this.service_records_table_data.sort = this.sort;
+            // this.View_All = this.service_records_table_data.filteredData.length;
+            //this.counts = response.map.value.counts;
+            this.__loader__.hideLoader();
+         
+          
+          // this.dash_data.active = 0;
+          // this.dash_data.active = this.dash_data.board.filter(x => x.status == "Active");
+          //this.dash_data.active = 111;
           this.counts = response.map.value.counts;
-          console.log('this.dash_data ==> ', this.dash_data);
 
-		  for (let i = 0; i < this.dash_data.board.length; i++) {
-			this.dash_data.board[i].aceptar = null;
-			this.dash_data.board[i].rechazar = null;
-			this.dash_data.board[i].notificationId = null;
-		  }
+          this._services.service_general_get(`MyDashboard/GetReminders/${user_id}`)
+          .subscribe(res =>{
+            console.log(res);
+            if(res.success){
+              this.counts.reminders = res.map.value.length;
+            }
+          });
 
-		  console.log(this.dash_data);
-		  console.log(this.ca_notification);
-		  for (let i = 0; i < this.dash_data.board.length; i++) {
-			for (let j = 0; j < this.ca_notification.length; j++) {
-			  if((this.ca_notification[j].notificationType == 2 || this.ca_notification[j].type == "New Service Record Assigned." || this.ca_notification[j].type == "Supplier Accepted Service.") &&  this.dash_data.board[i].numberServiceRecord === this.ca_notification[j].serviceRecord){
-				console.log("ENTRA A CONDICIONAL");
-				this.dash_data.board[i].aceptar = this.ca_notification[j].actionCall.accept;
-				this.dash_data.board[i].rechazar = this.ca_notification[j].actionCall.rejected;
-				this.dash_data.board[i].notificationId = this.ca_notification[j].id;
-        this.contador_sr_pendientes++;
-			  }
-			}
-		  }
+          this._services.service_general_get(`MyDashboard/GetCoordinators/${ this.__userlog__.id + '' }`)
+          .subscribe( (response:any) => {
+            console.log('Res => ', response);
+            if( response.success ) {
+              this.counts.coordinators = response.map.value.length;
+            }
+           
+          }, (error:any) => {
+              
+          });
+          //console.log('this.dash_data ==> ', this.dash_data);
 
-      if(this.contador_sr_pendientes == 0){
-        console.log("NO HAY SR POR ACEPTAR");
-        this.show_table = true;
-      }else{
-        this.show_table = false;
-        console.log("HAY SR POR ACEPTAR");
-      }
-
-		  console.log("DATA PARA TABLA: ", this.dash_data);
-
-          this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board));
-          this.service_records_table_data.paginator = this.paginator;
-          this.service_records_table_data.sort = this.sort;
-          this.View_All = this.service_records_table_data.filteredData.length;
+          //console.log("DATA PARA TABLA: ", this.dash_data);
+          
+          
         }
 
-        this.__loader__.hideLoader();
+       
 
       }, (error: any) => {
 
@@ -340,6 +316,42 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  checkCheckBoxvalue(event){
+    let _service_records_table_data = this.service_records_table_data.filteredData;
+    if(event.checked){
+      console.log(this.service_records_table_data);
+      this.service_records_table_data = new MatTableDataSource(_service_records_table_data.filter(x => x.vip));
+      this.service_records_table_data.paginator = this.paginator;
+      this.service_records_table_data.sort = this.sort;
+    }
+    else{
+      this.requestDashboarData('')
+    }
+  }
+
+
+  profilePage(id) {
+    let role;
+    console.log(id);
+    if (id != 0) {
+      this._services.service_general_get(`Catalog/GetUser/${id}`).subscribe( r => {
+        if (r.success) {
+          role = r.result.value.role;
+          // role id 19 es igual a "Super Admin"
+          // if (role == 1 || role == 4  || role == 11 || role == 13 || role == 14 ||  role == 19  || role == 20 || role == 21 || role == 22 ) {
+            if(role != 2 && role != 3){
+              if(role != 4)
+            this._router.navigateByUrl(`profilemanager/${id}`);
+            }else if(role == 2){
+              this._router.navigateByUrl(`profilecoordinator/${id}`);
+            }else if(role == 3){
+              this._router.navigateByUrl(`profileconsultant/${id}`);
+            }
+        }
+      });
+    }
+  }
+  
   public serchFilter(event: Event) {
 
     const filterValue = (event.target as HTMLInputElement).value;
@@ -349,7 +361,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getClient() {
-    console.log("consulta Cliente");
+    //console.log("consulta Cliente");
     this._services.service_general_get('Catalogue/GetClient/' + this.filter_data.partner).subscribe((data => {
       if (data.success) {
         this.client_catalogue = data.result.value;
@@ -365,14 +377,14 @@ export class DashboardComponent implements OnInit {
       if (this.filter_data.serviceLine == "" || this.filter_data.serviceLine == null) {
         this._services.service_general_get(`Catalogue/GetCoordinator/${this.filter_data.client}`).subscribe((data => {
           if (data.success) {
-            console.log("select coordinator new SR Immigration: ", data.result);
+            //console.log("select coordinator new SR Immigration: ", data.result);
             this.coordinator_catalogue = data.result.value;
           }
         }));
       } else {
         this._services.service_general_get("Catalogue/GetCoordinator/" + this.filter_data.client + "?servileLine=" + this.filter_data.serviceLine).subscribe((data => {
           if (data.success) {
-            console.log("select coordinator new SR Immigration: ", data.result);
+            //console.log("select coordinator new SR Immigration: ", data.result);
             this.coordinator_catalogue = data.result.value;
           }
         }));
@@ -382,27 +394,17 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  getSupplierPartner() {
-    if (this.filter_data.serviceLine == "" || this.filter_data.country == "" || this.filter_data.city == "") {
-      return true;
-    }
-    this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerConsultant?country=" + this.filter_data.country + "&city=" + this.filter_data.city + "&serviceLine=" + this.filter_data.serviceLine).subscribe((data => {
-      if (data.success) {
-        console.log("select supplier: ", data.result.value);
-        this.supplier_catalogue = data.result.value;
-      }
-    }));
-  }
-
   public dash_table_params: string = '';
   public updateDashboardData(): void {
-    console.log("ENTRA A FILTRAR INFORMACION");
+    //console.log("ENTRA A FILTRAR INFORMACION");
+    debugger;
     this.dash_table_params = '';
     for (let field in this.filter_data) {
-      if (field != 'serviceLine') {
-        if (this.filter_data[field] != '') {
-          this.dash_table_params += `&${field}=${this.filter_data[field]}`;
-        }
+      // if (field != 'serviceLine') {
+
+      // }
+      if (this.filter_data[field] != '') {
+        this.dash_table_params += `&${field}=${this.filter_data[field]}`;
       }
     }
 
@@ -430,7 +432,7 @@ export class DashboardComponent implements OnInit {
       coordinator: ''
     };
     this.filterSupplier = {
-      comercialName: ''
+      name: ''
     };
     this.client_catalogue = [];
     this.coordinator_catalogue = [];
@@ -445,7 +447,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public dataDashboardFilterByCards(table_rows: any): any[] {
-
+debugger;
     const rows_in: any[] = table_rows;
 
     let rows_selected: any[] = [];
@@ -462,7 +464,7 @@ export class DashboardComponent implements OnInit {
 
               rows_selected.push(row);
 
-              console.log('rows_selected ===> ', rows_selected);
+              //console.log('rows_selected ===> ', rows_selected);
 
             }
 
@@ -480,7 +482,7 @@ export class DashboardComponent implements OnInit {
 
           if (filter_condition == 'onh') {
 
-            if (row.statusId == 4) {
+            if (row.statusId == 1) {
 
               rows_selected.push(row);
 
@@ -490,7 +492,17 @@ export class DashboardComponent implements OnInit {
 
           if (filter_condition == 'pen') {
 
-            if (row.statusId == 1) {
+            if (row.statusId == 18) {
+
+              rows_selected.push(row);
+
+            }
+
+          }
+
+          if (filter_condition == 'inp') {
+
+            if (row.statusId == 3) {
 
               rows_selected.push(row);
 
@@ -516,25 +528,205 @@ export class DashboardComponent implements OnInit {
 
   public filter_cards_selected: string[] = [];
   public filterTableByCard(card_selector: string): void {
-
+debugger;
+    //this.dash_table_params = '';
     const is_filter_active: boolean = (this.filter_cards_selected.indexOf(card_selector) > -1),
       card_container: any = document.getElementById(`${card_selector}_filter_card`),
       params_used: string = this.dash_table_params == '' ? '' : `?${this.dash_table_params.substring(1)}`;
     debugger
+    // console.log(card_container);
+    // let cards: any[] = ['inp_filter_card','pen_filter_card']; 
+    // switch(card_selector) {
+    //   case 'act':
+    //     card_container.classList.add('filterCard__card--active');
+    //     cards.forEach(element => {
+    //       element.classList.remove('filterCard__card--active');     
+    //     });
+    //     //this.filter_cards_selected.push(card_selector);
+    //     //console.log(this.filter_cards_selected.indexOf(card_selector));
+
+    //     break;
+    //   case 'inp':
+    //     card_container.classList.add('filterCard__card--active');
+    //     this.filter_cards_selected.push(card_selector);
+    //     console.log(this.filter_cards_selected.indexOf(card_selector));
+    //     cards.forEach(element => {
+    //       if(element != this.filter_cards_selected.indexOf(card_selector))
+    //       {
+    //         card_container.classList.remove('filterCard__card--active');
+    //         this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
+    //       }          
+    //     });
+    //     break;
+    //   case 'onh':
+    //     card_container.classList.add('filterCard__card--active');
+    //     this.filter_cards_selected.push(card_selector);
+    //     console.log(this.filter_cards_selected.indexOf(card_selector));
+    //     cards.forEach(element => {
+    //       if(element != this.filter_cards_selected.indexOf(card_selector))
+    //       {
+    //         card_container.classList.remove('filterCard__card--active');
+    //         this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
+    //       }          
+    //     });
+    //     break;
+    //   case 'vip':
+    //     card_container.classList.add('filterCard__card--active');
+    //     this.filter_cards_selected.push(card_selector);
+    //     console.log(this.filter_cards_selected.indexOf(card_selector));
+    //     cards.forEach(element => {
+    //       if(element != this.filter_cards_selected.indexOf(card_selector))
+    //       {
+    //         card_container.classList.remove('filterCard__card--active');
+    //         this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
+    //       }          
+    //     });
+    //     break;
+    //   case 'pen':
+    //     card_container.classList.add('filterCard__card--active');
+    //     this.filter_cards_selected.push(card_selector);
+    //     console.log(this.filter_cards_selected.indexOf(card_selector));
+    //     // cards.forEach(element => {
+    //     //   if(element != this.filter_cards_selected.indexOf(card_selector))
+    //     //   {
+    //     //     card_container.classList.remove('filterCard__card--active');
+    //     //     this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
+    //     //   }          
+    //     // });
+    //     break;
+    //   default:
+    //     // code block
+    // }
+    //card_container.classList.remove('filterCard__card--active');
+    //card_container.classList.add('filterCard__card--active');
     if (is_filter_active) {
-
+      this.card_selector = "";
       card_container.classList.remove('filterCard__card--active');
-      this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
-      this.requestDashboarData(params_used);
-
+      //this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
+      //this.dataDashboardFilterByCards(card_selector);
+      //this.requestDashboarData(params_used);
+      // if(card_selector != 'pen'){
+      //   this.removeColumn();
+      // }
+      // else{
+      //   this.service_records_colums.push(this.service_records_colums[9]);
+      // }
     } else {
-
+      this.card_selector = card_selector;
       card_container.classList.add('filterCard__card--active');
       this.filter_cards_selected.push(card_selector);
-      this.requestDashboarData(params_used);
-
+      //this.dataDashboardFilterByCards(card_selector);
+      //this.requestDashboarData(params_used);
+      // if(card_selector != 'pen'){
+      //   this.removeColumn();
+      // }
+      // else{
+      //   this.resetDashboardTableFilters();
+      // }
     }
 
+  }
+
+  public filterTableByCardSelect(card_selector: string): void {
+    debugger;
+        //this.dash_table_params = '';
+        debugger;
+        const is_filter_active: boolean = (this.filter_cards_selected.indexOf(card_selector) > -1),
+          card_container: any = document.getElementById(`${card_selector}_filter_card`),
+          params_used: string = this.dash_table_params == '' ? '' : `?${this.dash_table_params.substring(1)}`;
+        debugger
+        //card_container.classList.remove('filterCard__card--active');
+        //card_container.classList.add('filterCard__card--active');
+        // this.card_selector = card_selector;
+        // card_container.classList.add('filterCard__card--active');
+        //this.filterTableByCard(card_selector);
+        let cards: any[] = ['act_filter_card','inp_filter_card','vip_filter_card','onh_filter_card','pen_filter_card']; 
+        switch(card_selector) {
+          case 'act':
+            card_container.classList.add('filterCard__card--active');
+            cards.forEach(element => {
+              if(element != 'act_filter_card')
+              {
+                let _card_container: any = document.getElementById(element)
+                _card_container.classList.remove('filterCard__card--active');
+                this.filter_cards_selected = [];
+                this.filter_cards_selected.push('act');
+              }          
+            });
+            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Active")));
+            this.service_records_table_data.paginator = this.paginator;
+            this.service_records_table_data.sort = this.sort;
+            this.View_All = this.service_records_table_data.filteredData.length;
+            break;
+          case 'inp':
+            card_container.classList.add('filterCard__card--active');
+            cards.forEach(element => {
+              if(element != 'inp_filter_card')
+              {
+                let _card_container: any = document.getElementById(element)
+                _card_container.classList.remove('filterCard__card--active');
+                this.filter_cards_selected = [];
+                this.filter_cards_selected.push('inp');
+              }          
+            });
+            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "In Progress")));
+            this.service_records_table_data.paginator = this.paginator;
+            this.service_records_table_data.sort = this.sort;
+            this.View_All = this.service_records_table_data.filteredData.length;
+            break;
+          case 'vip':
+            card_container.classList.add('filterCard__card--active');
+            cards.forEach(element => {
+              if(element != 'vip_filter_card')
+              {
+                let _card_container: any = document.getElementById(element)
+                _card_container.classList.remove('filterCard__card--active');
+                this.filter_cards_selected = [];
+                this.filter_cards_selected.push('vip');
+              }          
+            });
+            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.vip == true)));
+            this.service_records_table_data.paginator = this.paginator;
+            this.service_records_table_data.sort = this.sort;
+            this.View_All = this.service_records_table_data.filteredData.lengt   
+                // code block
+            break;
+          case 'onh':
+            card_container.classList.add('filterCard__card--active');
+            cards.forEach(element => {
+              if(element != 'onh_filter_card')
+              {
+                let _card_container: any = document.getElementById(element)
+                _card_container.classList.remove('filterCard__card--active');
+                this.filter_cards_selected = [];
+                this.filter_cards_selected.push('onh');
+              }          
+            });
+            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Pending Assignment")));
+            this.service_records_table_data.paginator = this.paginator;
+            this.service_records_table_data.sort = this.sort;
+            this.View_All = this.service_records_table_data.filteredData.lengt
+            break;
+          case 'pen':
+            card_container.classList.add('filterCard__card--active');
+            cards.forEach(element => {
+              if(element != 'pen_filter_card')
+              {
+                let _card_container: any = document.getElementById(element)
+                _card_container.classList.remove('filterCard__card--active');
+                this.filter_cards_selected = [];
+                this.filter_cards_selected.push('pen');
+              }          
+            });
+            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Pending Acceptance")));
+            this.service_records_table_data.paginator = this.paginator;
+            this.service_records_table_data.sort = this.sort;
+            this.View_All = this.service_records_table_data.filteredData.lengt
+            break;
+          default:
+            // code block
+        }
+    
   }
 
   public openDialogCoordinadors(): void {
@@ -544,7 +736,7 @@ export class DashboardComponent implements OnInit {
       width: '95%'
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
 
   }
 
@@ -556,13 +748,13 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result === 1) {
         document.getElementById("excel").click();
       }
 
       if (result === 2) {
-        console.log('current_table => ', current_table);
+        //console.log('current_table => ', current_table);
         let tabla = [];
 
         if (current_table == 'm') {
@@ -641,7 +833,7 @@ export class DashboardComponent implements OnInit {
           }
 
         }
-        console.log(tabla);
+        //console.log(tabla);
         // Set the fonts to use
         PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -668,7 +860,7 @@ export class DashboardComponent implements OnInit {
   public coordinator_catalogue: any[] = [];
   public serviceline_catalogue: any[] = [];
   public supplier_catalogue: any[] = [];
-  public async initCataloguesRequest(): Promise < void > {
+  public async initCataloguesRequest(): Promise<void> {
 
     this.serviceline_catalogue = await this._services.getCatalogueFrom('GetServiceLine');
     this.country_catalogue = await this._services.getCatalogueFrom('GetCountry');
@@ -677,6 +869,12 @@ export class DashboardComponent implements OnInit {
     //this.client_catalogue = await this._services.getCatalogueFrom('GetClient');
     //this.coordinator_catalogue = await this._services.getCatalogueFrom('GetCoordinator');
     //this.supplier_catalogue = await this._services.getCatalogueFrom('GetSupplier');
+    this._services.service_general_get("Catalog/GetAllUsersNew?role=3").subscribe((data => {
+      if (data.success) {
+        console.log("select supplier: ", data.result.value);
+        this.supplier_catalogue = data.result.value;
+      }
+    }));
 
   }
 
@@ -728,7 +926,7 @@ export class DashboardComponent implements OnInit {
       data: "",
       width: "100%"
     });
-    dialogRef.afterClosed().subscribe(result => {})
+    dialogRef.afterClosed().subscribe(result => { })
   }
 
 
@@ -741,7 +939,7 @@ export class DashboardComponent implements OnInit {
       data: "",
       width: "100%"
     });
-    dialogRef.afterClosed().subscribe(result => {})
+    dialogRef.afterClosed().subscribe(result => { })
   }
 
   public openCall(): void {
@@ -749,7 +947,7 @@ export class DashboardComponent implements OnInit {
       data: "",
       width: "100%"
     });
-    dialogRef.afterClosed().subscribe(result => {})
+    dialogRef.afterClosed().subscribe(result => { })
   }
 
   openReminders(): void {
@@ -757,18 +955,18 @@ export class DashboardComponent implements OnInit {
       data: "",
       width: "100%"
     });
-    dialogRef.afterClosed().subscribe(result => {})
+    dialogRef.afterClosed().subscribe(result => { })
   }
 
 
   openAvailavility(): void {
     /*
-	  const dialogRef = this._dialog.open(DialogAvailabilityCalendarComponent, {
-		  data: "",
-		  width: "100%"
-		});
-		dialogRef.afterClosed().subscribe(result => {})
-		*/
+    const dialogRef = this._dialog.open(DialogAvailabilityCalendarComponent, {
+      data: "",
+      width: "100%"
+    });
+    dialogRef.afterClosed().subscribe(result => {})
+    */
     this._router.navigate(['/serviceCalendar']);
   }
 
@@ -830,7 +1028,7 @@ export class DashboardComponent implements OnInit {
 
 
   goToSR(data) {
-    console.log(data);
+    //console.log(data);
     this._router.navigate(['editServiceRecord/' + data.id]);
   }
   //*****************************************************************//
@@ -840,11 +1038,12 @@ export class DashboardComponent implements OnInit {
   public permission_edit: boolean = false;
   public idspermission = [];
   consultaPermisos() {
-    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    //console.log("CONSULTA PARA PERMISOS DE USUARIO");
     let url = localStorage.getItem('url_permisos');
+    //console.log("URL: ", url);
     this._services.service_general_get('Role/' + url).subscribe(data => {
       if (data.success) {
-        console.log("Permisos: ", data.result.value)
+        //console.log("Permisos: ", data.result.value)
         this.permission_read = data.result.value[0].reading;
         this.permission_write = data.result.value[0].writing;
         this.permission_delete = data.result.value[0].editing;
@@ -865,7 +1064,7 @@ export class DashboardComponent implements OnInit {
             _element_ += ",'" + id[i].id + "'";
           }
         }
-        console.log(_element_);
+        //console.log(_element_);
         this.idspermission = _element_;
       }
     })
@@ -880,60 +1079,315 @@ export class DashboardComponent implements OnInit {
     debugger
     for (let item in this.filter_data) {
       if (this.filter_data[item] != '') {
-        service_record_params_selected += `${ item }=${ this.filter_data[item] }&`;
+        service_record_params_selected += `${item}=${this.filter_data[item]}&`;
         params = service_record_params_selected.substring(0, service_record_params_selected.length - 1);
       }
     }
-    console.log(params);
+    //console.log(params);
     this.requestDashboarData(`?${params}`);
 
   }
 
   public filterDate(date_in: any): string {
-    return `${ date_in.getFullYear() }/${ date_in.getMonth() + 1 }/${ date_in.getDate() }`;
+    return `${date_in.getFullYear()}/${date_in.getMonth() + 1}/${date_in.getDate()}`;
+  }
+
+  public info_partner: any = {};
+  viewPartner(data) {
+    debugger;
+    this.info_partner.partner = data.name;
+    this.info_partner.client = data.client;
+    this.info_partner.clientAvatar = data.clientAvatar;
+    this.info_partner.clientId = data.clientId;
   }
 
 
-  SR_WO :any;
-  consulta(element){
-      let WO = [];
-      this.SR_WO = [];
-      this._services.service_general_get('ServiceRecord/GetServices/'+element.id+'?type='+element.serviceline).subscribe((response: any) => {
-          response.map.value.home.forEach(E => {
-              WO.push(E);
-          });
-          response.map.value.host.forEach(E => {
-              WO.push(E);
-          });
-          this.SR_WO = WO;
-          /*
-          this._services.service_general_get('ServiceRecord/GetServices/'+element.id+'?type=2').subscribe((response: any) => {
-              response.map.value.home.forEach(E => {
-                  WO.push(E);
-              });
-              response.map.value.host.forEach(E => {
-                  WO.push(E);
-              });
+  getServicesConsultor(element) {
+    //debugger
+    console.log(element);
+    this.hostImm = [];
+    this.hostRelo = [];
+    this.homeImm = [];
+    this.homeRelo = [];
 
-              console.log("ESTAS SON LAS WO", WO)
-              this.SR_WO = WO;
-          })
-          */
-      })
+    this._services.service_general_get('MyDashboard/GetDashboardAdminSupplier/' + element.id + '/'+ this.userData.id).subscribe(data => {
+      if (data.success) {
+        
+        console.log(data);
+        data.map.value[0].supplierImm[0]?.standalone.forEach(item => {
+          this.homeImm.push({
+            service_name: item.nickName,
+            numberWorkOrder: item.numberWorkOrder,
+            number_server: item.serviceNumber,
+            country: element.supplierImm[0].country
+          });
+        });
+        data.map.value[0].supplierImm[0]?.bundled.forEach(item => {
+          this.homeImm.push({
+            service_name: item.nickName,
+            numberWorkOrder: item.numberWorkOrder,
+            number_server: item.serviceNumber,
+            country: element.supplierImm[0].country
+          });
+        });
+        data.map.value[0].supplierRelo[0]?.standalone.forEach(item => {
+          this.homeImm.push({
+            service_name: item.nickName,
+            numberWorkOrder: item.numberWorkOrder,
+            number_server: item.serviceNumber,
+            country: element.supplierRelo[0].country
+          });
+        });
+        data.map.value[0].supplierRelo[0]?.bundled.forEach(item => {
+          this.homeImm.push({
+            service_name: item.nickName,
+            numberWorkOrder: item.numberWorkOrder,
+            number_server: item.serviceNumber,
+            country: element.supplierRelo[0].country
+          });
+        });
+        console.log("hostImm:", this.hostImm, "hostRelo:", this.hostRelo, "homeImm:", this.homeImm, "homeRelo:", this.homeRelo);
+        console.log("Entra a consultar las WO immigration: ", this.services_consult);
+
+        const dialogRef = this._dialog.open(DialogDasboardServiceComponent, {
+          data: "",
+          width: "100%"
+        });
+        dialogRef.afterClosed().subscribe(result => { })
+      }
+    });
+
+  }
+
+  async getServices(element) {
+    console.log(element);
+    this.hostImm = [];
+    this.hostRelo = [];
+    this.homeImm = [];
+    this.homeRelo = [];
+
+    this._services.service_general_get('MyDashboard/GetDashboardAdmin/' + element.id + '?userId='+this.userData.id).subscribe(data => {
+      if (data.success) {
+        
+        console.log("GetDashboardAdmin",data);
+        data.map.value[0].standalone.forEach(item => {
+          if (item.country.toLowerCase() == element.homeCountry.toLowerCase()) {
+            if (item.serviceLine == 1) {
+              this.homeImm.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+            else {
+              this.homeRelo.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+          }
+          if (item.country.toLowerCase() == element.hostCountry.toLowerCase()) {
+            if (item.serviceLine == 1) {
+              this.hostImm.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+            else {
+              this.hostRelo.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+          }
+        });
+        data.map.value[0].bundled.forEach(item => {
+          if (item.country.toLowerCase() == element.homeCountry.toLowerCase()) {
+            if (item.serviceLine == 1) {
+              this.homeImm.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+            else {
+              this.homeRelo.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+          }
+          if (item.country.toLowerCase() == element.hostCountry.toLowerCase()) {
+            if (item.serviceLine == 1) {
+              this.hostImm.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+            else {
+              this.hostRelo.push({
+                service_name: item?.nickName,
+                numberWorkOrder: item?.numberWorkOrder,
+                number_server: item?.serviceNumber,
+                country: item?.country,
+                assigned: item?.assigned,
+                status: item?.status,
+                serviceRecordId: item?.serviceRecordId
+              });
+            }
+          }
+        });
+       
+        setTimeout(() => {
+          const dialogRef = this._dialog.open(DialogAcceptedComponent, {
+            data: { 
+              hostImm: this.hostImm,
+              hostRelo: this.hostRelo,
+              homeImm: this.homeImm,
+              homeRelo: this.homeRelo, 
+              tipo: this._user_rol, 
+              serviceRecordId: element.id,
+              statusCoordinator: data.map.value[0].statusCoordinator
+
+            },
+            width: "400px"
+          });
+          dialogRef.afterClosed().subscribe(result => { })
+        }, 300);
+      }
+    })
+
+    console.log("hostImm:", this.hostImm, "hostRelo:", this.hostRelo, "homeImm:", this.homeImm, "homeRelo:", this.homeRelo);
+    // this.services_consult.push({
+    //   hostImm: hostImm, 
+    //   hostRelo: hostRelo,
+    //   homeImm: homeImm,
+    //   homeRelo: homeRelo
+    // });
+    // this.services_consult?.filter()
+    console.log("Entra a consultar las WO immigration: ", this.services_consult);
+
+    //await this.initPageSettings(data_.id);
+    // this.services_consult = [];
+    // this._services.service_general_get("ServiceRecord/GetServices/" + data_.id + "?type=" + data_.serviceline).subscribe((data => {
+    //   console.log("Entra a consultar las WO immigration: ", data.map.value);    
+
+    //   var host    = []
+    //   var hostTemp = []
+    //   var home    = []
+    //   var homeTemp = []
+    //   for(var i=0; i<data.map.value.host.length; i++){
+    //     hostTemp = host.filter(resp => resp["country"] == data.map.value.host[i]["country"])
+    //       if(hostTemp.length>0){
+    //         host[host.indexOf(hostTemp[0])]["service"].push({
+    //             service_name: data.map.value.host[i]["service_name"],
+    //             numberWorkOrder: data.map.value.host[i]["numberWorkOrder"],
+    //             number_server: data.map.value.host[i]["number_server"]
+    //           })
+    //       }else{
+    //         host.push(
+    //             {
+    //               "country" : data.map.value.host[i]["country"] , 
+    //               "service" : [{
+    //                 service_name: data.map.value.host[i]["service_name"],
+    //                 numberWorkOrder: data.map.value.host[i]["numberWorkOrder"],
+    //                 number_server: data.map.value.host[i]["number_server"]
+    //               }]
+    //             })
+    //       }
+    //   }
+    //   for(var i=0; i<data.map.value.home.length; i++){
+    //     homeTemp = home.filter(resp => resp["country"] == data.map.value.home[i]["country"])
+    //     if(homeTemp.length>0){
+    //       home[home.indexOf(homeTemp[0])]["service"].push({
+    //           service_name: data.map.value.home[i]["service_name"],
+    //           numberWorkOrder: data.map.value.home[i]["numberWorkOrder"],
+    //           number_server: data.map.value.home[i]["number_server"]
+    //         })
+    //     }else{
+    //       home.push(
+    //           {
+    //             "country" : data.map.value.home[i]["country"] , 
+    //             "service" : [{
+    //               service_name: data.map.value.home[i]["service_name"],
+    //               numberWorkOrder: data.map.value.home[i]["numberWorkOrder"],
+    //               number_server: data.map.value.home[i]["number_server"]
+    //             }]
+    //           })
+    //     }
+    // }
+
+    //   console.log({
+    //     home: home,
+    //     host: host
+    //   })
+
+    //   this.services_consult.push({
+    //     home: home,
+    //     host: host
+    //   });
+    //   //this.services_consult.filter()
+    //   //console.log("Entra a consultar las WO immigration: ", this.services_consult);
+    // }));
+  }
+
+  cleanFilter(){
+    this.filter_data = new FilterDataModel();
+    this.filteruno = true;
+    setTimeout(() => {
+      this.filteruno = false;
+    }, 2000);
+    this.requestDashboarData('');
   }
 
   public info_country: any = {};
-    viewCity(data) {
-        this.info_country.country = data.hostCountry;
-        this.info_country.city = data.hostCity;
-    }
+  viewCity(data) {
+    this.info_country.hostCountry = data.hostCountry;
+    this.info_country.hostCity = data.hostCity;
+    this.info_country.homeCountry = data.homeCountry;
+    this.info_country.homeCity = data.homeCity;
+  }
 
 
-  
+
 }
 
 class FilterDataModel {
-  serviceLine: string = '1';
+  search: string = '';
+  serviceLine: string = '';
   status: string = '';
   country: string = '';
   city: string = '';
@@ -943,6 +1397,7 @@ class FilterDataModel {
   supplier: string = '';
   rangeDate1: any;
   rangeDate2: any;
+  vip: boolean;
 }
 
 class DashDataModel {
@@ -950,6 +1405,7 @@ class DashDataModel {
   inprogress: number = 0;
   onHold: number = 0;
   pendngAcceptance: number = 0;
+  pendingAssigned: number = 0;
   vip: number = 0;
   board: any[] = [];
 }

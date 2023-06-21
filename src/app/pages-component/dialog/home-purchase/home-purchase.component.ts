@@ -47,7 +47,7 @@ export class HomePurchaseComponent implements OnInit {
   public user_data:any = JSON.parse(localStorage.getItem('userData'));
   public today_date: Date = new Date();
   public dataDeliver;
-  serviceScope : any[] = [];
+  serviceScope = null;
 
 
   ngOnInit(): void {
@@ -57,11 +57,12 @@ export class HomePurchaseComponent implements OnInit {
     this.idHomePurchase = this.data.data.service[0].id;
     console.log('id', this.data.data.service[0].id);
     this.dataHomePurchase();
-    this.getServiceScope();
+    
   }
 
    // get service scope
    getServiceScope() {
+     debugger;
     this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.homePurchase.workOrderServices}&client=${this.data.data.partnerId }`).subscribe(resp => {
       if (resp.success) {
         console.log('Data ScopeService: ', resp);
@@ -80,16 +81,19 @@ export class HomePurchaseComponent implements OnInit {
     this.getCatalog();
     this._services.service_general_get(`RelocationServices/GetHomePurchaseById?id=${this.idHomePurchase}`).subscribe(resp => {
       if (resp.success) {
-        this.loader.hideLoader();
         this.homePurchase = resp.result
         console.log('home sale', this.homePurchase);
         this.getdeliver();
         this.get_payment();
         this.getDataHousing();
         this.getRealtor();
+        this.setup_permissions_settings();
+        this.getServiceScope();
       }
+      this.loader.hideLoader();
     }, (error: any) => {
       console.log('error GetHomePurchaseById', error);
+      this.loader.hideLoader();
     });
   }
   getdeliver() {
@@ -101,6 +105,93 @@ export class HomePurchaseComponent implements OnInit {
     }));
     // GetDeliverTo?wos=2041
   }
+
+
+  //////////////////////manage estatus 
+
+  disabled_by_permissions: boolean = false;
+  hide_by_permissions: boolean = false;
+  hide_complete: boolean = false;
+  show_completed: boolean = false;
+  show_progress: boolean = false;
+  wo_: boolean = false;
+  sr_: boolean = false;
+
+  setup_permissions_settings() {
+    debugger;
+    if (!this.data.data.numberWorkOrder) {
+      this.wo_ = this.data.workOrderId;
+    }
+    else {
+      this.wo_ = this.data.data.numberWorkOrder
+    }
+
+    if (!this.data.data.number_server) {
+      this.sr_ = this.data.data.serviceNumber
+    }
+    else {
+      this.sr_ = this.data.data.number_server
+    }
+
+    if (this.user.role.id == 3) {
+      this.disabled_by_permissions = true
+    }
+    else {
+      this.hide_by_permissions = true;
+    }
+    if (this.homePurchase.statusId != 39 && this.homePurchase.statusId != 2) { //active , in progress
+      this.hide_complete = true;
+    }
+    else {
+      if (this.homePurchase.statusId == 39) {
+        this.show_progress = true;
+      }
+      else {
+        this.show_completed = true;
+      }
+    }
+  }
+
+  change_button() {
+    debugger;
+    if (this.show_completed) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure the service is complete?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // console.log(result);
+        if (result) {
+          this.homePurchase.statusId = 37; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+
+    if (this.show_progress) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Do you want start the service?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // console.log(result);
+        if (result) {
+          this.homePurchase.statusId = 2; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+  }
+
+  //////////////////////manage estatus 
 
   public ca_privacy = [];
   async getCatalog() {
@@ -423,6 +514,7 @@ export class HomePurchaseComponent implements OnInit {
 
   }
   save() {
+    this.loader.showLoader();
     this.homePurchase.updatedBy = this.user_data.id;
     this.homePurchase.updatedDate = new Date();
     console.log("Informacion a guardar:  ",this.homePurchase);
@@ -449,6 +541,7 @@ export class HomePurchaseComponent implements OnInit {
         this.ngOnInit();
       }
     }))
+    this.loader.hideLoader();
   }
 
    //PRIVACY//

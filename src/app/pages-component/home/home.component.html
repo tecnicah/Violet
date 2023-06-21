@@ -54,7 +54,7 @@
             <p class="status">{{weather.weather[0].main}}</p>
             <h4 class="temperature">{{ converFC }}º C</h4>
             <p class="fecha">{{date | date: 'dd MMM yyyy'}}</p>
-            <h4 class="ciudad">{{weather.name}}, {{weather.sys.country}}</h4>
+            <h4 class="ciudad">{{weather?.name}}, {{weather?.sys.country}}</h4>
           </div>
         </div>
       </mat-grid-tile>

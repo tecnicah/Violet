@@ -1,0 +1,287 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Contract Details
+           
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+                - Lease Summary
+            </span>
+        </h2>
+
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+
+    <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+        <div>
+            <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+                <mat-grid-list cols="4" rowHeight="70px">
+                    <mat-grid-tile [colspan]="2" [rowspan]="1">
+                        <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Landlord Name</mat-label>
+                                <input matInput placeholder="Landlord Name" [(ngModel)]='data_land.name'>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Landlord Principal E-mail</mat-label>
+                                <input matInput placeholder="Landlord Principal E-mail"
+                                    [(ngModel)]='data_land.principalEmail'>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Landlord Secondary E-mail (If Applies)</mat-label>
+                                <input matInput placeholder="Landlord Secondary E-mail (If Applies)"
+                                    [(ngModel)]='data_land.secondaryEmail'>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Landlord Principal Phone</mat-label>
+                                <input matInput placeholder="Landlord Principal Phone"
+                                    [(ngModel)]='data_land.principalPhone'>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Landlord Secondary Phone (If Applicable)</mat-label>
+                                <input matInput placeholder="Landlord Secondary Phone (If Applicable)"
+                                    [(ngModel)]='data_land.secundaryPhone'>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central textarea">
+
+                            <p class="subtitle" style="font-size: 12px;">
+                                Fiscal Invoice
+                            </p>
+                            <mat-checkbox class="example-margin" [(ngModel)]='data_land.fiscalInvoice'
+                                [checked]="data_land.fiscalInvoice"></mat-checkbox>
+
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="page__section-button page__section-button--big" style="left: 9px;">
+                            <button class="button-icon button-icon--report" (click)="exp_land();">
+                                Export Landlord
+                            </button>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span>
+                                <p class="Title" style="font-size: 13px;">
+                                    Payment Methods
+                                </p>
+
+                            </span>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="textarea">
+                            <mat-checkbox class="example-margin" [(ngModel)]='data_land.creditCard'
+                                [checked]="data_land.creditCard">
+                                <span class="subtitle" style="font-size: 12px;">Credit Card</span>
+                            </mat-checkbox>
+                        </div>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="3" [rowspan]="1">
+                        <div class="textarea" *ngFor="let datacart of ca_creditCard">
+                            <mat-checkbox class="example-margin" (change)="guarda_card($event, datacart);"
+                                [checked]="datacart.checked" *ngIf="data_land.creditCard">
+                                <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
+                            </mat-checkbox>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="textarea">
+                            <mat-checkbox class="example-margin" [(ngModel)]='data_land.cash'
+                                [checked]="data_land.cash">
+                                <span class="subtitle" style="font-size: 12px;">Cash</span>
+                            </mat-checkbox>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="textarea">
+                            <mat-checkbox class="example-margin" [(ngModel)]='data_land.checks'
+                                [checked]="data_land.checks">
+                                <span class="subtitle" style="font-size: 12px;">Checks</span>
+                            </mat-checkbox>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="2" [rowspan]="1">
+                        <div class="textarea" *ngIf="data_land.checks">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Pay to the Order Of</mat-label>
+                                <input matInput required placeholder="Pay to the Order Of" type="text" #message_payto
+                                    maxlength="150" [(ngModel)]='data_land.payToOrderOf'>
+                                <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div class="textarea">
+                            <mat-checkbox class="example-margin" [(ngModel)]='data_land.wireTransfer'
+                                [checked]="data_land.wireTransfer">
+                                <span class="subtitle" style="font-size: 12px;">Wire Transfer</span>
+                            </mat-checkbox>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <div *ngIf="data_land.wireTransfer">
+                    <p class="page__section-name" style="font-size: 14px;">Banking Details List</p>
+                  </div>
+                  <!----------------------------------------------START TABLE BANK  DETAILS --------------------------------->
+                  <mat-dialog-content class="mat-typography" *ngIf="data_land.wireTransfer" style="max-height: fit-content;">
+                    <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 10px; "
+                      *ngFor="let data_land of data_land_list; let i = index">
+                      <mat-grid-list cols="4" rowHeight="70px">
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Account Type</mat-label>
+                              <mat-select disabled [(ngModel)]='data_land.accountType'>
+                                <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Account Holders Name</mat-label>
+                              <input disabled matInput required placeholder="Account Holders Name" type="text"
+                                #message_holdername maxlength="100" [(ngModel)]='data_land.accountHoldersName'>
+                              <mat-hint align="end">{{message_holdername.value.length}} / 100</mat-hint>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Bank Name</mat-label>
+                              <input disabled matInput required placeholder="Bank Name" type="text" #message_bankname
+                                maxlength="100" [(ngModel)]='data_land.bankName'>
+                              <mat-hint align="end">{{message_bankname.value.length}} / 100</mat-hint>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Account Number</mat-label>
+                              <input disabled matInput required placeholder="Account Number"
+                                [(ngModel)]='data_land.accountNumber'>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>CLABE</mat-label>
+                              <input disabled matInput placeholder="CLABE" [(ngModel)]='data_land.clabetype'>
+                              <!-- <mat-select placeholder="Type of Bank CLABE" [(ngModel)]='data_land.clabetype'>
+                            <mat-option *ngFor="let data of ca_clabetype" [value]="data.clave">{{data.clave}}</mat-option>
+                          </mat-select> -->
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Routing Number (ABA)</mat-label>
+                              <input disabled matInput placeholder="Routing Number (ABA)"
+                                [(ngModel)]='data_land.routingNumber'>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
+                              <input disabled matInput placeholder="SWIFT / BIC Code ( If Applies)"
+                                [(ngModel)]='data_land.swiftBicCode'>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <div class="input_final">
+                            <mat-form-field appearance="fill">
+                              <!-- <mat-label>Comment</mat-label> -->
+                              <mat-label>IBAN</mat-label>
+                              <input disabled matInput placeholder="IBAN" type="text" #message_bankcomment maxlength="150"
+                                [(ngModel)]='data_land.comment'>
+                              <!-- <mat-hint align="end">{{message_bankcomment.value.length}} / 30</mat-hint> -->
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="4" [rowspan]="1">
+                          <div class="input_final textarea">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Comments</mat-label>
+                              <input disabled matInput required placeholder="Account Comments" type="text" #message_pcomment
+                                [(ngModel)]='data_land.generalComments'>
+                            </mat-form-field>
+                          </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          Account # {{i+1}}
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                          <img src="assets/icons/pencil.png" style="width: 20px; margin-left: 70px;"
+                            (click)="editBank(data_land)">
+                          &nbsp;&nbsp;
+                          <img src="assets/icons/delete.png" style="width: 20px; margin-left: 20px;"
+                            (click)="deletebank(data_land)">
+                        </mat-grid-tile>
+                      </mat-grid-list>
+                    </div>
+                  </mat-dialog-content>
+          
+                  <mat-grid-list cols="4" rowHeight="70px">
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                      <div class="addPropperty">
+                        <div class="page__section-button page__section-button--big">
+                          <button class="button-icon button-icon--more" (click)="addBank();">
+                            Account details
+                          </button>
+                        </div>
+                      </div>
+                    </mat-grid-tile>
+                  </mat-grid-list>
+                  <!------------------------------------------- END TABLE BANK  DETAILS ------------------------------------------------->
+            </div>
+            <!---------------------------------- PINTAR CONTRACTS PASADOS ----------------------------->
+        </div>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <!-- <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button  style="background-color: #f9f9f9;color: #9d3292;">Cancel</button>
+    </div>
+     &nbsp;&nbsp;&nbsp;-->
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button *ngIf="data.edicion" (click)="saveLandLord();">Save </button>
+    </div>
+</mat-dialog-actions>

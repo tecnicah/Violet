@@ -1,0 +1,602 @@
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" style="float:left;">
+        <h2 mat-dialog-title class="primary_title" style="float:left;"> Inspections & Repairs
+
+            <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
+                - Property Inspection
+            </span>
+        </h2>
+
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<mat-dialog-content class="mat-typography" *ngIf="permanentHome.groupIr.length > 0">
+
+
+    <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+
+        <div>
+            <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+                <mat-grid-list cols="4" rowHeight="70px">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1">
+                        <div class="input_central textarea">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Status Report</mat-label>
+                                <mat-select [(ngModel)]="permanentHome.groupIr[0].idStatus"
+                                    (selectionChange)="save_ir_status();" [disabled]="!data.edicion">
+                                    <mat-option *ngFor="let item of ca_status_report" [value]='item.id'>{{item.status}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="4" rowHeight="70px">
+
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div style="width: 100%;">
+                            <div>
+                                <p class="page__section-name">Inspections</p>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+
+                </mat-grid-list>
+
+                <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
+                    *ngFor="let item of data_inspection; let k = index">
+                    <mat-grid-list cols="4" rowHeight="70px">
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Inspection Date</mat-label>
+                                    <input matInput [matDatepicker]="pickertres" placeholder="Initial Inspection Date"
+                                        [(ngModel)]='item.initialInspectionDate'>
+                                    <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickertres></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Inspection Type</mat-label>
+                                    <mat-select [(ngModel)]="item.inspectType">
+                                        <mat-option *ngFor="let s of ca_inspec_type" [value]='s.id'>{{s.type}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Property Section</mat-label>
+                                    <mat-select [(ngModel)]="item.propertySection">
+                                        <mat-option *ngFor="let s of ca_propertySection"
+                                            [value]='s.id'>{{s.propertySection}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <span class="browser" style="cursor: pointer;" (click)="item.show = true"
+                                    *ngIf="!item.show"><img src="../../../../assets/icons/arrow_down.png"
+                                        style="width: 22px;"></span>
+                                <span class="browser" style="cursor: pointer;" (click)="item.show = false"
+                                    *ngIf="item.show"><img src="../../../../assets/icons/arrow_right.png"
+                                        style="width: 22px;"></span>
+                            </div>
+                            <img src="assets/trashir.png" class="delete" style="margin-top: 15px; 
+                            background: transparent!important; width: 25px;" (click)="delete_inspection(item)">
+                        </mat-grid-tile>
+
+
+                    </mat-grid-list>
+
+                    <div *ngIf="item.show">
+                        <mat-grid-tile [colspan]="4" [rowspan]="1">
+                            <div class="textarea">
+                                <p class="subtitle" style="font-size: 12px; margin: 0px;">Inspection Details</p>
+                                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
+                                    <textarea matInput #messager maxlength="500"
+                                        [(ngModel)]="item.inspecDetails"></textarea>
+                                    <mat-hint align="end">{{messager.value.length}} / 500</mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-list cols="4" rowHeight="70px">
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div class="page__section-buttong"
+                                    style="display: flex; justify-content: flex-start; flex: 0px !important;">
+                                    <button class="button-icon"
+                                        style="background-color: #9d3292; color: white; width: 200px;"
+                                        (click)="update_ispection(item)" *ngIf="data.edicion">
+                                        Save Inspection Header
+                                    </button>
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div>
+                                    <p class="page__section-name" style="font-size: 14px;">Actions</p>
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+
+                        </mat-grid-list>
+
+                        <div class="page__section">
+                            <!---------------------------TABLA HOUSING------------------------------>
+                            <table matTableExporter mat-table [dataSource]="item.repairs"
+                                class="mat-elevation-z8 textarea">
+                                <ng-container matColumnDef="Address">
+                                    <th mat-header-cell *matHeaderCellDef> Action Type </th>
+                                    <td mat-cell *matCellDef="let element" style="cursor:pointer;">
+                                        <a style="color: blue; text-decoration: underline; cursor: pointer;"
+                                            (click)="edit_action(element, itme)">
+                                            {{getRepair(element.repairType)}}
+                                        </a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Neighborhood">
+                                    <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.repairStartDate | date: 'MM/dd/yyyy'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Price">
+                                    <th mat-header-cell *matHeaderCellDef> Total Days </th>
+                                    <td mat-cell *matCellDef="let element">{{element.totalDays}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Property Type">
+                                    <th mat-header-cell *matHeaderCellDef> Total Cost </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.totalCostRepair | currency }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="photos">
+                                    <th mat-header-cell *matHeaderCellDef> Photos </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.documentRepairs.length}}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsHousing"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsHousing;"></tr>
+                            </table>
+                        </div>
+                        <mat-grid-list cols="4" rowHeight="70px">
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div class="addPropperty">
+                                    <div class="page__section-button page__section-button--big">
+                                        <button class="button-icon button-icon--more" (click)="addAction(item)"
+                                            *ngIf="data.edicion">
+                                            Action
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-grid-tile>
+
+
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <p class="page__section-name" style="font-size: 14px;"> Attendees </p>
+                            </mat-grid-tile>
+                            <!------------------------------------START ATTENDEES INSPEC----------------------------------------------->
+
+                                <!-- <table class="mat-elevation-z8 textarea mat-table">
+                                    <tr class="mat-header-row">
+                                        <th class="mat-header-cell">Title</th>
+                                        <th class="mat-header-cell">Name</th>
+                                        <th class="mat-header-cell">E-mail</th>
+
+                                        <th class="mat-header-cell"></th>
+                                    </tr>
+                                    <tr class="mat-row" *ngFor="let attend of item.attendeeInspecs; let at = index">
+                                        <td class="mat-cell">{{get_attendiees_vales(attend.att)}}</td>
+                                        <td class="mat-cell">{{attend.name}}</td>
+                                        <td class="mat-cell">{{attend.email}}</td>
+
+                                        <td class="mat-cell">
+                                            <img src="assets\icons\pencil.png" style="width: 20px;"
+                                                (click)="editAttendInspec(attend, at)">
+                                        </td>
+                                    </tr>
+                                </table> -->
+                               
+                            <!------------------------------------END ATTENEDES INSPEC--------------------------------------------------->
+                        </mat-grid-list>
+                        <div class="page__section">
+                            <table matTableExporter mat-table [dataSource]="item.attendeeInspecs"
+                                class="mat-elevation-z8 textarea">
+                                <ng-container matColumnDef="tittle">
+                                    <th mat-header-cell *matHeaderCellDef> Title </th>
+                                    <td mat-cell *matCellDef="let attend" style="cursor:pointer;">
+                                        <a style="color: blue; text-decoration: underline; cursor: pointer;"
+                                            (click)="editAttendInspec(attend, at)">
+                                            {{get_attendiees_vales(attend.att)}}
+                                        </a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef> name </th>
+                                    <td mat-cell *matCellDef="let attend">
+                                        {{attend.name}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="email">
+                                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                                    <td mat-cell *matCellDef="let attend">
+                                        {{attend.email}}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsAttend"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsAttend;"></tr>
+                            </table>
+                        </div>
+                        <!-------------------------------------STAR PHOTOS ---------------------------------------------------->
+                        <mat-grid-list cols="4" rowHeight="70px">
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div class="addPropperty">
+                                    <div class="page__section-button page__section-button--big">
+                                        <button class="button-icon button-icon--more" (click)="addAttendeesInspec(item)"
+                                            *ngIf="data.edicion">
+                                            Attendee
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-grid-tile>
+                            <br>
+                            <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div>
+                                    <p class="page__section-name" style="font-size: 14px;">Photos</p>
+                                </div>
+                            </mat-grid-tile> -->
+
+
+                        </mat-grid-list>
+
+
+                        <!-- <ngx-file-drop style="display:none" class="file-drop" dropZoneLabel="Drop files here"
+                            (onFileDrop)="droppedFotosInspec($event, k, item)" (onFileOver)="fileOver($event, i)"
+                            (onFileLeave)="fileLeave($event, i)" [multiple]="false">
+                            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                                Drag and Drop or
+                                <p class="browser" id="doc_i{{k}}" (click)="openFileSelector()">Browse File</p>
+                            </ng-template>
+                        </ngx-file-drop>
+                        <div class="photos">
+                            <div class="photo" *ngFor="let it of item.photosInspecs; let p = index">
+                                <img src="assets/icons/quit.svg" class="delete" (click)="deletePhoto_ins(it.id, p, item.photosInspecs, k)">
+                                <img src="{{it.base64}}" class="img" alt="" *ngIf="it.id == 0">
+                                <img src="{{_services.url_images}}{{it.photo}}" class="img" alt="" *ngIf="it.id != 0">
+                            </div>
+                        </div>
+                        <mat-grid-list cols="4" rowHeight="70px">
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div class="addPropperty">
+                                    <div class="page__section-button page__section-button--big" *ngIf = "data.edicion">
+                                        <button class="button-icon button-icon--more" (click)="addFotosMoveInspec(k)">
+                                            Photos
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>  -->
+                        <!-------------------------------------END PHOTOS ---------------------------------------------------->
+                    </div>
+                </div>
+
+                <mat-grid-list cols="4" rowHeight="70px">
+
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div class="addPropperty">
+                            <div class="page__section-button page__section-button--big" *ngIf="data.edicion">
+                                <button class="button-icon button-icon--more" (click)='addInspectionDate("1")'>
+                                    Add Inspection
+                                </button>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+
+                    <!-- <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div style="width: 100%;">
+                            <div>
+                                <p class="page__section-name">Repairs</p>
+                            </div>
+                        </div>
+                    </mat-grid-tile> -->
+
+                </mat-grid-list>
+
+
+                <!-- <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
+                    *ngFor="let item of data_repairs; let i = index">
+                    <mat-grid-list cols="4" rowHeight="70px">
+
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Repair Type</mat-label>
+                                    <mat-select [(ngModel)]="item.repairType">
+                                        <mat-option *ngFor='let data of ca_repair'
+                                            [value]='data.id'>{{data.repairType}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Payment Responsibility</mat-label>
+                                    <mat-select [(ngModel)]="item.paymentResponsibility">
+                                        <mat-option *ngFor="let data of ca_resppayrep"
+                                            [value]="data.id">{{data.responsable}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Total Days</mat-label>
+                                    <input matInput placeholder="Total Days" type="number" min="0"
+                                        [(ngModel)]="item.totalDays">
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="textarea" style="text-align: end; width: 94%;">
+                                <span class="browser" style="cursor: pointer; position: absolute;
+                                
+                                left: 5px; margin-bottom: 5px;" (click)="item.show = true" *ngIf="!item.show"><img
+                                        src="../../../../assets/icons/arrow_down.png" style="width: 22px;"></span>
+                                <span class="browser" style="cursor: pointer; cursor: pointer; position: absolute;
+                                
+                                left: 5px; margin-bottom: 5px;" (click)="item.show = false" *ngIf="item.show"><img
+                                        src="../../../../assets/icons/arrow_right.png" style="width: 22px;"></span>
+                            </div>
+                            <img src="assets/trashir.png" class="delete" style="margin-top: 15px; 
+                            background: transparent!important; margin-top: 15px; width: 25px;"
+                                (click)="delete_obj_repair(item)">
+                        </mat-grid-tile>
+
+
+
+                    </mat-grid-list>
+                    <div *ngIf="item.show">
+                        <mat-grid-list cols="4" rowHeight="130px">
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div class="input_central textarea">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Repair Start Date</mat-label>
+                                        <input matInput [matDatepicker]="pickertres_Repair"
+                                            placeholder="Repair Start Date" [(ngModel)]="item.repairStartDate">
+                                        <mat-datepicker-toggle matSuffix
+                                            [for]="pickertres_Repair"></mat-datepicker-toggle>
+                                        <mat-datepicker #pickertres_Repair></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div class="input_central textarea">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Repair End Date</mat-label>
+                                        <input matInput [matDatepicker]="pickertres_RepairEnd"
+                                            placeholder="Repair End Date" [(ngModel)]="item.repairEndDate">
+                                        <mat-datepicker-toggle matSuffix
+                                            [for]="pickertres_RepairEnd"></mat-datepicker-toggle>
+                                        <mat-datepicker #pickertres_RepairEnd></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div class="input_central textarea">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Total Cost of Repair</mat-label>
+                                        <span matPrefix>$ &nbsp;</span>
+                                        <input matInput placeholder="Total Cost of Repair" type="number" min="0"
+                                            [(ngModel)]="item.totalCostRepair">
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div class="input_central textarea">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Currency</mat-label>
+                                        <mat-select [(ngModel)]="item.currency">
+                                            <mat-option *ngFor="let data of ca_currency"
+                                                [value]="data.id">{{data.currency}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                                <div class="input_central textarea">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Supplier Partner</mat-label>
+                                        <mat-select [(ngModel)]="item.supplierPartner" (ngModelChange)="_supplier();">
+                                            <mat-option *ngFor="let data of SupplierCompany_repairs" [value]="data.id">
+                                                {{data.comercialName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-grid-list cols="4" rowHeight="130px">
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div class="textarea">
+                                    <br><br>
+                                    <p>Comments</p>
+                                    <mat-form-field appearance="outline" class="textarea"
+                                        style="width: 100% !important;">
+                                        <textarea matInput #message maxlength="500"
+                                            [(ngModel)]="item.comments"></textarea>
+                                        <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+
+                        <mat-grid-list cols="4" rowHeight="70px">
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div style="width: 100%;">
+                                    <div>
+                                        <p class="page__section-name">Upload Documents</p>
+                                    </div>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+
+                        <div>
+                            <mat-grid-list cols="1">
+                                <div class="page__section margin-top-min">
+                                    <div *ngIf="item.documentRepairs.length != 0" class="page__section">
+                                        <div class="page__section-input page__section-input--6_1">
+                                            <span class="documents__index documents__index--task">
+                                                Document Name
+                                            </span>
+                                        </div>
+                                        <div class="page__section-input page__section-input--6_1">
+                                            <span class="documents__index documents__index--task">
+
+                                            </span>
+                                        </div>
+                                        <div class="page__section-input page__section-input--6_1">
+                                            <span class="documents__index documents__index--task">
+
+                                            </span>
+                                        </div>
+                                        <div class="page__section-input page__section-input--6_1">
+                                            <span class="documents__index documents__index--task">
+
+                                            </span>
+                                        </div>
+                                        <div class="page__section-input page__section-input--6_1">
+                                            <span class="documents__index documents__index--task">
+
+                                            </span>
+                                        </div>
+                                        <div class="page__section-input page__section-input--6_1">
+                                            <span class="documents__index documents__index--task">
+
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="page__section documents__ascard"
+                                        *ngFor="let doc of item.documentRepairs; let j = index">
+                                        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+                                            style="background: transparent!important;"
+                                            (click)="deleteDocument_DB_inspec(i, j, doc, item)">
+                                        <img src="../../../../assets/icons/eye-view.svg"
+                                            class="page__section--card-closeButton delete"
+                                            style="background: transparent!important; margin-right: 25px;"
+                                            *ngIf="doc.id != 0" (click)="openRepairsFileOnWindow(doc.fileRequest)">
+                                        <div
+                                            class="page__section-input page__section-input--6_2 documents__ascard--task">
+                                            {{(doc.fileName.length>30) ? (doc.fileName | slice:0:30)+'..':
+                                            doc.fileName}}
+                                        </div>
+                                        <div
+                                            class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                                        </div>
+                                        <div
+                                            class="page__section-input page__section-input--6_2 documents__ascard--task">
+                                            {{doc.createdDate | date: "MM/dd/yyyy"}}
+                                        </div>
+                                        <div
+                                            class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                                        </div>
+                                        <div
+                                            class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                                        </div>
+                                        <div
+                                            class="page__section-input page__section-input--6_1 documents__ascard--task">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </mat-grid-list>
+                        </div>
+
+                        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here"
+                            (onFileDrop)="dropped($event, i)" (onFileOver)="fileOver($event, i)"
+                            (onFileLeave)="fileLeave($event, i)" [multiple]="false"
+                            [ngClass]="{'hide': item.documentRepairs.length > 0}">
+                            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                                Drag and Drop or
+                                <p class="browser" id="doc{{i}}" (click)="openFileSelector()">Browse File</p>
+                            </ng-template>
+                        </ngx-file-drop>
+
+                        <div *ngIf="item.documentRepairs.length > 0">
+                            <mat-grid-list cols="4" rowHeight="70px">
+                                <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                    <div class="addPropperty">
+                                        <div class="page__section-button page__section-button--big"
+                                            style="flex: 0 1 180px !important; ">
+                                            <button class="button-icon button-icon--more" (click)='addDocument_1(i)'>
+                                                Document
+                                            </button>
+                                        </div>
+                                    </div>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                        <mat-grid-list cols="4" rowHeight="70px">
+
+                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                                <div class="page__section-buttong"
+                                    style="display: flex; justify-content: flex-start; flex: 0px !important;">
+                                    <button class="button-icon"
+                                        style="background-color: #9d3292; color: white; width: 200px;"
+                                        (click)="update_repair(item)">
+                                        Update Repair
+                                    </button>
+                                </div>
+                            </mat-grid-tile>
+
+                        </mat-grid-list>
+                    </div>
+                </div>
+
+                <mat-grid-list cols="4" rowHeight="70px">
+
+                    <mat-grid-tile [colspan]="4" [rowspan]="1">
+                        <div class="addPropperty">
+                            <div class="page__section-button page__section-button--big" *ngIf="data.edicion">
+                                <button class="button-icon button-icon--more" (click)='addRepairs()'>
+                                    Repair
+                                </button>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+
+                </mat-grid-list> -->
+
+            </div>
+            <!---------------------------------- PINTAR CONTRACTS PASADOS ----------------------------->
+        </div>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <!-- <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button *ngIf="data.edicion">Save </button>
+    </div> -->
+</mat-dialog-actions>

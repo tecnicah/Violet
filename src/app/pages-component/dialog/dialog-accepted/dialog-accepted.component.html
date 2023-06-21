@@ -1,0 +1,277 @@
+<h1 mat-dialog-title>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <span *ngIf="data.tipo == 1 || data.tipo == 19">
+        Services
+      </span>
+      <span *ngIf="data.tipo == 2 && data.statusCoordinator != 1">
+        Accept Service Record
+      </span>
+      <span *ngIf="data.tipo == 2 && data.statusCoordinator == 1">
+        The service record was accepted
+      </span>
+      <span *ngIf="data.tipo == 3">
+        Accept Services
+      </span>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon (click)="onNoClick()" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+
+</h1>
+<div mat-dialog-content *ngIf="data.tipo == 2">
+  <!-- <mat-list>
+        <div mat-subheader>
+            Supplier
+        </div>
+        <mat-divider></mat-divider>
+        <div *ngIf="coordinator.length > 0">
+          <mat-list-item *ngFor="let item of coordinator">
+            
+              <img src="{{url_image}}{{item.avatar}}" matListAvatar alt="">
+              <div mat-line><b>{{item.name}}</b></div>
+              <div mat-line style="font-size: 10px;">{{item.country}} </div>
+              <div mat-line style="font-size: 10px;">{{item.serviceLine}} </div>
+            
+          </mat-list-item>
+          <mat-list-item *ngIf="coordinator.length == 0">
+            <div mat-line><b>No assigned supplier</b></div>
+          </mat-list-item>  
+        </div>
+    </mat-list> -->
+  <div style="text-align: left;">
+    <div mat-subheader *ngIf="data.homeImm.length > 0 || data.hostImm.length > 0">Immigration</div>
+    <mat-divider *ngIf="data.homeImm.length > 0 || data.hostImm.length > 0"></mat-divider>
+    <mat-list *ngIf="data.homeImm.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Home - {{data.homeImm[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.homeImm">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+    <br>
+    <mat-list *ngIf="data.hostImm.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Host - {{data.hostImm[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.hostImm">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+    <div mat-subheader *ngIf="data.homeRelo.length > 0 || data.hostRelo.length > 0">Relocation</div>
+    <mat-divider *ngIf="data.homeRelo.length > 0 || data.hostRelo.length > 0"></mat-divider>
+    <mat-list *ngIf="data.homeRelo.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Home - {{data.homeRelo[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.homeRelo">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+    <br>
+    <mat-list *ngIf="data.hostRelo.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Host - {{data.hostRelo[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.hostRelo">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+
+<div mat-dialog-content *ngIf="data.tipo == 3">
+  <mat-list>
+    <div>
+      <div mat-subheader style="padding: 0 !important;">
+        Services
+      </div>
+      <mat-divider></mat-divider>
+      <mat-list *ngIf="standAlone?.length > 0">
+        <div>
+          <div mat-subheader style="padding: 0 !important; height: 24px !important">
+            Stand Alone
+          </div>
+          <mat-list-item *ngFor="let item of standAlone; let i = index">
+            <div mat-line>
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                  <b>{{item.nickName}}</b>
+                </div>
+                <div>
+                  <span (click)="accept_coorninatorIndividual(false, item.id, i, 'standalone')">
+                    <b style="color: #ff5858; cursor:pointer;" *ngIf="item.status != 'Cancelled'">Reject</b>
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span (click)="accept_coorninatorIndividual(true, item.id, i, 'standalone')">
+                    <b style="color: #009577; cursor:pointer;" *ngIf="item.status != 'Active'">Accept</b>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div mat-line style="font-size: 10px;">
+              {{item.numberWorkOrder}}
+              {{item.serviceNumber}}
+            </div>
+            <div mat-line style="font-size: 10px;">
+              <span *ngIf="item.status == 'Active'" style="color:#009577">
+                {{item.status}}
+              </span>
+              <span *ngIf="item.status == 'Cancelled'" style="color:#ff5858">
+                {{item.status}}
+              </span>
+              <span *ngIf="item.status == 'Pending To Accept'" style="color:#fbb03b">
+                {{item.status}}
+              </span>
+            </div>
+            <div mat-line style="font-size: 10px;">
+              Autho Time: {{item.authoTime}} hrs
+            </div>
+          </mat-list-item>
+        </div>
+
+      </mat-list>
+
+      <mat-list *ngIf="bundle?.length > 0">
+        <div>
+          <div mat-subheader style="padding: 0 !important; height: 24px !important">
+            Bundled
+          </div>
+          <div style="font-size: 10px;">
+            Autho Time: {{bundle[0].authoTime}} hrs
+          </div>
+          <mat-list-item *ngFor="let item of bundle; let i = index">
+            <div mat-line>
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                  <b>{{item.nickName}}</b>
+                </div>
+                <div>
+                  <span (click)="accept_coorninatorIndividual(false, item.id, i, 'bundle')">
+                    <b style="color: #ff5858; cursor:pointer;" *ngIf="item.status != 'Cancelled'">Reject</b>
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span (click)="accept_coorninatorIndividual(true, item.id, i, 'bundle')">
+                    <b style="color: #009577; cursor:pointer;" *ngIf="item.status != 'Active'">Accept</b>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div mat-line style="font-size: 10px;">
+              {{item.numberWorkOrder}}
+              {{item.serviceNumber}}
+            </div>
+            <div mat-line style="font-size: 10px;">
+              <span *ngIf="item.status == 'Active'" style="color:#009577">
+                {{item.status}}
+              </span>
+              <span *ngIf="item.status == 'Cancelled'" style="color:#ff5858">
+                {{item.status}}
+              </span>
+              <span *ngIf="item.status == 'Pending To Accept'" style="color:#fbb03b">
+                {{item.status}}
+              </span>
+            </div>
+          </mat-list-item>
+        </div>
+
+      </mat-list>
+
+    </div>
+  </mat-list>
+</div>
+
+<div mat-card-content *ngIf="data.tipo == 1 || data.tipo == 19">
+  <div style="text-align: left;">
+    <div mat-subheader *ngIf="data.homeImm.length > 0 || data.hostImm.length > 0">Immigration</div>
+    <mat-divider *ngIf="data.homeImm.length > 0 || data.hostImm.length > 0"></mat-divider>
+    <mat-list *ngIf="data.homeImm.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Home - {{data.homeImm[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.homeImm">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="data.hostImm.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Host - {{data.hostImm[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.hostImm">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+    <div mat-subheader *ngIf="data.homeRelo.length > 0 || data.hostRelo.length > 0">Relocation</div>
+    <mat-divider *ngIf="data.homeRelo.length > 0 || data.hostRelo.length > 0"></mat-divider>
+    <mat-list *ngIf="data.homeRelo.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Home - {{data.homeRelo[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.homeRelo">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="data.hostRelo.length > 0">
+      <span style="text-transform: capitalize; font-size: 12px">Host - {{data.hostRelo[0].country}}</span>
+      <mat-list-item *ngFor="let item of data.hostRelo">
+        <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
+        <div mat-line style="font-size: 10px; padding-bottom: 10px;">
+          {{item.numberWorkOrder}},
+          {{item.number_server}}<br>
+          <span *ngIf="item.assigned != null">{{item.assigned}}<br></span>
+          <b>{{item.status}}</b>
+        </div>
+        <br>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <div *ngIf="data.tipo == 2 && data.statusCoordinator != 1">
+    <button mat-button [mat-dialog-close]="data.tipo" (click)="accept_coorninator(false)">Reject</button>
+    <button mat-button [mat-dialog-close]="data.tipo" cdkFocusInitial (click)="accept_coorninator(true)">Accept</button>
+  </div>
+  <div *ngIf="data.tipo == 3">
+    <button mat-button [mat-dialog-close]="data.tipo" (click)="accept_coorninator(false)">Reject All</button>
+    <button mat-button [mat-dialog-close]="data.tipo" cdkFocusInitial (click)="accept_coorninator(true)">Accept
+      All</button>
+  </div>
+</div>

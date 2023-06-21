@@ -76,7 +76,7 @@
   </mat-grid-list>
   <mat-grid-list cols="4" rowHeight="300px" *ngIf="(data.standarScopeDocuments === 0)">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <kendo-editor [value]="data.scopeDescription" [(ngModel)]="data.scopeDescription" style="height: 280px; width: 100%;"></kendo-editor>
+      <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="data.scopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -84,7 +84,7 @@
   <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 1) && (data.action != 'new')">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-name">
-        Estantar desciption
+        Stantard desciption
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
@@ -102,7 +102,7 @@
   <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 1)&& (data.action == 'new')">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-name">
-        Estantar desciption
+        Stantard desciption
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
@@ -145,8 +145,10 @@
       <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important;">
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-          {{ item.fileName}}
+          <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+          <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
+            {{ item.fileName}}
+          </a> 
           <!-- idDocumentTypeName -->
           </div>
           <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
@@ -185,7 +187,7 @@
 
     <div class="page__section margin-top-min">
       <div class="page__section-name">
-        Documents standar
+        Documents standard
       </div>
       <div class="page__section">
         <div class="page__section-input page__section-input--25">
@@ -210,8 +212,10 @@
         </div>
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of dataScopeDocument?.documentServiceCountries">
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-          {{ getDocument(item.documentType)}}
+          <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+            <a href="{{img_url}}{{item.filePath}}" target="_blank" class="browser">
+              {{  getDocument(item.documentType)}}
+            </a> 
           </div>
           <div class="page__section-input page__section-input--25 documents__ascard--task">
 
@@ -232,7 +236,7 @@
   <mat-grid-list cols="1" *ngIf="((data.standarScopeDocuments === 1) && (data.action == 'new'))" >
     <div class="page__section margin-top-min">
       <div class="page__section-name">
-        Documents standar
+        Documents standard
       </div>
       <div class="page__section">
         <div class="page__section-input page__section-input--25">
@@ -257,8 +261,10 @@
         </div>
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of dataScopeDocument">
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-          {{ getDocument(item.documentType)}}
+          <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+            <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
+              {{ getDocument(item.documentType)}}
+            </a> 
           </div>
           <div class="page__section-input page__section-input--25 documents__ascard--task">
 

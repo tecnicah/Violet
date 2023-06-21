@@ -36,12 +36,12 @@ import { SettlingInComponent } from '../dialog/settling-in/settling-in.component
 import { SchoolSearchComponent } from '../dialog/school-search/school-search.component';
 import { DialogDepartureComponent } from '../dialog/dialog-departure/dialog-departure.component';
 import { SinglePageAssigneeFamilyInfo } from '../../layouts/single-pages/assignee-and-family-info.component';
-//import { DependentImmigrationInfo } from '../app/layouts/single-pages/assignee-and-family-info.component';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 import { MessageDto, ChatConversation, newChat, ChatDocument } from '../../model/chat/MessageDto';
 import { MatTab } from '@angular/material/tabs';
 import { DialogEditTask } from '../dialog/dialog-edit-task/editTask.component';
-import { DialogMapit } from '../dialog/dialog-mapit/mapit.component';
+import { AsignarserviciosComponent  } from '../dialog/asignarservicios/asignarservicios.component';
+
 import { DialogViewEscalation } from '../dialog/dialog-view-escalation/viewEscalation.component';
 import { DialogTemporaryHousingComponent } from '../dialog/dialog-temporary-housing/dialog-temporary-housing.component';
 import { DialogAirportTransportationComponent } from '../dialog/dialog-airport-transportation/dialog-airport-transportation.component';
@@ -50,7 +50,6 @@ import { DialogRentalFurnitureComponent } from '../dialog/dialog-rental-furnitur
 import { DialogTransportationComponent } from '../dialog/dialog-transportation/dialog-transportation.component';
 import { DialogReportDayComponent } from '../dialog/dialog-report-day/dialog-report-day.component';
 import { DialogExportComponent } from '../dialog/dialog-export/dialog-export.component';
-import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { DialogRequestAdditionalTimeComponent } from '../dialog/dialog-request-additional-time/dialog-request-additional-time.component';
 import { DialogSliderComponent } from '../dialog/dialog-slider/dialog-slider.component';
 import { PdfMakeWrapper, Table, Cell, Columns, Txt } from 'pdfmake-wrapper';
@@ -78,12 +77,16 @@ import { OtherImmigrationComponent } from '../dialog/other-immigration/other-imm
 import { DialogAssignTaskEDRComponent } from '../dialog/dialog-assign-task-edr/dialog-assign-task-edr.component';
 import { FullComponent } from 'app/layouts/full/full.component';
 import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-crop-image.component';
+import { MatOption } from '@angular/material/core';
 
-/*
-    1. Globals
-    2. Functions
-    3. Utilities
-*/
+
+const msg = (user, contact, message) => ({
+  user,
+  contact,
+  message,
+  timestamp: Date.now()
+})
+
 @Component({
   selector: 'edit-service-record-component',
   templateUrl: './editServiceRecord.component.html',
@@ -99,28 +102,18 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   @ViewChild(MatPaginator) paginators_: MatPaginator;
   @ViewChild(MatPaginator) _paginators_: MatPaginator;
   @ViewChild('paginatorElement', { read: ElementRef }) paginatorHtmlElement: ElementRef;
-  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  // @ViewChild('SupplierPartnersRecord') SupplierPartnersRecord: MatPaginator;
-  // @ViewChild(MatPaginator, { static: true }) SupplierPartnersRecord: MatPaginator;
   @ViewChild('SupplierPartnersRecord') SupplierPartnersRecord: MatPaginator;
 
 
   @ViewChild('ActivityReports') ActivityReports: MatPaginator;
 
-  // @ViewChild('Appointment') Appointment: MatPaginator;
-  // @ViewChild(MatPaginator, { static: true }) Appointment: MatPaginator;
   @ViewChild('Appointment') Appointment: MatPaginator;
   @ViewChild('_ActionItem_') _ActionItem_: MatPaginator;
   @ViewChild('call') call: MatPaginator;
   @ViewChild('callrelo') callrelo: MatPaginator;
-
-  // @ViewChild(MatPaginator, { static: true }) CommentHistory: MatPaginator;
   @ViewChild('CommentHistory') CommentHistory: MatPaginator;
 
-
-  // @ViewChild(MatPaginator) third: MatPaginator;
   @ViewChild('third') third: MatPaginator;
-  // @ViewChild('supplier_') supplier_: MatPaginator;
   @ViewChild('supplier_') supplier_: MatPaginator;
 
   // paginador de mapas
@@ -129,12 +122,10 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   // paginadores y sort de action item immi
   @ViewChild('immiActionItemsort') immiActionItemsort: MatSort;
   @ViewChild('immiActionItempag') immiActionItempag: MatPaginator;
-  // @ViewChild(MatPaginator, {static: true}) immiActionItempag: MatPaginator;
 
   // paginadores y sort de action item relo
   @ViewChild('reloActionItemsort') reloActionItemsort: MatSort;
   @ViewChild(MatPaginator, {static: true}) reloActionItempag: MatPaginator;
-  // paginadores y sort de calls immi
   @ViewChild('immiCallssort') immiCallssort: MatSort;
   @ViewChild(MatPaginator, {static: true}) immiCallsmpag: MatPaginator;
 
@@ -144,15 +135,17 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   // paginadores y sort de action item
   @ViewChild('taskRelpag') taskRelpag: MatPaginator;
-  // @ViewChild(MatPaginator, {static: true}) taskRelpag: MatPaginator;
   @ViewChild('tasRel') tasRel: MatSort;
 
   @ViewChild('taskImmpag') taskImmpag: MatPaginator;
-  // @ViewChild(MatPaginator, {static: true}) taskImmpag: MatPaginator;
   @ViewChild('tasImm') tasImm: MatSort;
 
+  @ViewChild('allSelected') private allSelected: MatOption;
+  @ViewChild('thisSelected') private thisSelected: MatOption;
 
+  public can_edit_exp_t = false;
 
+  public show_imm_prof: boolean = false;
   public image_path: string = this._services.url_images;
   public __loader__: LoaderComponent = new LoaderComponent();
   public session_aut: SessionSettings = new SessionSettings(this._router);
@@ -160,6 +153,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public SRDATA: any = undefined;
   public USERDATA: any;
   public dataSource;
+  public reportServices: any[] = [];
   public Host_Home_country: any = {};
   public datasupplier_partners;
   public emailPattern: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -170,8 +164,9 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
     { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' }
   ];
-
-  public immigration_supplier_partners_table: string[] = ['campo_0', 'campo_1', 'campo_2', 'campo_3', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
+  
+  public loaderr:boolean =false;
+  public immigration_supplier_partners_table: string[] = ['campo_1', 'campo_2', 'campo_3', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
   public example_table_data_supplier_partners = [
     { status: 1, id: 1, type: "lorem", company: "lorem", supplier: "lorem", accepted_date: "05/03/2019", assigned_date: "05/03/2019" },
     { status: 2, id: 2, type: "lorem", company: "lorem", supplier: "lorem", accepted_date: "05/03/2019", assigned_date: "05/03/2019" },
@@ -189,7 +184,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public host_country_table: string[] = ['Status', 'Service Order ID', 'Service', 'Service No.', 'Location', 'Service Charge', 'Delivered To', 'Autho Date', 'Accepted Date', 'fee', 'action'];
   public host_contry;
 
-  public appointment_table: string[] = ['Date', 'Supplier', 'Service', 'Start Time', 'Location', 'Documents', 'View', 'Delete'];
+  public appointment_table: string[] = ['Date', 'Supplier', 'Service', 'Start Time', 'Location', 'Status', 'Documents', 'View'];
   public appointment: any;
 
   public edit_sr_model: NewServiceRecordData = new NewServiceRecordData();
@@ -245,7 +240,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public filterNationality0: any = { nationality1: '' };
   public filterPolicy: any = { policyType: '' };
   public filterHomeCountry1: any = { name: '' };
-  public filterHomeCity1: any = { city: '' };
+  public filterHomeCity1: any = { name: '' };
   public filterLanguages1: any = { name: '' };
   public filterHostCountry1: any = { name: '' };
   public filterHostCity1: any = { city: '' };
@@ -289,7 +284,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   dataSourceIS: any;
   displayedColumnsSI: string[] = ['Invoice No.', 'Premier Invoice Date', 'Service Line', 'Work Order', 'Due Date', 'Invoiced Fee', 'Status'];
   displayedColumnsSI_: string[] = ['Invoice No.', 'Premier Invoice Date', 'Service Line', 'Work Order', 'Due Date', 'Status'];
-  // @ViewChild('supplierSI_') supplierSI_: MatPaginator;
   @ViewChild('supplierSI_') supplierSI_: MatPaginator;
 
 
@@ -302,7 +296,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   //TABLE REPORT
   dataSourceReport: any;
   //dataSourceR: any;
-  displayedColumnsReport: string[] = ['Date', 'Service Line', 'Work Order', 'Services', 'Report By', 'Time Used','Time Remaining', 'Actions'];
+  displayedColumnsReport: string[] = ['Date', 'Service Line', 'Work Order', 'Services', 'type', 'Report By', 'Time Used', 'Actions'];
 
   //TABLE REPORT
   dataSourceRecord: any;
@@ -329,18 +323,14 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   caCurrency: any[] = [];
   caPropertyTypeHousing: any[] = [];
   caContractType: any[] = [];
-
+  _serviciosByConsultantImm: any[] = [];
+  _serviciosByConsultantRelo: any[] = [];
 
   ST: any;
   SU: any;
 
-  exportAsConfig: ExportAsConfig = {
-    type: 'pdf', // the type you want to download
-    elementIdOrContent: 'exportReport',
-    options: { // html-docx-js document options
-
-    }
-  }
+  homeCountry:string = "";
+  homeCity:string = "";
 
   supplier_table: any;
   displayedColumnsS: string[] = ['Service', 'ServiceID', 'AcceptanceRejectedDate', 'Accepted'];
@@ -358,7 +348,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     public _services: ServiceGeneralService,
     private formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
-    public exportAsService: ExportAsService,
     private _permissions: NgxPermissionsService,
     private changeDetectorRefs: ChangeDetectorRef,
     public fullC: FullComponent
@@ -371,22 +360,39 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public prefixCatalog;
   profileCunsultant = false;
   ngOnInit() {
-    console.log("userData ", this.__userlog__);
+    setTimeout(() => {
+      this.loaderr=true;
+    }, 5000);
+    if(this._routerParams.snapshot.params?.tipo == 1){
+      let a = document.getElementById("tabActiviy");
+      a.click();
+      this.get_catalogos();
+      this.getReport();
+      this.getSupplier();
+    }
+
     if (this.__userlog__.role.id == 3) {
       this.profileCunsultant = true;
-      console.log('se loggeo un profile consultant');
     }
+
+    if(this.__userlog__.role.id == 19 || this.__userlog__.role.id == 1){
+      this.can_edit_exp_t = true;
+    }
+    else{
+      this.can_edit_exp_t = false;
+    }
+
+
     const user_rol: string[] = [this.__userlog__.role.id];
     this._permissions.loadPermissions(user_rol);
     this.consultaPermisos();
     this.get_Notification();
-    this.session_aut.canContinueInMySession();
 
     this.SupplierForm = this.formBuilder.group({
       Supplier_Type: [null, [Validators.required]],
       //Supplier_Company: [null, Validators.required],
       Supplier: [null, Validators.required],
-      Assigned_Date: [null, Validators.required]
+     // Assigned_Date: [null, Validators.required]
     });
 
     this.relocation_supplier_form = this.formBuilder.group({
@@ -404,7 +410,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       this.initPageSettings();
       this.getDataSuplier();
       this.getAppointment();
-      this.getRelocationSuppliers();
       this.getRelocationServices();
       this.getRelocationSuppliers();
       this.DetectaServiceLine();
@@ -422,7 +427,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       this.immgration_languages.push(new LenguageProficiencies());
       this.immgration_dependent.push(new DependentImmigrationInfos());
 
-      this._services.retrieveMappedObject().subscribe((receivedObj: any) => { this.initChatBehavior() });
+      // this._services.retrieveMappedObject().subscribe((receivedObj: any) => { this.initChatBehavior() });
 
     } else {
 
@@ -431,7 +436,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     }
 
     this.get_catalogos();
-    
+
 
   }
 
@@ -444,7 +449,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     let notificaciones = [];
     this._services.service_general_get('Notification/GetNotificationCenter/' + this.__userlog__.id).subscribe((data => { //this.area_orientation.workOrderServicesId
       if (data.success) {
-        console.log('DATA CONSULTA NOTIFICACIONES:', data);
+        //console.log('DATA CONSULTA NOTIFICACIONES:', data);
         notificaciones = data.result.value.sort(function (a, b) {
           return b.createdDate.localeCompare(a.createdDate);
         });
@@ -457,7 +462,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         }
 
         this.ca_notification = uux_notificaciones;
-        console.log("NOTIFICACIONES: ", this.ca_notification);
+        //console.log("NOTIFICACIONES: ", this.ca_notification);
 
         this.ca_notification.forEach(E => {
           if(E.notificationType == 1 || E.notificationType == 2){
@@ -494,7 +499,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   async decline() {
     let data_ = this.SR_Notification;
     this._services.service_general_putnoapi(data_.actionCall.rejected, '').subscribe((async data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
@@ -511,10 +516,10 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   archivar(data, event) {
-    console.log(data);
+    //console.log(data);
       this._services.service_general_put('Notification/PutArchive/' + data.id + '/' + true, '').subscribe((_data_ => {
         if (_data_.success) {
-			    console.log("Archivada : ", _data_);
+			    //console.log("Archivada : ", _data_);
           this.show_buttom = false;
           this.marcarLeida(data)
         }
@@ -522,11 +527,11 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   marcarLeida(data) {
-    console.log(data);
+    //console.log(data);
       let viewt = true;
       this._services.service_general_put('Notification/PutViewed/' + data.id + '/' + viewt, '').subscribe((data => {
         if (data.success) {
-			    console.log("leida : ", data);
+			    //console.log("leida : ", data);
           this.fullC.get_Notification();
           this.initPageSettings();
           this.show_buttom = false;
@@ -540,7 +545,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     this._services.service_general_get(`ServiceRecord/Countries/${this.edit_sr_model.id}`).subscribe((data => {
       if (data.success) {
         this.ca_countryServiceRecord = data.result.value;
-        console.log('this.countryServiceRecord', this.ca_countryServiceRecord)
+        //console.log('this.countryServiceRecord', this.ca_countryServiceRecord)
       }
     }))
   }
@@ -557,16 +562,15 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public permission_edit: boolean = false;
 
   consultaPermisos() {
-    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    //console.log("CONSULTA PARA PERMISOS DE USUARIO");
     let url = localStorage.getItem('url_permisos');
+    console.log("Permisos URL ===================================================: ", url)
     this._services.service_general_get('Role/' + url).subscribe(data => {
       if (data.success) {
-        console.log("Permisos: ", data.result.value)
         this.permission_read = data.result.value[0].reading;
         this.permission_write = data.result.value[0].writing;
         this.permission_edit = data.result.value[0].editing;
         this.permission_delete = data.result.value[0].deleting;
-        debugger
       }
     })
   }
@@ -602,11 +606,9 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   getCommentsHistory() {
 
     this._services.service_general_post_with_url(`ServiceOrder/GetCommentsHostory/${this.SO_ID}`, '').subscribe((data => {
-      console.log("commentarios historicos: ", data);
       let datos = data.result.value;
       let name;
       let reply;
-      console.log(datos);
       datos.forEach(E => {
         if (E.nameAndReply.length > 0) {
           E.name = E.nameAndReply[0].name;
@@ -634,7 +636,8 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
   //*******************//
   /* 2. Functions */
-
+  public wos_imm_ = 0;
+  public wos_relo_ = 0;
   public no_main_photo: boolean = false;
   public current_email: string = '';
   public hold_imm_coor_data: immigrationCoodinators[] = [new immigrationCoodinators()];
@@ -649,9 +652,18 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       .subscribe((response: any) => {
 
         if (response.success) {
-
-
+          console.log("DataServiceRecordById",response);
+          console.log("SRDATA", response.result);
           this.SRDATA = response.result;
+
+          this._services.service_general_get("ServiceRecord/GetHomeCountryById?id="+response.result.assigneeInformations[0].homeCountryId).subscribe(result => {
+            this.homeCountry = result;
+          });
+
+          this._services.service_general_get("ServiceRecord/GetHomeCityById?id="+response.result.assigneeInformations[0].homeCityId).subscribe(result => {
+            this.homeCity = result;
+          });
+
           if (this.SRDATA.immigrationCoodinators.length > 0) {
             if (this.SRDATA.immigrationCoodinators[0].accepted == "1900-01-01T00:00:00") {
               this.SRDATA.immigrationCoodinators[0].accepted = null;
@@ -663,8 +675,37 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
               this.SRDATA.relocationCoordinators[0].accepted = null;
             }
           }
+
+          if(this.SRDATA.relocationSupplierPartners.lengt > 0 && this.SRDATA.immigrationSupplierPartners.lengt == 0){
+            this.data_directory.serviceLine = 2;
+          }
           this.edit_sr_model = this.SRDATA;
-          console.log('data sr', this.edit_sr_model);
+
+
+          ////////////////mostrr tabs de RELO e IMM
+          if(this.edit_sr_model.workOrders.length == 0){
+            this.wos_imm_ = 0;
+            this.wos_relo_ = 0;
+          }
+          else{
+            for (let i = 0; i < this.edit_sr_model.workOrders.length; i++) {
+              const element = this.edit_sr_model.workOrders[i];
+              if(element.serviceLineId == 1 )
+              {
+                this.wos_imm_ = this.wos_imm_ + 1;
+              }
+              if(element.serviceLineId == 2 )
+              {
+                this.wos_relo_ = this.wos_relo_ + 1;
+              }
+            }
+          }
+
+
+
+          //this.city_home_catalogue  = this._services.getCatalogueFrom('CitiesById', response.result.assigneeInformations[0].homeCityId);
+
+          //console.log('data sr', this.edit_sr_model);
           // separar prefix de phone number
           // si el valor de mobilephone no es mayor a 10 caracteres entonces no tiene prefijo y toma el valor actual desde la bd asi vienen con prefijo  93+6567567567 o sin 6567567567
           if (this.edit_sr_model.assigneeInformations[0].mobilePhone != '' && this.edit_sr_model.assigneeInformations[0].mobilePhone != null)
@@ -707,7 +748,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
           let photo_assing: string = this.edit_sr_model.assigneeInformations[0].photo;
 
-          console.log(photo_assing);
+          //console.log(photo_assing);
           if (photo_assing == undefined || photo_assing == null || photo_assing == '') {
 
             this.no_main_photo = true;
@@ -743,13 +784,14 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
           this.__loader__.hideLoader();
 
+          this.initNationalitySelector();
           this.initLanguageSelector();
           this.DetectaServiceLine();
           this.DetectaExperienceTeam();
           this.show_ass_depd_errors = false;
           this.show_pets_erros = false;
 
-          console.log('[CP353] Data edit_sr_model  => ', this.edit_sr_model);
+          //console.log('[CP353] Data edit_sr_model  => ', this.edit_sr_model);
           localStorage.setItem('partnerID', JSON.stringify(this.edit_sr_model.partnerId));
           this.getCountryServiceRecord();
         } else {
@@ -769,7 +811,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   partnerChange() {
-    debugger
     localStorage.setItem('partnerID', JSON.stringify(this.edit_sr_model.partnerId));
   }
 
@@ -783,6 +824,23 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     !this.show_language_dropdown ?
       this.show_language_dropdown = true :
       this.show_language_dropdown = false;
+
+  }
+
+  public user_nationalities: any[] = undefined;
+  public initNationalitySelector(): void {
+    const nationality_selected: any[] = this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations;
+
+    let nationality_pre_selected: number[] = [];
+
+    nationality_selected.forEach((nationality: any) => {
+
+      nationality_pre_selected.push(nationality.nationalityId);
+
+    });
+
+    this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations = [];
+    this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations = nationality_pre_selected;
 
   }
 
@@ -801,45 +859,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
     this.edit_sr_model.assigneeInformations[0].languagesSpokens = [];
     this.edit_sr_model.assigneeInformations[0].languagesSpokens = languages_pre_selected;
-
-    /*
-
-    this.user_languages = this.languages_catalogue;
-
-    this.user_languages.forEach( (language:any) => {
-
-      language.active = false;
-
-    });
-
-    const hold_language_name:string[] = [];
-
-    let label_length:number = 22;
-
-    this.user_languages.forEach( (language:any, index:number) => {
-
-      for( let language_sel:number = 0; language_sel < languages_selected.length; language_sel += 1 ) {
-
-        if( languages_selected[language_sel].languages == language.id ) {
-
-          language.active = true;
-
-          hold_language_name.push( language.name );
-
-        }
-
-      }
-
-    });
-
-    this.languages_selected = hold_language_name.join(', ');
-
-    this.languages_selected.length > label_length ?
-        this.languages_selected = `${ this.languages_selected.substring(0, label_length) }...` :
-        this.languages_selected = `${ this.languages_selected }.`;
-
-    if( this.languages_selected.length == 1 ) this.languages_selected = '';*/
-
   }
 
   public languages_selected: string = '';
@@ -952,6 +971,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     if (user_in != undefined) {
 
       this.USERDATA = JSON.parse(user_in);
+      //console.log(this.USERDATA);
       result = true;
 
     } else {
@@ -964,32 +984,124 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   }
 
+  _immObject: any[] = [];
+
+  tosslePerOne(thisSelected, id, idsuplier, service, index){
+
+    if (!thisSelected.selected) {
+      this._immObject.splice(index ,1);
+    }
+   if(thisSelected._selected){
+    this._immObject.push({
+      "immigrationSupplierPartnerId": idsuplier,
+      "serviceOrderServicesId": id,
+      "service": service
+    });
+   }
+
+ }
+
+  toggleAllSelection() {
+     if (this.allSelected.selected) {
+       this.toppings
+         .patchValue([...this._serviciosByConsultantImm.map(item => item.id), 0]);
+
+         this.toppings.value.forEach((element,index) => {
+           if(element == this._serviciosByConsultantImm[index]?.id)
+           {
+            this._immObject.push({
+              "immigrationSupplierPartnerId": element.idsuplier,
+              "serviceOrderServicesId": element.id,
+              "service": element.service
+            });
+           }
+         });
+     } else {
+       this.toppings.patchValue([]);
+       this._immObject = [];
+     }
+   }
+
   public getDataSuplier() {
-    console.log("Entra a da supplier partner Immi");
     this._services.service_general_get('Immigration/GetSupplierPartnerImmigration?serviceRecord=' + this.SO_ID)
       .subscribe((response: any) => {
-        console.log("respuesta del suuplier get: ", response);
+        this.__loader__.hideLoader();
         if (response.success) {
-          this.suplierData = response.result.value;
-          this.DetectaExperienceTeam()
-          console.log("Supplier DATA: ", this.suplierData);
+          if(response.result.value[0]?.unionAll != undefined){
+            this.suplierData = response.result.value;
+            this._serviciosByConsultantImm = response.result.value[0]?.unionAll;
+          }
+          else
+          {
+            this.suplierData = [];
+            this._serviciosByConsultantImm = response.result.value;
+          }
+
         }
       }, (err) => {
         console.log("Error a consultar los supplier asignados a la SR: ", err);
       })
   }
 
+  tosslePerOneRelo(thisSelected, id, idsuplier, service, index){
+
+    if (!thisSelected.selected) {
+      this._immObject.splice(index ,1);
+    }
+   if(thisSelected._selected){
+    this._immObject.push({
+      "immigrationSupplierPartnerId": idsuplier,
+      "serviceOrderServicesId": id,
+      "service": service
+    });
+   }
+
+ }
+
+  toggleAllSelectionRelo() {
+     if (this.allSelected.selected) {
+       this.toppings
+         .patchValue([...this._serviciosByConsultantRelo.map(item => item.id), 0]);
+
+         this.toppings.value.forEach((element,index) => {
+           if(element == this._serviciosByConsultantRelo[index]?.id)
+           {
+            this._immObject.push({
+              "immigrationSupplierPartnerId": element.idsuplier,
+              "serviceOrderServicesId": element.id,
+              "service": element.service
+            });
+           }
+         });
+     } else {
+       this.toppings.patchValue([]);
+       this._immObject = [];
+     }
+   }
+
   public relocation_suppliers: any[] = [];
   public getRelocationSuppliers(): void {
-    console.log("Entra a consultar los supplier partners Relo");
-    this._services.service_general_get(`Relocation/GetSupplierPartnerRelocation?serviceRecord=${this.SO_ID}`)
+    //debugger
+    let _country = '';
+    if(this.relocation_supplier_data.supplierTypeId != undefined){
+      _country = '&countryId='+ this.relocation_supplier_data.supplierTypeId;
+    }
+    console.log("this.supplierTypeId",this.relocation_supplier_data.supplierTypeId);
+    this._services.service_general_get(`Relocation/GetSupplierPartnerRelocation?serviceRecord=${this.SO_ID}`+ _country)
       .subscribe((response: any) => {
-        console.log(response);
+        console.log("consultores-->>>",response);
+        this.__loader__.hideLoader();
         if (response.success) {
 
-          this.relocation_suppliers = response.result.value;
-          this.DetectaExperienceTeam();
-          console.log(this.relocation_suppliers);
+          if(response.result.value[0]?.unionAll != undefined){
+            this.relocation_suppliers = response.result.value;
+            this._serviciosByConsultantRelo = response.result.value[0]?.unionAll;
+          }
+          else
+          {
+            this.relocation_suppliers = [];
+            this._serviciosByConsultantRelo = response.result.value;
+          }
 
         }
 
@@ -1004,24 +1116,14 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     this._services.service_general_get('Appointment/GetAppointmentByServiceRecordId?id=' + this.SO_ID)
       .subscribe((response: any) => {
         if (response.success) {
-          console.log("APPOINT: ", response);
           this.appointment = new MatTableDataSource(response.result.value);
           this.appointment.paginator = this.Appointment;
-          //this.appointment.sort = this.sort;
+          this.appointment.sort = this.sort;
         }
       })
   }
 
-  public viewassigned_services(data) {
-    console.log("data servicios de relocation", data);
-    this.assigned_services = data.unionAll;
-    for (let i = 0; i < this.assigned_services.length; i++) {
-      this.assigned_services[i].idsuplier = data.id;
-    }
-  }
-
   public view_upplier_detail(data) {
-    console.log(data)
     this.supplier_detail = data;
   }
 
@@ -1030,7 +1132,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   public getSuplier() {
-    console.log("ENTRA A CONSULTA SUPPLIER IMMI");
     this._services.service_general_get("Catalogue/GetSupplier").subscribe((data => {
       if (data.success) {
         this.dataCSuplier = data.result;
@@ -1046,13 +1147,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   public getCompany(id, type) {
-    /*
-    this._services.service_general_get("Catalogue/GetSupplierCompany?id=" + id).subscribe((data => {
-      if (data.success) {
-        this.dataCSuplier_company = data.result;
-      }
-    }))
-    */
     let country = 0;
     let city = 0;
     if (id == 1) {
@@ -1064,12 +1158,9 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     }
 
     const extra_data = `?country=${country}&city=${city}&serviceLine=${type}`;
-    console.log('parametros supplier company ESR: ', extra_data);
     this._services.service_general_get('SupplierPartnerProfile/GetSupplierPartnerConsultant' + extra_data).subscribe((data => {
       if (data.success) {
-        console.log('DATA CONSULTA: ', data);
         this.dataCSuplier_company = data.result.value;
-        console.log('DATA CONSULTA SUPPLIER COMPANY: ', this.dataCSuplier_company);
       }
     }));
   }
@@ -1089,6 +1180,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   type_company_relocation :any;
   type_companyId_relocation :any;
   public company_Relocation(){
+    this.getRelocationSuppliers();
     let ca = JSON.parse(localStorage.getItem("catalogorel"));
     for(let i = 0; i < ca.length; i++){
        if(ca[i].id == this.relocation_supplier_data.supplierId){
@@ -1100,10 +1192,8 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   public async __supplier__(country, city, serviceLine): Promise<any> {
     const extra_data = `?country=${country}&city=${city}&serviceLine=${serviceLine}`;
-    console.log('parametros supplier: ', extra_data);
     this._services.service_general_get('SupplierPartnerProfile/GetConsultantContactsConsultants' + extra_data).subscribe((data => {
       if (data.success) {
-        console.log('DATA CONSULTA: ', data);
         localStorage.setItem("catalogo", JSON.stringify(data.result.value));
         let datas = data.result.value;
         for (let i = 0; i < this.suplierData.length; i++) {
@@ -1116,8 +1206,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
           }
         }
         this.dataCSuplier = datas;
-        //this.dataCSuplier = data.result.value;
-        console.log('DATA CONSULTA SUPPLIER: ', this.dataCSuplier);
       }
     }));
   }
@@ -1126,10 +1214,8 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   dataCSuplierRel: any[] = [];
   public async __supplier__r(country, city, serviceLine): Promise<any> {
     const extra_data = `?country=${country}&city=${city}&serviceLine=${serviceLine}`;
-    console.log('parametros supplier: ', extra_data);
     this._services.service_general_get('SupplierPartnerProfile/GetConsultantContactsConsultants' + extra_data).subscribe((data => {
       if (data.success) {
-        console.log('DATA CONSULTA: ', data);
         localStorage.setItem("catalogorel", JSON.stringify(data.result.value));
         let datas = data.result.value;
         for (let i = 0; i < this.relocation_suppliers.length; i++) {
@@ -1142,8 +1228,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
           }
         }
         this.dataCSuplierRel = datas;
-        //this.dataCSuplier = data.result.value;
-        console.log('DATA CONSULTA SUPPLIER: ', this.dataCSuplier);
       }
     }));
   }
@@ -1152,31 +1236,38 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
 
   public saveSuplier() {
+    this.__loader__.showLoader();
+    this.TempDataSuplier.assignedDate = new Date();
     this.TempDataSuplier.supplierCompanyId = this.type_companyId;
-    //this.type_company[0].companyId
-    //this.SupplierForm.get('Supplier_Company').setValue = this.dataCSuplier[0].companyId;
 
     if (!this.SupplierForm.valid) {
+      this.__loader__.hideLoader();
       return;
     }
 
     this.TempDataSuplier.id = 0;
     this.TempDataSuplier.updateBy = this.USERDATA.id;
     this.TempDataSuplier.serviceRecordId = this.edit_sr_model.id;
+    this.TempDataSuplier.statusId = null;
     this.TempDataSuplier.createdBy = this.USERDATA.id;
     this.TempDataSuplier.createdDate = new Date();
     this.TempDataSuplier.updatedDate = new Date();
 
-    debugger
-    console.log(this.TempDataSuplier);
     this._services.service_general_post_with_url("Immigration/CreateSupplierPartnerImmigration", this.TempDataSuplier).subscribe(data => {
       if (data.success) {
-        console.log(data);
+        this.TempDataSuplier.service.forEach(element => {
+          let event = {
+            checked: true
+          }
+          this.addordeleteservices(event, element, data.result.id, element)
+        });
+
         this.TempDataSuplier = {};
         this.addSuplier = false;
         this.type_company = null;
            this.type_companyId = null;
         this.getDataSuplier();
+        this.__loader__.hideLoader();
       }
     })
 
@@ -1186,15 +1277,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     for (let i = 0; i < this.country_catalogue.length; i++) {
       if (this.country_catalogue[i].id == id) {
         return this.country_catalogue[i].name;
-      }
-    }
-  }
-
-  getNameCityHome(id){
-    for (let i = 0; i < this.city_home_catalogue.length; i++) {
-      const element = this.city_home_catalogue[i];
-      if(element.id == id){
-        return element.city;
       }
     }
   }
@@ -1257,7 +1339,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
+        this.__loader__.showLoader();
         if (result) {
           this._services.service_general_delete("Appointment?key=" + data.id).subscribe((data => {
             if (data.success) {
@@ -1268,6 +1350,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
                 },
                 width: "350px"
               });
+              this.__loader__.hideLoader();
               this.ngOnInit();
             }
           }))
@@ -1278,21 +1361,32 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   public relocation_supplier_data: any = {};
   public postRelocationSupplier(): void {
-    console.log("post relocation supplier");
-    //this.relocation_supplier_form.get('Supplier_Company').setValue = this.dataCSuplier[0].companyId;
+    this.__loader__.showLoader();
+    this.relocation_supplier_data.assignedDate = new Date();
     this.relocation_supplier_data.supplierCompanyId = this.type_companyId_relocation;
-    if (!this.relocation_supplier_form.valid) {
+      if (this.relocation_supplier_data.supplierId === undefined ||
+        this.relocation_supplier_data.supplierId === null) {
       return;
     }
 
     this.relocation_supplier_data.id = 0;
-    this.relocation_supplier_data.updateBy = 0;
+    this.relocation_supplier_data.updateBy = this.USERDATA.id;
+    this.relocation_supplier_data.statusId = null;
     this.relocation_supplier_data.serviceRecordId = this.edit_sr_model.id;
-
+    this.relocation_supplier_data.createdBy = this.USERDATA.id;
+    this.relocation_supplier_data.createdDate = new Date();
+    this.relocation_supplier_data.updatedDate = new Date();
     this._services.service_general_post_with_url(`Relocation/CreateSupplierPartner`, this.relocation_supplier_data)
       .subscribe((response: any) => {
 
         if (response.success) {
+
+          this.relocation_supplier_data.service.forEach(element => {
+            let event = {
+              checked: true
+            }
+            this.addordeleteservicesRelocation(event, element, response.result.id, element);
+          });
 
           this.relocation_supplier_data = {};
           this.type_company_relocation = null;
@@ -1309,16 +1403,16 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public relocation_home_services: any[] = [];
   public relocation_host_services: any[] = [];
   public getRelocationServices(): void {
-
-    this._services.service_general_get(`ServiceRecord/GetServices/${this.SO_ID}?type=2`)
+    this.__loader__.showLoader()
+    this._services.service_general_get(`ServiceRecord/GetServices/${this.SO_ID}?type=2`+"&userId="+this.USERDATA.id)
       .subscribe((response: any) => {
 
         if (response.success) {
           this.homeRel = response.map.value.home.length;
           this.hostRel = response.map.value.host.length;
           this.relocation_home_services = response.map.value.home;
-          this.relocation_host_services = response.map.value.host;
-
+          this.relocation_host_services = response.map.value.host
+          this.__loader__.hideLoader()
         }
 
       }, (error: any) => {
@@ -1331,12 +1425,14 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   public showaddSuplier() {
     this.addSuplier = true;
+    this.getDataSuplier();
   }
 
   public parther_catalogue: any = [];
   public client_catalogue: any = [];
   public policytype_catalogue: any = [];
   public country_catalogue: any = [];
+  public country_catalogue_home: any = [];
   public nationality_catalogue: any = [];
   public autoriza_catalogue: any = [];
   public marital_catalogue: any = [];
@@ -1362,15 +1458,15 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public ca_serviceLine = [];
   public ca_status = [];
   public async getCatalogues(): Promise<void> {
+    this.__loader__.showLoader();
     this.ca_status = await this._services.getCatalogueFrom('GetStatusInvoice');
     this.ca_serviceLine = await this._services.getCatalogueFrom('GetServiceLine');
     this.sp_catalog = await this._services.getCatalogueFrom('GetSupplierPartnerType');
-    //this.client_catalogue = await this._services.getCatalogueFrom('GetClient');
     this.parther_catalogue = await this._services.getCatalogueFrom('GetPartner');
     this.policytype_catalogue = await this._services.getCatalogueFrom('GetPolicyType');
     this.country_catalogue = await this._services.getCatalogueFrom('GetCountry');
+    this.country_catalogue_home = await this._services.getCatalogueFrom('GetCountry');
     this.nationality_catalogue = await this._services.getCatalogueFrom('Nationalities');
-    //this.autoriza_catalogue = await this._services.getCatalogueFrom('GetAuthorizedBy');
     this.marital_catalogue = await this._services.getCatalogueFrom('GetMaritalStatus');
     this.assigment_catalogue = await this._services.getCatalogueFrom('GetAssignedService');
     this.relationship_catalogue = await this._services.getCatalogueFrom('GetRelationship');
@@ -1379,7 +1475,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     this.weightmeasure_catalogue = await this._services.getCatalogueFrom('GetWeightMeasure');
     this.petsize_catalogue = await this._services.getCatalogueFrom('GetSize');
     this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
-    //this.coordinator_catalogue = await this._services.getCatalogueFrom('GetCoordinator');
     this.coordinatortype_catalogue = await this._services.getCatalogueFrom('GetCoordinatorType');
     this.visacategory_catalogue = await this._services.getCatalogueFrom('GetVisaCategory');
     this.proficiency_catalogue = await this._services.getCatalogueFrom('GetProficiency');
@@ -1397,19 +1492,8 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       host_country: this.edit_sr_model.assigneeInformations[0].hostCountry,
       home_country: this.edit_sr_model.assigneeInformations[0].homeCountryId,
     }
-
     this.city_host_catalogue = await this._services.getCatalogueFrom('GetState', `?country=${host_country}`);
-    this.city_home_catalogue = await this._services.getCatalogueFrom('GetState', `?country=${home_country}`);
-
-    /*await this.country_catalogue.forEach(element => {
-        if(element.id == this.Host_Home_country.host_country){
-            this.Host_Home_country.host_country_name = element.name;
-        }
-
-        if(element.id == this.Host_Home_country.home_country){
-            this.Host_Home_country.home_country_name = element.name;
-        }
-    });*/
+    this.city_home_catalogue = await this._services.getCatalogueFrom('Generic/CitiesById/', this.edit_sr_model.assigneeInformations[0]?.homeCityId?.toString());
 
     for (let i = 0; i < this.country_catalogue.length; i++) {
       const element = this.country_catalogue[i];
@@ -1449,13 +1533,12 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       }
     }
 
+    this.__loader__.hideLoader();
   }
 
   athorizedBy() {
-    console.log("Para consultar este catlogo necesitamos el partnerId, HOMECUNTRYID,HOMECITYID");
     this._services.service_general_get("Catalogue/GetAuthorizedBy/" + this.edit_sr_model.partnerId + "/" + this.edit_sr_model.assigneeInformations[0].homeCountryId + "/" + this.edit_sr_model.assigneeInformations[0].homeCityId).subscribe((data => {
       if (data.success) {
-        console.log("select authorized by: ", data.result.value);
         this.autoriza_catalogue = data.result.value;
       }
     }));
@@ -1464,7 +1547,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   getClient() {
     this._services.service_general_get("Catalogue/GetClient/" + this.edit_sr_model.partnerId).subscribe((data => {
       if (data.success) {
-        console.log("select cliente: ", data.result.value);
         this.client_catalogue = data.result.value;
       }
     }));
@@ -1473,15 +1555,12 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   getCoordinatorImmigration() {
     this._services.service_general_get("Catalogue/GetCoordinator/" + this.edit_sr_model.partnerId + "?servileLine=" + 1).subscribe((data => {
       if (data.success) {
-        console.log("select coordinator new SR Immigration: ", data.result);
-        //this.coordinator_catalogue = data.result.value;
-        let aux = data.result.value; 
+        let aux = data.result.value;
         localStorage.setItem("coordinator_catalogue",JSON.stringify(data.result.value));
         for (let i = 0; i <  aux.length; i++) {
-          debugger
           const element =  aux[i];
           for (let j = 0; j < this.edit_sr_model.immigrationCoodinators.length; j++) {
-            const elementdos = this.edit_sr_model.immigrationCoodinators[j]; 
+            const elementdos = this.edit_sr_model.immigrationCoodinators[j];
             if(element.id == elementdos.coordinatorId){
               aux.splice(i,1);
             }
@@ -1497,13 +1576,12 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   getCoordinatorRelocation() {
     this._services.service_general_get("Catalogue/GetCoordinator/" + this.edit_sr_model.partnerId + "?servileLine=" + 2).subscribe((data => {
       if (data.success) {
-        console.log("select coordinator new SR relocation: ", data.result);
-        let aux = data.result.value; 
+        let aux = data.result.value;
         localStorage.setItem("coordinator_catalogue_rel",JSON.stringify(data.result.value));
         for (let i = 0; i <  aux.length; i++) {
           const element =  aux[i];
           for (let j = 0; j < this.edit_sr_model.relocationCoordinators.length; j++) {
-            const elementdos = this.edit_sr_model.relocationCoordinators[j]; 
+            const elementdos = this.edit_sr_model.relocationCoordinators[j];
             if(element.id == elementdos.coordinatorId){
               aux.splice(i,1);
             }
@@ -1527,20 +1605,50 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   }
 
+  homeSelected: number = 0;
   getcityhome(id) {
-    console.log(id);
-    this._services.service_general_get("Catalogue/GetState?country=" + id).subscribe((data => {
-      console.log(data);
+    this.__loader__.showLoader();
+    this._services.service_general_get("CountryAdminCenter/GetCityByCountryId?countryId=" + id).subscribe((data => {
+      if (data.success) {
+        this.city_home_catalogue = data.result;
+        this.__loader__.hideLoader();
+      }
+    }))
+
+    if(this.homeSelected != 0){
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Change confirmation",
+          body: "If you change this option, partner providers will be eliminated. Do you want to continue?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.cleanSup();
+        }else{
+          this.edit_sr_model.assigneeInformations[0].homeCountryId = this.homeSelected;
+        }
+      });
+    }else{
+      this.homeSelected = this.edit_sr_model.assigneeInformations[0].homeCountryId;
+    }
+  }
+
+  getcityhome1(id) {
+  //  this.__loader__.showLoader();
+    this._services.service_general_get("CountryAdminCenter/GetCityByCountryId?countryId=" + id).subscribe((data => {
       if (data.success) {
         this.city_home_catalogue = data.result;
       }
     }))
+
+
   }
 
   getcityhost(id) {
-    console.log(id);
     this._services.service_general_get("Catalogue/GetState?country=" + id).subscribe((data => {
-      console.log(data);
       if (data.success) {
         this.city_host_catalogue = data.result;
       }
@@ -1550,21 +1658,18 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   data_coordinator:any;
   view_upplier_coordinador(id){
     this.coordinator_catalogue_aux = JSON.parse(localStorage.getItem("coordinator_catalogue"));
-    for (let i = 0; i < this.coordinator_catalogue.length; i++) {
+    for (let i = 0; i < this.coordinator_catalogue_aux.length; i++) {
       if(this.coordinator_catalogue_aux[i].id == id){
          this.data_coordinator = this.coordinator_catalogue_aux[i];
-         console.log("data coordinador seleccionado: ", this.data_coordinator);
       }
     }
   }
 
   view_upplier_coordinador_relocation(id){
     this.coordinator_catalogue_rel_aux = JSON.parse(localStorage.getItem("coordinator_catalogue_rel"));
-    console.log("COORDINATOR RELO: ", this.coordinator_catalogue_rel_aux)
     for (let i = 0; i < this.coordinator_catalogue_rel_aux.length; i++) {
       if(this.coordinator_catalogue_rel_aux[i].id == id){
          this.data_coordinator = this.coordinator_catalogue_rel_aux[i];
-         console.log("data coordinador seleccionado: ", this.data_coordinator);
       }
     }
   }
@@ -1572,15 +1677,13 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public showDialogEditServices(): void {
 
     const currents_so: any = this.edit_sr_model.serviceOrders;
-
-    console.log('============================> ', this.edit_sr_model);
-
     const dialogRef = this._dialog.open(DialogEditServices, {
       data: {
         so: currents_so,
         id: this.edit_sr_model.id,
         user_id: this.USERDATA.id,
         partner: this.edit_sr_model.partnerId,
+        client: this.edit_sr_model.clientId,
         home_contry: this.edit_sr_model.assigneeInformations[0].homeCountryId,
         home_city: this.edit_sr_model.assigneeInformations[0].homeCityId,
         host_country: this.edit_sr_model.assigneeInformations[0].hostCountry,
@@ -1590,40 +1693,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
     dialogRef.afterClosed().subscribe(result => {
       this.ngOnInit();
-      let a = document.getElementById("active-tab");
-      a.click();
-      /*this._services.service_general_get("ServiceRecord/GetServices/" + this.SO_ID + "?type=" + 1).subscribe((data => {
-
-        if (data.success) {
-          let home = [];
-          let host = [];
-
-          data.map.value.forEach(element => {
-            for (let index = 0; index < element.home.length; index++) {
-              const data = element.home[index];
-              data.status = element.status;
-              data.authodate = element.authodate;
-              data.serviceOrderId = element.serviceOrderId;
-              home.push(data);
-            }
-
-            for (let index = 0; index < element.host.length; index++) {
-              const data = element.host[index];
-              data.status = element.status;
-              data.authodate = element.authodate;
-              data.serviceOrderId = element.serviceOrderId;
-              host.push(data);
-            }
-          });
-
-          this.home_contry = new MatTableDataSource(home);
-          this.home_contry.paginator = this.paginator;
-
-          this.host_contry = new MatTableDataSource(host);
-          this.host_contry.paginator = this.paginator;
-
-        }
-      }))*/
+      this.setAssingDepenAndPets();
 
     });
 
@@ -1705,9 +1775,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          //this.animateToTop();
           this.getRelocationImmigrationServices_("imm");
-          this.ngOnInit();
         });
 
       }
@@ -1721,9 +1789,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          //this.animateToTop();
           this.getRelocationImmigrationServices_("imm");
-          this.ngOnInit();
         });
 
       }
@@ -1731,7 +1797,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   animateToTop() {
-    // e.preventDefault();
     var scrollToTop = window.setInterval(function () {
       var pos = window.pageYOffset;
       if (pos > 0) {
@@ -1743,13 +1808,13 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   doSomethingOnScroll(e) {
-    console.log("POSICION DEL SCROLL: ", e);
   }
 
-  public addordeleteservices(event, id, id_siplier) {
+  public addordeleteservices(event, id, id_siplier, service) {
     let datos = [{
       "immigrationSupplierPartnerId": id_siplier,
-      "serviceOrderServicesId": id
+      "serviceOrderServicesId": id,
+      "service": service
     }]
 
     if (event.checked) {
@@ -1770,27 +1835,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     }
   }
 
-  public addordeleteservicesRelocation(event, id, id_siplier) {
-    let datos = [{
-      "relocationSupplierPartnerId": id_siplier,
-      "serviceOrderServicesId": id
-    }]
-
-    if (event.checked) {
-
-      this._services.service_general_post_with_url("Relocation/AddAssignedRelocation", datos).subscribe((data => {
-        if (data.success) {
-          this.ngOnInit();
-          document.getElementById('services_supplier_relocation').scrollIntoView();
-        }
-      }))
-    } else {
-      this._services.service_general_delete_with_url("Immigration/DeleteAssignedImmigration?id=" + id).subscribe((data => {
-        this.ngOnInit();
-        document.getElementById('services_supplier_relocation').scrollIntoView();
-      }))
-    }
-  }
 
   public showEscalateDialog(): void {
 
@@ -1800,7 +1844,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         id_user: this.USERDATA.id,
         user_log_name: `${this.USERDATA.name} ${this.USERDATA.lastName}`,
         wos: this.SRDATA.workOrders
-      }, width: "95%"
+      }, width: "100%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1809,9 +1853,8 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   }
 
-  PreDecision(type, id) {
+  open_standalone_modal(type, id) {
     type.partnerId = this.edit_sr_model.partnerId;
-    console.log(type);
     let moda;
 
     switch (type.dialog_type) {
@@ -1825,7 +1868,9 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         moda = AreaOrientationComponent;
         break;
       case 21:
-        moda = HomeFindingComponent;
+       // moda = HomeFindingComponent;
+          //this._router.navigate(['homefindingfull/' + type.service[0].id ], { queryParams: { 'param1': 123, 'param2': 321 } });
+          this._router.navigate(['homefindingfull/' + type.service[0].id ]);
         break;
       case 14:
         moda = SettlingInComponent;
@@ -1873,17 +1918,20 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         break;
     }
 
-    if (type.dialog_type != 17) {
+    if (type.dialog_type != 17  && type.dialog_type != 21  ) {
       type.home_host = id;
       const dialogRef = this._dialog.open(moda, {
         data: {
           sr: this.SO_ID,
           data: type
-        }, width: "95%"
+        }, 
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        height: '90%',
+        width: '95%',
       });
 
       dialogRef.afterClosed().subscribe((so_added: any) => {
-        //this.animateToTop();
         this.ngOnInit();
         this.getRelocationServices();
       });
@@ -1891,8 +1939,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   }
 
   getRelocationImmigrationServices_(which_tab) {
-    console.log(which_tab);
-    console.log("ENTRA A ACTUALIZAR");
+    this.__loader__.showLoader();
     var tipo = 0;
     if (which_tab == "imm") {
       tipo = 1;
@@ -1900,15 +1947,12 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       tipo = 2;
     }
     if (tipo > 0) {
-      this._services.service_general_get("ServiceRecord/GetServices/" + this.SO_ID + "?type=" + tipo).subscribe((data => {
-        console.log("Entra a consultar las WO: ", data);
+      this._services.service_general_get("ServiceRecord/GetServices/" + this.SO_ID + "?type=" + tipo+"&userId="+this.USERDATA.id).subscribe((data => {
+      this.__loader__.hideLoader();
+
         if (data.success) {
-          //this.home_contry = new MatTableDataSource(data.map.value.home);
           this.home_contry.data = data.map.value.home;
-          console.log('Valie ===> ', data.map.value.home);
-          //this.host_contry = new MatTableDataSource(data.map.value.host);
           this.host_contry.data = data.map.value.host;
-          console.log(this.host_contry);
         }
       }))
     }
@@ -1982,7 +2026,6 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   public assign_dependents: DependentInformationsModel[] = [];
   public addDepartament(): void {
-    //this.assign_dependents.push(new DependentInformationsModel());
     this.assign_dependents.push({
       id: 0,
       sex: undefined,
@@ -2002,7 +2045,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
       currentGrade: '',
       languageDependentInformations: []
     })
-    console.log(this.assign_dependents);
+    //console.log(this.assign_dependents);
   }
 
   public removeDepartament(index: number): void {
@@ -2082,8 +2125,10 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
     const dialogRef = this._dialog.open(DialogRequestInformation, {
       data: {
-        sr_id: this.edit_sr_model.id
-      }, width: '95%'
+        sr_id: this.edit_sr_model.id,
+        immi: this.wos_imm_,
+        relo: this.wos_relo_
+      }, width: '80%'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2126,7 +2171,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     }
 
     function followRequest(): void {
-      //debugger
+      ////////debugger
       root._services.service_general_post_with_url('Follow/CreateFollow', params)
         .subscribe((response: any) => {
 
@@ -2215,12 +2260,12 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     if ( this.edit_sr_model.assigneeInformations[0].mobilePhone != '' &&this.prefix) {
       this.edit_sr_model.assigneeInformations[0].mobilePhone = `${this.prefix}+${this.edit_sr_model.assigneeInformations[0].mobilePhone}`
     }
-    console.log('numero con prefix', this.edit_sr_model.assigneeInformations[0].mobilePhone);
+    //console.log('numero con prefix', this.edit_sr_model.assigneeInformations[0].mobilePhone);
     // concatenar prefix de work phone
     if ( this.edit_sr_model.assigneeInformations[0].workPhone != '' && this.prefixWork) {
       this.edit_sr_model.assigneeInformations[0].workPhone = `${this.prefixWork}+${this.edit_sr_model.assigneeInformations[0].workPhone}`
     }
-    console.log('numero con prefix work phone', this.edit_sr_model.assigneeInformations[0].workPhone);
+    //console.log('numero con prefix work phone', this.edit_sr_model.assigneeInformations[0].workPhone);
 
     this.show_ass_depd_errors = true;
 
@@ -2238,47 +2283,38 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
     this.edit_sr_model.updatedDate = new Date();
 
     let date_in:any;
+
     this.edit_sr_model.assigneeInformations[0].dependentInformations.forEach((E:any) => {
       if(E.id==0){
-        console.log("entra nuevo");
+
         date_in = E.birth;
         const date_init = new Date(date_in.getFullYear(), date_in.getMonth(), date_in.getDate()),
           date_today = new Date();
-  
+
         let diff = (date_init.getTime() - date_today.getTime()) / 1000;
         diff /= (60 * 60 * 24);
-  
+
         E.age =  Math.abs(Math.round(diff / 365.25));
       }else{
-        console.log("entra edicion");
+
         date_in = new Date(E.birth);
         const date_init = new Date(date_in.getFullYear(), date_in.getMonth(), date_in.getDate()),
           date_today = new Date();
-  
+
         let diff = (date_init.getTime() - date_today.getTime()) / 1000;
         diff /= (60 * 60 * 24);
-  
+
         E.age =  Math.abs(Math.round(diff / 365.25));
       }
     });
 
-
-
-
-    console.log('SR Updated Sent [CPUpdateSent] Data ==> ', this.edit_sr_model);
-    console.log('SR Updated Sent [CPUpdateSent] Data ==> ', JSON.stringify(this.edit_sr_model));
-    console.log('validations => ', validations);
-    // if (
-    //   validations.general_form &&
-    //   validations.assing_form &&
-    //   validations.assign_depen &&
-    //   validations.assing_pets)
     if (
       validations.general_form &&
       validations.assing_form) {
 
       this.setAssingDepenAndPets();
 
+      this.getNationalityData();
       this.getLanguagesData();
       this.getLanguagesDependentsData();
 
@@ -2323,6 +2359,34 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
           console.error('Error (ServiceRecord/Update) => ', error);
           this.__loader__.hideLoader();
+
+        });
+
+    }
+
+  }
+
+  public validateEmailServerAvailabilityDependent(email, index){
+    if (email != '') {
+
+      this._services.service_general_get(`ServiceRecord/ValidateEmail?email=${email}`)
+        .subscribe((response: any) => {
+
+          //console.log('Res => ', response);
+
+          if (response.result) {
+
+            this.showGeneralMessageDialog(
+              'Email already exists',
+              'The email already exists, perhaps it has been used in any dependent.'
+            );
+            this.assign_dependents[index].email = ""
+
+          }
+
+        }, (error: any) => {
+
+          console.error('Error (User/VeryfyEmail) => ', error);
 
         });
 
@@ -2406,7 +2470,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
         this.edit_sr_model.immigrationCoodinators = this.hold_imm_coor_data;
      }
     }
-    
+
     if(this.hold_rel_coor_data.length > 0){
       if (this.hold_rel_coor_data[0].coordinatorId != 0 && this.hold_rel_coor_data[0].coordinatorTypeId != 0) {
         this.edit_sr_model.relocationCoordinators = this.hold_rel_coor_data;
@@ -2489,7 +2553,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
     pets.forEach((pet: any) => {
 
-      console.log('Pet ===> ', pet);
+      //console.log('Pet ===> ', pet);
 
       if (pet.age == undefined) result = false;
       if (pet.name == undefined) result = false;
@@ -2521,79 +2585,17 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   public show_immigration_errors: boolean = false;
   public initImmigrationProcess(): void {
-
-    const main_validations: any = {
-      val_global: this.immFormGlobal(),
-      val_coordinator: this.immigrationFormComplete(),
-      val_passport: this.immPassportValidator(),
-      val_previescoun: this.immPreviusCountryValidator(),
-      val_assInfo: this.immAssInformationValidator(),
-      val_languages: this.immLanguagesValidator(),
-      val_dependents: this.immDependentsValidator()
-    }
-
-
-    if (main_validations.val_dependents == false) {
-      this._snackBar.open('Immigrations Profile Dependents Immigration Information incomplete', 'Close', {
-        duration: 6000,
-        horizontalPosition: "end",
-        verticalPosition: "top",
-        panelClass: ['my-snack-bar']
-      });
-    }
-
-    if (main_validations.val_assInfo == false) {
-      this._snackBar.open('Immigrations Profile Assignment Information incomplete', 'Close', {
-        duration: 6000,
-        horizontalPosition: "end",
-        verticalPosition: "top",
-        panelClass: ['my-snack-bar']
-      });
-    }
-
-    if (main_validations.val_languages == false) {
-      this._snackBar.open('Immigrations Profile Language Proficiency Information incomplete', 'Close', {
-        duration: 6000,
-        horizontalPosition: "end",
-        verticalPosition: "top",
-        panelClass: ['my-snack-bar']
-      });
-    }
-
-    if (main_validations.val_previescoun == false) {
-      this._snackBar.open('Immigrations Profile Previous Host Country Information incomplete', 'Close', {
-        duration: 6000,
-        horizontalPosition: "end",
-        verticalPosition: "top",
-        panelClass: ['my-snack-bar']
-      });
-    }
-
-    if (main_validations.val_passport == false) {
-      this._snackBar.open('Immigrations Profile Passport Information incomplete', 'Close', {
-        duration: 6000,
-        horizontalPosition: "end",
-        verticalPosition: "top",
-        panelClass: ['my-snack-bar']
-      });
-    }
-
-    this.show_immigration_errors = true;
-
-    debugger;
-    if (
-      main_validations.val_coordinator &&
-      main_validations.val_passport &&
-      main_validations.val_previescoun &&
-      main_validations.val_assInfo &&
-      main_validations.val_languages &&
-      main_validations.val_global) {
-
+      ////////debugger
+      ////console.log(this.immgration_profile.highestLevelEducationalId);
       this.immgration_profile.educationalBackgrounds = this.immgration_education;
       this.immgration_profile.lenguageProficiencies = this.immgration_languages;
       this.immgration_profile.dependentImmigrationInfos = this.immgration_dependent;
+      if(this.immgration_profile.highestLevelEducationalId == 0)
+      {
+        this.immgration_profile.highestLevelEducationalId = 1;
+      }
 
-      console.log('[CP1105] Imm beofre send any mode =>', this.immgration_profile);
+      //console.log('[CP1105] Imm beofre send any mode =>', this.immgration_profile);
 
       if (this.is_creating_immigration) {
 
@@ -2605,7 +2607,76 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
       }
 
-    }
+    // const main_validations: any = {
+    //   val_global: this.immFormGlobal(),
+    //   val_coordinator: this.immigrationFormComplete(),
+    //   val_passport: this.immPassportValidator(),
+    //   val_previescoun: this.immPreviusCountryValidator(),
+    //   val_assInfo: this.immAssInformationValidator(),
+    //   val_languages: this.immLanguagesValidator(),
+    //   val_dependents: this.immDependentsValidator()
+    // }
+
+
+    // if (main_validations.val_dependents == false) {
+    //   this._snackBar.open('Immigrations Profile Dependents Immigration Information incomplete', 'Close', {
+    //     duration: 6000,
+    //     horizontalPosition: "end",
+    //     verticalPosition: "top",
+    //     panelClass: ['my-snack-bar']
+    //   });
+    // }
+
+    // if (main_validations.val_assInfo == false) {
+    //   this._snackBar.open('Immigrations Profile Assignment Information incomplete', 'Close', {
+    //     duration: 6000,
+    //     horizontalPosition: "end",
+    //     verticalPosition: "top",
+    //     panelClass: ['my-snack-bar']
+    //   });
+    // }
+
+    // if (main_validations.val_languages == false) {
+    //   this._snackBar.open('Immigrations Profile Language Proficiency Information incomplete', 'Close', {
+    //     duration: 6000,
+    //     horizontalPosition: "end",
+    //     verticalPosition: "top",
+    //     panelClass: ['my-snack-bar']
+    //   });
+    // }
+
+    // if (main_validations.val_previescoun == false) {
+    //   this._snackBar.open('Immigrations Profile Previous Host Country Information incomplete', 'Close', {
+    //     duration: 6000,
+    //     horizontalPosition: "end",
+    //     verticalPosition: "top",
+    //     panelClass: ['my-snack-bar']
+    //   });
+    // }
+
+    // if (main_validations.val_passport == false) {
+    //   this._snackBar.open('Immigrations Profile Passport Information incomplete', 'Close', {
+    //     duration: 6000,
+    //     horizontalPosition: "end",
+    //     verticalPosition: "top",
+    //     panelClass: ['my-snack-bar']
+    //   });
+    // }
+
+    // this.show_immigration_errors = true;
+
+    // ////////debugger
+    // if (
+    //   main_validations.val_coordinator &&
+    //   main_validations.val_passport &&
+    //   main_validations.val_previescoun &&
+    //   main_validations.val_assInfo &&
+    //   main_validations.val_languages &&
+    //   main_validations.val_global) {
+
+
+
+    // }
 
   }
 
@@ -2631,14 +2702,13 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
 
   }
 
-  public show_imm_prof: boolean = false;
-  public requestImmigrationProfile(): void {
+  // public requestImmigrationProfile(): void {
 
-    !this.show_imm_prof ?
-      this.show_imm_prof = true :
-      this.show_imm_prof = false;
+  //   !this.show_imm_prof ?
+  //     this.show_imm_prof = true :
+  //     this.show_imm_prof = false;
 
-  }
+  // }
 
   public form_imm_cord: any = {
     no_coor: false,
@@ -2649,7 +2719,7 @@ import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-cro
   public immigrationFormComplete(): boolean {
 
     let result: boolean = true;
-debugger;
+////////debugger
     const imm_coor_prof: any = this.edit_sr_model.immigrationCoodinators[0];
 
     imm_coor_prof.coordinatorTypeId == 0 || imm_coor_prof.coordinatorTypeId == null ?
@@ -2844,7 +2914,7 @@ debugger;
     this._services.service_general_get(`ImmigrationProfile/GetImmigrationProfile?sr=${id_sr}`)
       .subscribe((response: any) => {
 
-        console.log('Res GetImmigrationProfile (1405) => ', response);
+        //console.log('Res GetImmigrationProfile (1405) => ', response);
 
         if (response.success) {
 
@@ -2895,10 +2965,15 @@ debugger;
 
   //NUEVO APPOINTMENT//
   public addApointment(id): void {
-    console.log("Entra a agregar a appointment");
+    //console.log("Entra a agregar a appointment");
+    this.DetectaExperienceTeam();
+    console.log(this.Team_ImmigrationCoordinators);
+    console.log(this.Team_ImmigrationSupplier);
+    console.log(this.Team_RelocationCoordinators);
+    console.log(this.Team_RelocationSupplier);
     if( (this.Team_ImmigrationCoordinators > 0 && this.Team_ImmigrationSupplier > 0) || (this.Team_RelocationCoordinators > 0 && this.Team_RelocationSupplier > 0) ){
       const dialogRef = this._dialog.open(DialogAddAppointmentComponent, {
-        width: '60%',
+        width: '70%',
         data: {
           sr: this.SO_ID,
           appointmentId: id,
@@ -2920,22 +2995,24 @@ debugger;
     }
   }
   //CONSULTAR APPOINTMENT//
-  public addApointmentConsult(data, i): void {
+  public addApointmentConsult(data, i, isVisible): void {
     if (i == 0) {
       i = i + 1;
     } else {
       i = i + 1;
     }
-    console.log("Data del appointment a ver:  ", data);
+    //console.log("Data del appointment a ver:  ", isVisible);
     const dialogRef = this._dialog.open(DialogAddAppointmentComponent, {
-      width: '60%',
+      width: '70%',
       data: {
         sr: this.SO_ID,
         appointmentId: data.id,
         supplier: data.supplier,
         workOrderId: data.workOrderId,
         index: i,
+        isVisible: isVisible,
         status: data.status,
+        commentCancel: data.commentCancel,
         ended: data.ended,
         start:data.start,
         report:data.report
@@ -2957,7 +3034,7 @@ debugger;
     this._services.service_general_post_with_url('ImmigrationProfile/CreateImmigrationProfile', this.immgration_profile)
       .subscribe((response: any) => {
 
-        console.log('[CP1535] Update New Res (CreateImmigrationProfile) ==> ', response);
+        //console.log('[CP1535] Update New Res (CreateImmigrationProfile) ==> ', response);
 
         if (response.success) {
 
@@ -2992,7 +3069,7 @@ debugger;
     this._services.service_general_put(`ImmigrationProfile/UpdateImmigrationProfileProvisional`, this.immgration_profile)
       .subscribe((response: any) => {
 
-        console.log('[CP1570] Update IP (UpdateImmigrationProfileProvisional) ==> ', response);
+        //console.log('[CP1570] Update IP (UpdateImmigrationProfileProvisional) ==> ', response);
 
         if (response.success) {
 
@@ -3029,114 +3106,6 @@ debugger;
     months_between <= 6 ? this.passport_expiring = true : this.passport_expiring = false;
 
   }
-
-  /*public getImmigrationCardsData(): void {
-
-    const imm_language_card: any = document.getElementsByClassName('imm-language-card'),
-      imm_school_card: any = document.getElementsByClassName('imm-school-card'),
-      imm_dependent_card: any = document.getElementsByClassName('imm-dependent-card'),
-      imm_id: number = this.immgration_profile.id;
-
-    this.immgration_profile.lenguageProficiencies = [];
-    this.immgration_profile.educationalBackgrounds = [];
-    this.immgration_profile.dependentImmigrationInfos = [];
-
-    for (let card = 0; card < imm_language_card.length; card += 1) {
-
-      const get_card: any = imm_language_card[card],
-        get_selects: any = get_card.querySelectorAll('select'),
-        get_inpust: any = get_card.querySelectorAll('input'),
-        new_language = new LenguageProficiencies();
-
-      getValueFromSelects(new_language, get_selects, 'language');
-      getValueFromInputs(new_language, get_inpust, 'language');
-
-      this.immgration_profile.lenguageProficiencies.push(new_language);
-
-    }
-
-    for (let card = 0; card < imm_school_card.length; card += 1) {
-
-      const get_card: any = imm_school_card[card],
-        get_inputs: any = get_card.querySelectorAll('input'),
-        new_school: any = new EducationalBackgrounds();
-
-      getValueFromInputs(new_school, get_inputs, 'school');
-
-      this.immgration_profile.educationalBackgrounds.push(new_school);
-
-    }
-
-    for (let card = 0; card < imm_dependent_card.length; card += 1) {
-
-      const get_card: any = imm_dependent_card[card],
-        get_selects: any = get_card.querySelectorAll('select'),
-        get_inputs: any = get_card.querySelectorAll('input'),
-        new_dependent: any = new DependentImmigrationInfos();
-
-      getValueFromInputs(new_dependent, get_inputs, 'dependent');
-      getValueFromSelects(new_dependent, get_selects, 'dependent');
-
-      this.immgration_profile.dependentImmigrationInfos.push(new_dependent);
-
-    }
-
-    function getValueFromInputs(object, inputs, section): void {
-
-      switch (section) {
-
-        case 'language':
-          object.comments = inputs[0].value;
-          object.id = Number(inputs[1].value);
-          object.immigrationProfileId = imm_id;
-          break;
-
-        case 'school':
-          object.institution = inputs[0].value;
-          object.fieldStudy = inputs[1].value;
-          object.startDate = inputs[2].value;
-          object.endDate = inputs[3].value;
-          object.degree = inputs[4].value;
-          object.listProfessionalLicenses = inputs[5].value;
-          object.id = Number(inputs[6].value);
-          object.immigrationProfileId = imm_id;
-          break;
-
-        case 'dependent':
-          object.name = inputs[0].value;
-          object.passportNumber = inputs[1].value;
-          object.issue = inputs[2].value;
-          object.expiration = inputs[3].value;
-          object.issuingAuthority = inputs[4].value;
-          object.placeIssue = inputs[5].value;
-          object.entryDateHostCountry = inputs[6].value;
-          object.specificAttentionPoints = inputs[7].value;
-          object.id = Number(inputs[8].value);
-          object.immigrationProfileId = imm_id;
-          break;
-
-      }
-
-    }
-
-    function getValueFromSelects(object, selects, section): void {
-
-      switch (section) {
-
-        case 'language':
-          object.languageId = selects[0].value;
-          object.proficiencyId = selects[1].value;
-          break;
-
-        case 'dependent':
-          object.relationshipId = selects[0].value;
-          break;
-
-      }
-
-    }
-
-  }*/
 
   public mf_validator: any = {
     no_name: false,
@@ -3176,6 +3145,73 @@ debugger;
     no_adur: false,
     no_atim: false
   }
+
+  ///home country
+
+  public nso_ainfo_fields: any = {
+    no_phot: false,
+    no_name: false,
+    no_emai: false,
+    no_emai_val: false,
+  }
+
+  public home_city_client_able: boolean = false;
+  public home_city_host_able: boolean = false;
+  //public city_host_catalogue: any = [];
+  public city_catalogue: any = [];
+  public async ableInputsFromAssignmentSection(id_country: string, section: string): Promise < void > {
+
+    const extra_param: string = `?state=${ id_country }`;
+
+    switch (section) {
+
+      case 'client':
+        if (!this.home_city_client_able) this.home_city_client_able = true;
+        this.city_catalogue = await this._services.getCatalogueFrom('GetCity', extra_param);
+        break;
+
+      case 'host':
+        if (!this.home_city_host_able) this.home_city_host_able = true;
+        this.city_host_catalogue = await this._services.getCatalogueFrom('GetCity', extra_param);
+        break;
+
+    }
+
+  }
+
+
+  /// nuevo home city
+
+  homeCitySelect: number = 0;
+  cleanSup(){
+
+  }
+
+  Homecitychange(){
+    if(this.homeCitySelect != 0){
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Change confirmation",
+          body: "If you change this option, partner providers will be eliminated. Do you want to continue?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        //console.log(result);
+        if (result) {
+          this.cleanSup();
+        }else{
+          this.edit_sr_model.assigneeInformations[0].homeCityId = this.homeCitySelect;
+        }
+      });
+    }else{
+      this.homeCitySelect = this.edit_sr_model.assigneeInformations[0].homeCityId;
+    }
+  }
+
+
+
   public assigneeFormValidation(): boolean {
 
     let result: boolean = true;
@@ -3187,8 +3223,19 @@ debugger;
     item_selected.assigneeName == '' ?
       this.fass_validator.no_name = true : this.fass_validator.no_name = false;
 
-    //item_selected.birth == '' || item_selected.birth == null ?
-    //  this.fass_validator.no_bdat = true : this.fass_validator.no_bdat = false;
+    item_selected.homeCountryId == null ?
+      this.nso_ainfo_fields.no_home = true :
+      this.nso_ainfo_fields.no_home = false;
+
+    this.fass_validator.no_home = this.nso_ainfo_fields.no_home;
+
+
+    //city home
+
+    item_selected.homeCityId == null ?
+      this.nso_ainfo_fields.no_city = true :
+      this.nso_ainfo_fields.no_city = false;
+      this.fass_validator.no_city = this.nso_ainfo_fields.no_city;
 
     item_selected.email == '' ?
       this.fass_validator.no_emai = true : this.fass_validator.no_emai = false;
@@ -3204,18 +3251,6 @@ debugger;
 
     item_selected.workPhone == '' ?
       this.fass_validator.no_wpho = true : this.fass_validator.no_wpho = false;
-
-    //item_selected.initialArrival == '' || item_selected.initialArrival == null ?
-    //  this.fass_validator.no_idat = true : this.fass_validator.no_idat = false;
-
-    //item_selected.finalMove == '' || item_selected.finalMove == null ?
-    //  this.fass_validator.no_fdat = true : this.fass_validator.no_fdat = false;
-
-    //item_selected.currentPosition == '' ?
-    //  this.fass_validator.no_cpos = true : this.fass_validator.no_cpos = false;
-
-    //item_selected.newPosition == '' ?
-    //  this.fass_validator.no_npos = true : this.fass_validator.no_npos = false;
 
     item_selected.assignmentDuration == "" ?
       this.fass_validator.no_adur = true : this.fass_validator.no_adur = false;
@@ -3258,6 +3293,27 @@ debugger;
     }
 
     return result;
+
+  }
+
+  public getNationalityData(): void {
+////debugger
+    let nationality_selected: any[] = this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations,
+      hold_nationality: NationalitiesModel[] = [];
+
+      nationality_selected.forEach((nationality: any) => {
+
+      const nationality_selected: NationalitiesModel = new NationalitiesModel();
+
+      nationality_selected.assigneeInformationId = this.edit_sr_model.assigneeInformations[0].id;
+      nationality_selected.nationalityId = nationality;
+
+      hold_nationality.push(nationality_selected);
+
+    });
+
+    this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations = [];
+    this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations = hold_nationality;
 
   }
 
@@ -3327,7 +3383,7 @@ debugger;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //console.log('The dialog was closed');
+      ////console.log('The dialog was closed');
     });
 
   }
@@ -3335,8 +3391,8 @@ debugger;
 
   public showDialogById(dialog_id: number, obj_props: any = null): void {
     obj_props.partnerId = this.edit_sr_model.partnerId;
-    console.log('Data Service sent ====> ', obj_props);
-    console.log('Id Service ===> ', dialog_id);
+    //console.log('Data Service sent ====> ', obj_props);
+    //console.log('Id Service ===> ', dialog_id);
     switch (dialog_id) {
 
       case 7:
@@ -3346,7 +3402,7 @@ debugger;
             app_id: this.edit_sr_model.id,
             sr_id: obj_props.service[0].id,
             data: obj_props
-          }, width: "95%"
+          }, width: "100%"
         });
 
         corporate_dialog.afterClosed().subscribe((so_added: any) => {
@@ -3365,7 +3421,7 @@ debugger;
             //sr_hcity: this.Host_Home_country.host_city_name, hostCity_name,
             sr_hcity: this.Host_Home_country.hostCity_name,
             data: obj_props
-          }, width: "95%"
+          }, width: "100%"
         });
 
         renewal_dialog.afterClosed().subscribe((so_added: any) => {
@@ -3384,7 +3440,7 @@ debugger;
             //sr_hcity: this.Host_Home_country.host_city_name,
             sr_hcity: this.Host_Home_country.hostCity_name,
             data: obj_props
-          }, width: "95%"
+          }, width: "100%"
         });
         notificacion_dialog.afterClosed().subscribe((so_added: any) => {
           this.getRelocationImmigrationServices_('imm');
@@ -3400,7 +3456,7 @@ debugger;
             sr_hcountry: this.Host_Home_country.host_country_name,
             sr_hcity: this.Host_Home_country.host_city_name,
             data: obj_props
-          }, width: "95%"
+          }, width: "100%"
         });
 
         legal_dialog.afterClosed().subscribe((so_added: any) => {
@@ -3417,7 +3473,7 @@ debugger;
     service_in.home_host = id;
     service_in.partnerId = this.edit_sr_model.partnerId;
 
-    console.log('Service selected in ESR ======> ', service_in);
+    //console.log('Service selected in ESR ======> ', service_in);
 
     switch (service_in.categoryId) {
 
@@ -3428,7 +3484,7 @@ debugger;
             app_id: this.edit_sr_model.id,
             sr_hcountry: this.Host_Home_country.host_country_name,
             sr_hcity: this.Host_Home_country.host_city_name
-          }, width: "95%"
+          }, width: "100%"
         });
 
         departure_dialog.afterClosed().subscribe((so_added: any) => {
@@ -3446,21 +3502,13 @@ debugger;
             sr_hcountry: this.Host_Home_country.host_country_name,
             sr_hcity: this.Host_Home_country.host_city_name,
             data: service_in
-          }, width: "95%"
+          }, width: "100%"
         });
         legal_dialog.afterClosed().subscribe((so_added: any) => {
           this.getRelocationServices();
           this.ngOnInit();
         });
         break;
-      /*
-         case 20:
-           const airport_dialog = this._dialog.open(DialogAirportTransportationComponent, {
-             data:
-             width: "95%"dataCSuplier
-           });
-           break;
-           */
 
     }
 
@@ -3482,11 +3530,11 @@ debugger;
 
   public show_dependent_section: boolean = false;
   public toggleDependentsSection(e?:any): void {
-    console.log(e)
+    //console.log(e)
     !this.show_dependent_section ?
       this.show_dependent_section = true :
       this.show_dependent_section = false;
-    console.log(this.show_dependent_section);
+    //console.log(this.show_dependent_section);
     if (this.assign_dependents.length == 0) {
       //this.assign_dependents.push(new DependentInformationsModel());
     }
@@ -3505,13 +3553,13 @@ debugger;
   homeRel:any;
   hostRel:any;
   public async showTabSelected(which_tab: string, event_data: any) {
-
-    console.log('Tab selected ===> ', which_tab);
+//////debugger
+    //console.log('Tab selected ===> ', which_tab);
     //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi
     if (which_tab == 'imm' && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos de immi');
+        //console.log('consultant con permisos de immi');
       }
       else{
         return
@@ -3519,8 +3567,10 @@ debugger;
     }
     // relo
     if (which_tab == 'rel' && this.__userlog__.role.id == 3) {
+      this.getRelocationServices();
       if ( this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos relocation');
+        this.getRelocationServices();
+        //console.log('consultant con permisos relocation');
       }
       else {
         return
@@ -3541,7 +3591,7 @@ debugger;
           if(element.serviceLineId == 1 )
           {
             immi = immi + 1;
-            console.log('si hay wo immi');
+            //console.log('si hay wo immi');
           }
         }
       }
@@ -3580,7 +3630,7 @@ debugger;
           if(element.serviceLineId == 2 )
           {
             relo = relo + 1;
-            console.log('si hay wo relo');
+            //console.log('si hay wo relo');
           }
         }
       }
@@ -3619,15 +3669,15 @@ debugger;
     if (which_tab == 'com') {
 
       // immi 1
-      if (this.__userlog__.role.id == 3 && this.__userlog__.profileUsers[0].supplierType == 3) {
+      if (this.__userlog__.profileUsers[0].immigration) {
         this.calls_serviceline = 1;
-        console.log('cummunication sl de consultor immi');
+        //console.log('cummunication sl de consultor immi');
         this.typeUser= 1;
         this.isImmi = true;
       }
       // relo 2
-      else if (this.__userlog__.role.id == 3 && this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('cummunication sl de consultor relo');
+      else if (this.__userlog__.profileUsers[0].relocation) {
+        //console.log('cummunication sl de consultor relo');
         this.calls_serviceline = 2;
         this.typeUser = 2;
         this.isRel = true;
@@ -3638,14 +3688,8 @@ debugger;
         this.isImmi = true;
       }
 
-      await this.getCommentsHistory();
+      //await this.getCommentsHistory();
       await this.initChatBehavior(this.calls_serviceline);
-      await this.initCallsBehavior(this.calls_serviceline);
-      //this.initEmailsBehavior();
-      await this.initTasksBehavior(this.calls_serviceline);
-      await this.initEscalationBehavoir();
-      await this.initAssFeedbackBehavior();
-      await this.initMapitBehavior();
       await this.getAppointment();
       //this.getEmail();
 
@@ -3666,16 +3710,17 @@ debugger;
       tipo = 2;
     }
     if (tipo > 0) {
-      this._services.service_general_get("ServiceRecord/GetServices/" + this.SO_ID + "?type=" + tipo).subscribe((data => {
-        // console.log("Entra a consultar las WO: ", data);
+      this._services.service_general_get("ServiceRecord/GetServices/" + this.SO_ID + "?type=" + tipo+"&userId="+this.USERDATA.id).subscribe((data => {
+        // //console.log("Entra a consultar las WO: ", data);
         if (data.success) {
-          console.log('data WO', data);
+          //////debugger
+          //console.log('data WO', data);
           // si no hay work order no acceder a la pestaña immi o relo
             this.homeImm =  data.map.value.home.length;
             this.hostImm =  data.map.value.host.length;
             this.home_contry = new MatTableDataSource(data.map.value.home);
             //this.home_contry.paginator = this.paginator;
-            console.log('Valie ===> ', data.map.value.home);
+            //console.log('Valie ===> ', data.map.value.home);
             this.host_contry = new MatTableDataSource(data.map.value.host);
             //this.host_contry.paginator = this.paginator;
 
@@ -3685,43 +3730,6 @@ debugger;
           this.getAppointment();
         }
       }))
-
-      /*this._services.service_general_get('HousingSpecification/GetHousingSpecitifcationByServiceRecord?sr=' + this.SO_ID).subscribe(r => {
-        if (r.success) {
-          this.HousingSpecification = r.result;
-          console.log(this.HousingSpecification);
-          if (this.HousingSpecification != null) {
-            for (let i = 0; i < this.caAmenity.length; i++) {
-              for (let j = 0; j < this.HousingSpecification.relHousingAmenities.length; j++) {
-                const element = this.HousingSpecification.relHousingAmenities[j];
-                if (element.amenitieId == this.caAmenity[i].id) {
-                  this.caAmenity[i].check = true;
-                }
-              }
-            }
-
-            console.log(this.caAmenity);
-          } else {
-            this.HousingSpecification = {
-              "id": 0,
-              "serviceRecordId": this.SO_ID,
-              "areaInterest": "",
-              "propertyTypeId": 0,
-              "bedroom": 0,
-              "bathroom": 0,
-              "sizeId": 0,
-              "metricId": 0,
-              "desiredCommuteTime": 0,
-              "budget": 0,
-              "currencyId": 0,
-              "contractTypeId": 0,
-              "intendedStartDate": "",
-              "additionalComments": "",
-              "relHousingAmenities": []
-            }
-          }
-        }
-      })*/
 
     }
     if (which_tab == 'imm' || which_tab == 'rel') {
@@ -3765,7 +3773,7 @@ debugger;
   public get_request() {
     this.__loader__.showLoader();
     this._services.service_general_get('RequestPayment/GetFinance?sr=' + this.SO_ID).subscribe((response: any) => {
-      console.log(response);
+      //console.log(response);
       if (response.success) {
         this.dataSourceTHIRD = new MatTableDataSource(response.result.value);
         this.dataSourceTHIRD.paginator = this.third;
@@ -3781,7 +3789,7 @@ debugger;
   public get_requestSupplier() {
     this.__loader__.showLoader();
     this._services.service_general_get('RequestInvoice/GetSupplierPartnerInvoices/' + this.SO_ID).subscribe((response: any) => {
-      console.log(response);
+      //console.log(response);
       if (response.success) {
         this.dataSourceSP = new MatTableDataSource(response.result.value);
         this.dataSourceSP.paginator = this.supplier_;
@@ -3797,7 +3805,7 @@ debugger;
   getInvoicesService() {
     this.__loader__.showLoader();
     this._services.service_general_get('Invoice/Finance/ServiceInvoices/' + this.SO_ID).subscribe((response: any) => {
-      console.log(response);
+      //console.log(response);
       if (response.success) {
         this.dataSourceIS = new MatTableDataSource(response.result.value);
         this.dataSourceIS.paginator = this.supplierSI_;
@@ -3811,7 +3819,7 @@ debugger;
   }
 
   searchData() {
-    console.log('ENTRA A SEARCH DATA');
+    //console.log('ENTRA A SEARCH DATA');
     let service_record_params_selected: string = '';;
     let params = '';
     for (let item in this.dataIS) {
@@ -3820,16 +3828,16 @@ debugger;
         params = service_record_params_selected.substring(0, service_record_params_selected.length - 1);
       }
     }
-    console.log("PARAMETROS DE BUSQUEDA: ", params)
+    //console.log("PARAMETROS DE BUSQUEDA: ", params)
     this.consultaInformacionPorFiltro(params);
   }
 
   consultaInformacionPorFiltro(params: string = '') {
     this.__loader__.showLoader();
     const params_in: string = params == '' ? '' : `?${params}`;
-    console.log(params_in);
+    //console.log(params_in);
     this._services.service_general_get('Invoice/Finance/ServiceInvoices/' + this.SO_ID + params_in).subscribe((response: any) => {
-      console.log(response);
+      //console.log(response);
       if (response.success) {
         this.dataSourceIS = new MatTableDataSource(response.result.value);
         this.dataSourceIS.paginator = this.supplierSI_;
@@ -3841,8 +3849,6 @@ debugger;
       this.__loader__.hideLoader();
     });
   }
-
-
 
 
   public table_housing_cols: string[] = ['c_1', 'c_2', 'c_3', 'c_4', 'c_5', 'c_6', 'c_7', 'c_8', 'c_9'];
@@ -3876,10 +3882,10 @@ debugger;
 
   public showHSDialogFromHSTable(item_selected: any): void {
 
-    console.log('Mostrar el dialog con el elemento');
-    console.log('seleccionado => ', item_selected);
+    //console.log('Mostrar el dialog con el elemento');
+    //console.log('seleccionado => ', item_selected);
     let sr = item_selected.numberServiceRecord.split('-');
-    console.log(sr);
+    //console.log(sr);
     let data_ = {
       numberWorkOrder: item_selected.numberWorkOrder,
       serviceID: item_selected.numberServiceRecord,
@@ -3891,11 +3897,11 @@ debugger;
     }
     const dialogRef = this._dialog.open(DialogHousingSpecificationsComponent, {
       data: data_,
-      width: "95%"
+      width: "100%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
       }
     })
@@ -3911,17 +3917,6 @@ debugger;
 
   }
 
-  /*
-   * Section: Library
-   * All specific functions when library tab has been clicked
-   * Func initLibraryBehavior: Begin an specific configuration once tab has been clicked
-   * Func requestLibraryData: Request Data to WS, each inside tab ask for diferent end point
-   * Func addNewDocumentToLibrary: Add new document to library (Open document modal)
-   * Func showDocumentDialogDetails: Show details from row selected (Open detail document modal)
-   * Func deleteDocumentLibrary: Elimina el documento seleccionado
-   * Func libraryShowAllDocuments: Show all documents of the line (Open modal all Docusments)
-   * Func libClickImmTab: Give an specific auto click to selected tab
-   */
   public initLibraryBehavior(): any {
 
     this.requestLibraryData();
@@ -3942,10 +3937,10 @@ debugger;
         // ImmigrationProfile/GetAssigneFamily?sr=
         this._services.service_general_get(`ImmigrationProfile/GetAssigneFamily?sr=${id_selected}`)
           .subscribe((response: any) => {
-            console.log('Library Res => ', response);
+            //console.log('Library Res => ', response);
             if (response.success) {
               this.library_ass_data = response.result.value;
-              console.log('library_ass_data Succ ==> ', this.library_ass_data.length);
+              //console.log('library_ass_data Succ ==> ', this.library_ass_data.length);
               if (this.library_ass_data.length == 0) this.library_ass_no_data = true;
             }
           }, (error: any) => {
@@ -3961,10 +3956,10 @@ debugger;
         this.__loader__.showLoader();
         this._services.service_general_get(`ImmigrationProfile/GetHistoryImmigrationLibrary${params}`)
           .subscribe((response: any) => {
-            console.log('Res new => ', response);
+            //console.log('Res new => ', response);
             if (response.success) {
               this.library_imre_data = response.result.value;
-              console.log('this.library_imre_data ===> ', this.library_imre_data);
+              //console.log('this.library_imre_data ===> ', this.library_imre_data);
             }
             this.__loader__.hideLoader();
           }, (error: any) => {
@@ -3984,16 +3979,12 @@ debugger;
 
   public library_filter: LibraryFilter = new LibraryFilter();
   public filteringLibraryData(): void {
-
-    console.log('library_filter ==> ', this.library_filter);
-    console.log('Termindar la integracion del filtro');
-
   }
 
   public addNewDocumentToLibrary(): void {
 
     const dialogRef = this._dialog.open(DialogDocumentsComponent, {
-      width: "95%",
+      width: "100%",
       data: {
         sr: this.edit_sr_model.id,
         spc: 'esr_lib',
@@ -4002,7 +3993,7 @@ debugger;
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      console.log('respuesta de documentos', result);
+      //console.log('respuesta de documentos', result);
 
       const new_document: LibraryDocumentModel = new LibraryDocumentModel();
 
@@ -4075,7 +4066,7 @@ debugger;
     }
 
     const dialogRef = this._dialog.open(DialogDocumentsView, {
-      width: "95%",
+      width: "100%",
       data: {
         sr_id: this.edit_sr_model.id,
         sr: this.edit_sr_model.id,
@@ -4150,12 +4141,12 @@ debugger;
   secRel: boolean = false;
   // TODO: evento al dar click en los tabs
   public showTabSelectedLibrary(section: string, event_data: any): void {
-    console.log(`section ${section} event data ${event_data}`);
+    //console.log(`section ${section} event data ${event_data}`);
     //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi
     if (section == 'imm' && this.__userlog__.role.id == 3) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
       }
       else{
         section = '';
@@ -4166,7 +4157,7 @@ debugger;
     // relo
     if (section == 'rel' && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
       }
       else {
         section = '';
@@ -4204,28 +4195,68 @@ debugger;
     }
   }
   //****************************************************************//
-  public data_directory:any = {};
+  public data_directory:any = {
+    serviceLine: null,
+    initialReportDate: null,
+    finalReportDate: null
+  };
   searchDataReport() {
     let service_record_params_selected: string = '';;
     let params = '';
-    for (let item in this.data_directory) {
-      if (this.data_directory[item] != '') {
-        service_record_params_selected += `${ item }=${ this.data_directory[item] }&`;
-        params = service_record_params_selected.substring(0, service_record_params_selected.length - 1);
+    //////debugger
+    this._services.service_general_get('ReportDay/GetTotalesActivityReports?sr=' + Number(this.SO_ID)).subscribe((res => {
+      //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
+      //console.log(res);
+      if (res.success) {
+        this.data_directory.totalTimeAuthorized = res.view.value.totalTime;
+        this.data_directory.timeRemaining = res.view.value.timeRemaining;
       }
+    }));
+
+    //console.log(this.data_directory.initialReportDate);
+    if(this.data_directory.serviceLine != null){
+      params += '&serviceLine='+ this.data_directory.serviceLine;
     }
-    console.log("PARAMETROS DE BUSQUEDA: ", params)
+    if(this.data_directory.initialReportDate != null){
+      //console.log("No entres");
+      params += '&initialReportDate='+ this.filterDate(this.data_directory.initialReportDate);
+    }
+    if(this.data_directory.finalReportDate != null){
+      params += '&finalReportDate='+ this.filterDate(this.data_directory.finalReportDate);
+    }
+    // if(this.data_directory.totalTimeAuthorized != null){
+    //   params += '&totalTimeAuthorized='+ this.data_directory.totalTimeAuthorized;
+    // }
+    // if(this.data_directory.timeRemaining != null){
+    //   params += '&timeRemaining='+ this.data_directory.timeRemaining
+    // }
+
+    //console.log("PARAMETROS DE BUSQUEDA: ", params)
     this._getReport_(params);
   }
 
+  public filterDate(date_in: any): string {
+
+    return `${date_in.getFullYear()}/${date_in.getMonth() + 1}/${date_in.getDate()}`;
+
+  }
+
   _getReport_(params) {
-    console.log("SO ID: ", this.SO_ID);
+    //console.log("SO ID: ", this.SO_ID);
     this._services.service_general_get('ReportDay/GetActivityReports?sr=' + Number(this.SO_ID) + '&' + params).subscribe((data => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       if (data.success) {
         console.log('DATA CONSULTA: REPORTES ', data);
+
+        let _data: any[] = [];
+
+        // data.view.forEach(element => {
+        //   element.services.forEach(service => {
+        //     if(service.tipo)
+        //   });
+        // });
         this.dataSourceReport = new MatTableDataSource(data.view);
-        console.log(this.dataSourceReport);
+        console.log("this.dataSourceReport",this.dataSourceReport);
         this.dataSourceReport.paginator = this.ActivityReports;
         //this.dataSourceReport.sort = this.sort;
       }
@@ -4234,29 +4265,57 @@ debugger;
 
   getReport() {
     this.data_directory = {};
-    console.log("SO ID: ", this.SO_ID);
+    let params = '';
+    this.SO_ID= this._routerParams.snapshot.params.id;
+    //console.log("SO ID: ", this.SO_ID);
+    this.__loader__.showLoader();
     this._services.service_general_get('ReportDay/GetActivityReports?sr=' + Number(this.SO_ID)).subscribe((data => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       if (data.success) {
         console.log('DATA CONSULTA: REPORTES ', data);
-        this.dataSourceReport = new MatTableDataSource(data.view);
-        console.log(this.dataSourceReport);
-        this.dataSourceReport.paginator = this.ActivityReports;
+        this.data_directory.serviceLine = 2
+        // this._getReport_(params += '&serviceLine=2')
+        this.searchDataReport();
+        // this.dataSourceReport = new MatTableDataSource(data.view);
+        // //console.log(this.dataSourceReport);
+        // this.dataSourceReport.paginator = this.ActivityReports;
         //this.dataSourceReport.sort = this.sort;
+        this.__loader__.hideLoader();
       }
     }));
+  }
+
+  downloadActivityReportXls(){
+    this._services.service_general_get('ReportDay/createExcelReportDay?id=' + this.SO_ID)
+    .subscribe((data => {
+      if (data.success) {
+        const linkSource =
+        'data:application/octet-stream;base64,' + data.message;
+        const downloadLink = document.createElement('a');
+        const fileName = 'reports_list.xlsx';
+
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+      }
+    }));
+  }
+
+  GetServicesByReport(element){
+    //console.log(element);
+    this.reportServices = element.services;
   }
 
   getSupplier() {
     let data;
     this._services.service_general_get('PropertyReport/GetSupplierPartner/'+this.SO_ID+'?supplier_type=' + this.ST + '&supplier=' + this.SU).subscribe((dat: any) => {
       if (dat.success) {
-        console.log('DATA CONSULTA: SUPPLIER', dat.result.value);
+        //console.log('DATA CONSULTA: SUPPLIER', dat.result.value);
         data = dat.result.value;
         this.dataSourceR = new MatTableDataSource(data);
         this.dataSourceR.paginator = this.SupplierPartnersRecord;
         this.dataSourceR.sort = this.firstTableSort;
-        console.log(this.dataSourceR);
+        //console.log(this.dataSourceR);
 
       }
     });
@@ -4267,11 +4326,11 @@ debugger;
     this.SU = 0;
     this._services.service_general_get('PropertyReport/GetSupplierPartner').subscribe((dat => {
       if (dat.success) {
-        console.log('DATA CONSULTA: SUPPLIER', dat);
+        //console.log('DATA CONSULTA: SUPPLIER', dat);
         this.dataSourceR = new MatTableDataSource(dat.result.value);
         this.dataSourceR.paginator = this.SupplierPartnersRecord;
         this.dataSourceR.sort = this.firstTableSort;
-        console.log(this.dataSourceR);
+        //console.log(this.dataSourceR);
       }
     }));
   }
@@ -4296,10 +4355,13 @@ debugger;
 
 
   detailsReport(element) {
+    console.log("hhhhh-->",element);
     const dialogRef = this._dialog.open(DialogReportDayComponent, {
       data: {
         sr: this.SO_ID,
-        id: element.id
+        id: element.id,
+        services: element.services,
+        serviceLine: element.serviceLine,
       }, width: "95%"
     });
 
@@ -4328,7 +4390,7 @@ debugger;
             element.reprortedBy, element.totalTime
           ])
         }
-        console.log(tabla);
+        //console.log(tabla);
         // Set the fonts to use
         PdfMakeWrapper.setFonts(pdfFonts);
 
@@ -4639,7 +4701,7 @@ debugger;
       this._services.service_general_get(`User/VeryfyEmail?email=${mail}`)
         .subscribe((response: any) => {
 
-          console.log('Res => ', response);
+          //console.log('Res => ', response);
 
           if (this.current_email != response.result) {
 
@@ -4716,11 +4778,11 @@ debugger;
     const dialogRef = this._dialog.open(DialogCropImageComponent, {
       data: { image: "", name: "" },
       width: "70%",
-      height: "70%"
+      height: "95%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
         if(result != undefined){
           this.no_main_photo = false;
 
@@ -4730,22 +4792,22 @@ debugger;
             root: any = this;
 
             const base64: any = result
-            console.log(base64.split('.')[1]);
+            ////console.log(base64.split('.')[1]);
             switch (section) {
 
               case 'dependent':
                 root.assign_dependents[dependent_index].photo = base64.split(',')[1];
-                root.assign_dependents[dependent_index].PhotoExtension = base64.split('.')[1];
+                root.assign_dependents[dependent_index].PhotoExtension = 'png';
                 break;
 
               case 'pet':
                 root.pets[dependent_index].photo = base64.split(',')[1];
-                root.pets[dependent_index].PhotoExtension = base64.split('.')[1];
+                root.pets[dependent_index].PhotoExtension = 'png'
                 break;
 
               case 'profile':
                 root.edit_sr_model.assigneeInformations[0].photo = base64.split(',')[1];
-                root.edit_sr_model.assigneeInformations[0].PhotoExtension = base64.split('.')[1];
+                root.edit_sr_model.assigneeInformations[0].PhotoExtension = 'png';
                 break;
 
             }
@@ -4803,7 +4865,7 @@ debugger;
     // immi
     if (tab == 'chat_imm' && this.__userlog__.role.id == 3) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos chat');
+        //console.log('consultant con permisos chat');
         tab = 'chat_imm';
       }
       else{
@@ -4815,7 +4877,7 @@ debugger;
     // relo
     if (tab == 'chat_rel' && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos chat');
+        //console.log('consultant con permisos chat');
         tab = 'chat_rel';
       }
       else {
@@ -4825,7 +4887,7 @@ debugger;
       }
     }
 
-    console.log('chat select', tab);
+    //console.log('chat select', tab);
 
     const chat_window: any = document.getElementsByClassName('chat_window'),
       chat_selected: any = document.getElementById(tab),
@@ -4844,23 +4906,15 @@ debugger;
   }
 
   public showCallsTabSelected(tab: string, event_data: any): void {
-    console.log('show tab call', tab );
-    console.log('show tab event', event_data);
+    //console.log('show tab call', tab );
+    //console.log('show tab event', event_data);
 
 
      //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi
     if (tab == 'calls_imm' && this.__userlog__.role.id == 3) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos');
-        /*
-        console.log(document.getElementById('immiCall1'));
-        console.log(document.getElementById('immiCall2'));
-        let a = document.getElementById('immiCall1');
-        let b = document.getElementById('immiCall2');
-        if(a!=null){document.getElementById('immiCall1').click();}
-        if(b!=null){document.getElementById('immiCall2').click();}
-        */
+
       }
       else{
         tab = '';
@@ -4871,15 +4925,7 @@ debugger;
     // relo
     if (tab == 'calls_rel' && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos');
-        /*
-        console.log(document.getElementById('relCall1'));
-        console.log(document.getElementById('relCall2'));
-        let a = document.getElementById('relCall1');
-        let b = document.getElementById('relCall2');
-        if(a!=null){document.getElementById('relCall1').click();}
-        if(b!=null){document.getElementById('relCall2').click();}
-        */
+
       }
       else {
         tab = '';
@@ -4904,8 +4950,8 @@ debugger;
     //if(this.contCalls != 1){
       call_selected.classList.remove('display-none');
       event_data.classList.add('page__section-tab--active');
-      
-     
+
+
     //}
 
   }
@@ -4947,21 +4993,13 @@ debugger;
   }
 
   public showTaskTabSelected(tab: string, event_data: any): void {
-    console.log('tab select action item', tab, event_data);
+    //console.log('tab select action item', tab, event_data);
 
     //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi
     if (tab == 'task_imm' && this.__userlog__.role.id == 3) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos');
-        /*
-        console.log(document.getElementById('immiconsultor1'));
-        console.log(document.getElementById('immiconsultor2'));
-        let a = document.getElementById('immiconsultor1');
-        let b = document.getElementById('immiconsultor2');
-        if(a!=null){document.getElementById('immiconsultor1').click();}
-        if(b!=null){document.getElementById('immiconsultor2').click();}
-        */
+
       }
       else{
         tab = '';
@@ -4972,13 +5010,7 @@ debugger;
     // relo
     if (tab == 'task_rel' && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos');
-        /*
-        let a = document.getElementById('reliconsultor1');
-        let b = document.getElementById('relconsultor2');
-        if(a!=null){document.getElementById('reliconsultor1').click();}
-        if(b!=null){document.getElementById('relconsultor2').click();}
-        */
+
       }
       else {
         tab = '';
@@ -5034,12 +5066,12 @@ debugger;
   public first_conversation: boolean = false;
   public serviceline_conversation: number = 1;
   public initChatBehavior(type: number = 1): void {
-
+    this.__loader__.showLoader();
      //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi
     if (type == 1 && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
         type = 1;
       }
       else{
@@ -5049,7 +5081,7 @@ debugger;
     // relo
     if (type == 2 && this.__userlog__.role.id == 3) {
       if ( this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
         type = 2;
       }
       else {
@@ -5083,7 +5115,7 @@ debugger;
           this.chatWindowPosition();
           this.chat_model.comment = '';
           this.chat_model.chatDocumentImmigrationRelocations = [];
-          console.log('[CP2294] Chats in res ===> ', response);
+          //console.log('[CP2294] Chats in res ===> ', response);
 
         }
 
@@ -5092,29 +5124,30 @@ debugger;
         console.error('ChatImmigrationRelocation/GetConversation => ', error);
 
       });
-
+      this.__loader__.hideLoader();
   }
 
   public chat_model: ChatConversation = new ChatConversation();
   public continueChatConversation(): void {
 
+    this.__loader__.showLoader();
     this.chat_model.dateComment = new Date();
     this.chat_model.userId = this.USERDATA.id;
-    this.chat_model.chatCoversationId = this.chat_conversations[0].conversationId;
+    this.chat_model.chatCoversationId = this.chat_conversations[0]?.conversationId;
 
     const chat_data: ChatConversation[] = [this.chat_model];
 
     if (this.chat_model.comment.length != 0) {
 
-      console.log('[CP2338] Continu Chat send ===> ', chat_data);
-      console.log('[CP2338] Continu Chat send ===> ', JSON.stringify(chat_data));
+      //console.log('[CP2338] Continu Chat send ===> ', chat_data);
+      //console.log('[CP2338] Continu Chat send ===> ', JSON.stringify(chat_data));
       this._services.service_general_post_with_url('ChatImmigrationRelocation/CreateComment', chat_data)
         .subscribe((response: any) => {
 
-          console.log('Res (ChatImmigrationRelocation/CreateComment) => ', response);
+          //console.log('Res (ChatImmigrationRelocation/CreateComment) => ', response);
 
           if (response.success) {
-
+            this.__loader__.hideLoader();
             this.chat_model.comment = '';
             this.chat_model.chatDocumentImmigrationRelocations = [];
             this.initChatBehavior(this.serviceline_conversation);
@@ -5122,7 +5155,7 @@ debugger;
           }
 
         }, (error: any) => {
-
+          this.__loader__.hideLoader();
           console.error('Error (ChatImmigrationRelocation/CreateComment) ==> ', error);
 
         });
@@ -5149,9 +5182,6 @@ debugger;
 
       this._services.service_general_post_with_url('ChatImmigrationRelocation/CreateConversation', chat_data)
         .subscribe((response: any) => {
-
-          console.log('Res [CP2351] (ChatImmigrationRelocation/CreateConversation) => ', response);
-          console.log('Data sent => ', chat_data);
 
           if (response.success) {
 
@@ -5243,7 +5273,7 @@ debugger;
   public contCalls = 0;
 
   public initCallsBehavior(calls_sl: number): void {
-    console.log('Tab selected en calls ===> ', calls_sl);
+    //console.log('Tab selected en calls ===> ', calls_sl);
     let event;
     let tab;
 
@@ -5258,12 +5288,10 @@ debugger;
       tab = 'calls_rel';
 
     }
-    console.log('this.contCalls', this.contCalls );
-    //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
-    
+
     if (calls_sl == 1 && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
         calls_sl = 1;
         document.getElementById('immiCall1').click();
       }
@@ -5274,7 +5302,7 @@ debugger;
     // relo 2
     if (calls_sl == 2 && this.__userlog__.role.id == 3) {
       if ( this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
         calls_sl = 2;
        document.getElementById('relCall1').click();
       }
@@ -5291,7 +5319,7 @@ debugger;
     this._services.service_general_get(`Call/GetCallByServiceRecord${params}`)
       .subscribe((response: any) => {
 
-        console.log('The calls ==> ', response, 'Call/GetCallByServiceRecord' + params);
+        //console.log('The calls ==> ', response, 'Call/GetCallByServiceRecord' + params);
 
         if (response.success) {
 
@@ -5315,7 +5343,7 @@ debugger;
             this.showCallsTabSelected(tab, event);
           }
         }
-       
+
 
       }, (error: any) => {
 
@@ -5325,41 +5353,8 @@ debugger;
 
   }
 
-  /*
-  // paginador relocation
-  getPageSizeOptionsCallsmRel() {
-    if(this.calls_in_list_rel?.length != 0){
 
-      if (this.calls_in_list_rel?.paginator.length > this.maxall) {
-        return [10, 20, this.calls_in_list_rel?.paginator.length];
-      }
-      else {
-        return [10, 20];
-      }
-    }
-    else{
-      return
-    }
-  }
-  // paginador immigratiom
-  getPageSizeOptionsCallsImmi() {
-    if(this.calls_in_list_imm?.length != 0){
-
-      if (this.calls_in_list_imm?.paginator.length > this.maxall) {
-        return [10, 20, this.calls_in_list_imm?.paginator.length];
-      }
-      else {
-        return [10, 20];
-      }
-    }
-    else{
-      return
-    }
-  }
-  */
-
-
-  public emails_table_cols: string[] = ['cam_0', 'cam_1', 'cam_2', 'cam_3'];
+  public emails_table_cols: string[] = ['cam_0', 'cam_3'];
   public emails_imm_list: any[] = [];
   public emails_rel_list: any[] = [];
   public initEmailsBehavior(service_line: number = 1): void {
@@ -5371,7 +5366,7 @@ debugger;
 
         if (response.success) {
 
-          console.log('Aqui =======> ', response);
+          //console.log('Aqui =======> ', response);
 
           switch (service_line) {
 
@@ -5431,13 +5426,11 @@ debugger;
   public task_imm_table: any = [];
   public initTasksBehavior(service_line: number = 1): void {
 
-    console.log('service_line action item', service_line);
-
     //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi 1
     if (service_line == 1 && this.__userlog__.role.id == 3 ) {
       if (this.__userlog__.profileUsers[0].supplierType == 3) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
         service_line = 1;
         document.getElementById('immiconsultor1').click();
       }
@@ -5448,7 +5441,7 @@ debugger;
     // relo 2
     if (service_line == 2 && this.__userlog__.role.id == 3) {
       if ( this.__userlog__.profileUsers[0].supplierType == 1) {
-        console.log('consultant con permisos');
+        //console.log('consultant con permisos');
         document.getElementById('reliconsultor1').click();
         service_line = 2;
       }
@@ -5460,83 +5453,42 @@ debugger;
 
     const params: string = `?service_record_id=${this.edit_sr_model.id}&service_line_id=${service_line}`;
 
-    console.log('Consultando en ===> ', `Task/GetAllTask${params}`);
-
-
-
           switch (service_line) {
 
             case 2:
 
               this._services.service_general_get(`Task/GetAllTask${params}`).subscribe((response: any) => {
-              console.log('Res ===> ', response);
+              //console.log('Res ===> ', response);
 
                if (response.success) {
                 this.task_rel_table = new MatTableDataSource(response.result.value);
                 this.task_rel_table.paginator = this.taskRelpag;
                 this.task_rel_table.sort = this.tasRel;
-                console.log('this.task_rel_table ==> ', this.task_rel_table);
+                //console.log('this.task_rel_table ==> ', this.task_rel_table);
                }
               },(err)=>{
-                console.log(err)
+                //console.log(err)
               })
 
               break;
 
             case 1:
               this._services.service_general_get(`Task/GetAllTask${params}`).subscribe((response: any) => {
-                console.log('Res ===> ', response);
+                //console.log('Res ===> ', response);
 
                  if (response.success) {
                    this.task_imm_table = new MatTableDataSource(response.result.value);
                     this.task_imm_table.paginator = this.taskImmpag;
                     this.task_imm_table.sort = this.tasImm;
-                    console.log('this.task_imm_table ==> ', this.task_imm_table);
+                    //console.log('this.task_imm_table ==> ', this.task_imm_table);
                  }
                },(err)=>{
-                console.log(err)
+                //console.log(err)
               })
               break;
 
           }
   }
-
-
-
-  //public maxall: number = 20;
-  /*
-  // paginador relocation
-  getPageSizeOptionsActionItemRel() {
-    if(this.task_rel_table?.length != 0){
-
-      if (this.task_rel_table?.paginator.length > this.maxall) {
-        return [10, 20, this.task_rel_table?.paginator.length];
-      }
-      else {
-        return [10, 20];
-      }
-    }
-    else{
-      return
-    }
-  }
-  // paginador immigratiom
-  getPageSizeOptionsActionItemImmi() {
-    if(this.task_imm_table?.length != 0){
-
-      if (this.task_imm_table?.paginator.length > this.maxall) {
-        return [10, 20, this.task_imm_table?.paginator.length];
-      }
-      else {
-        return [10, 20];
-      }
-    }
-    else{
-      return
-    }
-  }
-  */
-
 
 
   public cofb_table_paginator: CustomPaginator = new CustomPaginator(this._services);
@@ -5634,7 +5586,7 @@ debugger;
   @ViewChild(MatPaginator) _escalation_: MatPaginator;
   public requestEscalations(service_line: number): void {
 
-    console.log('URL paps ==========> ', `Scalate/GetEscalationCommunication?ServiceLineId=${service_line}`);
+    //console.log('URL paps ==========> ', `Scalate/GetEscalationCommunication?ServiceLineId=${service_line}`);
 
     this._services.service_general_get(`Scalate/GetEscalationCommunication?ServiceLineId=${service_line}&sr=${this.edit_sr_model.id}`)
       .subscribe((response: any) => {
@@ -5644,7 +5596,7 @@ debugger;
           this.escalation_data = response.result.value;
           this.escalation_table_data = new MatTableDataSource(this.escalation_data);
           this.escalation_table_data.paginator = this._escalation_;
-          console.log('Scalate/GetEscalationCommunication ==> ', response);
+          //console.log('Scalate/GetEscalationCommunication ==> ', response);
 
         }
 
@@ -5658,7 +5610,7 @@ debugger;
 
   public communicationAddCall(data_serviceLine): void {
 
-    console.log('More data ==> ', this.edit_sr_model);
+    //console.log('More data ==> ', this.edit_sr_model);
 
     const add_call_dialog = this._dialog.open(DialogAddCall, {
       data: {
@@ -5678,7 +5630,7 @@ debugger;
 
   editCall(data): void {
 
-    console.log('More data ==> ', this.edit_sr_model);
+    //console.log('More data ==> ', this.edit_sr_model);
 
     const add_call_dialog = this._dialog.open(DialogEditCallComponent, {
       data: data,
@@ -5694,20 +5646,6 @@ debugger;
   }
 
   public communicationAddMapit(map_in: any = null): void {
-
-    const add_call_dialog = this._dialog.open(DialogMapit, {
-      data: {
-        id_so: this.edit_sr_model.id,
-        map_data: map_in
-      },
-      width: "95%"
-    });
-
-    add_call_dialog.afterClosed().subscribe(result => {
-
-      this.initMapitBehavior();
-
-    });
 
   }
 
@@ -5730,7 +5668,7 @@ debugger;
   }
 
   public communicationViewEscalation(escalation: any): void {
-    //debugger
+    ////////debugger
     const add_call_dialog = this._dialog.open(DialogViewEscalation, {
       data: {
         id_so: this.edit_sr_model.id,
@@ -5831,8 +5769,8 @@ debugger;
         fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          console.log(droppedFile.relativePath);
-          console.log(file, this.files);
+          //console.log(droppedFile.relativePath);
+          //console.log(file, this.files);
           fileEntry.file(file => {
             reader.readAsDataURL(file);
             reader.onload = () => {
@@ -5862,17 +5800,17 @@ debugger;
       } else {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        //console.log(droppedFile.relativePath, fileEntry);
+        ////console.log(droppedFile.relativePath, fileEntry);
       }
     }
   }
 
   public fileOver(event) {
-    //console.log(event);
+    ////console.log(event);
   }
 
   public fileLeave(event) {
-    //console.log(event);
+    ////console.log(event);
   }
 
   complete() {
@@ -5900,7 +5838,7 @@ debugger;
     dialogRef.afterClosed().subscribe(result => {
       this.getReport();
       this.getSupplier();
-      this.ngOnInit();
+      //this.ngOnInit();
     })
   }
 
@@ -5935,14 +5873,11 @@ debugger;
 
     const coordinator: any = this.edit_sr_model.immigrationCoodinators[0];
 
-    console.log('Imm ==> ', this.edit_sr_model.immigrationCoodinators[0]);
-    console.log('Status => ', status);
-
     this._services.service_general_put(
       `ServiceRecord/AcceptImmigrationCoordinator/${coordinator.id}/${status}`, {})
       .subscribe((response: any) => {
 
-        console.log('Res ====> ', response);
+        //console.log('Res ====> ', response);
 
         let text: string = '';
 
@@ -5960,13 +5895,13 @@ debugger;
 
   public acceptDeclineImmSupplier(element: any, status: boolean = true): void {
 
-    console.log('Eleme Imm => ', element);
+    //console.log('Eleme Imm => ', element);
 
     this._services.service_general_put(
-      `ServiceRecord/AcceptImmigrationSupplierPartner/${element.id}/${status}`, {})
+      `ServiceRecord/AcceptImmigrationSupplierPartner/${element.id}/${status}`+ '?sr='+this.SO_ID, {})
       .subscribe((response: any) => {
 
-        console.log('Res ===> ', response);
+        //console.log('Res ===> ', response);
 
         let text: string = '';
 
@@ -5986,14 +5921,14 @@ debugger;
 
     const coordinator: any = this.edit_sr_model.relocationCoordinators[0];
 
-    console.log('Rel => ', coordinator);
-    console.log('Status => ', status);
+    //console.log('Rel => ', coordinator);
+    //console.log('Status => ', status);
 
     this._services.service_general_put(
       `ServiceRecord/AcceptRelocationCoordinator/${coordinator.id}/${status}`, {})
       .subscribe((response: any) => {
 
-        console.log('Res => ', response);
+        //console.log('Res => ', response);
 
         let text: string = '';
 
@@ -6011,13 +5946,13 @@ debugger;
 
   public acceptDeclineRelSupplier(element: any, status: boolean = true): void {
 
-    console.log('Eleme Rel => ', element);
+    //console.log('Eleme Rel => ', element);
 
     this._services.service_general_put(
-      `ServiceRecord/AcceptRelocationSupplierPartner/${element.id}/${status}`, {})
+      `ServiceRecord/AcceptRelocationSupplierPartner/${element.id}/${status}`+ '?sr='+this.SO_ID, {})
       .subscribe((response: any) => {
 
-        console.log('Res ===> ', response);
+        //console.log('Res ===> ', response);
 
         let text: string = '';
 
@@ -6046,7 +5981,7 @@ debugger;
   }
 
   openRequestPaymentedit(element) {
-    console.log(element);
+    //console.log(element);
     const dialogRef = this._dialog.open(DialogRequestPaymentNewComponent, {
       data: { sr: this.SO_ID, id: element.id },
       width: "95%"
@@ -6063,7 +5998,7 @@ debugger;
       "id": 0,
       "coordinatorTypeId": 0,
       "coordinatorId": 0,
-      "assigned": null,
+      "assigned": new Date(),
       "accepted": null,
       "serviceRecordId": Number(this.SO_ID),
       "statusId": 0,
@@ -6072,7 +6007,7 @@ debugger;
       "updateBy": this.USERDATA.id,
       "updatedDate": new Date()
     });
-    console.log("Data nuevo coordinador: ", this.new_coordinator);
+    //console.log("Data nuevo coordinador: ", this.new_coordinator);
   }
 
   addToEditModel() {
@@ -6101,15 +6036,15 @@ debugger;
 
 
   getNameCoordinator(id) {
+  ////console.log(id);
     this.coordinator_catalogue_aux = JSON.parse(localStorage.getItem("coordinator_catalogue"));
+    ////console.log(this.coordinator_catalogue_aux);
     for (let i = 0; i < this.coordinator_catalogue_aux.length; i++) {
       if (this.coordinator_catalogue_aux[i].id == id) {
         return this.coordinator_catalogue_aux[i].coordinator;
       }
     }
-
     return '';
-
   }
 
   getTypeCoordinator(id) {
@@ -6124,68 +6059,79 @@ debugger;
 
 
   public email_services: any;
-  public email_relocation = [];
+  public email_relocation = [{
+    email: 'Send invite to app and credentials',
+
+  }];
   public email_immigration = [];
   getEmail() {
-    this._services.service_general_get('Email/ServiceRecord?user=' + this.USERDATA.id + '&sr=' + this.SO_ID).subscribe((response: any) => {
-      if (response.success) {
-        this.email_services = response.result.value;
-        this.email_relocation = this.email_services.relocation;
-        this.email_immigration = this.email_services.immigration;
-        console.log(this.email_services);
-      }
-    })
+    // this.email_relocation = [{
+    //   email: 'Send invite to app and credentials',
+
+    // }];
+    // this._services.service_general_get('Email/ServiceRecord?user=' + this.USERDATA.id + '&sr=' + this.SO_ID).subscribe((response: any) => {
+    //   if (response.success) {
+    //     this.email_services = response.result.value;
+    //     this.email_relocation = [{
+    //       email: 'Send invite to app and credentials',
+
+    //     }];//this.email_services.relocation;
+    //     this.email_immigration = this.email_services.immigration;
+    //     //console.log(this.email_services);
+    //   }
+    // })
   }
 
   postEmail(serviceLine, data) {
 
-    if (data.nickName == "Send App Access") {
-      this.sendAccess();
-      return true;
-    }
-    let json = {
-      "id": 0,
-      "serviceRecordId": this.SO_ID,
-      "serviceLine": serviceLine,
-      "emailId": data.email.id,
-      "date": new Date(),
-      "completed": true,
-      "createdBy": this.USERDATA.id,
-      "creationDate": new Date(),
-      "updatedBy": this.USERDATA.id,
-      "updatedDate": new Date(),
-    }
+    // if (data.nickName == "Send App Access") {
+    //   this.sendAccess();
+    //   return true;
+    // }
+    // let json = {
+    //   "id": 0,
+    //   "serviceRecordId": this.SO_ID,
+    //   "serviceLine": serviceLine,
+    //   "emailId": data.email.id,
+    //   "date": new Date(),
+    //   "completed": true,
+    //   "createdBy": this.USERDATA.id,
+    //   "creationDate": new Date(),
+    //   "updatedBy": this.USERDATA.id,
+    //   "updatedDate": new Date(),
+    // }
 
-    console.log(json);
-    console.log(JSON.stringify(json));
-    this._services.service_general_post_with_url('Email/SendEmail', json).subscribe((response: any) => {
-      if (response.success) {
-        console.log(response);
-        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-          data: {
-            header: "Success",
-            body: "Email was send"
-          },
-          width: "350px"
-        });
-      }
-    })
+    // //console.log(json);
+    // //console.log(JSON.stringify(json));
+    // this._services.service_general_post_with_url('Email/SendEmail', json).subscribe((response: any) => {
+    //   if (response.success) {
+    //     //console.log(response);
+    //     const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+    //       data: {
+    //         header: "Success",
+    //         body: "Email was send"
+    //       },
+    //       width: "350px"
+    //     });
+    //   }
+    // })
+    this.sendAccess();
   }
 
   sendAccess() {
-    console.log('ENVIO DE CREDENCIALES')
+    //console.log('ENVIO DE CREDENCIALES')
     //Email/SendAppAccess?user=' + this.USERDATA.id//
     this.__loader__.showLoader();
-    this._services.service_general_put('Email/SendAppAccess?sr=' + this.SO_ID, '').subscribe((response: any) => {
+    this._services.service_general_put('Email/SendAppAccess?sr=' + this.SO_ID + '&userId='+this.USERDATA.id, '').subscribe((response: any) => {
       if (response.success) {
-        //console.log(response);
+        ////console.log(response);
         this.__loader__.hideLoader();
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
-            body: "Email was send"
+            body: "This action will create the group chat and send an invitation email to the Assignee to access your app"
           },
-          width: "350px"
+          width: "450px"
         });
       }
       else
@@ -6206,20 +6152,20 @@ debugger;
     this._router.navigate(['/viewAllReport/' + this.SO_ID]);
   }
 
-  openmodal(data, home_host, country) {
-    console.log("Entra a abrir modal de detalle del servicio");
+  open_bundeld_modal(data, home_host, country) {
+    //console.log("Entra a abrir modal de detalle del servicio");
     data.partnerId = this.edit_sr_model.partnerId;
     data.numberServiceRecord = this.edit_sr_model.numberServiceRecord;
     data.sr = this.SO_ID;
 
-    if (home_host == 2) {
+    if (home_host == 2) { // host city
       data.country_city = {
         home_contry_name: this.Host_Home_country.host_country_name,
         country_id: this.Host_Home_country.host_country,
         home_city_name: this.Host_Home_country.hostCity_name,
         city_id: this.Host_Home_country.hostCity_Id,
       }
-    } else {
+    } else { // home city
       data.country_city = {
         home_contry_name: this.Host_Home_country.home_country_name,
         country_id: this.Host_Home_country.home_country,
@@ -6247,7 +6193,7 @@ debugger;
   DetectaServiceLine(){
     this.SR_Immigration = this.edit_sr_model.immigrationCoodinators.length;
     this.SR_Relocation = this.edit_sr_model.relocationCoordinators.length;
-    debugger
+    //////debugger
   }
 
   public Team_ImmigrationCoordinators:any;
@@ -6257,68 +6203,54 @@ debugger;
   DetectaExperienceTeam(){
     this.Team_ImmigrationCoordinators = this.edit_sr_model.immigrationCoodinators.length;
     this.Team_RelocationCoordinators  = this.edit_sr_model.relocationCoordinators.length;
-    this.Team_ImmigrationSupplier  = this.suplierData.length;
-    this.Team_RelocationSupplier  = this.relocation_suppliers.length;
-    console.log("Detecta Experience Team")
+    this.Team_ImmigrationSupplier  = this.suplierData == null ? 0 : this.suplierData.length;
+    this.Team_RelocationSupplier  = this.relocation_suppliers == null ? 0 : this.relocation_suppliers.length;
+    //console.log("Detecta Experience Team")
   }
 
   active() {
-    console.log("Boton Active");
+    //console.log("Boton Active");
     this._services.service_general_put('ServiceRecord/Activate/' + Number(this.SO_ID), '').subscribe((data => {
         if (data.success) {
-          console.log("CAMBIO DE STATUS A ACTIVE: ", data);
+          //console.log("CAMBIO DE STATUS A ACTIVE: ", data);
           this.ngOnInit();
         }
     }))
   }
 
   InHold() {
-    console.log("Boton in hold");
+    //console.log("Boton in hold");
     let sl = 1;
     let immigration = this.edit_sr_model.immigrationCoodinators.length;
     let relocation = this.edit_sr_model.relocationCoordinators.length;
-    /*
-    let services = JSON.parse(localStorage.getItem('serviceLine'));
-    let immigration = 0;
-    let relocation = 0;
-    let sl = 1;
-    console.log(services);
-    services.forEach(E => {
-      if(E.serviceLineId == 1){
-        immigration++;
-      }
-      if(E.serviceLineId == 2){
-        relocation++;
-      }
-    });
-    */
+
     if (immigration >= 1 && relocation >= 1) {
-      console.log("ABRE MODAL PARA ELEGIR LA SERVICE LINE A CERRAR");
+      //console.log("ABRE MODAL PARA ELEGIR LA SERVICE LINE A CERRAR");
       const dialogRef = this._dialog.open(DialogInHoldComponent, {
         width: "50%"
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log("dialog in hold ", result)
+        //console.log("dialog in hold ", result)
         if (result.success) {
 
           if(Number(result.serviceLineID) == 3){
             this._services.service_general_put('ServiceRecord/OnHold/' + Number(this.SO_ID) + '/' + 1, '').subscribe((data => {
               if (data.success) {
-                console.log("CAMBIO DE STATUS A IN HOLD: ", data);
+                //console.log("CAMBIO DE STATUS A IN HOLD: ", data);
                 this.ngOnInit();
               }
             }));
             this._services.service_general_put('ServiceRecord/OnHold/' + Number(this.SO_ID) + '/' + 2, '').subscribe((data => {
               if (data.success) {
-                console.log("CAMBIO DE STATUS A IN HOLD: ", data);
+                //console.log("CAMBIO DE STATUS A IN HOLD: ", data);
                 this.ngOnInit();
               }
             }));
           }else{
             this._services.service_general_put('ServiceRecord/OnHold/' + Number(this.SO_ID) + '/' + Number(result.serviceLineID), '').subscribe((data => {
               if (data.success) {
-                console.log("CAMBIO DE STATUS A IN HOLD: ", data);
+                //console.log("CAMBIO DE STATUS A IN HOLD: ", data);
                 this.ngOnInit();
               }
             }));
@@ -6330,7 +6262,7 @@ debugger;
       sl = 1;
       this._services.service_general_put('ServiceRecord/OnHold/' + Number(this.SO_ID) + '/' + Number(sl), '').subscribe((data => {
         if (data.success) {
-          console.log("CAMBIO DE STATUS A IN HOLD: ", data);
+          //console.log("CAMBIO DE STATUS A IN HOLD: ", data);
           this.ngOnInit();
         }
       }))
@@ -6339,7 +6271,7 @@ debugger;
       sl = 2;
       this._services.service_general_put('ServiceRecord/OnHold/' + Number(this.SO_ID) + '/' + Number(sl), '').subscribe((data => {
         if (data.success) {
-          console.log("CAMBIO DE STATUS A IN HOLD: ", data);
+          //console.log("CAMBIO DE STATUS A IN HOLD: ", data);
           this.ngOnInit();
         }
       }))
@@ -6347,11 +6279,12 @@ debugger;
   }
 
   ngOnDestroy() {
-    console.log("Entra a eliminar serviceline");
+    //console.log("Entra a eliminar serviceline");
     localStorage.removeItem('serviceLine');
   }
 
   deleteCoordinator(data, sl, k) {
+    ////debugger
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -6360,16 +6293,16 @@ debugger;
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      ////debugger
       if (result) {
         if (sl == 1) {
-          console.log("IMMIGRATION");
+          //console.log("IMMIGRATION");
           if (data.id == 0) {
             this.edit_sr_model.immigrationCoodinators.splice(k, 1);
           } else {
             this._services.service_general_delete("ServiceRecord/Coordinator/" + data.id + "/" + sl).subscribe((data => {
               if (data.success) {
-                this.updateServiceRecordData();
+                //this.updateServiceRecordData();
                 const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
@@ -6378,13 +6311,14 @@ debugger;
                   width: "350px"
                 });
                 this.edit_sr_model.immigrationCoodinators.splice(k, 1);
+                this.initPageSettings();
               }
             }))
           }
         }
 
         if (sl == 2) {
-          console.log("RELCATION");
+          //console.log("RELCATION");
           if (data.id == 0) {
             this.edit_sr_model.relocationCoordinators.splice(k, 1);
           } else {
@@ -6398,6 +6332,7 @@ debugger;
                   width: "350px"
                 });
                 this.edit_sr_model.relocationCoordinators.splice(k, 1);
+                this.initPageSettings();
               }
             }))
           }
@@ -6407,51 +6342,90 @@ debugger;
   }
 
   deleteSupplier(data, sl) {
-    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
-      data: {
-        header: "Delete confirmation",
-        body: "Are you sure to delete this Supplier Partner?"
-      },
-      width: "350px"
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if (result) {
-        if (sl == 1) {
-          console.log("IMMIGRATION");
-          this._services.service_general_delete("ServiceRecord/Supplier/" + data.id + "/" + sl).subscribe((data => {
-            if (data.success) {
-              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: "The Supplier Partner was deleted"
-                },
-                width: "350px"
-              });
-              this.ngOnInit();
-              //this.getDataSuplier();
-            }
-          }))
-        }
+    ////////debugger
+    if(data.total > 0){
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Warning",
+          body: "The supplier cannot be deleted because it has assigned services"
+        },
+        width: "350px"
+      });
+    }
+    else{
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Delete confirmation",
+          body: "Are you sure to delete this Supplier Partner?"
+        },
+        width: "350px"
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        //console.log(result);
+        if (result) {
+          if (sl == 1) {
+            //console.log("IMMIGRATION");
+            this._services.service_general_delete("ServiceRecord/Supplier/" + data.id + "/" + sl).subscribe(data => {
+              if (data.success) {
+                const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                  data: {
+                    header: "Success",
+                    body: "The Supplier Partner was deleted"
+                  },
+                  width: "350px"
+                });
+                this.ngOnInit();
+                //this.getDataSuplier();
+              }
+            }, err => {
+                // Entra aquí si el servicio entrega un código http de error EJ: 404,
+                //500
+                //console.log(err.error.message)
+                if(err.error.message == "Operation was not successfully."){
+                  const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                    data: {
+                      header: "Warning",
+                      body: "The supplier cannot be deleted because it has assigned services"
+                    },
+                    width: "350px"
+                  });
+                }
+            });
+          }
 
-        if (sl == 2) {
-          console.log("RELCATION");
-          this._services.service_general_delete("ServiceRecord/Supplier/" + data.id + "/" + sl).subscribe((data => {
-            if (data.success) {
-              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: "The Supplier Partner was deleted"
-                },
-                width: "350px"
-              });
-              this.ngOnInit();
-              //this.getRelocationSuppliers();
-            }
-          }))
+          if (sl == 2) {
+            //console.log("RELCATION");
+            this._services.service_general_delete("ServiceRecord/Supplier/" + data.id + "/" + sl).subscribe(data => {
+              if (data.success) {
+                const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                  data: {
+                    header: "Success",
+                    body: "The Supplier Partner was deleted"
+                  },
+                  width: "350px"
+                });
+                this.ngOnInit();
+                //this.getRelocationSuppliers();
+              }
+            }, err => {
+              // Entra aquí si el servicio entrega un código http de error EJ: 404,
+              //500
+              //console.log(err.error.message)
+              if(err.error.message == "Operation was not successfully."){
+                const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                  data: {
+                    header: "Warning",
+                    body: "The supplier cannot be deleted because it has assigned services"
+                  },
+                  width: "350px"
+                });
+              }
+          });
+          }
         }
-      }
-    })
+      })
+    }
+
   }
 
 
@@ -6467,8 +6441,14 @@ debugger;
     })
   }
 
+  serviceAppointment: any[] =[]
+  getserviciosAppoitment(element){
+    this.serviceAppointment = element.servicio;
+  }
+
   SR_WO :any;
   consulta(element){
+    //console.log(element);
       let WO = [];
       this.SR_WO = [];
       this._services.service_general_get('ServiceRecord/GetServices/'+this.SO_ID+'?type=1').subscribe((response: any) => {
@@ -6496,7 +6476,7 @@ debugger;
                  }
               }
 
-              console.log("ESTAS SON LAS WO", this.SR_WO);
+              //console.log("ESTAS SON LAS WO", this.SR_WO);
 
           })
       })
@@ -6504,15 +6484,111 @@ debugger;
 
 
   validaNumericos(event){
-    console.log("valid");
-    if(event.key == '0' || event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || 
+    //console.log("valid");
+    if(event.key == '0' || event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' ||
        event.key == '5' || event.key == '6' || event.key == '7' || event.key == '8' || event.key == '9' ||
        event.key == 'Backspace' ){
        return true;
     }
-  
+
      return false;
   }
+
+  set_variables_start(){
+
+  }
+
+  downloadXls() {
+
+    this._services.service_general_get('Appointment/GetAppointmentsExcel?id=' + this.SO_ID)
+    .subscribe((data => {
+      if (data.success) {
+        const linkSource =
+        'data:application/octet-stream;base64,' + data.message;
+        const downloadLink = document.createElement('a');
+        const fileName = 'appointment_list.xlsx';
+
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+      }
+    }));
+  }
+
+  /////////////////////////////////// ajustes asignacion sept 2022  ///////////////////////////////////
+
+  public viewassigned_services(data) {
+
+    console.log("data servicios de relocation =====================================", data);
+    this.assigned_services = data.unionAll;
+    for (let i = 0; i < this.assigned_services.length; i++) {
+      this.assigned_services[i].idsuplier = data.id;
+    }
+    this.cambio_asignacion_servicios(data, this.assigned_services);
+  }
+
+  cambio_asignacion_servicios(data, assigned_services) {
+
+    const dialogRef = this._dialog.open(AsignarserviciosComponent, {
+      data: {
+        header: "Supplier: " +  data.supplier,
+        body: "Assign the services and confirm.",
+        rol: 1,//this.user.role.id,
+        category: 18, //departurre
+        type: "area_prientation",
+        assigned_services: assigned_services,
+        srid: this.SO_ID,
+        idsupplier: data.id
+      },
+      width: "550px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      ////debugger
+      this.__loader__.showLoader();
+      this.relocation_suppliers = null;
+      this.getRelocationSuppliers();
+      document.getElementById('services_supplier_relocation').scrollIntoView();
+
+      document.getElementById('services_supplier_relocation').scrollIntoView();
+      if (result.success) {
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Assignments were edited successfully."
+          },
+          width: "350px"
+        });
+      }
+      else {
+      }
+    });
+  };
+
+  public addordeleteservicesRelocation(event, id, id_siplier, service) {
+    ////debugger
+    let datos = [{
+      "relocationSupplierPartnerId": id_siplier,
+      "serviceOrderServicesId": id,
+      "service": service
+    }]
+
+    if (event.checked) {
+
+      this._services.service_general_post_with_url("Relocation/AddAssignedRelocation", datos).subscribe((data => {
+        if (data.success) {
+          this.ngOnInit();
+          document.getElementById('services_supplier_relocation').scrollIntoView();
+        }
+      }))
+    } else {
+      this._services.service_general_delete_with_url("Immigration/DeleteAssignedImmigration?id=" + id).subscribe((data => {
+        this.ngOnInit();
+        document.getElementById('services_supplier_relocation').scrollIntoView();
+      }))
+    }
+  }
+
 }
 
 class Departament {
@@ -6611,6 +6687,7 @@ class AssigneeInformationModel {
   finalMove: string = '';
   homeCountryId: number = null;
   homeCityId: number = null;
+  cityHomeName: string = '';
   currentPosition: string = '';
   hostCountry: number = null;
   hostCityId: number = null;
@@ -6623,11 +6700,17 @@ class AssigneeInformationModel {
   dependentInformations: any = [];
   petsNavigation: any = [];
   languagesSpokens: any[] = [];
+  nationalityAssigneeInformations: any[] = [];
 }
 
 class LanguagesSpokensModel {
   assignneInformation: number = 0;
   languages: string = '';
+}
+
+class NationalitiesModel {
+  assigneeInformationId: number = 0;
+  nationalityId: number = 0;
 }
 
 class DependentInformationsModel {
@@ -6892,3 +6975,5 @@ class LibraryFilter {
   rangeDate2: string = '';
   status: string = '';
 }
+
+

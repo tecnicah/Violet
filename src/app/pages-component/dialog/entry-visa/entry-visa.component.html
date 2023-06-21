@@ -369,15 +369,15 @@
 
       </mat-grid-list>
 
-      <mat-grid-list cols="4" rowHeight="40px">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+     <!-- <mat-grid-list cols="4" rowHeight="40px">
+         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="page__section margin-top-min">
             <div class="subtitledos">
               Requested Payments
             </div>
           </div>
           <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <!--mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="rp_header">
@@ -386,11 +386,11 @@
             <span>Wire Fee: {{calculo.wireFeeSubTotal | currency}}</span>
             <span>Advance Fee: {{calculo.advanceFeeSubTotal | currency}}</span>
           </div>
-        </mat-grid-tile-->
-      </mat-grid-list>
+        </mat-grid-tile
+      </mat-grid-list>-->
 
 
-      <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
+      <!-- <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
 
         <ng-container matColumnDef="Payment">
           <th mat-header-cell *matHeaderCellDef> Payment </th>
@@ -399,43 +399,36 @@
           </td>
         </ng-container>
 
-        <!-- Name Column -->
         <ng-container matColumnDef="Amount">
           <th mat-header-cell *matHeaderCellDef> Amount </th>
           <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
         </ng-container>
 
-        <!-- Weight Column -->
         <ng-container matColumnDef="ManagementFee">
           <th mat-header-cell *matHeaderCellDef> Management Fee </th>
           <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
         <ng-container matColumnDef="WireFee">
           <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
           <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
         </ng-container>
 
-        <!-- Symbol Column -->
         <ng-container matColumnDef="AdvanceFee">
           <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
           <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
         <ng-container matColumnDef="Service">
           <th mat-header-cell *matHeaderCellDef> Total </th>
           <td mat-cell *matCellDef="let element"> </td>
         </ng-container>
 
-        <!-- Symbol Column -->
         <ng-container matColumnDef="Recurrence">
           <th mat-header-cell *matHeaderCellDef> Recurrence </th>
           <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element">
@@ -451,7 +444,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'urgente': row.urgent == true}"></tr>
       </table>
-      <br><br>
+      <br><br> -->
 
 
       <mat-grid-list cols="4" rowHeight="30px">
@@ -464,9 +457,9 @@
               </div>
               <!--span class="browser">TOTAL: {{calculo.total | currency}}</span-->
             </div>
-            <div class="page__section-butuonc" style="left: 6px;">
-              <button class="button-icon button-icon--money" [disabled]="user.role.id == 3" (click)="requestPayment(null)">Request Payment</button>
-            </div>
+             <div class="page__section-butuonc" style="left: 6px;">
+              <!-- <button class="button-icon button-icon--money" [disabled]="user.role.id == 3" (click)="requestPayment(null)">Request Payment</button> -->
+            </div> 
           </div>
         </mat-grid-tile>
 

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry } from 'ngx-file-drop';
+import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 
 @Component({
   selector: 'app-dialog-documents-lead-client',
@@ -88,8 +89,71 @@ caPrivacy: any[] = [];
     console.log(event);
   }
 
+
+    //*************************************************************//
+  //VALIDACIONES//
+  active_description:boolean = false;
+  active_fileName:boolean = false;
+  active_idDocumentType :boolean = false;
+
+  
+  valida_form(){
+
+
+
+    if(this.temporalDocument.description == undefined || this.temporalDocument.description == ''){
+      this.active_description = true;
+    }
+    if(this.temporalDocument.idDocumentType == undefined || this.temporalDocument.idDocumentType.length == 0){
+      this.active_idDocumentType = true;
+    }
+    if(this.temporalDocument.fileName == undefined || this.temporalDocument.fileName.length == 0){
+      this.active_fileName = true;
+    }
+
+
+    if(this.validationForm())
+    {
+      this.temporalDocument.success = true;
+      this.dialogRef.close(this.temporalDocument);
+    }else
+    {
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Error",
+          body: "It is required to complete the missing information"
+        },
+        width: "350px"
+      });
+    }
+
+
+  }
+
+
+
+  validationForm()
+  {
+    if(this.temporalDocument.description == undefined){
+      return false
+    }
+
+    if(this.temporalDocument.idDocumentTypeName == undefined){
+      return false
+    }
+
+    if(this.temporalDocument.fileName == undefined){
+      return false
+    }
+
+    return true;
+  }
+
   save(){
-    this.temporalDocument.success = true;
-    this.dialogRef.close(this.temporalDocument);
+
+    console.log('this.temporalDocument',this.temporalDocument);
+    this.valida_form();
+
+
   }
 }

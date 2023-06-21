@@ -1,8 +1,7 @@
-
 <div class="main-container" style="margin-top: 70px;">
   <div class="nav-header">
     <div class="nav-header__logo browser" style="margin-right: 30px;" [routerLink]="['/home']">
-      <img src="assets/logo_premier.svg" style="height: 62px !important; width: 200px !important;"/>
+      <img src="assets/pds_logo.jpg" style="" />
     </div>
     <!--button mat-icon-button (click)="snav.toggle()" value="sidebarclosed" logo-horizontal-copy-->
     <button mat-icon-button (click)="menus()" value="sidebarclosed">
@@ -11,21 +10,21 @@
     <div class="nav-header__submenu">
       <!-- esta opcion es cuando hay mensajes y se despliega el menu de mensajes -->
       <div *ngIf="table_contacts.length != 0" class="nav-header__opc" [matMenuTriggerFor]="messages">
-        <button  mat-icon-button matBadge="{{table_contacts.length}}"
-          matBadgeColor="warn" style="width: 39px; top: 10px;">
+        <button mat-icon-button matBadge="{{table_contacts.length}}" matBadgeColor="warn"
+          style="width: 39px; top: 10px;">
           <img src="assets/email.png" style="width: 35px; margin-top: -13px; margin-left: 5px;" />
         </button>
       </div>
       <!-- cuando no tiene mensajes solo direcciona al message  -->
       <div *ngIf="table_contacts.length == 0">
-        <button (click)="redirecMessage()"  mat-icon-button style="width: 39px; top: 10px;" >
+        <button (click)="redirecMessage()" mat-icon-button style="width: 39px; top: 10px;">
           <img src="assets/email.png" style="width: 35px; margin-top: -13px; margin-left: 5px;" />
         </button>
       </div>
       <div class="nav-header__opc" [matMenuTriggerFor]="notifications">
 
         <button *ngIf="ca_notificationView != 0" mat-icon-button matBadge="{{ca_notificationView}}" matBadgeColor="warn"
-          style="width: 39px; top: 10px;">
+          style="width: 39px; top: 10px;" (click)="leerNotificacion()">
           <img src="assets/notification.png" style="width: 35px; margin-top: -13px; margin-left: 5px;" />
         </button>
 
@@ -40,7 +39,8 @@
             <div class="pageAvatar__section pageAvatar__section-input--x no-padding-tbAvatar">
               <div class="inputAvatar__image">
                 <div class="inputAvatar__image-label--card cursor-pointer">
-                  <img onerror="this.src='/assets/avatar.svg'" [src]="menu.url_images+profileUser.photo" *ngIf="profileUser.photo != ''">
+                  <img onerror="this.src='/assets/avatar.svg'" [src]="menu.url_images+profileUser.photo"
+                    *ngIf="profileUser.photo != ''">
                   <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="profileUser.photo === ''"></div>
                 </div>
               </div>
@@ -59,61 +59,31 @@
     <div class="menu-fixed__titulo">
       Messages
     </div>
-    <div  class="menu-fixed__opcion_dos" style="padding: 15px; border-radius: 8px; max-height: 500px; padding: 10px !important;
-    font-size: 12px !important;">
-      <mat-grid-list style="cursor: pointer;" cols="4" rowHeight="25px" *ngFor="let item of table_contacts; let i = index" (click)="viewMessage(item.conversationId)">
-        <!-- imagen -->
-        <mat-grid-tile [colspan]="1" [rowspan]="3">
-          <!-- imagen  -->
-          <div class="pageAvatarMessage__section pageAvatarMessage__section-inputs no-padding-tbAvatarMessage">
-            <div class="pageAvatarMessage__section pageAvatarMessage__section-inputs no-padding-tbAvatarMessage">
-              <div class="pageAvatarMessage__section pageAvatarMessage__section-input--x no-padding-tbAvatarMessage">
-                <div class="inputAvatarMessage__image">
-                  <div class="inputAvatarMessage__image-label--card cursor-pointer">
-                    <!-- onerror="this.onerror=null;this.src='imagefound.gif';"  -->
-                    <!-- (error)="onImgError($event)" -->
-                    <img [src]="menu.url_images+item.photo" *ngIf="item.photo != ''">
-                    <div class="avatarNot" style="background: rgba(0, 0, 0, 0.2);" *ngIf="item.photo === ''"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-grid-tile>
-        <!-- fecha -->
-        <mat-grid-tile [colspan]="3" [rowspan]="1">
-          <div class="time">
-            <span class="date">
-              {{item.lastMessageTime| date:'MMM d, y, h:mm:ss a'}}
-            </span>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="3" [rowspan]="2">
-          <!-- <span>
-            <div class="dot"></div>
-          </span> -->
-          <div class="person">
-            <b class="titleM ">{{item.name}} <br> {{item.lastname}}</b>
-            <!-- <br> -->
-            <span class="message" *ngIf="item.lastMessage != '' " title="{{ item.lastMessage }}">
-              {{ ( item.lastMessage?.length > 35 )? ( item.lastMessage | slice:0:35 )+ '...' : ( item.lastMessage ) }}
-            </span>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <p>
-
-          </p>
-            <mat-divider></mat-divider>
-        </mat-grid-tile>
-
-      </mat-grid-list>
-      <br> <br>
-      <div style="text-align: end; font-size: 12px !important;">
-        <b class="browser" [routerLink]="['/messenger-center']">Go to Messenger Center</b><br>
-      </div>
-      <br>
+    <div style="text-align: end; font-size: 12px !important; padding: 10px;">
+      <b class="browser" [routerLink]="['/messenger-center/0']">Go to Messenger Center</b>
     </div>
+    <div *ngFor="let item of table_contacts; let i = index">
+      <div style="text-align: end; font-size: 10px !important; padding: 0 10px;">
+        {{item.lastMessageTime| date:'MMM d, y, h:mm:ss a'}}
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" (click)="viewMessage(item.conversationId)"
+        style="padding: 0 10px; cursor: pointer;">
+        <div fxFlex="20">
+          <img width="50" height="50" [src]="menu.url_images+item.photo" *ngIf="item.photo != null"
+            style="border-radius: 50%;">
+          <img width="50" height="50" src="./assets/avatar.png" *ngIf="item.photo == null" style="border-radius: 50%;">
+        </div>
+        <div fxFlex="70" style="padding: 0 10px;">
+          <span style="color: rgba(0, 0, 0, 0.87); font-size: 14px;">
+            <b>{{item.name}}</b>
+          </span><br>
+          <span style="font-size: 12px;">
+            {{item.lastMessage}}
+          </span>
+        </div>
+      </div>
+    </div>
+
   </mat-menu>
 
 
@@ -124,9 +94,80 @@
       <span>Notifications</span>
       <span style="font-size: 12px; cursor: pointer;" [routerLink]="['/notification']">View all</span>
     </div>
-    <div class="menu-fixed__opcion_dos" style="padding: 15px; border-radius: 10px; max-height: 500px;">
+    <div class="menu-fixed__opcion_dos" style="padding: 15px; border-radius: 10px; max-height: 700px;">
 
-    <div class="mat-elevation-z4" style='flex-basis: 30%; border-radius: 3px; margin-bottom: 20px;'
+      <mat-list *ngFor="let data of ca_notification">
+        <div fxLayout="row" fxLayoutAlign="end end">
+          <b class="titleTime"> {{ data.createdDate | date: "dd/MM/yyyy" }}</b>&nbsp;&nbsp;<b class="titleTime"> {{
+            data.time | slice:0:5 }} hr </b>
+        </div>
+        <div vertical style="height:20px; width: 100%;" [ngStyle]="{'background': data.color }">
+          <label style="font-size: 12px; font-weight: bold; color: whitesmoke; margin: 5px; margin-left: 10px;">{{data.type}}</label>
+        </div>
+        <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="space-between center">
+         
+          <!-- <span style="cursor: pointer; font-size: 12px;">
+            Archive
+            <mat-checkbox (change)="archivar(data,$event)"></mat-checkbox>
+          </span> -->
+        </div>
+
+        <mat-list-item style="margin: 5px; margin-top: 10px; margin-bottom: 10px;">
+          <!-- <img [src]="'https://my.premierds.com/api/Files/ConsultantContactsConsultants/ff13bf74-9ae2-44ce-ac01-48cadff57c6d.png'" matListAvatar alt=""> -->
+          <img src="{{menu.url_images}}{{data.fromAvatar}}" matListAvatar alt="">
+          <!-- <div matLine>
+            {{data.description}}
+           </div> -->
+
+          <!-- <div matLine><b>From: </b> <span style="color: #67757c; cursor: pointer;" (click)="profilePageNotification(data.fromProfile, data.roleFromId)"> {{data.from}} </span></div>
+          <div matLine><b>SR: </b> <span style="cursor: pointer;" routerLink='/editServiceRecord/{{data.serviceRecordId}}'>{{data.serviceRecord}}</span></div>
+          <div matLine><b>Assignee: </b> <span style="color: #67757c;">{{data.assignee}}</span></div>
+          <div matLine><b>Client: </b> <span style="color: #67757c;">{{data.clientName}}</span></div>
+          <div matLine><b>Home: </b> <span style="color: #67757c;">{{data.serviceRecordCountry}}; {{data.serviceRecordCityHome}}</span></div>
+          <div matLine><b>Host: </b> <span style="color: #67757c;">{{data.serviceRecordCountryHost}}; {{data.serviceRecordCityHost}}</span></div>
+           -->
+          <br>
+          <div style="margin:8px; ">
+            <span style="color: #67757c; font-size: 11px;margin-right: 12px;margin-bottom: 15px; color: blue; text-decoration: underline; cursor:pointer"
+            (click)="goto(data.urlWeb);">
+              {{data.description}}
+            </span>
+          </div>
+          <br><br>
+        </mat-list-item>
+         <!-- <div fxLayout="row" fxLayoutAlign="start center">
+          <section class="example-section">
+            <span style="margin-left: 0px;">&nbsp;</span>
+            <span style="font-size: 12px !important; font-weight: 900 !important; color: purple;  margin: 5px; margin-right: 15px; cursor: pointer; text-decoration: underline;">Pending</span>
+            <span style="font-size: 12px !important; font-weight: 900 !important; color: red ;margin: 5px; cursor: pointer; text-decoration: underline;">Delete</span>
+          </section>
+        </div>  -->
+        <!-- <div fxLayout="row" fxLayoutAlign="start center" *ngIf="data.description != ''">
+          <span style="color: #67757c; font-size: 12px;margin-right: 12px;">{{data.description}}</span>
+        </div> -->
+        <!-- <div fxLayout="row" fxLayoutAlign="end end" *ngIf="data.actionCall.accept != null  && data.actionCall.rejected != null">
+          <button mat-button (click)="decline(data,data.actionCall.rejected)">Decline</button>
+          <button mat-button (click)="accept(data,data.actionCall.accept)" cdkFocusInitial>Accept</button>
+        </div> -->
+        <!--         
+        <div class="padding">
+          <div class="display" style="justify-content: flex-end !important;"
+            *ngIf="data.actionCall.accept != null  && data.actionCall.rejected != null">
+            <button class="btnr btnr--decline" (click)="decline(data,data.actionCall.rejected)" matRipple
+              matRippleColor="rgba(255, 255, 255, 0.5)">
+              Decline
+            </button>
+            <span>&nbsp;</span>
+            <button class="btnr btnr--accept" (click)="accept(data,data.actionCall.accept)" matRipple
+              matRippleColor="rgba(255, 255, 255, 0.5)">
+              Accept
+            </button>
+          </div>
+        </div> -->
+        <mat-divider vertical style="height:5px" [ngStyle]="{'background': data.color }"></mat-divider>
+      </mat-list>
+
+      <!-- <div class="mat-elevation-z4" style='flex-basis: 30%; border-radius: 3px; margin-bottom: 20px;'
       *ngFor="let data of ca_notification">
       <div class="padding header background" [ngStyle]="{'background': data.color }">
         <span style="font-size: 12px;">{{data.type}}</span>
@@ -134,10 +175,10 @@
           Archive
           <mat-checkbox (change)="archivar(data,$event)"></mat-checkbox>
         </span>
-      </div>
+      </div> -->
 
-      <mat-grid-list cols="5" rowHeight="30px" class="card">
-        <!-- imagen -->
+      <!-- <mat-grid-list cols="5" rowHeight="30px" class="card">
+        
         <mat-grid-tile [colspan]="1" [rowspan]="3">
           <div class="pageAvatarMessage__section pageAvatarMessage__section-inputs no-padding-tbAvatarMessage">
             <div class="pageAvatarMessage__section pageAvatarMessage__section-inputs no-padding-tbAvatarMessage">
@@ -152,27 +193,22 @@
             </div>
           </div>
         </mat-grid-tile>
-        <!-- time -->
+        
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="time">
             <span class="text-mini gray_05"> Time</span><b class="titleTime"> &nbsp; {{ data.time | slice:0:5 }} hr </b><br />
           </div>
         </mat-grid-tile>
-        <!-- assignee, serviceRecordCountry -->
-
-        <!-- from -->
+       
         <mat-grid-tile [colspan]="2" [rowspan]="2">
           <div class="person">
-            <!-- <span class="title">{{data.from}}</span> -->
+            
             <span *ngIf="data.from != ''" (click)="profilePageNotification(data.fromProfile, data.roleFromId)" class="text-min titleNotification cursor-pointer" title="{{ data.from }}">
               <span class="gray_05">From: </span>
               <span class="minuscula">
                 {{ ( data.from?.length > 15 )? ( data.from | slice:0:15 )+ '...' : ( data.from ) }}
               </span>
             </span>
-            <!-- <span (click)="profilePage(data.fromProfile, data.roleFromId)" class="cursor-pointer titleNotification" title="{{ data.from }}"> <span class="gray_05 text-mini">From: </span>
-                {{ ( data.from?.length > 40 )? ( data.from | slice:0:40 )+ '...' : ( data.from ) }}
-            </span>   -->
             <br>
             <span class="titleNotification text-min"> <span class="gray_05">Assignee: </span>
             <span class="minuscula">
@@ -181,7 +217,7 @@
             </span>
           </div>
         </mat-grid-tile>
-        <!-- service record -->
+        
         <mat-grid-tile [colspan]="2" [rowspan]="2">
           <div class="time">
             <span class="text-mini gray_05">Ser. Record</span>
@@ -204,11 +240,10 @@
             </span>
           </div>
         </mat-grid-tile>
-        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile> -->
-      </mat-grid-list>
+      </mat-grid-list> -->
 
 
-      <div class="padding">
+      <!-- <div class="padding">
         <p class="description">
           {{data.description}}
         </p>
@@ -224,8 +259,8 @@
             Accept
           </button>
         </div>
-      </div>
-    </div>
+      </div> -->
+      <!-- </div> -->
 
     </div>
   </mat-menu>
@@ -263,55 +298,11 @@
 
     <mat-drawer-content>
       <div [ngClass]="{'bigpadding': menu.big, 'smallpadding': !menu.big}">
-      <router-outlet>
-        <app-spinner></app-spinner>
-      </router-outlet>
+        <router-outlet>
+          <app-spinner></app-spinner>
+        </router-outlet>
       </div>
     </mat-drawer-content>
 
   </mat-drawer-container>
 </div>
-
-
-<script>
-
-  /*
-  <mat-toolbar color="primary" class="topbar telative" style="display: none !important">
-    <!-- ============================================================== -->
-    <!-- Logo - style you can find in header.scss -->
-    <!-- ============================================================== -->
-    <div class="navbar-header text-center">
-      <a class="navbar-brand" href="index.html">
-        <!-- Logo icon --><b>
-          <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-          <!-- Dark Logo icon -->
-          <img width="80" height="80" src="assets/images/aldea_logo.png" alt="homepage">
-          <!-- Light Logo icon -->
-          <!--<img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo">-->
-        </b>
-        <!--End Logo icon -->
-        <!-- Logo text -->
-        <!--<span fxShow="false" fxShow.gt-xs>
-        dark Logo text -->
-        <!--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo">-->
-        <!-- Light Logo text -->
-        <!--<img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage">
-          <label style="color:#FFBD59">ALDEA</label>
-        </span>-->
-      </a>
-    </div>
-    <!-- ============================================================== -->
-    <!-- sidebar toggle -->
-    <!-- ============================================================== -->
-
-    <button mat-icon-button (click)="snav.toggle()" value="sidebarclosed">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span fxFlex></span>
-    <!-- ============================================================== -->
-    <!-- app header component - style you can find in header.scss / header.component.ts-->
-    <!-- ============================================================== -->
-    <app-header></app-header>
-  </mat-toolbar>*/
-
-</script>

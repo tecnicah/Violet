@@ -41,7 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DialogAddCall } from './dialog/dialog-add-call/addCall.component';
 import { DialogAssignTask } from './dialog/dialog-assign-task/assignTask.component';
 import { DialogEditTask } from './dialog/dialog-edit-task/editTask.component';
-import { DialogMapit } from './dialog/dialog-mapit/mapit.component';
+//import { DialogMapit } from './dialog/dialog-mapit/mapit.component';
 import { DialogViewEscalation } from './dialog/dialog-view-escalation/viewEscalation.component';
 import { DialogEscalationLevels } from './dialog/escalation-levels/escalationLevel.component';
 
@@ -52,7 +52,6 @@ import { DialogResidencyPermitComponent } from './dialog/dialog-residency-permit
 import { DialogAddAppointmentComponent } from './dialog/dialog-add-appointment/dialog-add-appointment.component';
 import { DialogExportComponent } from './dialog/dialog-export/dialog-export.component';
 
-import { ExportAsModule } from 'ngx-export-as';
 import { PreDecisionOrientationComponent } from './dialog/pre-decision-orientation/pre-decision-orientation.component';
 import { AreaOrientationComponent } from './dialog/area-orientation/area-orientation.component';
 import { HomeFindingComponent } from './dialog/home-finding/home-finding.component';
@@ -66,7 +65,6 @@ import { DialogTransportationComponent } from './dialog/dialog-transportation/di
 import { DialogAirportTransportationComponent } from './dialog/dialog-airport-transportation/dialog-airport-transportation.component';
 import { DialogCompleteComponent } from './dialog/dialog-complete/dialog-complete.component';
 import { DialogEvaluateComponent } from './dialog/dialog-evaluate/dialog-evaluate.component';
-import { BarRatingModule } from "ngx-bar-rating";
 import { DialogRequestPaymentComponent } from './dialog/dialog-request-payment/dialog-request-payment.component';
 import { DialogTenancyComponent } from './dialog/dialog-tenancy/dialog-tenancy.component';
 import { DialogPropertyComponent } from './dialog/dialog-property/dialog-property.component';
@@ -90,7 +88,8 @@ import { DialogCommentHistoryComponent } from './dialog/dialog-comment-history/d
 import { DialogDocumentsView } from './dialog/dialog-documents-view/dialog-documents-view.component';
 import { DialogLibraryDocuments } from './dialog/dialog-library-documents/dialog-library-documents.component';
 import { DialogCoordinatorsComponent } from './dialog/dialog-coordinators/Coordinators.component';
-import { AgmCoreModule } from '@agm/core';
+import { DialogExporthsComponent } from './dialog/dialog-export-hs/dialog-export-hs.component'
+
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { MatTimepickerModule } from 'mat-timepicker';
 import { ActionItemsComponent } from './ActionItems/ActionsItems.component';
@@ -302,7 +301,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { EditorModule } from '@progress/kendo-angular-editor';
 import { NgxMaskModule } from 'ngx-mask';
 import { DialogBundleComponent } from './dialog/dialog-bundle/dialog-bundle.component';
-import { DialogCampusComponent } from './dialog/dialog-campus/dialog-campus.component';
+//import { DialogCampusComponent } from './dialog/dialog-campus/dialog-campus.component';
 import { DialogInHoldComponent } from './dialog/dialog-in-hold/dialog-in-hold.component';
 import { DialogCatalogResponsibleComponent } from './dialog/dialog-catalog-responsible/dialog-catalog-responsible.component';
 import { OtherImmigrationComponent } from './dialog/other-immigration/other-immigration.component';
@@ -323,6 +322,50 @@ import { ScopeservicesallComponent } from './dialog/scopeservicesall/scopeservic
 import { DialogConfirmServiceComponent } from './dialog/dialog-confirm-service/dialog-confirm-service.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop-image.component';
+import { DialogAcceptedComponent } from './dialog/dialog-accepted/dialog-accepted.component';
+import { QuillModule } from 'ngx-quill';
+import { DialogPaymentSchoolingComponent } from './dialog/dialog-payment-schooling/dialog-payment-schooling.component';
+import { DialogPaymentRentalComponent } from './dialog/dialog-payment-rental/dialog-payment-rental.component';
+import  {MatCurrencyFormatModule} from 'mat-currency-format';
+import { DialogStatusDetailComponent } from './dialog/dialog-status-detail/dialog-status-detail.component';
+import { DialoglLandlordBankDetailComponent } from './dialog/dialogl-landlord-bank-detail/dialogl-landlord-bank-detail.component';
+import { AppointmentAllApointmentComponent } from './appointment-all-apointment/appointment-all-apointment.component';
+import { DialogAttendeesInspecComponent } from './dialog/dialog-attendees-inspec/dialog-attendees-inspec.component';
+import { PrintLsfComponent } from './dialog/print-lsf/print-lsf.component';
+import { DialogAddPaymenentInformationComponent } from './dialog/dialog-add-paymenent-information/dialog-add-paymenent-information.component';
+import { PrintLdComponent } from './dialog/print-ld/print-ld.component';
+import { PrintIrComponent } from './dialog/print-ir/print-ir.component';
+import { AsignarserviciosComponent } from './dialog/asignarservicios/asignarservicios.component';
+import { DialogDasboardServiceComponent } from './dialog/dialog-dasboard-service/dialog-dasboard-service.component';
+import { LsfComponent } from './dialog/home-finding/lsf/lsf.component';
+import { IrComponent } from './dialog/home-finding/ir/ir.component';
+import { HomeFindingFullComponent } from './home-finding-full/home-finding-full.component';
+import { DialogClientSdComponent } from './dialog/dialog-client-sd/dialog-client-sd.component';
+import { DialogClientDocuComponent } from './dialog/dialog-client-docu/dialog-client-docu.component';
+import { LsfSelectComponent } from './dialog/lsf-select/lsf-select.component';
+import { LsfContractComponent } from './dialog/lsf-contract/lsf-contract.component';
+import { LsfPaymentsComponent } from './dialog/lsf-payments/lsf-payments.component';
+import { LsfCostComponent } from './dialog/lsf-cost/lsf-cost.component';
+import { LsfRenewalComponent } from './dialog/lsf-renewal/lsf-renewal.component';
+import { LsfDepartureComponent } from './dialog/lsf-departure/lsf-departure.component';
+import { LsfLandlordComponent } from './dialog/lsf-landlord/lsf-landlord.component';
+import { IrSelectComponent } from './dialog/ir-select/ir-select.component';
+import { IrMoveinComponent } from './dialog/ir-movein/ir-movein.component';
+import { IrMoveoutComponent } from './dialog/ir-moveout/ir-moveout.component';
+import { IrIrComponent } from './dialog/ir-ir/ir-ir.component';
+import { IrMoveinDetailComponent } from './dialog/ir-movein-detail/ir-movein-detail.component';
+import { IrInspectionDetailComponent } from './dialog/ir-inspection-detail/ir-inspection-detail.component';
+import { IrRepairDetailComponent } from './dialog/ir-repair-detail/ir-repair-detail.component';
+import { ChatAssignamentComponent } from './messenger-center/chat-assignament/chat-assignament.component';
+import { DialogDocumnetsServiceDetailComponent } from './dialog/dialog-documnets-service-detail/dialog-documnets-service-detail.component';
+import { DialogAddDocumentsDetailComponent } from './dialog/dialog-add-documents-detail/dialog-add-documents-detail.component';
+import { DialogCommentsServiceDetailComponent } from './dialog/dialog-comments-service-detail/dialog-comments-service-detail.component';
+import { DialogRemindersServiceDetailComponent } from './dialog/dialog-reminders-service-detail/dialog-reminders-service-detail.component';
+import { DialogAddReminderDetailComponent } from './dialog/dialog-add-reminder-detail/dialog-add-reminder-detail.component';
+import { DialogAddCommentrDetailComponent } from './dialog/dialog-add-commentr-detail/dialog-add-commentr-detail.component';
+import { HousinglistComponent } from './dialog/housinglist/housinglist.component';
+import { CardServiceDetaillComponent } from './home-finding-full/card-service-detaill/card-service-detaill.component';
+import { DialogPaymentProcessComponent } from './dialog/dialog-payment-process/dialog-payment-process.component';
 
 @NgModule({
   imports: [
@@ -344,16 +387,9 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     CdkTableModule,
     ChartistModule,
     FormsModule,
-    ExportAsModule,
     MatSnackBarModule,
-    BarRatingModule,
     NgxPaginationModule,
-    AgmCoreModule.forRoot({
-      // please get your own API key here:
-      // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
-      apiKey: 'AIzaSyBF-AEeoIsOV8elnHA3zQ5h5lgFMp5TaF4',
-      libraries: ["places"]
-    }),
+    
     GooglePlaceModule,
     MatTimepickerModule,
     NgxIconCalendarModule,
@@ -364,7 +400,8 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     DndListModule,
     MatTableExporterModule,
     OrderModule,
-    ImageCropperModule
+    ImageCropperModule,
+    QuillModule.forRoot()
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'en-US'},],
   entryComponents: [
@@ -383,7 +420,7 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     DialogAddCall,
     DialogAssignTask,
     DialogEditTask,
-    DialogMapit,
+    //DialogMapit,
     DialogViewEscalation,
     DialogEscalationLevels,
     DialogCortporateAssistance,
@@ -428,7 +465,7 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     DialogAddCall,
     DialogAssignTask,
     DialogEditTask,
-    DialogMapit,
+    //DialogMapit,
     DialogViewEscalation,
     DialogEscalationLevels,
     DialogCortporateAssistance,
@@ -489,6 +526,7 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     DialogCalendarComponent,
     CalendarComponent,
     DialogCoordinatorsComponent,
+    DialogExporthsComponent,
     DialogFollowingComponent,
     EscalationsComponent,
     DialogArrivalComponent,
@@ -671,7 +709,7 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     DialogAddConclusionCompletionReportComponent,
     DialogDocumentsRelocationComponent,
     DialogBundleComponent,
-    DialogCampusComponent,
+    //DialogCampusComponent,
     DialogInHoldComponent,
     DialogCatalogResponsibleComponent,
     OtherImmigrationComponent,
@@ -690,7 +728,49 @@ import { DialogCropImageComponent } from './dialog/dialog-crop-image/dialog-crop
     OfficetypecatalogComponent,
     ScopeservicesallComponent,
     DialogConfirmServiceComponent,
-    DialogCropImageComponent
+    DialogCropImageComponent,
+    DialogAcceptedComponent,
+    DialogPaymentSchoolingComponent,
+    DialogPaymentRentalComponent,
+    DialogStatusDetailComponent,
+    DialoglLandlordBankDetailComponent,
+    AppointmentAllApointmentComponent,
+    DialogAttendeesInspecComponent,
+    PrintLsfComponent,
+    DialogAddPaymenentInformationComponent,
+    PrintLdComponent,
+    PrintIrComponent,
+    AsignarserviciosComponent,
+    DialogDasboardServiceComponent,
+    LsfComponent,
+    IrComponent,
+    HomeFindingFullComponent,
+    DialogClientSdComponent,
+    DialogClientDocuComponent,
+    LsfSelectComponent,
+    LsfContractComponent,
+    LsfPaymentsComponent,
+    LsfCostComponent,
+    LsfRenewalComponent,
+    LsfDepartureComponent,
+    LsfLandlordComponent,
+    IrSelectComponent,
+    IrMoveinComponent,
+    IrMoveoutComponent,
+    IrIrComponent,
+    IrMoveinDetailComponent,
+    IrInspectionDetailComponent,
+    IrRepairDetailComponent,
+    ChatAssignamentComponent,
+    DialogDocumnetsServiceDetailComponent,
+    DialogAddDocumentsDetailComponent,
+    DialogCommentsServiceDetailComponent,
+    DialogRemindersServiceDetailComponent,
+    DialogAddReminderDetailComponent,
+    DialogAddCommentrDetailComponent,
+    HousinglistComponent,
+    CardServiceDetaillComponent,
+    DialogPaymentProcessComponent
   ]
 })
 export class MaterialComponentsModule {}

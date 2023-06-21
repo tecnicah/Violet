@@ -27,7 +27,7 @@ export class DialogExperiensTeamComponent implements OnInit {
   }
 
   async catalogos() {
-    this.serviceLine = await this._services.getCatalogueFrom('GetServiceLine');
+    //this.serviceLine = await this._services.getCatalogueFrom('GetServiceLine');
     // GetExperienceTeamCatalog/1?client=130
     this._services.service_general_get_noapi('GetExperienceTeamCatalog/'+ this.data.idServiceLine +'?client=' + this.data.idClientPartnerProfile).subscribe(r =>{
       if(r.success){

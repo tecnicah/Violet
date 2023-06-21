@@ -233,30 +233,43 @@
             <td mat-cell *matCellDef="let element"> {{element.phone  | mask: '(000) 000-0000'}} </td>
           </ng-container>
 
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="TotalServices">
+          <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> Status </th>
+            <td mat-cell *matCellDef="let element"> 
+              <span *ngIf="element.statusName != 'Active' && element.statusName != 'Inactive'">
+                {{element.statusName}} 
+              </span> 
+              <span *ngIf="element.statusName == 'Active'" style="color:#009577">
+                {{element.statusName}} 
+              </span> 
+            </td>
+            <td mat-cell *matCellDef="let element"> 
+              <span *ngIf="element.statusName == 'Inactive'" style="color:#ff5858">
+                {{element.statusName}} 
+              </span> 
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="TotalServices">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="totalServices"> TotalServices </th>
             <td mat-cell *matCellDef="let element"> {{element.totalServices}} </td>
           </ng-container>
 
-          <!-- Symbol Column -->
           <ng-container matColumnDef="Experience">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="experience"> Experience </th>
             <td mat-cell *matCellDef="let element"> {{element.experience}} </td>
           </ng-container>
 
-          <!-- Symbol Column -->
           <ng-container matColumnDef="Contact">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="contact"> Contact </th>
             <td mat-cell *matCellDef="let element" style="cursor: pointer !important;">
-              <!--{{element.contact}}-->
               <div class="browser">
                 <a href="mailto:{{element.contact}}">
                 <img src="assets/email.png" style="height: 30px; cursor: pointer;" />
               </a>
               </div>
             </td>
-          </ng-container>
+          </ng-container> -->
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

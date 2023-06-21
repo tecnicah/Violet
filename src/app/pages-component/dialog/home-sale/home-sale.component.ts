@@ -43,10 +43,7 @@ export class HomeSaleComponent implements OnInit {
   payments: any[] = [];
   public today_date: Date = new Date();
   visit: any[] = [];
-  serviceScope : any[] = [];
-
-
-
+  serviceScope = null;
 
   ngOnInit(): void {
     this.loader.showLoader();
@@ -56,6 +53,10 @@ export class HomeSaleComponent implements OnInit {
     console.log('id', this.data.data.service[0].id);
     this.dataHomeSale();
   }
+
+
+
+  
 
    // get service scope
   getServiceScope() {
@@ -80,7 +81,7 @@ export class HomeSaleComponent implements OnInit {
     this.getCatalog();
     this._services.service_general_get(`RelocationServices/GetHomeSaleById?id=${this.idHomeSale}`).subscribe(resp => {
       if (resp.success) {
-        this.loader.hideLoader();
+        
         this.homeSale = resp.result
         console.log('home sale', this.homeSale);
         this.visit = this.homeSale.visitHomeSales;
@@ -88,12 +89,101 @@ export class HomeSaleComponent implements OnInit {
         this.get_payment();
         this.getDataHousing();
         this.getServiceScope();
-
+        this.setup_permissions_settings();
       }
+      this.loader.hideLoader();
     }, (error: any) => {
       console.log('error GetHomeSaleById', error);
+      this.loader.hideLoader();
     });
   }
+
+  //////////////////////manage estatus 
+
+  disabled_by_permissions: boolean = false;
+  hide_by_permissions: boolean = false;
+  hide_complete: boolean = false;
+  show_completed: boolean = false;
+  show_progress: boolean = false;
+  wo_: boolean = false;
+  sr_: boolean = false;
+
+  setup_permissions_settings() {
+    debugger;
+    if (!this.data.data.numberWorkOrder) {
+      this.wo_ = this.data.workOrderId;
+    }
+    else {
+      this.wo_ = this.data.data.numberWorkOrder
+    }
+
+    if (!this.data.data.number_server) {
+      this.sr_ = this.data.data.serviceNumber
+    }
+    else {
+      this.sr_ = this.data.data.number_server
+    }
+
+    if (this.user.role.id == 3) {
+      this.disabled_by_permissions = true
+    }
+    else {
+      this.hide_by_permissions = true;
+    }
+    if (this.homeSale.statusId != 39 && this.homeSale.statusId != 2) { //active , in progress
+      this.hide_complete = true;
+    }
+    else {
+      if (this.homeSale.statusId == 39) {
+        this.show_progress = true;
+      }
+      else {
+        this.show_completed = true;
+      }
+    }
+  }
+
+  change_button() {
+    debugger;
+    if (this.show_completed) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure the service is complete?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // console.log(result);
+        if (result) {
+          this.homeSale.statusId = 37; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+
+    if (this.show_progress) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Do you want start the service?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // console.log(result);
+        if (result) {
+          this.homeSale.statusId = 2; //penidng to completion 
+          this.save();
+        }
+      });
+    }
+  }
+
+  //////////////////////manage estatus 
+
   getdeliver() {
     this._services.service_general_get(`ServiceOrder/GetDeliverTo?wos=${this.homeSale.workOrderServices}`).subscribe((data => {
       console.log(data);
@@ -494,6 +584,7 @@ export class HomeSaleComponent implements OnInit {
 
   }
   save(){
+    this.loader.showLoader();
     console.log("Informacion a guardar:  ",this.homeSale);
     this.homeSale.updateBy = this.user.id;
     this.homeSale.documentHomeSales = this.document;
@@ -616,10 +707,10 @@ class DocumentHomeSaleModel {
 class ReminderHomeSaleModel {
   id: number = 0;
   homeSale: number = 0;
-  reminderDate: Date;
-  reminderComments: string = "";
+  reminderDate: Date = new Date();
+  reminderComments: string = " ";
   createdBy: number = 0;
-  createdDate: Date;
+  createdDate: Date = new Date();
 }
 class VisitHomeSalesModel {
   id: number = 0;

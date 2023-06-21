@@ -528,24 +528,7 @@ var DialogDepartureComponent = /** @class */ (function () {
     //******************************************************************************************************//
     //DATA FINAL//
     DialogDepartureComponent.prototype.dataFinal = function () {
-        /*
-        this.home_finding.permanentHomes = [];
-        let housing = this.dataSourceHousing.filter(function(E){
-          if(E.status == 'Pending'){
-            return true;
-          }
-        })
-    
-        housing.forEach(E => {
-         this._services.service_general_get("HousingList/GetHousing?key="+E.id).subscribe(async(data) => {
-            console.log("LA CASA ES: ",data);
-            if(data.success){
-              this.home_finding.permanentHomes.push(data.result);
-            }
-          });
-        })
-        */
-        ///console.log("OBJETO FINALLLLLLL OBJETO FINALLLLLLL: ",this.home_finding);
+
     };
     //DATA TABLE HOUSING//
     DialogDepartureComponent.prototype.getDataHousing = function () {

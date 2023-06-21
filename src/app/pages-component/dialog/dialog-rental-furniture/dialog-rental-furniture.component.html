@@ -18,7 +18,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
-            <span class="text-mini gray_05">Autho Date</span><br />
+            <span class="text-mini gray_05">Autho</span><br />
             {{rentalData.authoDate | date:'dd MMM yyy'}}
           </div>
 
@@ -32,15 +32,12 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div *ngIf="rentalData.authoAcceptanceDate != '0001-01-01T00:00:00'">
-            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+            <span class="text-mini gray_05">Autho Acceptance</span><br />
             {{rentalData.authoAcceptanceDate | date:'dd MMM yyy'}}
           </div>
-
           <div *ngIf="rentalData.authoAcceptanceDate == '0001-01-01T00:00:00'">
-            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
-
+            <span class="text-mini gray_05">Autho Acceptance</span><br />
           </div>
-
           <div style="text-align:end; width: auto !important;">
             <mat-icon class="calendar">calendar_today</mat-icon>
           </div>
@@ -51,7 +48,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div style="height: 100%; " *ngIf="rentalData.coordination">
           <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
-          <mat-checkbox  [disabled]="user.role.id == 3" class="example-margin" [(ngModel)]="rentalData.coordination">
+          <mat-checkbox disabled class="example-margin" [(ngModel)]="rentalData.coordination">
           </mat-checkbox>
         </div>
       </mat-grid-tile>
@@ -66,31 +63,22 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Deliver To</mat-label>
-            <mat-select  [disabled]="user.role.id == 3" [(ngModel)]="rentalData.deliveredTo">
-              <mat-option *ngFor="let item of caRelationship" [value]="item.dependentId">{{item.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="80px">
+      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"> 
+        <div class="page__section-data font-size-12 comments input_final" style="display: flex;">
           <div>
-            <span class="text-mini gray_05">Completion Date</span><br />
-            {{ rentalData.serviceCompletionDate | date:'dd/MMM/yyy' }}
+            <span class="text-mini gray_05">Completion</span><br />
+            {{ rentalData.serviceCompletionDate | date:'dd MMM yyy'}}
+          </div>
+
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
           </div>
         </div>
       </mat-grid-tile>
-
     </mat-grid-list>
-
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
@@ -102,14 +90,14 @@
         <div style="display: flex; justify-content: space-around;" class="input_central wid">
           <mat-form-field appearance="fill" style="width: 49% !important;">
             <mat-label>Total Time Alloted</mat-label>
-            <mat-select  [disabled]="user.role.id == 3" [(ngModel)]="rentalData.totalTimeAllowed">
+            <mat-select  [(ngModel)]="rentalData.totalTimeAllowed">
               <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="formFild wid" style="width: 40% !important;">
             <mat-label>Days</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.totalTimeAllowedId">
+            <mat-select  [(ngModel)]="rentalData.totalTimeAllowedId">
               <mat-option *ngFor="let item of caDuration" [value]="item.id">{{item.duration}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -120,7 +108,8 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Budget</mat-label>
-            <input [disabled]="user.role.id == 3" matInput required placeholder="Budget" type="number" min="0" [(ngModel)]="rentalData.budget">
+            <input  matInput required placeholder="Budget" type="number" min="0"
+              [(ngModel)]="rentalData.budget">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -129,7 +118,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill" class="formFild">
             <mat-label>Currency</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.currency">
+            <mat-select  [(ngModel)]="rentalData.currency">
               <mat-option *ngFor="let item of caCurrency" [value]="item.id">{{item.currency}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -142,7 +131,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Beds</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.beds">
+            <mat-select  [(ngModel)]="rentalData.beds">
               <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -153,7 +142,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Baths</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.baths">
+            <mat-select  [(ngModel)]="rentalData.baths">
               <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -164,7 +153,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Family Members</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.familyMembers">
+            <mat-select  [(ngModel)]="rentalData.familyMembers">
               <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -174,48 +163,15 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div>
+        <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Property Address</mat-label>
-            <input [disabled]="user.role.id == 3"  matInput [(ngModel)]="rentalData.propertyAddress">
+            <input  matInput [(ngModel)]="rentalData.propertyAddress">
           </mat-form-field>
         </div>
       </mat-grid-tile>
-
-
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid">
-          <p class="page__section-name">Payments</p>
-        </div>
-      </mat-grid-tile>
     </mat-grid-list>
-
-    <table class="mat-elevation-z8 textarea mat-table">
-      <tr class="mat-header-row">
-        <th class="mat-header-cell">Ongoing Payments</th>
-        <th class="mat-header-cell">Payment Type</th>
-        <th class="mat-header-cell"></th>
-      </tr>
-      <tr class="mat-row" *ngFor="let data of rentalData.paymentsRentalFurnitureCoordinations; let i = index">
-        <td class="mat-cell">{{data.paymentResponsibility}}</td>
-        <td class="mat-cell">{{data.paymentType}}</td>
-        <td class="mat-cell">
-          <img src="assets\icons\pencil.png" style="width: 20px;" [disabled]="user.role.id == 3" (click)="editPaymentType(data, i)">
-        </td>
-      </tr>
-    </table>
-
     <mat-grid-list cols="4" rowHeight="70px">
-
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="flex: 0 1 152px; left: 6px">
-            <button class="button-icon button-icon--more" [disabled]="user.role.id == 3" (click)="addpayment()">
-              Add Payment
-            </button>
-          </div>
-        </div>
-      </mat-grid-tile>
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
@@ -225,38 +181,42 @@
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central wid">
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" >
             <mat-label>Supplier Partner</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.supplierPartner" (ngModelChange)='getInfo(); getMain();'>
+            <mat-select  [(ngModel)]="rentalData.supplierPartner"
+              (ngModelChange)='getInfo(); _supplier(); getMain();'>
               <mat-option *ngFor="let item of supplier_get" [value]="item.id">{{item.legalName}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <img src="/assets/icons/perfil.svg" alt="" style="position: absolute; right: 20px;"
-          [matMenuTriggerFor]="supplier">
+          [matMenuTriggerFor]="supplier" *ngIf="rentalData.supplierPartner != null && rentalData.supplierPartner != 0 && rentalData.supplierPartner != '' ">
       </mat-grid-tile>
 
       <mat-menu #supplier="matMenu" xPosition="before">
         <div class="bg "></div>
         <div class="assigned_services wid">
           <div class="perfil">
-            <img src={{_services.url_images}}{{info.photo}} alt="">
-            <div class="title">
+            <img *ngIf="info.photo != ''" src={{_services.url_images}}{{info.photo}} alt="">
+            <img *ngIf="info.photo == ''" src="assets/images/users/avatar.png"alt="">
+            <!-- <div class="title">
               VIP
               <br>
-              <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [checked]="info.luxuryVip">
+              <mat-checkbox  class="example-margin" [checked]="info.luxuryVip">
               </mat-checkbox>
-            </div>
+            </div> -->
           </div>
           <br>
           <div class="data">
             <span class="title">Service Line</span>
             <br>
-            <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [checked]='true' *ngIf="info.serviceLineId == 1">
+            <mat-checkbox  class="example-margin" [checked]='true'
+              *ngIf="info.serviceLineId == 1">
               <p class="subtitle" style="font-size: 8px; margin: 0;">Immigration</p>
             </mat-checkbox>
 
-            <mat-checkbox [disabled]="user.role.id == 3"  class="example-margin" [checked]='true' *ngIf="info.serviceLineId == 2">
+            <mat-checkbox  class="example-margin" [checked]='true'
+              *ngIf="info.serviceLineId == 2">
               <p class="subtitle" style="font-size: 8px; margin: 0;">Relocation </p>
             </mat-checkbox>
             <br>
@@ -269,7 +229,7 @@
             <p>{{info.supplierSince}}</p>
           </div>
           <div class="pie" style="text-align: end;">
-            <span style="width: 100%;">View Profile</span>
+            <!-- <span style="width: 100%;">View Profile</span> -->
           </div>
         </div>
       </mat-menu>
@@ -277,21 +237,32 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central wid">
           <mat-form-field appearance="fill">
-            <mat-label>Main Contact</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.mainContact" (ngModelChange)='getInfoMain();'>
-              <mat-option *ngFor="let item of main" [value]="item.id">{{item.phoneNumber}}</mat-option>
+            <mat-label>Contact</mat-label>
+            <mat-select [(ngModel)]="rentalData.mainContact" (ngModelChange)='getInfoMain();'>
+              <mat-option [value]=null>No avalible contacts</mat-option>
+              <mat-option *ngFor="let item of Supplier" [value]="item.id">
+                 {{item.contactName}}
+                </mat-option>
             </mat-select>
           </mat-form-field>
+          <!-- <mat-form-field appearance="fill">
+            <mat-label>Main Contact</mat-label>
+            <mat-select  [(ngModel)]="rentalData.mainContact"
+              (ngModelChange)='getInfoMain();'>
+              <mat-option *ngFor="let item of main" [value]="item.id">{{item.phoneNumber}}</mat-option>
+            </mat-select>
+          </mat-form-field> -->
         </div>
         <img src="/assets/icons/supplier.svg" alt="" style="position: absolute; right: 20px;"
-          [matMenuTriggerFor]="main_contact">
+          [matMenuTriggerFor]="main_contact" *ngIf="rentalData.mainContact != null && rentalData.mainContact != 0 && rentalData.mainContact != '' ">
       </mat-grid-tile>
 
       <mat-menu #main_contact="matMenu" xPosition="before">
         <div class="bg"></div>
         <div class="assigned_services wid">
           <div class="perfil">
-            <img src={{_services.url_images}}{{infomain.photo}} alt="">
+            <img *ngIf="infomain.photo != ''" src={{_services.url_images}}{{infomain.photo}} alt="">
+            <img *ngIf="infomain.photo == ''" src="assets/images/users/avatar.png"alt="">
             <!--
             <div class="title">
               VIP
@@ -314,7 +285,7 @@
             <p>{{infomain.supplierSince}}</p>
           </div>
           <div class="pie" style="text-align: end;">
-            <span style="width: 100%;">View Profile</span>
+            <!-- <span style="width: 100%;">View Profile</span> -->
           </div>
         </div>
       </mat-menu>
@@ -327,7 +298,8 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Delivery Date</mat-label>
-            <input [disabled]="user.role.id == 3" matInput [min]="minDate"  required [matDatepicker]="pickerDelivery_Date" [(ngModel)]="rentalData.deliveredDate">
+            <input  matInput [min]="minDate" required
+              [matDatepicker]="pickerDelivery_Date" [(ngModel)]="rentalData.deliveredDate">
             <mat-datepicker-toggle matSuffix [for]="pickerDelivery_Date"></mat-datepicker-toggle>
             <mat-datepicker #pickerDelivery_Date></mat-datepicker>
           </mat-form-field>
@@ -338,8 +310,8 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Scheduled Pick-Up Date</mat-label>
-            <input  [disabled]="user.role.id == 3" matInput [min]="minDate" required [matDatepicker]="pickerScheduled_Pick_Up_Date"
-              [(ngModel)]="rentalData.scheduledPickUpDate">
+            <input  matInput [min]="minDate" required
+              [matDatepicker]="pickerScheduled_Pick_Up_Date" [(ngModel)]="rentalData.scheduledPickUpDate">
             <mat-datepicker-toggle matSuffix [for]="pickerScheduled_Pick_Up_Date"></mat-datepicker-toggle>
             <mat-datepicker #pickerScheduled_Pick_Up_Date></mat-datepicker>
           </mat-form-field>
@@ -350,7 +322,8 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Total Days</mat-label>
-            <input  [disabled]="user.role.id == 3" matInput required placeholder="Total Days" type="number" min="0" [(ngModel)]="rentalData.totalDays">
+            <input  matInput required placeholder="Total Days" type="number" min="0"
+              [(ngModel)]="rentalData.totalDays">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -360,9 +333,19 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central wid">
           <mat-form-field appearance="fill">
-            <mat-label>Rental Amount</mat-label>
-            <input  [disabled]="user.role.id == 3" matInput required placeholder="Rental Amount" [(ngModel)]="rentalData.rentalAmount" type="number"
-              min="0">
+            <mat-label>1st Month First Rent Amount</mat-label>
+            <input  matInput required placeholder="1st Month First Rent Amount"
+              [(ngModel)]="rentalData.rentalAmount" type="number" min="0">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Ongoing Rent Amount</mat-label>
+            <input  matInput required placeholder="Ongoing Rent Amount"
+              [(ngModel)]="rentalData.rentalOngoingAmount" type="number" min="0">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -371,7 +354,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Currency</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.currencyExtension">
+            <mat-select  [(ngModel)]="rentalData.currencyExtension">
               <mat-option *ngFor="let item of caCurrency" [value]="item.id">{{item.currency}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -382,7 +365,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Security Deposit</mat-label>
-            <mat-select  [disabled]="user.role.id == 3" [(ngModel)]="rentalData.securityDeposit">
+            <mat-select  [(ngModel)]="rentalData.securityDeposit">
               <mat-option [value]="1">Yes</mat-option>
               <mat-option [value]="2">No</mat-option>
             </mat-select>
@@ -391,106 +374,100 @@
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final wid">
+        <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Payments Due</mat-label>
-            <input  [disabled]="user.role.id == 3" matInput required placeholder="Payments Due" [(ngModel)]="rentalData.paymentDue" type="number"
-              min="0">
+            <input  matInput required placeholder="Day of the month"
+              [(ngModel)]="rentalData.paymentDue" type="number" min="0">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Return Security Deposit to</mat-label>
+            <mat-select  [(ngModel)]="rentalData.returnSecurityDeposit">
+              <mat-option *ngFor="let item of caRelationship" [value]="item.dependentId">
+                {{item.name}}/{{item.relationship}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Return Security Deposit to</mat-label>
+            <mat-select [(ngModel)]="rentalData.returnSecurityDeposit">
+              <mat-option *ngFor="let item of ca_responsible" [value]="item.id">{{item.responsable}}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid">
+        <div class="input_central textarea">
           <mat-form-field appearance="fill">
-            <mat-label>Return Security Deposit to</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="rentalData.returnSecurityDeposit">
-              <mat-option *ngFor="let item of caRelationship" [value]="item.dependentId">
-                {{item.name}}/{{item.relationship}}</mat-option>
+            <mat-label>Payment Method</mat-label>
+            <mat-select [(ngModel)]="rentalData.idCatPaymentmethods">
+              <mat-option *ngFor="let item of ca_payment" [value]="item.id">{{item.paymentMethods}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </mat-grid-tile>
 
 
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
-          <p class="page__section-name">Extensions</p>
-          <mat-slide-toggle [disabled]="user.role.id == 3" (change)="displayPanel($event)" [checked]="rentalData.extensionToggle ? true : false">
-          </mat-slide-toggle>
+          <p class="page__section-name" style="width: 100%;">Payment Process</p>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
-    <br><br><br>
-    <!------------------------------------------------------------------------------------------------------------->
-    <!--OPEN MAT CARD EXTENSION-->
-    <div class="wid" *ngIf="rentalData.extensionToggle">
-      <mat-card *ngFor="let item of rentalData.stayExtensionRentalFurnitureCoordinations">
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <div class="input_central wid">
-              <mat-form-field appearance="fill">
-                <mat-label>Initial Date</mat-label>
-                <input [disabled]="user.role.id == 3" matInput [min]="minDate" required [matDatepicker]="pickerInitial__Date" placeholder="Initial Date"
-                  [(ngModel)]="item.initialDate">
-                <mat-datepicker-toggle matSuffix [for]="pickerInitial__Date"></mat-datepicker-toggle>
-                <mat-datepicker #pickerInitial__Date></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <div class="input_central wid">
-              <mat-form-field appearance="fill">
-                <mat-label>Final Date</mat-label>
-                <input [disabled]="user.role.id == 3" matInput [min]="minDate" required [matDatepicker]="pickerFinalDate" placeholder="Final Date"
-                  [(ngModel)]="item.finalDate">
-                <mat-datepicker-toggle matSuffix [for]="pickerFinalDate"></mat-datepicker-toggle>
-                <mat-datepicker #pickerFinalDate></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <div class="input_central wid">
-              <mat-form-field appearance="fill">
-                <mat-label>Total Days</mat-label>
-                <input [disabled]="user.role.id == 3" matInput required placeholder="Total Days" [(ngModel)]="item.totalDays">
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div class="wid">
-              <mat-form-field appearance="fill">
-                <mat-label>Comment</mat-label>
-                <input [disabled]="user.role.id == 3" matInput required placeholder="Comment" [(ngModel)]="item.comment" #message_reminder
-                  maxlength="500">
-                <mat-hint align="end">{{message_reminder.value.length}} / 500</mat-hint>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-      </mat-card>
-
-      <mat-grid-list cols="4" rowHeight="70px">
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" style="flex: 0 1 152px; left: 6px">
-              <button [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="addExtencion()">
-                Add Extension
-              </button>
-            </div>
+       <!-- <div>-->
+        <!----------------------------------------------------------------------------------------->
+        <!--START TABLE PAYMENTS-->
+        <table class="mat-elevation-z8 textarea mat-table">
+          <tr class="mat-header-row">
+            <th class="mat-header-cell">Payment</th>
+            <!-- <th class="mat-header-cell">Payment Type</th> -->
+            <th class="mat-header-cell">Responsible</th>
+            <th class="mat-header-cell">Amount</th>
+            <th class="mat-header-cell">Currency</th>
+            <th class="mat-header-cell"></th>
+          </tr>
+          <tr class="mat-row" *ngFor="let item of rentalData.paymentRentals; let i = index">
+            <td class="mat-cell">{{item.description}}</td>
+            <!-- <td class="mat-cell">{{getPayment(item.paymentType)}}</td> -->
+            <td class="mat-cell">{{getResponsable(item.responsible)}}</td>
+            <td class="mat-cell">{{item.amount}}</td>
+            <td class="mat-cell">{{getCurrency(item.currency)}}</td>
+            <td class="mat-cell">
+              <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editPaymentType(item, i)">
+            </td>
+          </tr>
+        </table>
+        <!--CLOSE TABLE PAYMENTS-->
+        <!----------------------------------------------------------------------------------------->
+       
+     <!--  </div>-->
+     <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button class="button-icon button-icon--more" (click)="addPaymentType()">
+              Add Payment
+            </button>
           </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-    </div>
-    <!--CLOSE MAT CARD EXTENSION-->
-    <!------------------------------------------------------------------------------------------------------------->
-    <!------------------------------------------------------------------------------------------------------------->
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    
     <!--UPLOAD DOCUMENTS-->
     <mat-grid-list cols="1">
       <div class="page__section margin-top-min">
@@ -533,7 +510,7 @@
 
         <div class="page__section documents__ascard"
           *ngFor="let item of rentalData.documentRentalFurnitureCoordinations">
-          <img [disabled]="user.role.id == 3" src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          <img  src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important;" (click)="deleteDocument_DB(item.id)">
           <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important; margin-right: 25px;" (click)="showDocumentDialogDetails(item)">
@@ -582,129 +559,19 @@
       </div>
     </mat-grid-list>
 
-
-
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big"
             style="flex: 0 1 180px !important; left: 6px !important;">
-            <button [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="addDocument()">
+            <button  class="button-icon button-icon--more" (click)="addDocument()">
               Add New Document
             </button>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <!----------------------------------------------------------------------------------------->
-    <!-- Request Payment
-    <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div>
-          <p class="page__section-name">Requested Payments</p>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-    <mat-grid-list cols="4" rowHeight="40px">
-      <div class="rp_header">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Sub Total: {{calculo.ammountSubTotal  | currency}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Management Fee: {{calculo.managementFeeSubTotal | currency}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Wire Fee: {{calculo.wireFeeSubTotal | currency}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Advance Fee: {{calculo.advanceFeeSubTotal | currency}}</span>
-        </mat-grid-tile>
-      </div>
-    </mat-grid-list>
-    -->
-    <!----------------------------------------------------------------------------------------->
-    <!-- Request Payment  -->
-    <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid">
-          <p class="page__section-name">Requested Payments</p>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-    <!--mat-grid-list cols="4" rowHeight="40px">
-      <div class="rp_header">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Sub Total: {{calculo.ammountSubTotal  | currency}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Management Fee: {{calculo.managementFeeSubTotal | currency}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Wire Fee: {{calculo.wireFeeSubTotal | currency}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <span class="browser">Advance Fee: {{calculo.advanceFeeSubTotal | currency}}</span>
-        </mat-grid-tile>
-      </div>
-    </mat-grid-list-->
-    <!----------------------------------------------------------------------------------------->
-    <!--START TABLE PAYMENT-->
-    <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
-      <!-- Position Column -->
-      <ng-container matColumnDef="Payment">
-        <th mat-header-cell *matHeaderCellDef> Payment </th>
-        <td mat-cell *matCellDef="let element">
 
-        </td>
-      </ng-container>
-      <!-- Name Column -->
-      <ng-container matColumnDef="Amount">
-        <th mat-header-cell *matHeaderCellDef> Amount </th>
-        <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
-      </ng-container>
-      <!-- Weight Column -->
-      <ng-container matColumnDef="ManagementFee">
-        <th mat-header-cell *matHeaderCellDef> Management Fee </th>
-        <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
-      </ng-container>
-      <ng-container matColumnDef="WireFee">
-        <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
-        <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
-      </ng-container>
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="AdvanceFee">
-        <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
-        <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
-      </ng-container>
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Service">
-        <th mat-header-cell *matHeaderCellDef> Total </th>
-        <td mat-cell *matCellDef="let element"> {{element.service}} </td>
-      </ng-container>
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Recurrence">
-        <th mat-header-cell *matHeaderCellDef> Recurrence </th>
-        <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
-      </ng-container>
-      <!-- Symbol Column -->
-
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> </th>
-        <td mat-cell *matCellDef="let element">
-          <img [disabled]="user.role.id == 3" src="assets\icons\pencil.png" style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
-          <span>&nbsp;</span>
-          <img  [disabled]="user.role.id == 3" src="assets\icons\delete.png" style="width: 18px; cursor: pointer;"
-            (click)="deletePaymentConcept(element)">
-        </td>
-      </ng-container>
-
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;" [ngClass]="{'urgente': row.urgent == true}">
-      </tr>
-    </table>
-    <br><br>
-    <!--CLOSE TABLE PAYMENT-->
     <mat-grid-list cols="4" rowHeight="30px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty wid">
@@ -715,14 +582,12 @@
             <!--span class="browser">TOTAL: {{calculo.total | currency}}</span-->
           </div>
           <div class="page__section-butuonc wid" style="left: 6px;">
-            <button [disabled]="user.role.id == 3" class="button-icon button-icon--money" (click)="addPayment(null)">Request Payment</button>
+            <!-- <button  class="button-icon button-icon--money" (click)="addPayment(null)">Request Payment</button> -->
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <br><br>
-    <!----------------------------------------------------------------------------------------->
-
+    <br>
     <!----------------------------------------------------------------------------------------->
     <mat-grid-list cols="10" rowHeight="80px">
       <mat-grid-tile [colspan]="10" [rowspan]="1">
@@ -747,11 +612,6 @@
               </div>
             </div>
           </div>
-          <!-- <div>
-            <img class="avatar" src="{{_services.url_images}}{{data.user.avatar}}" alt=""
-              *ngIf="data.user.avatar != null">
-            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.user.avatar === null"></div>
-          </div> -->
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="2" [rowspan]="1">
@@ -789,10 +649,7 @@
 
       <mat-grid-list cols="4" rowHeight="160px">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="textarea">
-            <br><br>
-            <p *ngIf="i == 0">Comment</p>
-            <p *ngIf="i > 0">Reply</p>
+          <div class="textarea"> 
             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
               <textarea matInput (change)="data.reply = $event.target.value" [disabled]="data.id > 0" #message
                 maxlength="500">{{data.reply}}</textarea>
@@ -802,16 +659,13 @@
         </mat-grid-tile>
       </mat-grid-list>
     </div>
-    <!--END COMMENT-->
-    <!---------------------------------------------------------------------------------------------------->
-    <!--COMMENTS REPLY-->
-    <!---------------------------------------------------------------------------------------------------->
+
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="addReply()">
-              Add {{cr}}
+            <button *ngIf="rentalData.commentRentalFurnitureCoordinations[0].id != 0" class="button-icon button-icon--more" (click)="addReply()">
+              Add Comment
             </button>
           </div>
         </div>
@@ -826,8 +680,6 @@
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
-
     <!--ITERAR REMINDERS NUEVOS-->
     <mat-card *ngFor="let data of rentalData.reminderRentalFurnitureCoordinations; let i = index;">
 
@@ -841,8 +693,8 @@
           <div class="input_central wid">
             <mat-form-field appearance="fill">
               <mat-label>Reminder Date</mat-label>
-              <input matInput [disabled]="user.role.id == 3" [min]="minDate" required [matDatepicker]="pickerocho" placeholder="Reminder Date"
-                [(ngModel)]="data.reminderDate">
+              <input matInput  [min]="minDate" required [matDatepicker]="pickerocho"
+                placeholder="Reminder Date" [(ngModel)]="data.reminderDate">
               <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
               <mat-datepicker #pickerocho></mat-datepicker>
             </mat-form-field>
@@ -853,8 +705,8 @@
           <div class="input_central wid">
             <mat-form-field appearance="fill">
               <mat-label>Reminder Comments</mat-label>
-              <input matInput [disabled]="user.role.id == 3" required placeholder="Reminder Comments" [(ngModel)]="data.reminderComments"
-                #message_reminder maxlength="500">
+              <input matInput  required placeholder="Reminder Comments"
+                [(ngModel)]="data.reminderComments" #message_reminder maxlength="500">
               <mat-hint align="end">{{message_reminder.value.length}} / 500</mat-hint>
             </mat-form-field>
           </div>
@@ -866,7 +718,7 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button (click)="addReminder()" [disabled]="user.role.id == 3" class="button-icon button-icon--more">
+            <button (click)="addReminder()"  class="button-icon button-icon--more">
               Add Reminder
             </button>
           </div>
@@ -875,69 +727,80 @@
     </mat-grid-list>
 
 
-   <!--  Service Client Documents -->
-      <mat-grid-list cols="1" *ngIf="serviceScope">
-        <div class="page__section margin-top-min">
-          <div class="subtitledos">
-            Scope Client Service
-          </div>
-          <br><br>
-
-          <div *ngIf="serviceScope.documentcountries.length != 0" class="page__section">
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Document Type
-              </span>
-            </div>
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Status
-              </span>
-            </div>
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Privacy
-              </span>
-            </div>
-
-          </div>
-          <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
-            <!-- (click)="DeleteOnline(item.id)" -->
-            <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
-            style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
-            <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-              style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.documentType}}
-            </div>
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.status}}
-            </div>
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.privacy}}
-            </div>
-          </div>
+    <!--  //////////////////////////////// Service Client Documents //////////////////////////////-->
+  <mat-grid-list cols="1" *ngIf="serviceScope != null">
+    <div class="page__section margin-top-min">
+      <div class="subtitledos">
+        Client Service Documents
+      </div> <br><br>
+      <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          No Client Service Documents loaded
         </div>
-      </mat-grid-list>
-      <!-- Scope Client Service -->
-      <mat-grid-list cols="4" rowHeight="70px">
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="wid">
-            <p class="subtitledos">Client Service Scope</p>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
-          <div class="textarea">
-            <p [innerHTML]="serviceScope.scopeDescription"></p>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <br><br>
+      </div>
+      <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
+        <div class="page__section-input page__section-input--6_1-local">
+          <span class="documents__index documents__index--task">
+            Document Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1-local">
+          <span class="documents__index documents__index--task">
+            Upload
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1-local">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+      </div>
+      <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
+        <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" style="right: 40px;"
+          (click)="openFileOnWindow(item.fileRequest)">
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          {{item.documentType}}
+        </div>
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          {{item.updated_date | date:'dd MMM yyy'}}
+        </div>
+        <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+          {{item.status}}
+        </div>
+      </div>
+    </div>
+  </mat-grid-list>
 
 
+  <!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
 
+  <mat-grid-list cols="4" rowHeight="70px">
+    <br><br>
+    <div class="wid">
+      <p class="subtitledos">Client Service Scope</p>
+    </div>
+    <div *ngIf="serviceScope != null">
+      <div *ngIf="serviceScope.scopeDescription.length > 0" [innerHTML]="serviceScope.scopeDescription">
+      </div>
+    </div>
+    
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope != null">
+      <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+        Client Service Scope not captured or empty.
+      </div>
+      <div class="textarea" *ngIf="serviceScope.scopeDescription == null">
+        Client Service Scope not captured or empty.
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
+      <div class="textarea">
+        Client Service Scope not captured or empty.
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <br><br>
   </mat-dialog-content>
-
   <mat-dialog-actions align="end">
     <div class="page__section-buttong">
       <button (click)="save()">Save</button>

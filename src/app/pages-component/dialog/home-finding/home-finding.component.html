@@ -11,12 +11,12 @@
 
   <!-----------------------------------content-------------------------------------->
   <mat-dialog-content class="mat-typography">
-    <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-list cols="5" rowHeight="70px">
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
-            <span class="text-mini gray_05">Autho Date</span><br />
+            <span class="text-mini gray_05">Autho</span><br />
             {{home_finding.authoDate | date:'dd MMM yyy'}}
           </div>
 
@@ -29,12 +29,12 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div *ngIf="home_finding.authoAcceptanceDate != '0001-01-01T00:00:00'">
-            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+            <span class="text-mini gray_05">Acceptance</span><br />
             {{home_finding.authoDate | date:'dd MMM yyy'}}
           </div>
 
           <div *ngIf="home_finding.authoAcceptanceDate == '0001-01-01T00:00:00'">
-            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+            <span class="text-mini gray_05"> Acceptance</span><br />
 
           </div>
 
@@ -47,95 +47,72 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div style="height: 70%;" *ngIf="home_finding.coordination">
           <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="home_finding.coordination"></mat-checkbox>
+          <mat-checkbox disabled class="example-margin" [(ngModel)]="home_finding.coordination"></mat-checkbox>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
-          <mat-form-field appearance="fill">
-            <mat-label>Status</mat-label>
-            <mat-select [(ngModel)]="home_finding.statusId">
-              <mat-option *ngFor="let item of ca_estatus" [value]="item.id"> {{item.status}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Status</span><br />
+            <span style="background: none;
+        border: none;
+        color: blue;
+        text-decoration: underline; cursor: pointer;" (click)="change_status_detail()">
+              {{_texto_status}}</span>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Work Order</span><br />
+            {{ wo_ }}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Service #</span><br />
+              {{ sr_ }}
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
-          <!-- <mat-form-field appearance="fill">
-            <mat-label>Completion Date</mat-label>
-            <input matInput [matDatepicker]="pickertres" placeholder="Completion Date"
-              [(ngModel)]="home_finding.serviceCompletionDate">
-            <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
-            <mat-datepicker #pickertres></mat-datepicker>
-          </mat-form-field> -->
-          <div class="page__section-data font-size-12 comments input_final" style="display: flex;">
+        <div class="input_central">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
             <div>
               <span class="text-mini gray_05">Completion Date</span><br />
-              {{ home_finding.serviceCompletionDate | date:'dd MMM yyy' }}
+              {{ home_finding.serviceCompletionDate | date:'dd MMM yyy'}}
             </div>
             <div style="text-align:end; width: auto !important;">
               <mat-icon class="calendar">calendar_today</mat-icon>
             </div>
           </div>
-
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="home_finding.extensionHomeFindings.length != 0">
-        <div class="wid">
-          <p class="page__section-name">Extensions</p>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <!----------------------------OPEN TABLE EXTENSION------------------------------->
-    <table mat-table *ngIf="home_finding.extensionHomeFindings.length != 0" [dataSource]="dataSource" class="mat-elevation-z8 textarea">
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="Authorized By">
-        <th mat-header-cell *matHeaderCellDef> Authorized By </th>
-        <td mat-cell *matCellDef="let element"> {{element.dos}} </td>
-      </ng-container>
-
-      <!-- Weight Column -->
-      <ng-container matColumnDef="Autho Date">
-        <th mat-header-cell *matHeaderCellDef> Autho Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.tres}} </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Autho Acceptance Date">
-        <th mat-header-cell *matHeaderCellDef> Autho Acceptance Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.cuatro}} </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Time">
-        <th mat-header-cell *matHeaderCellDef> Time </th>
-        <td mat-cell *matCellDef="let element"> {{element.cinco}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <br><br>
-    <!----------------------------CLOSE TABLE EXTENSION------------------------------->
-    <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <mat-grid-list cols="5" rowHeight="70px">
+      <mat-grid-tile [colspan]="5" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Client Lease Process</p>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
+        <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Lease Guarantee</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="home_finding.leaseGuarentee">
+            <mat-select [(ngModel)]="home_finding.leaseGuarentee">
               <mat-option *ngFor="let data of leaseGuarentee" [value]="data.value">{{data.name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -143,21 +120,21 @@
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
+        <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Lease Signator</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="home_finding.leaseSignator">
-              <mat-option *ngFor="let item of ca_dependent" [value]="item.id"> {{item.name}}</mat-option>
+            <mat-select [(ngModel)]="home_finding.leaseSignator">
+              <mat-option *ngFor="let item of ca_dependent" [value]="item.id"> {{item.signator}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
+        <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Lease Template</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="home_finding.leaseTemplate">
+            <mat-select [(ngModel)]="home_finding.leaseTemplate">
               <mat-option *ngFor="let item of ca_leaseTemplate" [value]="item.id"> {{item.template}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -167,91 +144,167 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div style="height: 70%;">
           <p class="subtitle" style="font-size: 8px; margin: 0;">Client Security Inspection Required</p>
-          <mat-checkbox [disabled]="user.role.id == 3" class="example-margin" [(ngModel)]="home_finding.clientSecurityInspectionRequired"
+          <mat-checkbox class="example-margin" [(ngModel)]="home_finding.clientSecurityInspectionRequired"
             [checked]="home_finding.clientSecurityInspectionRequired"></mat-checkbox>
         </div>
       </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      </mat-grid-tile>
+
     </mat-grid-list>
-    <!----------------------------------------------------------------------------------------->
 
     <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="wid">
+          <p class="page__section-name">Payment Process</p>
+        </div>
+      </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Security Deposit</mat-label>
+            <mat-select [(ngModel)]="home_finding.securityDepositId">
+              <mat-option *ngFor="let item of ca_security" [value]="item.id">{{item.responsable}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Initial Rent Payment</mat-label>
+            <mat-select [(ngModel)]="home_finding.initialRentPaymentId">
+              <mat-option *ngFor="let item of ca_initial" [value]="item.id">{{item.responsable}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Ongoing Rent Payment</mat-label>
+            <mat-select [(ngModel)]='home_finding.ongoingRentPaymentId'>
+              <mat-option *ngFor="let item of ca_ongoing" [value]="item.id">{{item.responsable}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Realtor Commission</mat-label>
+            <mat-select [(ngModel)]='home_finding.realtorCommissionId'>
+              <mat-option *ngFor="let item of ca_realtor_com" [value]="item.id">{{item.responsable}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Other</mat-label>
+            <input matInput placeholder="Other" [(ngModel)]='home_finding.otherPaymnet' maxlength="150">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <!----------------------- INICIO BOTONERA ACCIONES HL------------------------------------>
+
+    <mat-grid-list cols="5" rowHeight="70px">
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Housing List</p>
         </div>
       </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div *ngIf="dataSourceHousing.length > 0" class="page__section-button page__section-button--big">
+          <button class="button-icon button-icon--send" *ngIf="hl_to_send.length > 0" (click)="sent_houses_list();">
+            ({{hl_to_send.length}}) Send
+          </button>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-button page__section-button--big">
+          <button class="button-icon button-icon--home" (click)="HousingSpecs()">
+            Housing Specs
+          </button>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div *ngIf="dataSourceHousing.length > 0" class="page__section-button page__section-button--big">
+          <button class="button-icon button-icon--report" (click)="exporter.exportTable('xls')">
+            Export HL
+          </button>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
 
-      <mat-grid-tile [colspan]="3" [rowspan]="1">
-        <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="left: 0px;">
-            <button  [disabled]="user.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--home" (click)="HousingSpecs()">
-              Housing Specs
-            </button>
-          </div>
-
-          <div class="page__section-button page__section-button--big" style="left: 9px;">
-            <button [disabled]="user.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--send">
-              Send Properties
-            </button>
-          </div>
-
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button [disabled]="user.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="HomeDetailsnew()">
-              Add Property
-            </button>
-          </div>
+        <div class="page__section-button page__section-button--big">
+          <button class="button-icon button-icon--more" (click)="HomeDetailsnew()">
+            Add Property
+          </button>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <!---------------------------TABLA HOUSING------------------------------>
-    <table mat-table [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea">
 
-      <!-- Position Column -->
-      <ng-container matColumnDef="Property No.">
-        <th mat-header-cell *matHeaderCellDef>Property No.</th>
-        <td mat-cell *matCellDef="let element"> {{element.propertyNo}} </td>
+    <!----------------------- FIN BOTONERA DE ACCIONES HL ------------------------------------------>
+
+    <!---------------------------TABLA HOUSING------------------------------>
+    <table matTableExporter mat-table [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea"
+      id="exportReport">
+
+      <ng-container matColumnDef="Send">
+        <th mat-header-cell *matHeaderCellDef> Send </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox [checked]="element.wassended" [disabled]="element.status != 'Pending'"
+            (change)="onChangeDemo($event, element)">
+
+          </mat-checkbox>
+        </td>
       </ng-container>
 
-      <!-- Name Column -->
       <ng-container matColumnDef="Property Type">
         <th mat-header-cell *matHeaderCellDef> Property Type </th>
         <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>
       </ng-container>
-
-      <!-- Weight Column -->
       <ng-container matColumnDef="Address">
         <th mat-header-cell *matHeaderCellDef> Address </th>
         <td mat-cell *matCellDef="let element">
-          {{(element.address.length>10) ?  (element.address | slice:0:10)+'..': element.address}} </td>
+          {{element.address}} </td>
       </ng-container>
-
-      <!-- Symbol Column -->
+      <ng-container matColumnDef="Neighborhood">
+        <th mat-header-cell *matHeaderCellDef> Neighborhood </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.neighborhood}} </td>
+      </ng-container>
       <ng-container matColumnDef="Price">
         <th mat-header-cell *matHeaderCellDef> Price </th>
-        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.price | currency }} </td>
       </ng-container>
-
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Currency">
         <th mat-header-cell *matHeaderCellDef> Currency </th>
         <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
       </ng-container>
-
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Housing Status">
         <th mat-header-cell *matHeaderCellDef> Housing Status </th>
-        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.status == 'Permanent Property'" style="font-weight: bolder;">{{element.status}}</span>
+          <span *ngIf="element.status != 'Permanent Property'">{{element.status}}</span>
+        </td>
       </ng-container>
-
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Actions">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
-          <div [hidden]="user.role.id == 3">
-
-            <img src="assets/icons/pencil.png" [disabled]="user.role.id == 3" style="width: 20px;" (click)="editHousing(element)">
+          <div>
+            <img src="assets/icons/pencil.png" style="width: 20px;" (click)="editHousing(element)">
+            &nbsp;&nbsp;
+            <img src="assets/icons/delete.png" style="width: 20px;" (click)="validatedeleteHousing(element)">
           </div>
         </td>
       </ng-container>
@@ -259,23 +312,93 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumnsHousing"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumnsHousing;"></tr>
     </table>
-    <br><br>
 
-    <mat-grid-list cols="4" rowHeight="70px">
+    <table style="display: none;" matTableExporter #exporter="matTableExporter" mat-table
+      [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea">
+
+      <ng-container matColumnDef="NoProperty">
+        <th mat-header-cell *matHeaderCellDef> Property # </th>
+        <td mat-cell *matCellDef="let element; let i = index;"> {{element.propertyNo}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Property Type">
+        <th mat-header-cell *matHeaderCellDef> Property Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Neighborhood">
+        <th mat-header-cell *matHeaderCellDef> Neighborhood </th>
+        <td mat-cell *matCellDef="let element">
+          {{element?.neighborhood == null ? '-' : element?.neighborhood}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Address">
+        <th mat-header-cell *matHeaderCellDef> Address </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.address}} </td>
+      </ng-container>
+      <ng-container matColumnDef="NoBedroom">
+        <th mat-header-cell *matHeaderCellDef> # of Bedrooms </th>
+        <td mat-cell *matCellDef="let element"> {{element.bedrooms}} </td>
+      </ng-container>
+      <ng-container matColumnDef="NoBathroom">
+        <th mat-header-cell *matHeaderCellDef> # of Bathrooms </th>
+        <td mat-cell *matCellDef="let element"> {{element.bathrooms}} </td>
+      </ng-container>
+      <ng-container matColumnDef="ParkingSpaces">
+        <th mat-header-cell *matHeaderCellDef> # of Parking Spaces </th>
+        <td mat-cell *matCellDef="let element"> {{element.parkingSpaces}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Size">
+        <th mat-header-cell *matHeaderCellDef> Size </th>
+        <td mat-cell *matCellDef="let element"> {{element.sise}} </td>
+      </ng-container>
+      <ng-container matColumnDef="ListRent">
+        <th mat-header-cell *matHeaderCellDef> List Rent </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Currency">
+        <th mat-header-cell *matHeaderCellDef> Currency </th>
+        <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Comments">
+        <th mat-header-cell *matHeaderCellDef> Assignee's comments </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsHousingExport"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsHousingExport;"></tr>
+    </table>
+    <br>
+
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="permanentHome != undefined">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid" *ngIf="permanentHome != undefined">
-          <p class="page__section-name">Permanent Home</p>
+        <div class="wid">
+          <p class="page__section-name">Permanent Home Details</p>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
+    <!----------------------------------------------------------------------------------------->
+    <!---------------------------- INICIO PERMANENT HOME -------------------------------------->
+    <!----------------------------------------------------------------------------------------->
 
     <div style="padding: 20px;" class="mat-elevation-z5" *ngIf="permanentHome != undefined">
-      <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-list cols="5" rowHeight="70px">
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
             <div>
-              <span class="text-mini gray_05">Property No</span><br />
-              {{permanentHome.propertyNo}}
+              <span class="text-mini gray_05">Address</span><br />
+              {{permanentHome.address}}
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+            <div>
+              <span class="text-mini gray_05">Neighborhood</span><br />
+              {{permanentHome.neighborhood}}
             </div>
           </div>
         </mat-grid-tile>
@@ -292,13 +415,13 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
             <div>
-              <span class="text-mini gray_05">Neigborhood</span><br />
-              Lorem
+              <span class="text-mini gray_05">Price</span><br />
+              {{permanentHome.price | currency}}
             </div>
           </div>
         </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
@@ -322,1532 +445,79 @@
           <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
             <div>
               <span class="text-mini gray_05">URL</span><br />
-              {{permanentHome.webSite}}
+              <a class="browser" style="font-size: 11px" *ngIf="permanentHome.webSite != null"
+                [attr.href]="permanentHome.webSite" target="_blank">
+                {{permanentHome.webSite.substring(0, 20)}}...
+              </a>
             </div>
           </div>
         </mat-grid-tile>
 
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-            <div>
-              <br />
-              <span class="browser" style="font-size: 12px" (click)="editHousing(data_home[0])">View Property
-                Details</span>
-            </div>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="wid">
             <p class="page__section-name">Lease Summary</p>
           </div>
         </mat-grid-tile>
-      </mat-grid-list>
-
-      <!-------------------------------------------------->
-      <!--INICIA LEASE SUMMARY-->
-      <!--MAQUETA Contract Details -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%; text-align: end;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Contract Details </p>
-              </div>
-              <div>
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.contractDetails = !mostrarTarjeta.contractDetails"
-                  *ngIf="!mostrarTarjeta.contractDetails">Show</span>
-
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.contractDetails = !mostrarTarjeta.contractDetails"
-                  *ngIf="mostrarTarjeta.contractDetails">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-        </mat-grid-list>
-
-        <div *ngIf="mostrarTarjeta.contractDetails">
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">Lease Start Date</span><br />
-                  {{data_contracts.leaseStartDate | date:'dd MMM yyy'}}
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">calendar_today</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">Lease End Date</span><br />
-                  {{data_contracts.leaseEndDate | date:'dd MMM yyy'}}
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">calendar_today</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">Payments Due</span><br />
-                  {{data_contracts.paymentsDue | date:'dd MMM yyy'}}
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">calendar_today</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">List Rent Price</span><br />
-                  {{data_contracts.listRentPrice | currency}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">Currency</span><br />
-                  {{getCurrency(data_contracts.currency)}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">List Rent Price</span><br />
-                  {{data_contracts.finalRentPrice | currency}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                <div>
-                  <span class="text-mini gray_05">Currency</span><br />
-                  {{getCurrency(data_contracts.currency)}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Property Expenses</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <!----------------------------------------------------------------------------------------->
-          <!--START TABLE PROPERTY EXPENSES-->
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Expense</th>
-              <th class="mat-header-cell">Amount</th>
-              <th class="mat-header-cell">Currency</th>
-              <th class="mat-header-cell">Recurrence</th>
-              <th class="mat-header-cell">Included</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let property of data_contracts.propertyExpenses; let i = index">
-              <td class="mat-cell">{{property.expense}}</td>
-              <td class="mat-cell">{{property.amount}}</td>
-              <td class="mat-cell">{{getCurrency(property.currency)}}</td>
-              <td class="mat-cell">{{getRecurrence(property.recurrence)}}</td>
-              <td class="mat-cell">
-                <div *ngIf='property.included'>Yes</div>
-                <div *ngIf='!property.included'>No</div>
-              </td>
-            </tr>
-          </table>
-          <br>
-          <!--CLOSE TABLE PROPERTY EXPENSES-->
-          <!----------------------------------------------------------------------------------------->
-        </div>
-      </div>
-      <!--MAQUETA Payment -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px; text-align: end;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Payments</p>
-              </div>
-              <div>
-                <span class="browser" style="cursor: pointer;" *ngIf="!mostrarTarjeta.paymenType"
-                  (click)="mostrarTarjeta.paymenType = !mostrarTarjeta.paymenType">Show</span>
-
-                <span class="browser" style="cursor: pointer;" *ngIf="mostrarTarjeta.paymenType"
-                  (click)="mostrarTarjeta.paymenType = !mostrarTarjeta.paymenType">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-        <div *ngIf="mostrarTarjeta.paymenType">
-          <!----------------------------------------------------------------------------------------->
-          <!--START TABLE PAYMENTS-->
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Payment Type</th>
-              <th class="mat-header-cell">Responsible</th>
-              <th class="mat-header-cell">Description</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let item of paymentHousings; let i = index">
-              <td class="mat-cell">{{getPayment(item.paymentType)}}</td>
-              <td class="mat-cell">{{getResponsable(item.responsible)}}</td>
-              <td class="mat-cell">{{item.description}}</td>
-            </tr>
-          </table>
-          <!--CLOSE TABLE PAYMENTS-->
-          <!----------------------------------------------------------------------------------------->
-          <br>
-        </div>
-      </div>
-      <!--MAQUETA Cost Savings -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Cost Savings</p>
-              </div>
-              <div style="text-align: end;">
-                <span class="browser" style="cursor: pointer;" *ngIf="!mostrarTarjeta.costSaving"
-                  (click)="mostrarTarjeta.costSaving = !mostrarTarjeta.costSaving">Show</span>
-
-                <span class="browser" style="cursor: pointer;" *ngIf="mostrarTarjeta.costSaving"
-                  (click)="mostrarTarjeta.costSaving = !mostrarTarjeta.costSaving">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-        <div *ngIf="mostrarTarjeta.costSaving">
-          <!----------------------------------------------------------------------------------------->
-          <!--START TABLE PROPERTY EXPENSES-->
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Cost Type</th>
-              <th class="mat-header-cell">Cost Savings</th>
-              <th class="mat-header-cell">Cost Savings Currency</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let item of costSavingHomes; let i = index">
-              <td class="mat-cell">{{item.costType}}</td>
-              <td class="mat-cell">{{item.costSavings}}</td>
-              <td class="mat-cell">{{getCurrency(item.currency)}}</td>
-            </tr>
-          </table>
-          <!--CLOSE TABLE PROPERTY EXPENSES-->
-          <!----------------------------------------------------------------------------------------->
-          <br>
-        </div>
-      </div>
-      <!--MAQUETA Renewal Details -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Renewal Details</p>
-              </div>
-              <div style="text-align: end;">
-                <span class="browser" style="cursor: pointer;" *ngIf="!mostrarTarjeta.renewalDetails"
-                  (click)="mostrarTarjeta.renewalDetails = !mostrarTarjeta.renewalDetails">Show</span>
-
-                <span class="browser" style="cursor: pointer;" *ngIf="mostrarTarjeta.renewalDetails"
-                  (click)="mostrarTarjeta.renewalDetails = !mostrarTarjeta.renewalDetails">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-        </mat-grid-list>
-
-        <div *ngIf="mostrarTarjeta.renewalDetails">
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="textarea" style="height: 80%;">
-                <p class="text-mini gray_05" style="margin: 0">Automatically Renewed</p>
-                <mat-checkbox [(ngModel)]="data_renewal.automatically" disabled></mat-checkbox>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div *ngIf="data_renewal.renewalNotification">
-                  <span class="text-mini gray_05">Renewal Notification</span><br />
-                  Yes
-                </div>
-
-                <div *ngIf="!data_renewal.renewalNotification">
-                  <span class="text-mini gray_05">Renewal Notification</span><br />
-                  No
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Additional Rent Increase Date</span><br />
-                  {{data_renewal.additionalRentIncreaseDate | date:'dd MMM yyy'}}
-                </div>
-
-                <div style="text-align:end; width: auto !important;">
-                  <mat-icon class="calendar">calendar_today</mat-icon>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Recurrent Increase Period</span><br />
-                  {{data_renewal.recurrentIncreasePeriod}}
-                </div>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-          <br>
-        </div>
-      </div>
-      <!--MAQUETA Departure Details -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Departure Details</p>
-              </div>
-              <div style="text-align: end;">
-                <span class="browser" style="cursor: pointer;" *ngIf="!mostrarTarjeta.departureDetails"
-                  (click)="mostrarTarjeta.departureDetails = !mostrarTarjeta.departureDetails">Show</span>
-
-                <span class="browser" style="cursor: pointer;" *ngIf="mostrarTarjeta.departureDetails"
-                  (click)="mostrarTarjeta.departureDetails = !mostrarTarjeta.departureDetails">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-        <div *ngIf="mostrarTarjeta.departureDetails">
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div style="height: 80%;" class="textarea">
-                <p class="text-mini gray_05" style="margin: 0px;">Diplomatic Clause</p>
-                <mat-checkbox [(ngModel)]="data_departure.diplomaticClause" disabled></mat-checkbox>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="height: 100%;">
-                <span class="text-mini gray_05">Early Termination Notification</span><br />
-                <div *ngIf="data_departure.earlyTerminationNotification == 1">
-                  Yes
-                </div>
-                <div *ngIf="data_departure.earlyTerminationNotification == 2">
-                  No
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="height: 100%;">
-                <span class="text-mini gray_05">Penalty</span><br />
-                <div *ngIf="data_departure.penalty == 1">
-                  Yes
-                </div>
-                <div *ngIf="data_departure.penalty == 2">
-                  No
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="height: 100%;">
-                <span class="text-mini gray_05">Amount</span><br />
-                <div>
-                  {{data_departure.amount | currency}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="height: 100%;">
-                <span class="text-mini gray_05">Currency</span><br />
-                <div>
-                  {{getCurrency(data_departure.currency)}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div style="height: 80%;" class="textarea">
-                <p class="text-mini gray_05" style="margin: 0px;">Permission to Credit Security Deposit </p>
-                <mat-checkbox [(ngModel)]="data_departure.permission" disabled></mat-checkbox>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Return Security Deposit to:</span><br />
-                  {{getDependent(data_departure.returnSecurityDepositTo)}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-          <br>
-        </div>
-      </div>
-      <!--MAQUETA Land losr details -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Landlord Details</p>
-              </div>
-              <div style="text-align: end;">
-                <span class="browser" style="cursor: pointer;" *ngIf="!mostrarTarjeta.landLord"
-                  (click)="mostrarTarjeta.landLord = !mostrarTarjeta.landLord">Show</span>
-
-                <span class="browser" style="cursor: pointer;" *ngIf="mostrarTarjeta.landLord"
-                  (click)="mostrarTarjeta.landLord = !mostrarTarjeta.landLord">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-
-        <div *ngIf="mostrarTarjeta.landLord">
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Landlord Name</span><br />
-                  {{data_land.name}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Landlord Principal E-mail</span><br />
-                  {{data_land.principalEmail}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Landlord Secondary E-mail (If Applies)</span><br />
-                  {{data_land.secondaryEmail}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Landlord Principal Phone</span><br />
-                  {{data_land.principalPhone | mask: '(000) 000-0000'}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central" style="display: flex; height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Landlord Secondary Phone (If Applicable)</span><br />
-                  {{data_land.secundaryPhone | mask: '(000) 000-0000'}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
-
-          </mat-grid-list>
-
-
-          <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <mat-grid-list cols="4" rowHeight="70px">
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                  <span>
-                    <p class="subtitle" style="font-size: 12px;">
-                      Payment Methods
-                    </p>
-                    <mat-checkbox class="example-margin" [(ngModel)]='data_land.creditCard' disabled
-                      [checked]="data_land.creditCard">
-                      <span class="subtitle" style="font-size: 12px;">Credit Card</span>
-                    </mat-checkbox>
-                  </span>
-                  <span>
-                    <p class="subtitle" style="font-size: 12px;">
-                      Fiscal Invoice
-                    </p>
-                    <mat-checkbox class="example-margin" [(ngModel)]='data_land.fiscalInvoice'
-                      [checked]="data_land.fiscalInvoice" disabled></mat-checkbox>
-                  </span>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard">
-                <div class="input_final">
-                  <mat-checkbox class="example-margin" (change)="guarda_card($event, datacart);"
-                    [checked]="datacart.checked" disabled>
-                    <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
-                  </mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div class="textarea">
-                  <mat-checkbox class="example-margin" [(ngModel)]='data_land.wireTransfer' disabled
-                    [checked]="data_land.wireTransfer">
-                    <span class="subtitle" style="font-size: 12px;">Wire Transfer</span>
-                  </mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Account Type</span><br />
-                    {{getAccount(data_land.accountType)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Account Holders Name</span><br />
-                    {{data_land.accountHoldersName}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Bank Name</span><br />
-                    {{data_land.bankName}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Account Number</span><br />
-                    {{data_land.accountNumber}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Routing Number (ABA)</span><br />
-                    {{data_land.routingNumber}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">SWIFT / BIC Code ( If Applies)</span><br />
-                    {{data_land.swiftBicCode}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Currency</span><br />
-                    {{getCurrency(data_land.currency)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Wire Fee Approx</span><br />
-                    {{data_land.wireFree}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="2" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Bank Address</span><br />
-                    {{data_land.bankAddress}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_final">
-                  <p class="subtitle" style="font-size: 12px;">International Payment Acceptance</p>
-                  <mat-checkbox class="example-margin" [(ngModel)]='data_land.internationalPayment'
-                    [checked]="data_land.internationalPayment" disabled></mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="textarea">
-                  <mat-checkbox class="example-margin" disabled [(ngModel)]='data_land.checks'
-                    [checked]="data_land.checks">
-                    <span class="subtitle" style="font-size: 12px;">Checks</span>
-                  </mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="textarea">
-                  <mat-checkbox class="example-margin" disabled [(ngModel)]='data_land.cash' [checked]="data_land.cash">
-                    <span class="subtitle" style="font-size: 12px;">Cash</span>
-                  </mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Pay to the Order Of</span><br />
-                    {{data_land.payToOrderOf}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Comment</span><br />
-                    {{data_land.comment}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div class="page__section-data font-size-12" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">General Comments</span><br />
-                    {{data_land.generalComments}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-            </mat-grid-list>
-          </div>
-          <br>
-        </div>
-      </div>
-      <!--TERMINA LEASE SUMMARY-->
-      <!-------------------------------------------------->
-      <!--INICIO INSOECTION & REPAIRS-->
-      <mat-grid-list cols="4" rowHeight="70px">
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="wid">
-            <p class="page__section-name">Inspections & Repairs</p>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="page__section-button page__section-button--big" style="left: 9px;">
+            <button class="button-icon button-icon--report" (click)="lease();">
+              Export LSF
+            </button>
           </div>
         </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="wid" *ngIf="!show_hide_all_">
+            <span class="browser" style="cursor: pointer; font-weight: bold;" (click)="show_hide_all(true);">Show
+              All</span>
+          </div>
+          <div class="wid" *ngIf="show_hide_all_">
+            <span class="browser" style="cursor: pointer; font-weight: bold;" (click)="show_hide_all(false);">Hide
+              All</span>
+          </div>
+        </mat-grid-tile> -->
       </mat-grid-list>
-      <!--MAQUETA Property Inspection / Move In -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 10px;">
+     
+    
+     <!--  <app-lsf *ngIf="permanentHome.id && home_finding && data.data.service[0].id"
+      [_hf_id] ="data.data.service[0].id"
+      [_ph_id] ="permanentHome.id"
+      [_workOrderServicesId] ="home_finding.workOrderServicesId"
+      [_type_housing] = "2"
+      [_deliveredTo] = "_deliveredTo"
+      [_city_name] = "_city_name"
+      [_country_name] = "_country_name"
+      [_catCategoryId] = 21
+      >
+      </app-lsf> -->
+      
+        <app-ir *ngIf="permanentHome.id && home_finding && data.data.service[0].id"
+      [_hf_id] ="data.data.service[0].id"
+      [_ph_id] ="permanentHome.id"
+      [_workOrderServicesId] ="home_finding.workOrderServicesId"
+      [_type_housing] = "2"
+      [_deliveredTo] = "_deliveredTo"
+      [_city_name] = "_city_name"
+      [_country_name] = "_country_name"
+      [_catCategoryId] = 21
+      >
+      </app-ir>  
+    
 
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Property Inspection / Move In </p>
-              </div>
-              <div style="text-align:end">
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.move_in = !mostrarTarjeta.move_in" *ngIf="!mostrarTarjeta.move_in">Show</span>
-
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.move_in = !mostrarTarjeta.move_in" *ngIf="mostrarTarjeta.move_in">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-        <div style="padding: 10px;" *ngIf="mostrarTarjeta.move_in">
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex;  height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Creation Date</span><br />
-                  {{data_move_in.createdDate | date: 'dd MMM yyyy'}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex;  height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Creation Date</span><br />
-                  {{data_move_in.reportDate | date: 'dd MMM yyyy'}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex; height: 90%;">
-                <div>
-                  <span class="text-mini gray_05">Report By</span><br />
-                  Lorem Ipsum Name
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex; height: 90%;">
-                <div>
-                  <span class="text-mini gray_05">Address</span><br />
-                  {{data_move_in.propertyAddress}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex; height: 90%;">
-                <div>
-                  <span class="text-mini gray_05">ZIP Code</span><br />
-                  {{data_move_in.zipCode}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-          </mat-grid-list>
-
-          <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
-            *ngFor="let data_ of data_move_in.propertyReportSections; let r = index">
-
-            <div class="textarea" style="text-align: end; width: 100%;">
-              <span class="browser" style="cursor: pointer;" (click)="data_.show = true" *ngIf="!data_.show">Show</span>
-
-              <span class="browser" style="cursor: pointer;" (click)="data_.show = false" *ngIf="data_.show">Hide</span>
-            </div>
-
-            <br>
-
-            <mat-grid-list cols="4" rowHeight="70px">
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Property Section</span><br />
-                    {{getProperty(data_.propertySection)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Condition</span><br />
-                    {{getCondicion(data_.propertySection)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central textarea"
-                  style="display: flex;  height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Report Date</span><br />
-                    {{data_.reportDate | date: 'dd MMM yyyy'}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_final" style="height: 100%;">
-                  <p class="text-mini gray_05" style="margin: 0px;">Needs Repairs</p>
-                  <mat-checkbox [(ngModel)]="data_.needRepair" [checked]="data_.needRepair" disabled></mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-            </mat-grid-list>
-
-
-            <div *ngIf="data_.show">
-              <mat-grid-list cols="4" rowHeight="150px">
-                <mat-grid-tile [colspan]="4" [rowspan]="1">
-                  <div class="textarea">
-                    <br><br>
-                    <p class="subtitle" style="font-size: 12px; margin: 0px;">Report Details</p>
-                    <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-                      <textarea matInput #message maxlength="500" [(ngModel)]="data_.reportDetails" disabled></textarea>
-                      <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-                    </mat-form-field>
-                  </div>
-                </mat-grid-tile>
-              </mat-grid-list>
-
-              <mat-grid-list cols="4" rowHeight="70px">
-
-                <mat-grid-tile [colspan]="4" [rowspan]="1">
-                  <div style="width: 100%;">
-                    <div>
-                      <p class="page__section-name">Inventory</p>
-                    </div>
-                  </div>
-                </mat-grid-tile>
-
-              </mat-grid-list>
-
-              <!----------------------------------------------------------------------------------------->
-              <!--START TABLE INVENTORY-->
-              <table class="mat-elevation-z8 textarea mat-table">
-                <tr class="mat-header-row">
-                  <th class="mat-header-cell">Item</th>
-                  <th class="mat-header-cell">Description</th>
-                  <th class="mat-header-cell">Quantity</th>
-                  <th class="mat-header-cell">Photos</th>
-                </tr>
-                <tr class="mat-row" *ngFor="let datainv of data_.sectionInventories; let in = index">
-                  <td class="mat-cell">{{datainv.item}}</td>
-                  <td class="mat-cell">{{datainv.description}}</td>
-                  <td class="mat-cell">{{datainv.quantity}}</td>
-                  <td class="mat-cell">{{datainv.photosInventories.length}}</td>
-                </tr>
-              </table>
-              <!--CLOSE TABLE INVENTORY-->
-              <!----------------------------------------------------------------------------------------->
-              <mat-grid-list cols="4" rowHeight="70px">
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                  <div class="input_central textarea" *ngIf="data_.photosPropertyReportSections.length > 0">
-                    <p class="subtitle" style="font-size: 12px; margin: 0px;">Interior Photos</p>
-                  </div>
-                </mat-grid-tile>
-
-                <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-              </mat-grid-list>
-
-              <div class="photos">
-                <div class="photo" *ngFor="let it of data_.photosPropertyReportSections; let p = index">
-                  <img src="assets/icons/quit.svg" class="delete" (click)="deletePhoto(r, p)">
-                  <img src="{{it.base64}}" class="img" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <br>
-          <br>
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="textarea">
-                <p class="page__section-name">Keys Inventory</p>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <br>
-
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Quantity</th>
-              <th class="mat-header-cell">Section</th>
-              <th class="mat-header-cell">Description</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let inventory of data_move_in.keyInventories; let key = index">
-              <td class="mat-cell">{{inventory.quantity}}</td>
-              <td class="mat-cell">{{getProperty(inventory.section)}}</td>
-              <td class="mat-cell">{{inventory.description}}</td>
-            </tr>
-          </table>
-
-          <br><br>
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Attendees</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Name</th>
-              <th class="mat-header-cell">E-mail</th>
-              <th class="mat-header-cell">Relationship</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let attend of data_move_in.attendees; let at = index">
-              <td class="mat-cell">{{attend.name}}</td>
-              <td class="mat-cell">{{attend.email}}</td>
-              <td class="mat-cell">{{getReltion(attend.relationship)}}</td>
-            </tr>
-          </table>
-
-          <mat-grid-list cols="4" rowHeight="80px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Notes</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-
-          <mat-grid-list cols="4" rowHeight="150px">
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="textarea" style="margin-top: -80px;">
-                <br><br>
-                <p class="subtitle" style="font-size: 12px; margin: 0px;">Notes</p>
-                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-                  <textarea matInput #message maxlength="500" [(ngModel)]="data_move_in.notes" disabled></textarea>
-                  <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </div>
-      </div>
-      <!--MAQUETA Property Inspection / Move Out -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 10px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Property Inspection / Move Out </p>
-              </div>
-              <div style="text-align:end">
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.move_out = !mostrarTarjeta.move_out"
-                  *ngIf="!mostrarTarjeta.move_out">Show</span>
-
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.move_out = !mostrarTarjeta.move_out"
-                  *ngIf="mostrarTarjeta.move_out">Hide</span>
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-        <div style="padding: 10px;" *ngIf="mostrarTarjeta.move_out">
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex;  height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Creation Date</span><br />
-                  {{data_move_out.createdDate | date: 'dd MMM yyyy'}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex;  height: 100%;">
-                <div>
-                  <span class="text-mini gray_05">Creation Date</span><br />
-                  {{data_move_out.reportDate | date: 'dd MMM yyyy'}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex; height: 90%;">
-                <div>
-                  <span class="text-mini gray_05">Report By</span><br />
-                  Lorem Ipsum Name
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex; height: 90%;">
-                <div>
-                  <span class="text-mini gray_05">Address</span><br />
-                  {{data_move_out.propertyAddress}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <div class="page__section-data font-size-12 comments input_central textarea"
-                style="display: flex; height: 90%;">
-                <div>
-                  <span class="text-mini gray_05">ZIP Code</span><br />
-                  {{data_move_out.zipCode}}
-                </div>
-              </div>
-            </mat-grid-tile>
-
-
-            <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-          </mat-grid-list>
-
-          <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
-            *ngFor="let data_ of data_move_out.propertyReportSections; let r = index">
-
-            <div class="textarea" style="text-align: end; width: 100%;">
-              <span class="browser" style="cursor: pointer;" (click)="data_.show = true" *ngIf="!data_.show">Show</span>
-
-              <span class="browser" style="cursor: pointer;" (click)="data_.show = false" *ngIf="data_.show">Hide</span>
-            </div>
-
-            <br>
-
-            <mat-grid-list cols="4" rowHeight="70px">
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Property Section</span><br />
-                    {{getProperty(data_.propertySection)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Condition</span><br />
-                    {{getCondicion(data_.propertySection)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central textarea"
-                  style="display: flex;  height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Report Date</span><br />
-                    {{data_.reportDate | date: 'dd MMM yyyy'}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_final" style="height: 100%;">
-                  <p class="text-mini gray_05" style="margin: 0px;">Needs Repairs</p>
-                  <mat-checkbox [(ngModel)]="data_.needRepair" [checked]="data_.needRepair" disabled></mat-checkbox>
-                </div>
-              </mat-grid-tile>
-
-            </mat-grid-list>
-
-
-            <div *ngIf="data_.show">
-              <mat-grid-list cols="4" rowHeight="150px">
-                <mat-grid-tile [colspan]="4" [rowspan]="1">
-                  <div class="textarea">
-                    <br><br>
-                    <p class="subtitle" style="font-size: 12px; margin: 0px;">Report Details</p>
-                    <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-                      <textarea matInput #message maxlength="500" [(ngModel)]="data_.reportDetails" disabled></textarea>
-                      <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-                    </mat-form-field>
-                  </div>
-                </mat-grid-tile>
-              </mat-grid-list>
-
-              <mat-grid-list cols="4" rowHeight="70px">
-
-                <mat-grid-tile [colspan]="4" [rowspan]="1">
-                  <div style="width: 100%;">
-                    <div>
-                      <p class="page__section-name">Inventory</p>
-                    </div>
-                  </div>
-                </mat-grid-tile>
-
-              </mat-grid-list>
-
-              <!----------------------------------------------------------------------------------------->
-              <!--START TABLE INVENTORY-->
-              <table class="mat-elevation-z8 textarea mat-table">
-                <tr class="mat-header-row">
-                  <th class="mat-header-cell">Item</th>
-                  <th class="mat-header-cell">Description</th>
-                  <th class="mat-header-cell">Quantity</th>
-                  <th class="mat-header-cell">Photos</th>
-                </tr>
-                <tr class="mat-row" *ngFor="let datainv of data_.sectionInventories; let in = index">
-                  <td class="mat-cell">{{datainv.item}}</td>
-                  <td class="mat-cell">{{datainv.description}}</td>
-                  <td class="mat-cell">{{datainv.quantity}}</td>
-                  <td class="mat-cell">{{datainv.photosInventories.length}}</td>
-                </tr>
-              </table>
-              <!--CLOSE TABLE INVENTORY-->
-              <!----------------------------------------------------------------------------------------->
-              <mat-grid-list cols="4" rowHeight="70px">
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                  <div class="input_central textarea" *ngIf="data_.photosPropertyReportSections.length > 0">
-                    <p class="subtitle" style="font-size: 12px; margin: 0px;">Interior Photos</p>
-                  </div>
-                </mat-grid-tile>
-
-                <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-              </mat-grid-list>
-
-              <div class="photos">
-                <div class="photo" *ngFor="let it of data_.photosPropertyReportSections; let p = index">
-                  <img src="assets/icons/quit.svg" class="delete" (click)="deletePhoto(r, p)">
-                  <img src="{{it.base64}}" class="img" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <br>
-          <br>
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="textarea">
-                <p class="page__section-name">Keys Inventory</p>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <br>
-
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Quantity</th>
-              <th class="mat-header-cell">Section</th>
-              <th class="mat-header-cell">Description</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let inventory of data_move_out.keyInventories; let key = index">
-              <td class="mat-cell">{{inventory.quantity}}</td>
-              <td class="mat-cell">{{getProperty(inventory.section)}}</td>
-              <td class="mat-cell">{{inventory.description}}</td>
-            </tr>
-          </table>
-
-          <br><br>
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Attendees</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Name</th>
-              <th class="mat-header-cell">E-mail</th>
-              <th class="mat-header-cell">Relationship</th>
-            </tr>
-            <tr class="mat-row" *ngFor="let attend of data_move_out.attendees; let at = index">
-              <td class="mat-cell">{{attend.name}}</td>
-              <td class="mat-cell">{{attend.email}}</td>
-              <td class="mat-cell">{{getReltion(attend.relationship)}}</td>
-            </tr>
-          </table>
-
-          <mat-grid-list cols="4" rowHeight="80px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Notes</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-
-          <mat-grid-list cols="4" rowHeight="150px">
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="textarea" style="margin-top: -80px;">
-                <br><br>
-                <p class="subtitle" style="font-size: 12px; margin: 0px;">Notes</p>
-                <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-                  <textarea matInput #message maxlength="500" [(ngModel)]="data_move_out.notes" disabled></textarea>
-                  <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </div>
-      </div>
-      <!--MAQUETA Inspections & Repairs -->
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-
-        <mat-grid-list cols="4" rowHeight="70px">
-
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
-            <div style="display:flex; justify-content: space-between; width: 100%;">
-              <div style="text-align: initial;">
-                <p class="page__section-name">Inspections & Repairs</p>
-              </div>
-              <div style="text-align: end;">
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.repairs = !mostrarTarjeta.repairs" *ngIf="!mostrarTarjeta.repairs">Show</span>
-
-                <span class="browser" style="cursor: pointer;"
-                  (click)="mostrarTarjeta.repairs = !mostrarTarjeta.repairs" *ngIf="mostrarTarjeta.repairs">Hide</span>
-
-              </div>
-            </div>
-          </mat-grid-tile>
-
-        </mat-grid-list>
-
-        <div *ngIf="mostrarTarjeta.repairs">
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Inspections</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
-            *ngFor="let item of data_inspection; let k = index">
-
-            <mat-grid-list cols="4" rowHeight="70px">
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                  <div>
-                    <span class="text-mini gray_05">Initial Inspection Date</span><br />
-                    {{item.initialInspectionDate | date:'dd MMM yyy'}}
-                  </div>
-
-                  <div style="text-align:end; width: auto !important;">
-                    <mat-icon class="calendar">calendar_today</mat-icon>
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                  <div>
-                    <span class="text-mini gray_05">Final Inspection Date</span><br />
-                    {{item.finalInspectionDate | date:'dd MMM yyy'}}
-                  </div>
-
-                  <div style="text-align:end; width: auto !important;">
-                    <mat-icon class="calendar">calendar_today</mat-icon>
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-            </mat-grid-list>
-          </div>
-
-          <mat-grid-list cols="4" rowHeight="70px">
-
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="width: 100%;">
-                <div>
-                  <p class="page__section-name">Repairs</p>
-                </div>
-              </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-
-          <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
-            *ngFor="let item of data_repairs; let i = index">
-
-            <mat-grid-list cols="4" rowHeight="70px">
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Repair Type</span><br />
-                    {{getRepair(item.repairType)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Supplier Partner</span><br />
-                    {{getSupplier(item.supplierPartner)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Repair Start Date</span><br />
-                    {{item.repairStartDate | date:'dd MMM yyy'}}
-                  </div>
-
-                  <div style="text-align:end; width: auto !important;">
-                    <mat-icon class="calendar">calendar_today</mat-icon>
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_final" style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Repair End Date</span><br />
-                    {{item.repairEndDate| date:'dd MMM yyy'}}
-                  </div>
-
-                  <div style="text-align:end; width: auto !important;">
-                    <mat-icon class="calendar">calendar_today</mat-icon>
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Total Days</span><br />
-                    {{item.totalDays}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Total Cost of Repair</span><br />
-                    {{item.totalCostRepair | currency}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="page__section-data font-size-12 comments input_central"
-                  style="display: flex; height: 100%;">
-                  <div>
-                    <span class="text-mini gray_05">Currency</span><br />
-                    {{getCurrency(item.currency)}}
-                  </div>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-            </mat-grid-list>
-
-            <mat-grid-list cols="4" rowHeight="130px">
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div class="textarea">
-                  <br><br>
-                  <p>Comments</p>
-                  <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-                    <textarea matInput #message maxlength="500" [(ngModel)]="item.comments" disabled></textarea>
-                    <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-                  </mat-form-field>
-                </div>
-              </mat-grid-tile>
-            </mat-grid-list>
-
-            <mat-grid-list cols="4" rowHeight="70px">
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div style="width: 100%;">
-                  <div *ngIf="item.documentRepairs.length > 0">
-                    <p class="page__section-name">Upload Documents</p>
-                  </div>
-                </div>
-              </mat-grid-tile>
-            </mat-grid-list>
-
-            <div>
-              <mat-grid-list cols="1">
-                <div class="page__section margin-top-min">
-                  <div *ngIf="item.documentRepairs.length != 0" class="page__section">
-                    <div class="page__section-input page__section-input--6_1">
-                      <span class="documents__index documents__index--task">
-                        Document Name
-                      </span>
-                    </div>
-                    <div class="page__section-input page__section-input--6_1">
-                      <span class="documents__index documents__index--task">
-
-                      </span>
-                    </div>
-                    <div class="page__section-input page__section-input--6_1">
-                      <span class="documents__index documents__index--task">
-
-                      </span>
-                    </div>
-                    <div class="page__section-input page__section-input--6_1">
-                      <span class="documents__index documents__index--task">
-
-                      </span>
-                    </div>
-                    <div class="page__section-input page__section-input--6_1">
-                      <span class="documents__index documents__index--task">
-
-                      </span>
-                    </div>
-                    <div class="page__section-input page__section-input--6_1">
-                      <span class="documents__index documents__index--task">
-
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="page__section documents__ascard" *ngFor="let doc of item.documentRepairs; let j = index">
-                    <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-                      {{(doc.fileName.length>10) ?  (doc.fileName | slice:0:10)+'..': doc.fileName}}
-                    </div>
-                    <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-                    </div>
-                    <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-                    </div>
-                    <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-                    </div>
-                    <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-                    </div>
-                    <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-                    </div>
-                  </div>
-
-                </div>
-              </mat-grid-list>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <!----------------------------------------------------------------------------------------->
+    <!---------------------------- FIN PERMANENT HOME ----------------------------------------->
+    <!----------------------------------------------------------------------------------------->
+    <!----------------------------------------------------------------------------------------->
+
     <!--UPLOAD DOCUMENTS-->
     <mat-grid-list cols="1">
       <div class="page__section margin-top-min">
         <div class="page__section-name">
           Service Documents
         </div>
-        <div *ngIf="home_finding.documentHomeFindings.length != 0 || temporalDocument.length != 0"
+        <div *ngIf="home_finding.documentHomeFindings.length != 0 || temporalDocumentHF.length != 0"
           class="page__section">
           <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
@@ -1861,17 +531,7 @@
           </div>
           <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
-              Expiration Date
-            </span>
-          </div>
-          <div class="page__section-input page__section-input--6_1">
-            <span class="documents__index documents__index--task">
-
-            </span>
-          </div>
-          <div class="page__section-input page__section-input--6_1">
-            <span class="documents__index documents__index--task">
-              Privacy
+              Comments
             </span>
           </div>
           <div class="page__section-input page__section-input--6_1">
@@ -1883,31 +543,18 @@
 
         <div class="page__section documents__ascard" *ngFor="let item of home_finding.documentHomeFindings">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" [disabled]="user.role.id == 3" (click)="deleteDocument_DB(item.id)">
+            style="background: transparent!important;" (click)="deleteDocument_DB(item.id)">
           <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important; margin-right: 25px;"
-            (click)="showDocumentDialogDetails(item)">
+            style="background: transparent!important; margin-right: 25px;" (click)="showDocumentDialogDetails(item)">
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             {{getDocument(item.documentType)}}
           </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-          </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-            {{item.expirationDate | date:'dd MMM yyy'}}
-          </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
-          </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-            {{getPrivacyName(item.privacy)}}
-          </div>
-          <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-
+          <div style="font-size: 12px;">
+            {{item.comment}}
           </div>
         </div>
 
-        <div class="page__section documents__ascard" *ngFor="let item of temporalDocument; let i = index">
+        <div class="page__section documents__ascard" *ngFor="let item of temporalDocumentHF; let i = index">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important;" (click)="deleteDocument_LOCAL(i)">
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
@@ -1935,96 +582,16 @@
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big"
-            style="flex: 0 1 180px !important; left: 6px !important;">
-            <button class="button-icon button-icon--more" [disabled]="user.role.id == 3" (click)="addDocument()">
-              Add New Document
+          <div class="page__section-button page__section-button--big">
+            <button class="button-icon button-icon--more" (click)="addDocument()">
+              Document
             </button>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
     <!--ENDS UPLOAD DOCUMENTS-->
-    <!----------------------------------------------------------------------------------------->
-    <mat-grid-list cols="4" rowHeight="40px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="wid">
-          <p class="subtitledos">Requested Payments</p>
-        </div>
-      </mat-grid-tile>
-
-      <!--mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="rp_header">
-          <span>Sub Total: {{calculo.ammountSubTotal  | currency}}</span>
-          <span>Management Fee: {{calculo.managementFeeSubTotal | currency}}</span>
-          <span>Wire Fee: {{calculo.wireFeeSubTotal | currency}}</span>
-          <span>Advance Fee: {{calculo.advanceFeeSubTotal | currency}}</span>
-        </div>
-      </mat-grid-tile-->
-    </mat-grid-list>
-    <!----------------------------------------------------------------------------------------->
-    <!--START TABLE PAYMENT-->
-    <table mat-table [dataSource]="table_payments" class="mat-elevation-z8 textarea">
-
-      <ng-container matColumnDef="Payment">
-        <th mat-header-cell *matHeaderCellDef> Payment </th>
-        <td mat-cell *matCellDef="let element">
-
-        </td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="Amount">
-        <th mat-header-cell *matHeaderCellDef> Amount </th>
-        <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
-      </ng-container>
-
-      <!-- Weight Column -->
-      <ng-container matColumnDef="ManagementFee">
-        <th mat-header-cell *matHeaderCellDef> Management Fee </th>
-        <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="WireFee">
-        <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
-        <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="AdvanceFee">
-        <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
-        <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Service">
-        <th mat-header-cell *matHeaderCellDef> Total </th>
-        <td mat-cell *matCellDef="let element">  </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Recurrence">
-        <th mat-header-cell *matHeaderCellDef> Recurrence </th>
-        <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
-      </ng-container>
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> </th>
-        <td mat-cell *matCellDef="let element">
-          <img src="assets\icons\pencil.png" [disabled]="user.role.id == 3" style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
-          <span>&nbsp;</span>
-          <img src="assets\icons\delete.png" [disabled]="user.role.id == 3" style="width: 18px; cursor: pointer;"
-            (click)="deletePaymentConcept(element)">
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumnsPay"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumnsPay;" [ngClass]="{'urgent': row.urgent}"></tr>
-    </table>
-    <br>
-
+ 
     <mat-grid-list cols="4" rowHeight="50px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
@@ -2035,7 +602,7 @@
             <!--span class="browser">TOTAL: {{calculo.total | currency}}</span-->
           </div>
           <div class="page__section-butuonc" style="left: 6px;">
-            <button class="button-icon button-icon--money" [disabled]="user.role.id == 3" (click)="addPayment()">Request Payment</button>
+            <!-- <button class="button-icon button-icon--money"  (click)="addPayment()">Request Payment</button> -->
           </div>
         </div>
       </mat-grid-tile>
@@ -2051,7 +618,7 @@
     </mat-grid-list>
 
     <div class="comments" *ngFor="let data of home_finding.commentHomeFindings; let i = index">
-      <mat-grid-list cols="10" rowHeight="80px">
+      <mat-grid-list cols="10" rowHeight="60px">
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
 
@@ -2067,11 +634,6 @@
               </div>
             </div>
           </div>
-          <!-- <div>
-            <img class="avatar" src="{{_services.url_images}}{{data.user.avatar}}" alt=""
-              *ngIf="data.user.avatar != null">
-            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.user.avatar === null"></div>
-          </div> -->
 
         </mat-grid-tile>
 
@@ -2109,15 +671,11 @@
             </div>
           </div>
         </mat-grid-tile>
-
       </mat-grid-list>
 
       <mat-grid-list cols="4" rowHeight="160px">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
-            <br><br>
-            <p *ngIf="i == 0">Comment</p>
-            <p *ngIf="i > 0">Reply</p>
             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
               <textarea matInput (change)="data.reply = $event.target.value" [disabled]="data.id > 0" #message
                 maxlength="500">{{data.reply}}</textarea>
@@ -2133,8 +691,8 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button (click)="addReply()" [disabled]="user.role.id == 3" class="button-icon button-icon--more">
-              Add {{cr}}
+            <button (click)="addReply()" class="button-icon button-icon--more">
+              Add Comment
             </button>
           </div>
         </div>
@@ -2163,9 +721,12 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="input_central wid">
             <mat-form-field appearance="fill">
-              <mat-label>Reminder Date</mat-label>
-              <input matInput  [disabled]="user.role.id == 3" required [matDatepicker]="pickerocho" placeholder="Reminder Date"
-                [(ngModel)]="data.reminderDate">
+              <mat-label>Reminder </mat-label>
+              <input matInput min="{{today_|date:'yyyy-MM-dd'}}" required [matDatepicker]="pickerocho"
+                placeholder="Reminder Date" [(ngModel)]="data.reminderDate">
+              <span class="label-error" *ngIf="data.reminderDate == '' || data.reminderDate == null">
+                Field is required
+              </span>
               <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
               <mat-datepicker #pickerocho></mat-datepicker>
             </mat-form-field>
@@ -2176,9 +737,12 @@
           <div class="input_central wid">
             <mat-form-field appearance="fill">
               <mat-label>Reminder Comments</mat-label>
-              <input matInput [disabled]="user.role.id == 3" required placeholder="Reminder Comments" [(ngModel)]="data.reminderComments"
-                #message_reminder maxlength="500">
-              <mat-hint align="end">{{message_reminder.value.length}} / 500</mat-hint>
+              <input matInput required placeholder="Reminder Comments" [(ngModel)]="data.reminderComments"
+                #message_reminder maxlength="200">
+              <mat-hint align="end">{{message_reminder.value.length}} / 200</mat-hint>
+              <span class="label-error" *ngIf="data.reminderComments == '' || data.reminderComments == null">
+                Field is required
+              </span>
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -2189,7 +753,7 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button (click)="addReminder()" [disabled]="user.role.id == 3" class="button-icon button-icon--more">
+            <button (click)="addReminder()" class="button-icon button-icon--more">
               Add Reminder
             </button>
           </div>
@@ -2197,71 +761,83 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-
-    <!--  Service Client Documents -->
-      <mat-grid-list cols="1" *ngIf="serviceScope">
-        <div class="page__section margin-top-min">
-          <div class="subtitledos">
-            Client Service Documents
-          </div>
-          <br><br>
-
-          <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Document Type
-              </span>
-            </div>
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Status
-              </span>
-            </div>
-            <div class="page__section-input page__section-input--6_1-local">
-              <span class="documents__index documents__index--task">
-                Privacy
-              </span>
-            </div>
-
-          </div>
-          <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
-            <!-- (click)="DeleteOnline(item.id)" -->
-            <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
-            style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
-            <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-              style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.documentType}}
-            </div>
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.status}}
-            </div>
-            <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-              {{item.privacy}}
-            </div>
+    <!--  //////////////////////////////// Service Client Documents //////////////////////////////-->
+    <mat-grid-list cols="1" *ngIf="serviceScope != null">
+      <div class="page__section margin-top-min">
+        <div class="subtitledos">
+          Client Service Documents
+        </div> <br><br>
+        <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+          <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+            No Client Service Documents loaded
           </div>
         </div>
-      </mat-grid-list>
-      <!-- Scope Client Service -->
-      <mat-grid-list cols="4" rowHeight="70px">
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="wid">
-            <p class="subtitledos">Client Service Scope</p>
+        <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
+          <div class="page__section-input page__section-input--6_1-local">
+            <span class="documents__index documents__index--task">
+              Document Type
+            </span>
           </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
-          <div class="textarea">
-            <p [innerHTML]="serviceScope.scopeDescription"></p>
+          <div class="page__section-input page__section-input--6_1-local">
+            <span class="documents__index documents__index--task">
+              Upload
+            </span>
           </div>
-        </mat-grid-tile>
-      </mat-grid-list>
+          <div class="page__section-input page__section-input--6_1-local">
+            <span class="documents__index documents__index--task">
+              Status
+            </span>
+          </div>
+        </div>
+        <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
+          <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
+            style="background: transparent!important;" style="right: 40px;"
+            (click)="openFileOnWindow(item.fileRequest)">
+          <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+            {{item.documentType}}
+          </div>
+          <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+            {{item.updated_date | date:'dd MMM yyy'}}
+          </div>
+          <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+            {{item.status}}
+          </div>
+        </div>
+      </div>
+    </mat-grid-list>
+
+
+    <!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
+
+    <mat-grid-list cols="4" rowHeight="70px">
       <br><br>
+      <div class="wid">
+        <p class="subtitledos">Client Service Scope</p>
+      </div>
+      <div *ngIf="serviceScope.scopeDescription.length > 0" [innerHTML]="serviceScope.scopeDescription">
+      </div>
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope != null">
+        <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+          Client Service Scope not captured or empty.
+        </div>
+        <div class="textarea" *ngIf="serviceScope.scopeDescription == null">
+          Client Service Scope not captured or empty.
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
+        <div class="textarea">
+          Client Service Scope not captured or empty.
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <br><br>
 
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <div class="page__section-buttong">
-      <button (click)="save()">Save</button>
+      <!-- <button (click)="save()">Save</button> -->
+      <button (click)="validate_status_complete(home_finding);">Save </button>
     </div>
   </mat-dialog-actions>
 </div>

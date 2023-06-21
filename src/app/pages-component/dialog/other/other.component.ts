@@ -37,25 +37,112 @@ export class OtherComponent implements OnInit {
   displayedColumnsPayment: string[] = ['Payment', 'Amount', 'ManagementFee', 'WireFee', "AdvanceFee", 'Service', 'Recurrence', 'action'];
   public user_data: any = JSON.parse(localStorage.getItem('userData'));
   public today_date: Date = new Date();
-  serviceScope : any[] = [];
+  serviceScope = null;
 
 
   ngOnInit(): void {
     this.loader.showLoader();
     this.user = JSON.parse(localStorage.getItem("userData"));
-    console.log("Data que recibe el modal:", this.data);
+    //console.log("Data que recibe el modal:", this.data);
     this.idDataOther = this.data.data.service[0].id;
-    console.log('id', this.data.data.service[0].id);
+    //console.log('id', this.data.data.service[0].id);
     this.getDataOther();
 
   }
+
+ //////////////////////manage estatus 
+
+ disabled_by_permissions: boolean = false;
+ hide_by_permissions: boolean = false;
+ hide_complete: boolean = false;
+ show_completed: boolean = false;
+ show_progress: boolean = false;
+ wo_ : boolean = false;
+ sr_: boolean = false;
+
+ setup_permissions_settings(){
+   debugger;
+   if (!this.data.data.numberWorkOrder){
+      this.wo_ = this.data.workOrderId;
+   }
+   else{
+     this.wo_ = this.data.data.numberWorkOrder
+   }
+
+   if(!this.data.data.number_server){
+     this.sr_ = this.data.data.serviceNumber
+   }
+   else{
+     this.sr_ = this.data.data.number_server
+   }
+
+   if(this.user.role.id == 3){
+      this.disabled_by_permissions = true 
+   }
+   else{
+     this.hide_by_permissions = true;
+   }
+   if(this.dataOther.statusId != 39 && this.dataOther.statusId != 2 ){ //active , in progress
+     this.hide_complete= true;
+   }
+   else{
+     if(this.dataOther.statusId == 39){
+       this.show_progress = true;
+     }
+     else{
+       this.show_completed = true;
+     }
+   }
+ }
+
+ change_button(){
+   debugger;
+   if(this.show_completed){
+     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+       data: {
+         header: "Confirmation",
+         body: "Are you sure the service is complete?"
+       },
+       width: "350px"
+     });
+ 
+     dialogRef.afterClosed().subscribe(result => {
+       // //console.log(result);
+        if (result) {
+         this.dataOther.statusId = 37; //penidng to completion 
+         this.save();
+        }
+      });
+   }
+
+   if(this.show_progress){
+     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+       data: {
+         header: "Confirmation",
+         body: "Do you want start the service?"
+       },
+       width: "350px"
+     });
+ 
+     dialogRef.afterClosed().subscribe(result => {
+       // //console.log(result);
+        if (result) {
+         this.dataOther.statusId = 2; //penidng to completion 
+         this.save();
+        }
+      });
+   }
+ }
+ 
+//////////////////////manage estatus 
+
   public dataOther: dataOtherModel = new dataOtherModel();
   public dataDeliver;
    // get service scope
    getServiceScope() {
     this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.dataOther.workOrderServices}&client=${this.data.data.partnerId }`).subscribe(resp => {
       if (resp.success) {
-        console.log('Data ScopeService: ', resp);
+        //console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
       }
     });
@@ -76,15 +163,16 @@ export class OtherComponent implements OnInit {
         this.getServiceScope();
         this.getdeliver();
         this.get_payment();
-        console.log('home sale', this.dataOther);
+        this.setup_permissions_settings();
+        //console.log('home sale', this.dataOther);
       }
     }, (error: any) => {
-      console.log('error GetOther', error);
+      //console.log('error GetOther', error);
     });
   }
   getdeliver() {
     this._services.service_general_get('ServiceOrder/GetDeliverTo?wos=' + this.dataOther.workOrderServices).subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.dataDeliver = data.result.value;
       }
@@ -98,7 +186,7 @@ export class OtherComponent implements OnInit {
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     //this.catalog_status = await this._services.getCatalogueFrom('GetStatus');
     this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=26").subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.catalog_status = data.result;
       }
@@ -108,7 +196,7 @@ export class OtherComponent implements OnInit {
     this._services.service_general_get('Catalogue/GetDocumentType/1').subscribe((data => {
       if (data.success) {
         this.documentType = data.result;
-        console.log(this.documentType);
+        //console.log(this.documentType);
       }
     }))
     this.country_catalogue = await this._services.getCatalogueFrom('GetCountry');
@@ -123,11 +211,11 @@ export class OtherComponent implements OnInit {
       data: this.data
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if(result.success){
         result.other = this.dataOther.id;
          this.document.push(result);
-         console.log(this.document);
+         //console.log(this.document);
       }
     });
   }
@@ -141,7 +229,7 @@ export class OtherComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (id == 0) {
           this.document.splice(i, 1);
@@ -193,21 +281,21 @@ export class OtherComponent implements OnInit {
   // edit payment
   //++++++++ consulta payment
   get_payment() {
-    console.log('Extracion de datos');
+    //console.log('Extracion de datos');
     this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.dataOther.workOrderServices).subscribe((data => {
       if (data.success) {
-        console.log('datos de tabla request', data);
+        //console.log('datos de tabla request', data);
         this.calculo = data.result.value;
         this.calculo.total = this.calculo.ammountSubTotal + this.calculo.managementFeeSubTotal + this.calculo.wireFeeSubTotal + this.calculo.advanceFeeSubTotal;
         this.payments = data.result.value.payments;
-        // console.log('datos de la tabla' + data.result.value.payments);
+        // //console.log('datos de la tabla' + data.result.value.payments);
       }
-      console.log('2° datos de la tabla', this.payments);
+      //console.log('2° datos de la tabla', this.payments);
     }))
   }
   //**METHODS PAYMENTS (NEW PAYMENT)**//
   addPayment(data) {
-    console.log('workOrderServicesId', this.dataOther.workOrderServices);
+    //console.log('workOrderServicesId', this.dataOther.workOrderServices);
     if(data == null){
       data = {
         serviceRecord: this.data.data.serviceRecordId,
@@ -227,7 +315,7 @@ export class OtherComponent implements OnInit {
       data.sr = this.data.data.serviceRecordId;
       data.service = this.data.data.id_server;
     }
-   console.log("Data al abrir modal de payment concept: ", data);
+   //console.log("Data al abrir modal de payment concept: ", data);
    const dialogRef = this._dialog.open(DialogRequestPaymentNewComponent, {
       data: data,
       width: "95%"
@@ -259,7 +347,7 @@ export class OtherComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
 
       if (result.success) {
           this._services.service_general_delete("RequestPayment/DeletePaymentConcept/"+data.id+"/"+result.type).subscribe((data => {
@@ -300,7 +388,7 @@ export class OtherComponent implements OnInit {
       this.loader.showLoader();
       this._services.service_general_delete(`RelocationServices/DeleteOther?id=${ reminder.id }`)
       .subscribe( (response:any) => {
-        console.log('Res ==> ', response);
+        //console.log('Res ==> ', response);
         if( response.success ) {
           const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
             data: {
@@ -327,7 +415,8 @@ export class OtherComponent implements OnInit {
   }
 
   save(){
-    console.log("Informacion a guardar:  ",this.dataOther);
+    //console.log("Informacion a guardar:  ",this.dataOther);
+    this.loader.showLoader();
     this.dataOther.updatedBy = this.user.id;
     this.dataOther.documentOthers = this.document;
     this.dataOther.updatedDate = new Date();
@@ -357,6 +446,7 @@ export class OtherComponent implements OnInit {
         this.ngOnInit();
       }
     }))
+    this.loader.hideLoader();
   }
   //PRIVACY//
   getPrivacyName(id) {

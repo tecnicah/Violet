@@ -52,3 +52,85 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
 .rechazado{
   color: #ff5858;
 }
+
+
+.text__green {
+  color: #009577;
+}
+.text__yellow {
+  color: #fbb03b;
+}
+.text__red {
+  color: #ff5858;
+}
+
+.divIconContainer {
+  display: inline-block;
+  padding: 5px
+}
+
+.icon-text{
+  clear: left;
+  text-align: right;
+  vertical-align: middle;
+  line-height:25px;
+  font-size: 12px;
+}
+
+.spanicon
+{
+  display:inline-block;
+  vertical-align:top;
+  font-size: 21px;
+}
+
+.dot {
+
+  width: 9px;
+  height: 9px;
+  border-radius: 100%;
+
+  &--absolute {
+    position: absolute;
+    top: 40px;
+    left: 7.5px;
+  }
+
+  &__green {
+    background: #009577;
+  }
+
+  &__yellow {
+    background: #fbb03b;
+  }
+
+  &__red {
+    background: #ff5858;
+  }
+  &__urgen
+  {
+    color: #FFE0E0;
+  }
+  &__green_color {
+      color: #009577;
+    }
+  
+    &__yellow_color {
+      color: #fbb03b;
+    }
+  
+    &__red_color {
+      color: #ff5858;
+    }
+}
+
+.mat-list-base .mat-list-item {
+  font-size: 12px;
+}
+
+.mat-subheader {
+  display: flex;
+  box-sizing: border-box;
+  padding: 10px 0 !important;
+  align-items: center;
+}

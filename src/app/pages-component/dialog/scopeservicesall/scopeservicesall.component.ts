@@ -13,6 +13,20 @@ import { DialogDocumentsAdminCenterServicesComponent } from '../dialog-documents
 })
 export class ScopeservicesallComponent implements OnInit {
 
+  public modulesQuill = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ font: [] }],
+      [{ color: [] }, { background: [] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ align: [] }],
+      ['blockquote', 'code-block'],
+      [{ list: 'ordered'}, { list: 'bullet' }]
+    ]
+  };
+  htmlContent: any;
+
   constructor(public dialogRef: MatDialogRef<ScopeservicesallComponent>,
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -45,6 +59,11 @@ export class ScopeservicesallComponent implements OnInit {
     this.getCountryApplyScope();
   }
 
+  onChangedEditor(event: any): void {
+    if (event.html) {
+        this.htmlContent = event.html;
+      }
+  }
 
   public caDocumentStatus = [];
   async catalogo(){

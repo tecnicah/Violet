@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-client/dialog-documents-lead-client.component';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-dialog-add-cuntry',
@@ -10,11 +11,26 @@ import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-cli
 })
 export class DialogAddCuntryComponent implements OnInit {
 
+  public modulesQuill = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ font: [] }],
+      [{ color: [] }, { background: [] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ align: [] }],
+      ['blockquote', 'code-block'],
+      [{ list: 'ordered'}, { list: 'bullet' }]
+    ]
+  };
+  htmlContent: any;
+
   constructor(public dialogRef: MatDialogRef<DialogAddCuntryComponent>,
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialog: MatDialog) { }
 
+    img_url: string;  
   caCounty: any[] = [];
   dataScopeDocument: any[] = [];
   documentsColum: string[] = ['Document', 'Uploaded', 'Status', 'Privacy'];
@@ -29,6 +45,8 @@ export class DialogAddCuntryComponent implements OnInit {
 
 
   ngOnInit(): void {
+    debugger;
+    this.img_url = environment.images_path;
     console.log('data que recibe country', this.data );
     if(this.data.documentLocationCountries){}else{
       this.data.documentLocationCountries = [];
@@ -42,6 +60,12 @@ export class DialogAddCuntryComponent implements OnInit {
     this.getStandarDocuments();
   }
 
+  onChangedEditor(event: any): void {
+    if (event.html) {
+        this.htmlContent = event.html;
+      }
+  }
+  
     //*********************************************//
 	public permission_read : boolean = false;
 	public permission_write : boolean = false;
@@ -76,7 +100,7 @@ export class DialogAddCuntryComponent implements OnInit {
     this.caStatus = await this._services.getCatalogueFrom('GetDocumentStatus');
     this.caPrivacy = await this._services.getCatalogueFrom('GetPrivacy');
 
-    this._services.service_general_get(`Catalogue/GetDocumentType/${this.data.serviceLine}`).subscribe((data => {
+    this._services.service_general_get(`AdminCenter/GetDocumentType`).subscribe((data => {
       console.log(data);
       if(data.success){
         this.ca_document = data.result;
@@ -89,6 +113,7 @@ export class DialogAddCuntryComponent implements OnInit {
       }
     }));
   }
+
   getDocument(id) {
     for (let i = 0; i < this.ca_document.length; i++) {
       if (this.ca_document[i].id == id) {

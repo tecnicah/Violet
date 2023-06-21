@@ -17,12 +17,12 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
 
   // filtros
   public filterCountry: any = { name: '' };
-  active_country :boolean = false;
+  active_country: boolean = false;
   catalogoCountry: any[] = [];
   ddlCountry; any;
 
-  user:any;
-  data_:any = {
+  user: any;
+  data_: any = {
     "name": "",
     "description": "",
     "idCurrency": 0,
@@ -38,38 +38,65 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
   authoDate = new Date();
   document = [];
   countryLeaders: any[] = [];
-  loader:LoaderComponent = new LoaderComponent();
+  loader: LoaderComponent = new LoaderComponent();
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
   //******************************************************//
   ngOnInit(): void {
+    console.log("Data que recibe modal: ", this.data);
+    this.user = JSON.parse(localStorage.getItem('userData'));
 
-    this._services.service_general_get('Catalogue/Generic/Countries').subscribe(r =>{
-      if(r.success){
+    this._services.service_general_get('Catalogue/Generic/Countries').subscribe(r => {
+      if (r.success) {
         this.catalogoCountry = r.result;
+        //console.log("Catalogue/Generic/Countries =========================",r.result);
+        this._services.service_general_get('CountryAdminCenter/GetCountry').subscribe(rCountry => {
+
+          // console.log("CountryAdminCenter/GetCountry =============================== ", rCountry.result.value);
+          rCountry.result.value.forEach(name => {
+            this.catalogoCountry.forEach((country, index) => {
+              //console.log("name.country.toLowerCase() ", name.country.toLowerCase(), '==', country.name.toLowerCase());
+              if (name.country?.toLowerCase() == country.name?.toLowerCase()) {
+                this.catalogoCountry.splice(index, 1);
+              }
+            });
+          });
+        });
       }
     })
 
-    this.user = JSON.parse(localStorage.getItem('userData'));
-    console.log("Data que recibe modal: ", this.data);
-    if(this.data.id != 0){
+
+    if (this.data.id != 0) {
       this.loader.showLoader();
-      this._services.service_general_get('CountryAdminCenter/GetCountryById?id='+this.data.id).subscribe((data_c => {
+      this._services.service_general_get('CountryAdminCenter/GetCountryById?id=' + this.data.id).subscribe((data_c => {
+        console.log("CountryAdminCenter/GetCountryById?id ============================ ", data_c);
         if (data_c.success) {
-          console.log(data_c.result.value[0]);
+          console.log("CountryAdminCenter/GetCountryById?id ============================ ", data_c.result.value[0]);
           this.data_ = data_c.result.value[0];
-          for(let i = 0; i < this.data_.catCities.length; i++){
-            this.data_.catCities[i].createDate = this.data_.cities[i].createDate;
-            this.data_.catCities[i].resource_guide = this.data_.cities[i].resource_guide;
-          }
-          // console.log(this.data_);
+          this.ddlCountry = this.data_.name;
+          // for (let i = 0; i < this.data_.catCities.length; i++) {
+          //   this.data_.catCities[i].createDate = this.data_.cities[i].createDate;
+          //   this.data_.catCities[i].resource_guide = this.data_.cities[i].resource_guide;
+          // }
+          console.log("Data Cities", this.data_);
+          this.loader.hideLoader();
+          this.getCatalogos();
         }
-      }));
+      }), (error) => {
+        this.loader.hideLoader();
+        console.error('error con el delete', error);
+        const dialog2 = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Warning",
+            body: `Error to load`
+          },
+          width: "350px"
+        });
+
+      });
 
     }
-    this.loader.hideLoader();
-    this.getCatalogos();
   }
   //******************************************************//
   ca_currency = [];
@@ -78,13 +105,14 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
   caCountry = [];
   caStatus = [];
   ca_timeZone = [];
-  async getCatalogos(){
+  async getCatalogos() {
     this.ca_timeZone = await this._services.getCatalogueFrom('GetTimeZone');
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
     this.ca_language = await this._services.getCatalogueFrom('GetLanguages');
-    this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
+    this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/25');
     this.caCountry = await this._services.getCatalogueFrom('GetPrivacy');
     this.caStatus = await this._services.getCatalogueFrom('GetDocumentStatus');
+    this.loader.hideLoader();
   }
   //******************************************************//
 
@@ -101,9 +129,9 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
 
   addCity() {
     let dataC: any = {};
-    // dataC.id = this.data.id;
     dataC.id = 0;
     dataC.origin = this.data.origin;
+    dataC.country = this.ddlCountry;
 
     console.log("ABRE MODAL ADD CITY", dataC);
     const dialogRef = this._dialog.open(DialogAdminCenterAddCityComponent, {
@@ -115,7 +143,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log("Este es el result de add city: ", result);
-      if(result.success){
+      if (result.success) {
         // result.id = this.data.id;
         result.idCountry = this.data.id;
         result.createdDate = new Date();
@@ -126,14 +154,15 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
   //******************************************************//
   editRegistro(data_, i) {
     data_.origin = this.data.origin;
-    console.log("ABRE MODAL ADD CITY PARA EDICION", data_);
+    data_.country = this.ddlCountry;
+    console.log("ABRE MODAL ADD CITY PARA EDICIONMMMMM", data_);
     const dialogRef = this._dialog.open(DialogAdminCenterAddCityComponent, {
       data: data_,
       width: "95%"
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log("Este es el result de add city: ", result);
-      if(result.success){
+      if (result.success) {
         this.data_.catCities[i] = result;
       }
     })
@@ -155,12 +184,12 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
         for (let i = 0; i < this.data_.countryLeaders.length; i++) {
           const element = this.data_.countryLeaders[i];
           if (element.leader == idLeader) {
-            this.data_.countryLeaders.splice(i,1);
+            this.data_.countryLeaders.splice(i, 1);
             break;
           }
-          console.log('countryleader',this.data_.countryLeaders);
+          console.log('countryleader', this.data_.countryLeaders);
         }
-        this._services.service_general_put("CountryAdminCenter/UpdateCountry", this.data_).subscribe((data) =>{
+        this._services.service_general_put("CountryAdminCenter/UpdateCountry", this.data_).subscribe((data) => {
           console.log('respuesta de eliminacion', data);
           if (data.success) {
             const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -173,15 +202,15 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
             this.getCatalogos();
           }
         }, (error) => {
-            console.error('error con el delete', error);
-            const dialog2 = this._dialog.open(DialogGeneralMessageComponent, {
+          console.error('error con el delete', error);
+          const dialog2 = this._dialog.open(DialogGeneralMessageComponent, {
             data: {
               header: "Warning",
               body: `The country leader is in use `
             },
             width: "350px"
-            });
-            this.getCatalogos();
+          });
+          this.getCatalogos();
         })
 
       }
@@ -193,11 +222,11 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogAddLeaderComponent, {
       data: {
         id: 0
-        },
+      },
       width: "45%"
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result.success){
+      if (result.success) {
         result.country = this.data_.id;
         console.log("Este es el result de leader: ", result);
         this.data_.countryLeaders.push(result);
@@ -205,11 +234,11 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
       }
     })
   }
-  save(){
+  save() {
     this.loader.showLoader();
     //console.log(this.filterCountry);
     //console.log(this.ddlCountry.name);
-    this.data_.name = this.ddlCountry.name; 
+    this.data_.name = this.ddlCountry;
     this.data_.id = this.data.id;
     this.data_.createdBy = this.user.id;
     this.data_.createdDate = new Date();
@@ -217,53 +246,67 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
     this.data_.updatedDate = new Date();
     this.data_.countryDocuments = this.document;
     // if (this.data_.leader != undefined) {
-      // this.data_.countryLeaders = this.data_.countryLeaders;
+    // this.data_.countryLeaders = this.data_.countryLeaders;
     // }
     //console.log("Esta es la informacion a guardar: ", this.data_);
 
-    //console.log("Esta es la informacion a guardar (STRINGIFY): ", JSON.stringify(this.data_));
+    console.log("Esta es la informacion a guardar (STRINGIFY): ", JSON.stringify(this.data_));
+    debugger;
+    console.log(this.data_);
+    if (this.data_.id == 0) {
+      this._services.service_general_post_with_url("CountryAdminCenter/AddCountry", this.data_).subscribe(data => {
+        if (data.success) {
+          console.log(data);
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Success",
+              body: "Saved Data"
+            },
+            width: "350px"
+          });
+          this.loader.hideLoader();
+          this.dialogRef.close();
+        }
+      },
+        (error) => {
+          console.log(error.error.message);
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Warning",
+              body: error.error.message
+            },
+            width: "350px"
+          });
+          this.loader.hideLoader();
+          this.dialogRef.close();
+        });
 
-    if(this.data_.id == 0){
-      this._services.service_general_post_with_url("CountryAdminCenter/AddCountry", this.data_).subscribe((data => {
-      if(data.success){
-        console.log(data);
-         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-              data: {
-                header: "Success",
-                body: "Saved Data"
-              },
-              width: "350px"
-            });
-            this.loader.hideLoader();
-            this.dialogRef.close();
-      }
-      }))
     } else {
       this._services.service_general_put("CountryAdminCenter/UpdateCountry", this.data_).subscribe((data => {
-        if(data.success){
+        if (data.success) {
           console.log(data);
-           const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: "Saved Data"
-                },
-                width: "350px"
-              });
-              this.loader.hideLoader();
-              this.dialogRef.close();
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Success",
+              body: "Saved Data"
+            },
+            width: "350px"
+          });
+          this.loader.hideLoader();
+          this.dialogRef.close();
         }
-        }))
+      }))
     }
   }
   //******************************************************//
-  addDocument(){
+  addDocument() {
     console.log("ABRE MODAL DOCUMENT PARA DOCUMENTO");
     const dialogRef = this._dialog.open(DialogAdminCenterDocumentsUploadComponent, {
       width: "95%"
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log("Este es el result de leader: ", result);
-      if(result.success){
+      if (result.success) {
         result.idCountry = this.data_.id;
         this.document.push(result);
       }
@@ -271,40 +314,40 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
   }
   //******************************************************//
   //FUNCIONES PARA CONSULTA DE NOMBRES//
-  getName(id){
-    for(let i = 0; i < this.caDocumentType.length; i++){
-       if(this.caDocumentType[i].id == id){
-         return this.caDocumentType[i].documentType;
-       }
+  getName(id) {
+    for (let i = 0; i < this.caDocumentType.length; i++) {
+      if (this.caDocumentType[i].id == id) {
+        return this.caDocumentType[i].documentType;
+      }
     }
   }
 
-  getStatus(id){
-    for(let i = 0; i < this.caStatus.length; i++){
-       if(this.caStatus[i].id == id){
-         return this.caStatus[i].status;
-       }
+  getStatus(id) {
+    for (let i = 0; i < this.caStatus.length; i++) {
+      if (this.caStatus[i].id == id) {
+        return this.caStatus[i].status;
+      }
     }
   }
 
-  getPrivacy(id){
-    for(let i = 0; i < this.caCountry.length; i++){
-       if(this.caCountry[i].id == id){
-         return this.caCountry[i].privacy;
-       }
+  getPrivacy(id) {
+    for (let i = 0; i < this.caCountry.length; i++) {
+      if (this.caCountry[i].id == id) {
+        return this.caCountry[i].privacy;
+      }
     }
   }
 
-  getTimeZone(id){
-    for(let i = 0; i < this.ca_timeZone.length; i++){
-      if(this.ca_timeZone[i].id == id){
+  getTimeZone(id) {
+    for (let i = 0; i < this.ca_timeZone.length; i++) {
+      if (this.ca_timeZone[i].id == id) {
         return this.ca_timeZone[i].timeZone;
       }
-   }
+    }
   }
   //******************************************************//
   //FUNCIONES PARA ELIMINAR//
-  deleteTemporal(i){
+  deleteTemporal(i) {
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -321,7 +364,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
     })
   }
   //FUNCION PARA ELIMINAR DE BASE DE DATOS DOCUMENT COUNTRY//
-  deleteDocumentCountry(data){
+  deleteDocumentCountry(data) {
     console.log(data);
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
@@ -379,16 +422,24 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
           }))
         }
       }
-    },(error) => {
+    }, (error) => {
       console.error('error con el delete', error);
       const dialog2 = this._dialog.open(DialogGeneralMessageComponent, {
-      data: {
-        header: "Warning",
-        body: `The city is in use.`
-      },
-      width: "350px"
+        data: {
+          header: "Warning",
+          body: `The city is in use.`
+        },
+        width: "350px"
       });
       this.ngOnInit();
-  })
+    })
+  }
+
+  public __serverPath__: string = this._services.url_images;
+  
+  public openRepairsFileOnWindow(url_in: string): void {
+    debugger;
+    const server_url: string = this.__serverPath__ + url_in;
+    window.open(server_url);
   }
 }

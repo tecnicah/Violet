@@ -7,12 +7,25 @@
     <mat-icon (click)="close_Modal()" style="cursor:pointer">close</mat-icon>
   </div>
 </div>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title"></h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <div class="wid" *ngIf="!show_hide_all_" align="end">
+      <span class="browser" style="cursor: pointer; font-weight: bold;" (click)="show_hide_all(true);">Show All&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <div class="wid" *ngIf="show_hide_all_" align="end">
+      <span class="browser" style="cursor: pointer; font-weight: bold;" (click)="show_hide_all(false);">Hide All&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</div>
 <!-----------------------------------content-------------------------------------->
 <mat-dialog-content class="mat-typography">
   <!--------------------------------------------------------------------------------------------------->
   <!--------------------------------------------------------------------------------------------------->
   <!--MAQUETA Property Inspection / Move In -->
-  <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 10px;">
+  <div class="mat-elevation-z5" *ngIf="data.movein" style="padding: 10px; margin-top: 20px; margin-bottom: 10px;">
 
     <mat-grid-list cols="4" rowHeight="70px">
 
@@ -23,10 +36,10 @@
           </div>
           <div>
             <span class="browser" style="cursor: pointer;" (click)="mostrarTarjeta.move_in = !mostrarTarjeta.move_in"
-              *ngIf="!mostrarTarjeta.move_in">Show</span>
+              *ngIf="!mostrarTarjeta.move_in"><img src="../../../../assets/icons/arrow_down.png" style="width: 22px;"></span>
 
             <span class="browser" style="cursor: pointer;" (click)="mostrarTarjeta.move_in = !mostrarTarjeta.move_in"
-              *ngIf="mostrarTarjeta.move_in">Hide</span>
+              *ngIf="mostrarTarjeta.move_in"><img src="../../../../assets/icons/arrow_right.png" style="width: 22px;"></span>
           </div>
         </div>
       </mat-grid-tile>
@@ -117,9 +130,9 @@
         *ngFor="let data_ of data_move_in.propertyReportSections; let r = index">
 
         <div class="textarea" style="text-align: end; width: 94%;">
-          <span class="browser" style="cursor: pointer;" (click)="data_.show = true" *ngIf="!data_.show">Show</span>
+          <span class="browser" style="cursor: pointer;" (click)="data_.show = true" *ngIf="!data_.show"><img src="../../../../assets/icons/arrow_down.png" style="width: 22px;"></span>
 
-          <span class="browser" style="cursor: pointer;" (click)="data_.show = false" *ngIf="data_.show">Hide</span>
+          <span class="browser" style="cursor: pointer;" (click)="data_.show = false" *ngIf="data_.show"><img src="../../../../assets/icons/arrow_right.png" style="width: 22px;"></span>
         </div>
 
         <img src="assets/icons/quit.svg" class="delete" (click)='deleteMoveIn(r)'>
@@ -278,7 +291,7 @@
               <div class="page__section-buttong"
                 style="display: flex; justify-content: flex-end; flex: 0px !important;">
 
-                <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;">
+                <button class="button-icon" style="background-color: #3A2337; color: white; width: 200px;">
                   Save
                 </button>
 
@@ -410,7 +423,7 @@
 
           <div class="page__section-buttong" style="display: flex; justify-content: flex-end; flex: 0px !important;">
 
-            <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;" (click)="save()">
+            <button class="button-icon" style="background-color: #3A2337; color: white; width: 200px;" (click)="save()">
               Save Report
             </button>
 
@@ -423,10 +436,8 @@
   <!--------------------------------------------------------------------------------------------------->
   <!--------------------------------------------------------------------------------------------------->
   <!--MAQUETA Property Inspection / Move Out -->
-  <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 10px;">
-
+  <div class="mat-elevation-z5" *ngIf="data.moveout" style="padding: 10px; margin-top: 20px; margin-bottom: 10px;">
     <mat-grid-list cols="4" rowHeight="70px">
-
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div style="display:flex; justify-content: space-between; width: 100%;">
           <div>
@@ -434,10 +445,10 @@
           </div>
           <div>
             <span class="browser" style="cursor: pointer;" (click)="mostrarTarjeta.move_out = !mostrarTarjeta.move_out"
-              *ngIf="!mostrarTarjeta.move_out">Show</span>
+              *ngIf="!mostrarTarjeta.move_out"><img src="../../../../assets/icons/arrow_down.png" style="width: 22px;"></span>
 
             <span class="browser" style="cursor: pointer;" (click)="mostrarTarjeta.move_out = !mostrarTarjeta.move_out"
-              *ngIf="mostrarTarjeta.move_out">Hide</span>
+              *ngIf="mostrarTarjeta.move_out"><img src="../../../../assets/icons/arrow_right.png" style="width: 22px;"></span>
           </div>
         </div>
       </mat-grid-tile>
@@ -527,9 +538,9 @@
         *ngFor="let data_ of data_move_out.propertyReportSections; let o = index">
 
         <div class="textarea" style="text-align: end; width: 94%;">
-          <span class="browser" style="cursor: pointer;" (click)="data_.show = true" *ngIf="!data_.show">Show</span>
+          <span class="browser" style="cursor: pointer;" (click)="data_.show = true" *ngIf="!data_.show"><img src="../../../../assets/icons/arrow_down.png" style="width: 22px;"></span>
 
-          <span class="browser" style="cursor: pointer;" (click)="data_.show = false" *ngIf="data_.show">Hide</span>
+          <span class="browser" style="cursor: pointer;" (click)="data_.show = false" *ngIf="data_.show"><img src="../../../../assets/icons/arrow_right.png" style="width: 22px;"></span>
         </div>
 
         <img src="assets/icons/quit.svg" class="delete" (click)='deleteMoveOut(o)'>
@@ -688,7 +699,7 @@
               <div class="page__section-buttong"
                 style="display: flex; justify-content: flex-end; flex: 0px !important;">
 
-                <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;">
+                <button class="button-icon" style="background-color: #3A2337; color: white; width: 200px;">
                   Save
                 </button>
 
@@ -820,7 +831,7 @@
 
           <div class="page__section-buttong" style="display: flex; justify-content: flex-end; flex: 0px !important;">
 
-            <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;"
+            <button class="button-icon" style="background-color: #3A2337; color: white; width: 200px;"
               (click)="save_out()">
               Save Report
             </button>
@@ -833,21 +844,21 @@
   <!--------------------------------------------------------------------------------------------------->
   <!--------------------------------------------------------------------------------------------------->
   <!--MAQUETA Inspections & Repairs -->
-  <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+  <div class="mat-elevation-z5" *ngIf="data.moveinspect" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
 
     <mat-grid-list cols="4" rowHeight="70px">
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div style="display:flex; justify-content: space-between; width: 100%;">
           <div>
-            <p class="page__section-name">Inspections & Repairs</p>
+            <p class="page__section-name">Property Inspections & Repairs</p>
           </div>
           <div>
             <span class="browser" style="cursor: pointer;" (click)="mostrarTarjeta.repairs = !mostrarTarjeta.repairs"
-              *ngIf="!mostrarTarjeta.repairs">Show</span>
+              *ngIf="!mostrarTarjeta.repairs"><img src="../../../../assets/icons/arrow_down.png" style="width: 22px;"></span>
 
             <span class="browser" style="cursor: pointer;" (click)="mostrarTarjeta.repairs = !mostrarTarjeta.repairs"
-              *ngIf="mostrarTarjeta.repairs">Hide</span>
+              *ngIf="mostrarTarjeta.repairs"><img src="../../../../assets/icons/arrow_right.png" style="width: 22px;"></span>
 
           </div>
         </div>
@@ -1150,7 +1161,7 @@
 
           <div class="page__section-buttong" style="display: flex; justify-content: flex-end; flex: 0px !important;">
 
-            <button class="button-icon" style="background-color: #9d3292; color: white; width: 200px;"
+            <button class="button-icon" style="background-color: #3A2337; color: white; width: 200px;"
               (click)="guardar_inspectionAndRepairs();">
               Save
             </button>
@@ -1161,5 +1172,6 @@
       </mat-grid-list>
     </div>
   </div>
-
+  <!--------------------------------------------------------------------------------------------------->
+  <!--FIN MAQUETA Inspections & Repairs -->
 </mat-dialog-content>

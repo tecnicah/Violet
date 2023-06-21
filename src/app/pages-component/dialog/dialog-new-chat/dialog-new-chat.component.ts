@@ -22,12 +22,20 @@ export class DialogNewChatComponent implements OnInit {
   filterU: any = { user: '' }
   sending: boolean = false;
   contact = {
-    user:''
+    userName:''
   }
+  _innerHeight;
+  isGroup: boolean = false;
 
   newMessageToSend = new newMesage;
 
   ngOnInit(): void {
+    this._innerHeight  = window.innerHeight - 350 + "px";
+
+    window.addEventListener("resize", () => {
+      document.getElementById('divNewChat').style.height = window.innerHeight - 350 + "px";      
+    });
+
     this.userData = JSON.parse(localStorage.getItem('userData'));
     this.newMessageToSend.userid = this.userData.id;
     this.newMessageToSend.userList = [];
@@ -132,18 +140,22 @@ export class DialogNewChatComponent implements OnInit {
 
   onKey($event){
     if($event.key == "Enter" || $event.keyCode == 13){
-      this.send();
+      //this.send();
     }
   }
 
-  send(){
+  send(id){
     this.sending = true;
     this.newMessageToSend.group = this.newMessageToSend.userList.length > 1 ? true  : false;
     if(this.newMessageToSend.message== null || this.newMessageToSend.message== undefined){
       this.newMessageToSend.message = '';
     }
     debugger
-    console.log(this.newMessageToSend);
+    if(id != null){
+      this.newMessageToSend.userList.push(id);
+    }
+    
+    console.log("this.newMessageToSend", JSON.stringify(this.newMessageToSend));
     this._services.service_general_post_with_url('Chat/SentNewMessage', this.newMessageToSend).subscribe(n => {
       console.log(n);
       this.sending = false;
@@ -153,6 +165,28 @@ export class DialogNewChatComponent implements OnInit {
       this.sending = false;
       document.getElementById('close').click();
     })
+  }
+
+  addGroup()
+  {
+    this.isGroup = true;
+    document.getElementById('divNewChat').style.height = window.innerHeight - 350 + "px";
+  }
+
+  setOption(event, element, i){
+    console.log("event", event);
+    console.log("element", element);
+    if(event > 0){
+      this.newMessageToSend.userList.push(element.id);
+    }
+    else{
+      this.newMessageToSend.userList.splice(i);
+    }
+  }
+
+  cancel(){
+    this.newMessageToSend.userList = [];
+    this.isGroup = false;
   }
 
   getName(item){

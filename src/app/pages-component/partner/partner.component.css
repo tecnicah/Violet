@@ -15,3 +15,7 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
 mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-form-field {
 	width: 65px !important;
 }
+
+.mat-list-base .mat-list-item {
+  font-size: 12px;
+}

@@ -15,11 +15,12 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
   temporalDocument = [];
   data_:any = {
     photoCityAbouts : [],
+    photoCityLivings : [],
     photoCityAttractions: [],
     photoWhatToDos: [],
     photoWhereEats: []
   }
-
+  typeResources: any[]= [];
   authoDate = new Date();
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
@@ -31,6 +32,14 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
         this.data.type = 1;
         this.data_ = this.data;
         this.data_.idCity = this.data.idCity;
+        this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+        .subscribe((data => {
+          console.log("Type",data);
+            if (data.success) {
+              this.typeResources = data.result;
+            }
+            
+          }));
         return
       }
 
@@ -38,6 +47,14 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
         this.data.type = 2;
         this.data_ = this.data;
         this.data_.idCity = this.data.idCity;
+        this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+        .subscribe((data => {
+          console.log("Type",data);
+            if (data.success) {
+              this.typeResources = data.result;
+            }
+            
+          }));
         return
       }
 
@@ -45,6 +62,14 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
         this.data.type = 4;
         this.data_ = this.data;
         this.data_.idCity = this.data.idCity;
+        this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+        .subscribe((data => {
+          console.log("Type",data);
+            if (data.success) {
+              this.typeResources = data.result;
+            }
+            
+          }));
         return
       }
 
@@ -52,12 +77,29 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
         this.data.type = 5;
         this.data_ = this.data;
         this.data_.idCity = this.data.idCity;
+        this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+        .subscribe((data => {
+          console.log("Type",data);
+            if (data.success) {
+              this.typeResources = data.result;
+            }
+            
+          }));
         return
       }
 
       this.data_.type = this.data.type;
       this.data_.idCity = this.data.idCity;
     }
+
+    this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+    .subscribe((data => {
+      console.log("Type",data);
+        if (data.success) {
+          this.typeResources = data.result;
+        }
+        
+      }));
   }
 
   save(){
@@ -73,6 +115,7 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
 
       // Is it a file?
       if (droppedFile.fileEntry.isFile) {
+        console.log("this.data_.type",this.data_.type);
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         const reader = new FileReader();
         fileEntry.file((file: File) => {
@@ -136,7 +179,16 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
                   "createdDate": new Date(),
                 }) 
               }
-                
+              if(this.data_.type == 6){
+                this.data_.photoCityLivings.push({
+                  "id": 0,
+                  "idCityLiving": this.data_.idCity,
+                  "fileName": droppedFile.relativePath,
+                  "fileExtencion": ext[ext.length-1],
+                  "fileRequest": encoded,
+                  "createdDate": new Date(),
+                }) 
+              }
             };
           });
         });

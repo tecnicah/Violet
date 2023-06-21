@@ -22,7 +22,7 @@ export class TenancyManagementComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
   loader: LoaderComponent = new LoaderComponent();
-  user:any;
+  user:any = JSON.parse(localStorage.getItem('userData'));
   show: boolean = false;
   idTenancy;
   document: any[] = [];
@@ -39,20 +39,24 @@ export class TenancyManagementComponent implements OnInit {
   newComment: any[] = [];
   statusEvent_catalog;
   severity_catalogue;
-  serviceScope : any[] = [];
+  serviceScope = null;
 
   // dataComment;
 
 
   ngOnInit(): void {
+
+    ////console.log("user ========================", this.user)
     this.loader.showLoader();
-    console.log("Data que recibe el modal:", this.data);
+    ////console.log("Data que recibe el modal:", this.data);
     this.getCatalog();
     this.idTenancy = this.data.data.service[0].id;
-    console.log('id', this.data.data.service[0].id);
+    //console.log('id', this.data.data.service[0].id);
     this.dataTenancy();
 
   }
+
+
   public tenancyManagement: tenancyManagementModel = new tenancyManagementModel();
   public dataDeliver;
 
@@ -60,7 +64,7 @@ export class TenancyManagementComponent implements OnInit {
    getServiceScope() {
     this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.tenancyManagement.workOrderServices}&client=${this.data.data.partnerId }`).subscribe(resp => {
       if (resp.success) {
-        console.log('Data ScopeService: ', resp);
+        //console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
       }
     });
@@ -78,20 +82,108 @@ export class TenancyManagementComponent implements OnInit {
         this.loader.hideLoader();
         this.tenancyManagement = resp.result
         // this.dataComment = resp.result.commentTenancyManagements;
-        console.log('tenancy', this.tenancyManagement);
+        //console.log('tenancy', this.tenancyManagement);
         this.getdeliver();
         this.getServiceScope();
         this.get_payment();
         this.getDataHousing();
         // this.getRealtor();
+        this.setup_permissions_settings();
       }
     }, (error: any) => {
-      console.log('error RelocationServices/TenancyManagement', error);
+      //console.log('error RelocationServices/TenancyManagement', error);
     });
   }
+
+   //////////////////////manage estatus 
+
+   disabled_by_permissions: boolean = false;
+   hide_by_permissions: boolean = false;
+   hide_complete: boolean = false;
+   show_completed: boolean = false;
+   show_progress: boolean = false;
+   wo_: boolean = false;
+   sr_: boolean = false;
+ 
+   setup_permissions_settings() {
+     //debugger;
+     if (!this.data.data.numberWorkOrder) {
+       this.wo_ = this.data.workOrderId;
+     }
+     else {
+       this.wo_ = this.data.data.numberWorkOrder
+     }
+ 
+     if (!this.data.data.number_server) {
+       this.sr_ = this.data.data.serviceNumber
+     }
+     else {
+       this.sr_ = this.data.data.number_server
+     }
+ 
+     if (this.user.role.id == 3) {
+       this.disabled_by_permissions = true
+     }
+     else {
+       this.hide_by_permissions = true;
+     }
+     if (this.tenancyManagement.statusId != 39 && this.tenancyManagement.statusId != 2) { //active , in progress
+       this.hide_complete = true;
+     }
+     else {
+       if (this.tenancyManagement.statusId == 39) {
+         this.show_progress = true;
+       }
+       else {
+         this.show_completed = true;
+       }
+     }
+   }
+ 
+   change_button() {
+     //debugger;
+     if (this.show_completed) {
+       const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+         data: {
+           header: "Confirmation",
+           body: "Are you sure the service is complete?"
+         },
+         width: "350px"
+       });
+ 
+       dialogRef.afterClosed().subscribe(result => {
+         // //console.log(result);
+         if (result) {
+           this.tenancyManagement.statusId = 37; //penidng to completion 
+           this.save();
+         }
+       });
+     }
+ 
+     if (this.show_progress) {
+       const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+         data: {
+           header: "Confirmation",
+           body: "Do you want start the service?"
+         },
+         width: "350px"
+       });
+ 
+       dialogRef.afterClosed().subscribe(result => {
+         // //console.log(result);
+         if (result) {
+           this.tenancyManagement.statusId = 2; //penidng to completion 
+           this.save();
+         }
+       });
+     }
+   }
+ 
+   //////////////////////manage estatus 
+
   getdeliver() {
     this._services.service_general_get(`ServiceOrder/GetDeliverTo?wos=${this.tenancyManagement.workOrderServices}`).subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.dataDeliver = data.result.value;
       }
@@ -105,20 +197,20 @@ export class TenancyManagementComponent implements OnInit {
     this._services.service_general_get('Catalogue/GetDocumentType/1').subscribe((data => {
       if (data.success) {
         this.documentType = data.result;
-        console.log(this.documentType);
+        //console.log(this.documentType);
       }
     }));
     this.statusEvent_catalog = await this._services.getCatalogueFrom('GetStatusReportAnEvent');
     this.severity_catalogue = await this._services.getCatalogueFrom('GetSeverity');
     this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=23").subscribe((data => {
-      console.log(data);
+      //console.log("catalog_estatus ============================",data);
       if (data.success) {
         this.catalog_estatus = data.result;
       }
     }));
   }
   addEvent(id) {
-    console.log('add event');
+    //console.log('add event');
     const dialogRef = this._dialog.open(DialogAddEventTenancyComponent, {
       width: "95%",
       data: {id: id, tenancyManagementId: this.tenancyManagement.id},
@@ -138,7 +230,7 @@ export class TenancyManagementComponent implements OnInit {
   getDataHousing() {
     this._services.service_general_get('HousingList/GetAllHousing?key=' + Number(this.data.data.workOrderId)).subscribe((data_housing) => {
       if (data_housing.success) {
-        console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
+        //console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
         this.dataSourceHousing = data_housing.message;
         // this.permanent_homet(this.dataSourceHousing);
       }
@@ -176,7 +268,7 @@ export class TenancyManagementComponent implements OnInit {
     this.data_propiedad.numberWorkOrder = this.data.data.numberWorkOrder;
     this.data_propiedad.serviceID = this.data.data.number_server;
     this.data_propiedad.serviceName = this.data.data.service_name;
-    console.log("Editar Housing: ", this.data_propiedad);
+    ////console.log("Editar Housing: ", this.data_propiedad);
     const dialogRef = this._dialog.open(DialogHomeDetailsComponent, {
       data: this.data_propiedad,
       width: "95%"
@@ -216,7 +308,7 @@ export class TenancyManagementComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (id == 0) {
           this.document.splice(i, 1);
@@ -258,18 +350,18 @@ export class TenancyManagementComponent implements OnInit {
     });
   }
   addDocument() {
-    console.log('add document');
+    //console.log('add document');
     this.data.typeDocument = 1;
     const dialogRef = this._dialog.open(DialogDocumentsComponent, {
       width: "95%",
       data: this.data
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if(result.success){
         result.tenancyManagementId = this.tenancyManagement.id;
          this.document.push(result);
-         console.log(this.document);
+         //console.log(this.document);
       }
     });
   }
@@ -277,21 +369,21 @@ export class TenancyManagementComponent implements OnInit {
   // payment
   //++++++++ consulta payment
   get_payment() {
-    console.log('Extracion de datos');
+    //console.log('Extracion de datos');
     this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.tenancyManagement.workOrderServices).subscribe((data => {
       if (data.success) {
-        console.log('datos de tabla request', data);
+        //console.log('datos de tabla request', data);
         this.calculo = data.result.value;
         this.calculo.total = this.calculo.ammountSubTotal + this.calculo.managementFeeSubTotal + this.calculo.wireFeeSubTotal + this.calculo.advanceFeeSubTotal;
         this.payments = data.result.value.payments;
-        // console.log('datos de la tabla' + data.result.value.payments);
+        // //console.log('datos de la tabla' + data.result.value.payments);
       }
-      console.log('2° datos de la tabla', this.payments);
+      //console.log('2° datos de la tabla', this.payments);
     }))
   }
   addPayment(data) {
-    console.log('add payment');
-    console.log('workOrderServicesId', this.tenancyManagement.workOrderServices);
+    //console.log('add payment');
+    //console.log('workOrderServicesId', this.tenancyManagement.workOrderServices);
     if(data == null){
       data = {
         serviceRecord: this.data.data.serviceRecordId,
@@ -311,7 +403,7 @@ export class TenancyManagementComponent implements OnInit {
       data.sr = this.data.data.serviceRecordId;
       data.service = this.data.data.id_server;
     }
-   console.log("Data al abrir modal de payment concept: ", data);
+   ////console.log("Data al abrir modal de payment concept: ", data);
    const dialogRef = this._dialog.open(DialogRequestPaymentNewComponent, {
       data: data,
       width: "95%"
@@ -321,7 +413,7 @@ export class TenancyManagementComponent implements OnInit {
     });
   }
   editPayment(data) {
-    console.log('edit payment');
+    //console.log('edit payment');
     data.type = 2;
     data.supplierType = 3;
     data.id = data.requestPaymentId;
@@ -339,13 +431,13 @@ export class TenancyManagementComponent implements OnInit {
 
   }
   deletePaymentConcept(data) {
-    console.log('delete');
+    //console.log('delete');
     const dialogRef = this._dialog.open(DialogDeletepaymentconceptComponent, {
       width: "20%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
 
       if (result.success) {
           this._services.service_general_delete("RequestPayment/DeletePaymentConcept/"+data.id+"/"+result.type).subscribe((data => {
@@ -389,7 +481,7 @@ export class TenancyManagementComponent implements OnInit {
       this.loader.showLoader();
       this._services.service_general_delete(`RelocationServices/Reminder/TenancyManagement?id=${ reminder.id }`)
       .subscribe( (response:any) => {
-        console.log('Res ==> ', response);
+        //console.log('Res ==> ', response);
         if( response.success ) {
           const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
             data: {
@@ -410,11 +502,14 @@ export class TenancyManagementComponent implements OnInit {
     reminder_model.createdBy = this.user_data.id;
     reminder_model.createdDate = new Date();
     reminder_model.tenancyManagementId = this.tenancyManagement.id;
+    reminder_model.reminderDate = new Date();
+    reminder_model.reminderComments = " ";
 
     this.tenancyManagement.reminderTenancyManagements.push( reminder_model );
   }
   save() {
-    console.log('save');
+    this.loader.showLoader();
+    ////console.log('save');
     this.tenancyManagement.updateBy = this.user_data.id;
     this.tenancyManagement.updatedDate = new Date();
     for (let com = 0; com < this.tenancyManagement.commentTenancyManagements.length; com++) {
@@ -424,7 +519,7 @@ export class TenancyManagementComponent implements OnInit {
       }
     }
     this.tenancyManagement.documentTenancyManagements = this.document;
-    console.log("Informacion a guardar:  ", this.tenancyManagement);
+    ////console.log("Informacion a guardar:  ", this.tenancyManagement);
     this._services.service_general_put("RelocationServices/TenancyManagement", this.tenancyManagement).subscribe((data => {
       if (data.success) {
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -439,6 +534,7 @@ export class TenancyManagementComponent implements OnInit {
         this.ngOnInit();
       }
     }))
+    this.loader.hideLoader();
   }
 }
 class tenancyManagementModel {

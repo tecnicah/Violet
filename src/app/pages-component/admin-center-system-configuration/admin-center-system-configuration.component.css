@@ -25,7 +25,7 @@
 .filterCard__card--active {
   color: white;
   font-size: 16px;
-  background-image: linear-gradient(to bottom, #9d3292, #4435a6);
+  background-image: linear-gradient(to bottom, #3A2337, #4435a6);
   border-radius: 5px;
   height: 62px;
   width: 97.5%;

@@ -14,7 +14,7 @@ import { DialogGeneralMessageComponent } from './../general-message/general-mess
     selector: 'edit-services-record',
     templateUrl: './edit-services.component.html'
 }) export class DialogEditServices implements OnInit {
-
+  public USERDATA: any;
   servicios_sr:any;
   
     constructor(
@@ -27,6 +27,9 @@ import { DialogGeneralMessageComponent } from './../general-message/general-mess
     ngOnInit() {
       console.log('data que recibe modal', this.data);
         this.initPage();
+        const user_in = localStorage.getItem('userData');
+        this.USERDATA = JSON.parse(user_in);
+      console.log(this.USERDATA);
 
     }
 
@@ -100,6 +103,7 @@ import { DialogGeneralMessageComponent } from './../general-message/general-mess
             id_user: this.current_so_data.user_id,
             new_sr: false,
             partnerID: this.data.partner,
+            clientID: this.data.client,
             close: true,
             isnew: false,
             home_country: this.data.home_contry,

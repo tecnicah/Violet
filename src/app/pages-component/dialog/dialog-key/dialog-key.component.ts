@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
+import { LoaderComponent } from 'app/shared/loader';
+
 
 @Component({
   selector: 'app-dialog-key',
@@ -12,6 +14,7 @@ export class DialogKeyComponent implements OnInit {
 
   data_key:any = {};
   user:any;
+  loader: LoaderComponent = new LoaderComponent();
 
   constructor(public _dialog:MatDialog,public dialogRef: MatDialogRef< any > , @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService) { }
 
@@ -37,6 +40,7 @@ export class DialogKeyComponent implements OnInit {
 
 
   save(){
+
     if(this.data_key.id == 0 && ((this.data_key.propertyReport==0 || this.data_key.propertyReport==0) || (this.data_key.propertyReport==undefined || this.data_key.propertyReport==undefined))){
        this.data_key.success = true;
        this.data_key.propertyReport = 0;
@@ -79,7 +83,9 @@ export class DialogKeyComponent implements OnInit {
   }
 
   post_registro(){
-    this._services.service_general_post_with_url('HousingList/PostKeyInventory',this.data_key).subscribe(r=>{
+    this.loader.showLoader();
+    this._services.service_general_post_with_url('HousingList/PostKeyInventory',this.data_key).subscribe((r=>{
+      this.loader.hideLoader();
       if(r.success){
         console.log(r);
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -92,6 +98,9 @@ export class DialogKeyComponent implements OnInit {
         r.result.success = true;
         this.dialogRef.close(r.result);
       }
-    })
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("error al eliminar al agregar el registro de inventariod e sección: ", err);
+    });
   }
 }

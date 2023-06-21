@@ -373,6 +373,9 @@ export class DialogOfficeInformationComponent implements OnInit {
   active_address :boolean = false;
   active_code: boolean = false;
   active_contact: boolean = false;
+
+
+  
   valida_form(){
     if(this.data.idTypeOffice == undefined){
       this.active_type = true;

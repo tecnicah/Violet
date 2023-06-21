@@ -13,6 +13,7 @@ import { DialogAddOperationLeaderComponent } from '../dialog/dialog-add-operatio
 import { DialogAddAssignedTeamComponent } from '../dialog/dialog-add-assigned-team/dialog-add-assigned-team.component';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-crop-image.component';
 
 
 @Component({
@@ -261,22 +262,24 @@ export class ProfileManagerComponent implements OnInit {
   //*********************************************************************************//
   //FUNCION PARA EDICION DE FOTOGRAFIA//
   img(event){
-    console.log(event);
-    const file = event.target.files[0];
-    const ext = event.target.files[0].type.split('/');
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-        console.log(reader);
-        let encoded = reader.result.toString().replace(/^data:(.*;base64,)?/, '');
-              if ((encoded.length % 4) > 0) {
-                encoded += '='.repeat(4 - (encoded.length % 4));
-              }
-        this.data_coordinator.photo = encoded;
-        this.data_coordinator.photoExtension = ext[1];
-        document.getElementById('lead_client_avatar').setAttribute('src',''+reader.result);
-    };
+    const dialogRef = this._dialog.open(DialogCropImageComponent, {
+      data: { image: "", name: "" },
+      width: "70%",
+      height: "95%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+        if(result != undefined){
+          //console.log(event);
+          const base64: any = result
+          this.data_coordinator.photo = base64.split(',')[1];;
+          this.data_coordinator.photoExtension = 'png';
+          document.getElementById('lead_client_avatar').setAttribute('src',''+base64);
+          };
+        });
   }
+
   //*********************************************************************************//
   //FUNCION PARA AGREGAR  NUEVO VEHICULO//
   addVehicle(){

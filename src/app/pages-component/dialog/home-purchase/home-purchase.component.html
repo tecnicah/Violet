@@ -10,12 +10,12 @@
   </div>
   <mat-dialog-content class="mat-typography">
     <!-----primera seccion ---->
-    <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-list cols="5" rowHeight="70px">
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
-            <span class="text-mini gray_05">Autho Date</span><br />
+            <span class="text-mini gray_05">Autho</span><br />
             {{homePurchase.authoDate | date:'dd MMM yyy'}}
           </div>
           <div style="text-align:end; width: auto !important;">
@@ -28,7 +28,7 @@
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
             <!-- <div *ngIf="data.acceptance != '0001-01-01T00:00:00'"> -->
-            <span class="text-mini gray_05">Autho Acceptance Date</span><br />
+            <span class="text-mini gray_05">Autho Acceptance</span><br />
             {{homePurchase.authoAcceptanceDate | date:'dd MMM yyy'}}
           </div>
 
@@ -40,9 +40,21 @@
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central" style="width: 100%; height: 100%;">
-          <mat-checkbox [disabled]="user.role.id == 3" class="example-margin textarea" [(ngModel)]="homePurchase.coordination">
+          <mat-checkbox class="example-margin textarea" [(ngModel)]="homePurchase.coordination">
             Coordination
           </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="addPropperty" *ngIf="!hide_complete && !hide_by_permissions">
+          <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <button *ngIf="show_completed" class="button-icon button-icon--follow" (click)="change_button()">
+              Complete
+            </button>
+            <button *ngIf="show_progress" class="button-icon button-icon--flag" (click)="change_button()">
+              Start
+            </button>
+          </div>
         </div>
       </mat-grid-tile>
 
@@ -50,14 +62,14 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Status</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.statusId">
+            <mat-select [(ngModel)]="homePurchase.statusId" [disabled]="disabled_by_permissions">
               <mat-option *ngFor="let data of catalog_status" [value]="data.id">{{data.status}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </mat-grid-tile>
 
-      <!--**************** -->
+      <!--**************** 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12" style="display: flex;">
           <div>
@@ -74,15 +86,33 @@
             <span *ngIf="dataDeliver">{{dataDeliver.name}}</span>
           </div>
         </div>
+      </mat-grid-tile>-->
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Work Order</span><br />
+            {{ wo_ }}
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Service #</span><br />
+            {{ sr_ }}
+          </div>
+        </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Completion Date</mat-label>
-            <input [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.serviceCompletionDate" matInput [matDatepicker]="pickertres" placeholder="Completion Date">
+            <input [(ngModel)]="homePurchase.serviceCompletionDate" matInput [matDatepicker]="pickertres"
+              placeholder="Completion Date">
             <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
             <mat-datepicker #pickertres></mat-datepicker>
           </mat-form-field>
@@ -95,7 +125,7 @@
         <div class="page__section-data font-size-12" style="display: flex;">
           <div>
             <span class="text-mini gray_05">Country</span><br />
-              {{data.data.country}}
+            {{data.data.country}}
           </div>
         </div>
       </mat-grid-tile>
@@ -104,7 +134,7 @@
         <div class="page__section-data font-size-12" style="display: flex;">
           <div>
             <span class="text-mini gray_05">City</span><br />
-              {{data.data.location}}
+            {{data.data.location}}
           </div>
         </div>
       </mat-grid-tile>
@@ -127,7 +157,8 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Purchase Desired Price</mat-label>
-            <input  [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.purchaseDesiredPrice" matInput placeholder="Purchase Desired Price" min="0" type="number"/>
+            <input [(ngModel)]="homePurchase.purchaseDesiredPrice" matInput placeholder="Purchase Desired Price" min="0"
+              type="number" />
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -136,7 +167,7 @@
         <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Currency</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.currencyPurchaseDesiredPriceId" matNativeControl >
+            <mat-select [(ngModel)]="homePurchase.currencyPurchaseDesiredPriceId" matNativeControl>
               <mat-option selected disabled value="">Currency</mat-option>
               <mat-option *ngFor="let item of catalog_currency;" [value]="item.id">
                 {{ item.currency }}
@@ -150,7 +181,8 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Purchase Final Price</mat-label>
-            <input [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.purchaseFinalPrice" matInput placeholder="Purchase Final Price" type="number" min="0"/>
+            <input [(ngModel)]="homePurchase.purchaseFinalPrice" matInput placeholder="Purchase Final Price"
+              type="number" min="0" />
             <!-- <span class="label-error" *ngIf="mf_validator.no_name">
               Field is required
             </span> -->
@@ -162,7 +194,7 @@
         <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Currency</mat-label>
-            <mat-select [disabled]="user.role.id == 3" matNativeControl [(ngModel)]="homePurchase.currencyPurchaseFinalPriceId">
+            <mat-select matNativeControl [(ngModel)]="homePurchase.currencyPurchaseFinalPriceId">
               <mat-option selected disabled value="">Currency</mat-option>
               <mat-option *ngFor="let item of catalog_currency;" [value]="item.id">
                 {{ item.currency }}
@@ -186,19 +218,19 @@
         <mat-grid-tile [colspan]="3" [rowspan]="1">
           <div class="addPropperty">
             <div class="page__section-button page__section-button--big" style="left: 6px;">
-              <button [disabled]="user.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--home" (click)="HousingSpecs()">
+              <button class="button-icon button-icon--home" (click)="HousingSpecs()">
                 Housing Specs
               </button>
             </div>
 
             <div class="page__section-button page__section-button--big" style="left: 12px;">
-              <button [disabled]="user.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--send">
+              <button class="button-icon button-icon--send">
                 Send Properties
               </button>
             </div>
 
             <div class="page__section-button page__section-button--big" style="left: 6px;">
-              <button [disabled]="user.role.id == 3" [disabled]="user.role.id == 3" class="button-icon button-icon--more" (click)="HomeDetailsnew()">
+              <button class="button-icon button-icon--more" (click)="HomeDetailsnew()">
                 Add Properties
               </button>
             </div>
@@ -236,7 +268,7 @@
         <ng-container matColumnDef="Address">
           <th mat-header-cell *matHeaderCellDef> Address </th>
           <td mat-cell *matCellDef="let element">
-            {{(element.address.length>10) ?  (element.address | slice:0:10)+'..': element.address}} </td>
+            {{(element.address.length>10) ? (element.address | slice:0:10)+'..': element.address}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
@@ -262,7 +294,7 @@
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element">
             <div [hidden]="user.role.id == 3">
-              <img src="assets/icons/pencil.png" style="width: 20px;" [disabled]="user.role.id == 3" (click)="editHousing(element)">
+              <img src="assets/icons/pencil.png" style="width: 20px;" (click)="editHousing(element)">
             </div>
           </td>
         </ng-container>
@@ -281,7 +313,7 @@
         <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Purchase Status</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.purchaseStatusId" matNativeControl>
+            <mat-select [(ngModel)]="homePurchase.purchaseStatusId" matNativeControl>
               <mat-option selected disabled value="">Purchase Status</mat-option>
               <mat-option *ngFor="let data of catalog_statusPurchase" [value]="data.id">{{data.status}}
               </mat-option>
@@ -303,8 +335,7 @@
           <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
             <!-- <textarea matInput (change)="data.reply = $event.target.value" [disabled]="data.id > 0" #message
               maxlength="500">{{data.reply}}</textarea> -->
-            <textarea matInput #message [(ngModel)]="homePurchase.comment"
-              maxlength="500"> </textarea>
+            <textarea matInput #message [(ngModel)]="homePurchase.comment" maxlength="500"> </textarea>
             <!-- <mat-hint align="end">{{message.value.length}} / 500</mat-hint> -->
           </mat-form-field>
         </div>
@@ -325,7 +356,7 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Agency</mat-label>
-            <input  [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.agency" matInput placeholder="Agency" type="text"/>
+            <input [(ngModel)]="homePurchase.agency" matInput placeholder="Agency" type="text" />
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -333,7 +364,7 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Contact Name</mat-label>
-            <input [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.contactName" matInput placeholder="Contact name" type="text"/>
+            <input [(ngModel)]="homePurchase.contactName" matInput placeholder="Contact name" type="text" />
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -341,7 +372,7 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Contact E-mail</mat-label>
-            <input [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.contactEmail" matInput placeholder="contact email" type="text"/>
+            <input [(ngModel)]="homePurchase.contactEmail" matInput placeholder="contact email" type="text" />
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -349,7 +380,8 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Contact Phone No.</mat-label>
-            <input [disabled]="user.role.id == 3" prefix="+" mask="(000) 000-0000" type="tel" [(ngModel)]="homePurchase.contactPhoneNo" matInput placeholder="Phone No." type="text"/>
+            <input prefix="+" mask="(000) 000-0000" type="tel" [(ngModel)]="homePurchase.contactPhoneNo" matInput
+              placeholder="Phone No." type="text" />
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -358,7 +390,7 @@
         <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Property Comission (%)</mat-label>
-            <mat-select [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.propertyCommission" matNativeControl>
+            <mat-select [(ngModel)]="homePurchase.propertyCommission" matNativeControl>
               <mat-option selected disabled value="">Property Comission</mat-option>
               <mat-option *ngFor="let item of caPropertyComission" [value]="item.id">
                 {{item.status}}
@@ -371,7 +403,8 @@
         <div class="input_central" style="width: 100%; height: 100%;">
           <mat-form-field class="example-full-width">
             <mat-label>Comission Amount</mat-label>
-            <input [disabled]="user.role.id == 3" [(ngModel)]="homePurchase.commissionAmount"  matInput placeholder="Comission Amount"min="0" type="number"/>
+            <input [(ngModel)]="homePurchase.commissionAmount" matInput placeholder="Comission Amount" min="0"
+              type="number" />
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -379,7 +412,7 @@
         <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Comission Currency</mat-label>
-            <mat-select [disabled]="user.role.id == 3"  [(ngModel)]="homePurchase.currencyCommissionId" matNativeControl>
+            <mat-select [(ngModel)]="homePurchase.currencyCommissionId" matNativeControl>
               <mat-option selected disabled value="">Comission Currency</mat-option>
               <mat-option *ngFor="let item of caComissionCurrency" [value]="item.id">
                 {{item.severity}}
@@ -389,7 +422,7 @@
         </div>
       </mat-grid-tile>
       <br>
-    <!-- </mat-grid-list> -->
+      <!-- </mat-grid-list> -->
 
 
       <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -479,8 +512,7 @@
         <div class="subtitledos">
           Service Documents
         </div>
-        <div *ngIf="homePurchase.documentHomePurchases.length != 0 || document.length != 0"
-          class="page__section">
+        <div *ngIf="homePurchase.documentHomePurchases.length != 0 || document.length != 0" class="page__section">
           <div class="page__section-input page__section-input--6_1">
             <span class="documents__index documents__index--task">
               Document Type
@@ -515,7 +547,7 @@
         <div class="page__section documents__ascard"
           *ngFor="let item of homePurchase.documentHomePurchases; let i = index">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" [disabled]="user.role.id == 3" (click)="removeDocument(i, item.id)" style="right: 40px;">
+            style="background: transparent!important;" (click)="removeDocument(i, item.id)" style="right: 40px;">
           <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
             style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)">
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
@@ -567,7 +599,7 @@
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big"
             style="flex: 0 1 180px !important; left: 6px !important;">
-            <button (click)="AddDocument()" [disabled]="user.role.id == 3" class="button-icon button-icon--more">
+            <button (click)="AddDocument()" class="button-icon button-icon--more">
               Add New Document
             </button>
           </div>
@@ -575,79 +607,6 @@
       </mat-grid-tile>
     </mat-grid-list>
     <!-- fin documentos -->
-    <!-- request payment -->
-    <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div>
-          <p class="page__section-name">Requested Payments</p>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-    <!-- table request -->
-    <table mat-table [dataSource]="payments" class="mat-elevation-z8 textarea">
-      <ng-container matColumnDef="Payment">
-        <th mat-header-cell *matHeaderCellDef> Payment </th>
-        <td mat-cell *matCellDef="let element">
-
-        </td>
-      </ng-container>
-
-      <!-- Position Column -->
-      <ng-container matColumnDef="Amount">
-        <th mat-header-cell *matHeaderCellDef> Amount </th>
-        <td mat-cell *matCellDef="let element"> {{element.ammount}} </td>
-      </ng-container>
-
-      <!-- management Column -->
-      <ng-container matColumnDef="ManagementFee">
-        <th mat-header-cell *matHeaderCellDef> Management Fee </th>
-        <td mat-cell *matCellDef="let element"> {{element.managementFee}} </td>
-      </ng-container>
-
-
-      <!-- Weight wire -->
-      <ng-container matColumnDef="WireFee">
-        <th mat-header-cell *matHeaderCellDef> Wire Fee </th>
-        <td mat-cell *matCellDef="let element" class="text-center">{{element.wireFee}}</td>
-      </ng-container>
-
-      <!-- advance Column -->
-      <ng-container matColumnDef="AdvanceFee">
-        <th mat-header-cell *matHeaderCellDef> Advance Fee </th>
-        <td mat-cell *matCellDef="let element"> {{element.advenceFee}} </td>
-      </ng-container>
-
-      <!-- service Column -->
-      <ng-container matColumnDef="Service">
-        <th mat-header-cell *matHeaderCellDef> Total </th>
-        <td mat-cell *matCellDef="let element">  </td>
-      </ng-container>
-
-
-      <!-- recurrence Column -->
-      <ng-container matColumnDef="Recurrence">
-        <th mat-header-cell *matHeaderCellDef> Recurrence </th>
-        <td mat-cell *matCellDef="let element"> {{element.recurrence}} </td>
-      </ng-container>
-
-
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> </th>
-        <td mat-cell *matCellDef="let element">
-          <img src="assets\icons\pencil.png" [disabled]="user.role.id == 3" style="width: 18px; cursor: pointer;" (click)="editPayment(element)">
-          <span>&nbsp;</span>
-          <img src="assets\icons\delete.png" [disabled]="user.role.id == 3" style="width: 18px; cursor: pointer;"
-            (click)="deletePaymentConcept(element)">
-        </td>
-      </ng-container>
-
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;" [ngClass]="{'urgente': row.urgent == true}">
-      </tr>
-    </table>
-    <br><br>
 
     <mat-grid-list cols="4" rowHeight="50px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
@@ -659,7 +618,7 @@
             <span class="browser">TOTAL: {{calculo.total | currency}}</span>
           </div>
           <div class="page__section-butuonc" style="left: 6px;">
-            <button class="button-icon button-icon--money" [disabled]="user.role.id == 3" (click)="addPayment(null)">Request Payment</button>
+            <!-- <button class="button-icon button-icon--money"  (click)="addPayment(null)">Request Payment</button> -->
           </div>
         </div>
       </mat-grid-tile>
@@ -671,8 +630,8 @@
         <div class="page__section-name">Comments</div>
       </div>
     </mat-grid-list>
-     <!-- comentarios con id -->
-     <div class="comments" *ngFor="let data of homePurchase.commentHomePurchases; let i = index">
+    <!-- comentarios con id -->
+    <div class="comments" *ngFor="let data of homePurchase.commentHomePurchases; let i = index">
       <mat-grid-list cols="10" rowHeight="80px" *ngIf="data && data.id !=0 ">
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -680,7 +639,7 @@
             <img class="avatar" src="{{image_path}}{{data?.createdByNavigation.avatar}}" alt=""
               *ngIf="data?.createdByNavigation.avatar != null">
             <div class="avatar" style="background: rgba(0, 0, 0, 0.2);"
-            *ngIf="data?.createdByNavigation.avatar == null"></div>
+              *ngIf="data?.createdByNavigation.avatar == null"></div>
           </div>
         </mat-grid-tile>
 
@@ -688,19 +647,20 @@
           <div class="page__section-data font-size-12" style="display: flex;">
             <div>
               <span class="text-mini gray_05">Name</span><br />
-              {{data.createdByNavigation?.name}} {{data.createdByNavigation?.lastName}} {{data.createdByNavigation?.motherLastName}}
+              {{data.createdByNavigation?.name}} {{data.createdByNavigation?.lastName}}
+              {{data.createdByNavigation?.motherLastName}}
             </div>
           </div>
         </mat-grid-tile>
 
-        <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <!-- <mat-grid-tile [colspan]="2" [rowspan]="1">
           <div class="page__section-data font-size-12" style="display: flex;">
             <div>
               <span class="text-mini gray_05">Title</span><br />
               {{data.createdByNavigation?.userType.type}}
             </div>
           </div>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <div class="page__section-data font-size-12" style="display: flex;">
@@ -720,10 +680,10 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
             <br><br>
-            <p >Comment</p>
+            <p>Comment</p>
             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
-              <textarea disabled [(ngModel)]="data.comment" matInput (change)="data.comment = $event.target.value" #message
-                maxlength="500">{{data.comment}}</textarea>
+              <textarea disabled [(ngModel)]="data.comment" matInput (change)="data.comment = $event.target.value"
+                #message maxlength="500">{{data.comment}}</textarea>
               <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
             </mat-form-field>
           </div>
@@ -737,14 +697,16 @@
           <div>
             <img class="avatar" src="{{image_path}}{{item.createdByNavigation.avatar}}" alt=""
               *ngIf="item.createdByNavigation.avatar != null">
-            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="item.createdByNavigation.avatar === null"></div>
+            <div class="avatar" style="background: rgba(0, 0, 0, 0.2);"
+              *ngIf="item.createdByNavigation.avatar === null"></div>
           </div>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <div class="page__section-data font-size-12">
             <span class="text-mini gray_05">Name</span><br />
-            {{item.createdByNavigation.name}} {{item.createdByNavigation.lastName}} {{item.createdByNavigation.motherLastName}}
+            {{item.createdByNavigation.name}} {{item.createdByNavigation.lastName}}
+            {{item.createdByNavigation.motherLastName}}
           </div>
         </mat-grid-tile>
 
@@ -775,7 +737,8 @@
             <p>Comment</p>
             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
               <!-- [(ngModel)]="comment_string.comment" -->
-              <textarea matInput  (change)="item.comment = $event.target.value" #message maxlength="500">{{item.comment}}</textarea>
+              <textarea matInput (change)="item.comment = $event.target.value" #message
+                maxlength="500">{{item.comment}}</textarea>
               <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
             </mat-form-field>
           </div>
@@ -786,8 +749,8 @@
       <div class="page__section">
         <div class="page__section-name"></div>
         <div class="page__section-button">
-          <button (click)="addNewComment()" [disabled]="user.role.id == 3" class="button-icon button-icon--adder">
-            <span >Add Comment</span>
+          <button (click)="addNewComment()" class="button-icon button-icon--adder">
+            <span>Add Comment</span>
           </button>
         </div>
       </div>
@@ -799,8 +762,7 @@
         <div class="page__title">
           Reminder
         </div>
-        <div class="page__section"
-          *ngFor="let reminder of homePurchase.reminderHomePurchases, index as index;">
+        <div class="page__section" *ngFor="let reminder of homePurchase.reminderHomePurchases, index as index;">
           <div class="page__section page__section--card page__section--card--cuadra margin-tb-mini">
             <button (click)="deleteReminderSelected( reminder, index )" class="page__section--card-closeButton">x
             </button>
@@ -809,7 +771,7 @@
                 <div class="input_central">
                   <mat-form-field appearance="fill">
                     <mat-label>Reminder Date</mat-label>
-                    <input matInput [disabled]="user.role.id == 3" [matDatepicker]="service_line_reminder" [(ngModel)]="reminder.reminderDate" />
+                    <input matInput [matDatepicker]="service_line_reminder" [(ngModel)]="reminder.reminderDate" />
                     <mat-datepicker-toggle matSuffix [for]="service_line_reminder"></mat-datepicker-toggle>
                     <mat-datepicker #service_line_reminder></mat-datepicker>
                   </mat-form-field>
@@ -818,7 +780,7 @@
               <div class="page__section-input page__section-input--8">
                 <mat-form-field appearance="fill">
                   <mat-label>Reminder Comments</mat-label>
-                  <input  [disabled]="user.role.id == 3" matInput placeholder="Service Line" type="text" [(ngModel)]="reminder.reminderComments" />
+                  <input matInput placeholder="Service Line" type="text" [(ngModel)]="reminder.reminderComments" />
                 </mat-form-field>
               </div>
             </div>
@@ -830,7 +792,7 @@
       <div class="page__section margin-top-mini margin-bottom-m">
         <div class="page__section-name"></div>
         <div class="page__section-button">
-          <button [disabled]="user.role.id == 3" (click)="addNewReminder()" class="button-icon button-icon--adder">
+          <button (click)="addNewReminder()" class="button-icon button-icon--adder">
             Add Reminder
           </button>
         </div>
@@ -838,15 +800,17 @@
     </mat-grid-list>
 
 
-
-    <!--  Service Client Documents -->
-    <mat-grid-list cols="1" *ngIf="serviceScope">
+    <!--  //////////////////////////////// Service Client Documents //////////////////////////////-->
+    <mat-grid-list cols="1" *ngIf="serviceScope != null">
       <div class="page__section margin-top-min">
         <div class="subtitledos">
-          Scope Client Service
+          Client Service Documents
+        </div> <br><br>
+        <div class="page__section documents__ascard" *ngIf="serviceScope.documentcountries?.length == 0">
+          <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
+            No Client Service Documents loaded
+          </div>
         </div>
-        <br><br>
-
         <div *ngIf="serviceScope.documentcountries?.length != 0" class="page__section">
           <div class="page__section-input page__section-input--6_1-local">
             <span class="documents__index documents__index--task">
@@ -855,44 +819,53 @@
           </div>
           <div class="page__section-input page__section-input--6_1-local">
             <span class="documents__index documents__index--task">
-              Status
+              Upload
             </span>
           </div>
           <div class="page__section-input page__section-input--6_1-local">
             <span class="documents__index documents__index--task">
-              Privacy
+              Status
             </span>
           </div>
-
         </div>
         <div class="page__section documents__ascard" *ngFor="let item of serviceScope.documentcountries">
-          <!-- (click)="DeleteOnline(item.id)" -->
           <img src="./assets/icons/export.png" class="page__section--card-closeButton delete"
-          style="background: transparent!important;"  style="right: 40px;"  (click)="openFileOnWindow(item.fileRequest)">
-          <!-- <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" (click)="showDocumentDialogDetails(item,1)"> -->
+            style="background: transparent!important;" style="right: 40px;"
+            (click)="openFileOnWindow(item.fileRequest)">
           <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
             {{item.documentType}}
           </div>
           <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-            {{item.status}}
+            {{item.updated_date | date:'dd MMM yyy'}}
           </div>
           <div class="page__section-input page__section-input--6_1-local documents__ascard--task">
-            {{item.privacy}}
+            {{item.status}}
           </div>
         </div>
       </div>
     </mat-grid-list>
-    <!-- Scope Client Service -->
+
+
+    <!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
+
     <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div>
-          <p class="subtitledos">Client Service Scope</p>
+      <br><br>
+      <div class="wid">
+        <p class="subtitledos">Client Service Scope</p>
+      </div>
+      <div *ngIf="serviceScope.scopeDescription.length > 0" [innerHTML]="serviceScope.scopeDescription">
+      </div>
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope != null">
+        <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+          Client Service Scope not captured or empty.
+        </div>
+        <div class="textarea" *ngIf="serviceScope.scopeDescription == null">
+          Client Service Scope not captured or empty.
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="serviceScope">
+      <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
         <div class="textarea">
-          <p [innerHTML]="serviceScope.scopeDescription"></p>
+          Client Service Scope not captured or empty.
         </div>
       </mat-grid-tile>
     </mat-grid-list>

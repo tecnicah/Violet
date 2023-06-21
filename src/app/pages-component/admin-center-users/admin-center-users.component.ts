@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { GeneralConfirmationComponent } from './../dialog/general-confirmation/general-confirmation.component';
 import { DialogInactiveUserComponent } from './../dialog/dialog-inactive-user/dialog-inactive-user.component';
 import { Router, Resolve } from '@angular/router';
+import { DialogChangePasswordComponent } from '../dialog/dialog-change-password/dialog-change-password.component';
 
 
 @Component({
@@ -65,7 +66,7 @@ export class AdminCenterUsersComponent implements OnInit {
   selectCatalogs = [
     { value: 'Roles', name: 'Roles & Permissions' },
     { value: 'Users', name: 'Users' },
-    { value: 'Delete user', name: 'Delete user' },
+   // { value: 'Delete user', name: 'Delete user' },
   ];
   public filterCatalog: any = { name: '' };
   maxall: number = 20;
@@ -77,6 +78,40 @@ export class AdminCenterUsersComponent implements OnInit {
     this.get_catalogos();
     this.consultaPermisos();
     this.__loader__.hideLoader();
+  }
+
+  
+  changePassword(email: string) {
+    //console.log('change email', email);
+    const dialogRef = this._dialog.open(DialogChangePasswordComponent, {
+      data: { email: email },
+      width: "50%",
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Change password"
+          },
+          width: "350px"
+        });
+        this.get_catalogos();
+      }
+      else if (result === 2) {
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Error",
+            body: "User incorrect"
+          },
+          width: "350px"
+        });
+        this.get_catalogos();
+      }
+      else {
+        this.get_catalogos();
+      }
+    })
   }
 
    //*********************************************//
@@ -123,10 +158,12 @@ export class AdminCenterUsersComponent implements OnInit {
   }
   //*********************************************//
   get_catalogos() {
+    debugger;
     if (this.tableCatalog == 'Roles') {
       this.__loader__.showLoader();
       this._services.service_general_get('Catalog/GetAllRole').subscribe(rRole => {
         console.log('catalogo role', rRole);
+        debugger;
         if (rRole.success) {
           // this.dataRoles = rRole.result;
           this.dataRoles = new  MatTableDataSource(rRole.result);
@@ -142,7 +179,7 @@ export class AdminCenterUsersComponent implements OnInit {
     if (this.tableCatalog == 'Users') {
       this.__loader__.showLoader();
       this.dataUser = [];
-      this._services.service_general_get('Catalog/GetAllUsers').subscribe(rUser => {
+      this._services.service_general_get('Catalog/GetAllUsersNew').subscribe(rUser => {
         console.log('catalogo user', rUser);
         if (rUser.success) {
           // this.dataUser = rUser.result.value;
@@ -157,7 +194,7 @@ export class AdminCenterUsersComponent implements OnInit {
       });
 
       // role
-      this._services.service_general_get('Catalog/GetRoles').subscribe(rRole => {
+      this._services.service_general_get('Catalog/GetRolesNew').subscribe(rRole => {
         console.log('catalogo role', rRole);
         if (rRole.success) {
           this.dataRolesSerch = [];
@@ -221,7 +258,7 @@ export class AdminCenterUsersComponent implements OnInit {
     this.dataUser = [];
     // this.events = [];
     const params_in: string = params == '' ? '' : `?${params}`;
-    this._services.service_general_get('Catalog/GetAllUsers' + params_in).subscribe((data: any) => {
+    this._services.service_general_get('Catalog/GetAllUsersNew' + params_in).subscribe((data: any) => {
       if (data.success) {
         this.dataUser = new  MatTableDataSource(data.result.value);
         this.dataUser.paginator = this.paguser;
@@ -354,8 +391,9 @@ export class AdminCenterUsersComponent implements OnInit {
         id: id,
         role: role
       },
-      width: "30%",
+      width: "50%"
     });
+
     dialogRef.afterClosed().subscribe(result => {
       if(result === 1){
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -391,6 +429,8 @@ export class AdminCenterUsersComponent implements OnInit {
     })
 
   }
+
+
   profilePage(id) {
     let role;
     console.log(id);
@@ -400,8 +440,7 @@ export class AdminCenterUsersComponent implements OnInit {
           role = r.result.value.role;
           // role id 19 es igual a "Super Admin"
           // if (role == 1 || role == 4  || role == 11 || role == 13 || role == 14 ||  role == 19  || role == 20 || role == 21 || role == 22 ) {
-            if(role != 2 && role != 3){
-              if(role != 4)
+            if(role != 2 && role != 3 && role != 4){
             this._router.navigateByUrl(`profilemanager/${id}`);
             }else if(role == 2){
               this._router.navigateByUrl(`profilecoordinator/${id}`);

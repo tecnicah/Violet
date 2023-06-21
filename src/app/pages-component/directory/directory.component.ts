@@ -149,15 +149,15 @@ export class DirectoryComponent implements OnInit {
   //FUNCION PARA CONSULTA DE PROFILE//
   openProfile(element){
     console.log(element);
-    if(element.title_id != 2 && element.title_id != 3){
-       this.router.navigateByUrl('/profileconsultant/'+element.id);
+    if(element.role == "Coordinator"){
+       this.router.navigateByUrl('/profilecoordinator/'+element.id);
     }
 
-    if(element.title_id == 2){
-      this.router.navigateByUrl('/profilecoordinator/'+element.id);
+    if(element.role == "Supplier"){
+      this.router.navigateByUrl('/profileconsultant/'+element.id);
     }
 
-    if(element.title_id == 3){
+    if(element.title_id == "Manager"){
       this.router.navigateByUrl('/profilemanager/'+element.id);
     }
 

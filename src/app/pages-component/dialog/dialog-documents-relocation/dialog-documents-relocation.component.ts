@@ -14,13 +14,14 @@ export class DialogDocumentsRelocationComponent implements OnInit {
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  documents: any = {}
+  documents: any = {comment: ""}
   caDocumentType: any[] = [];
   temporalDocument: any = {};
   user: any = {};
   today: any = "";
 
   ngOnInit(): void {
+    console.log(this.data)
     this.user = JSON.parse(localStorage.getItem('userData'));
     this.today = new Date();
     this.catalogos();
@@ -117,7 +118,7 @@ export class DialogDocumentsRelocationComponent implements OnInit {
       "issuingAuthority": "",
       "countryOrigin": this.documents.countryOrigin,
       "privacy": this.documents.privacy,
-      "comment": "",
+      "comment": this.documents.comment,
       "createdBy": this.temporalDocument.createdBy,
       "createdDate": this.temporalDocument.createdDate,
       "fileName": this.temporalDocument.name,

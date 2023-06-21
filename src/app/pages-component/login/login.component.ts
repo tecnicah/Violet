@@ -62,8 +62,12 @@ export class LoginComponent implements OnInit {
 
       if (session_data.token != '') {
 
-        this._router.navigateByUrl('home');
+        this._router.navigateByUrl('dashboard');
 
+      }
+      else
+      {
+        this._router.navigateByUrl('login');
       }
 
     }
@@ -84,12 +88,20 @@ export class LoginComponent implements OnInit {
     //User/Login?email=${ form_data.email }&password=${ form_data.password }
     this.service.service_general_post_with_url('User/Login?' + 'email=' + form_data.email + '&password=' + form_data.password, form_data)
       .subscribe((response: any) => {
-
+        console.log("ProfileUserDto", response);
         if (response.success) {
 
-          this._router.navigateByUrl('home');
+          if(response.result.role.id != 4){
+            this._router.navigateByUrl('dashboard');
+          }
+          else
+          {
+            this._router.navigateByUrl('home');
+          }
+          
           console.log(response.result);
           let permission = response.result.role.permissions;
+          debugger;
           console.log("Estos son los permisos: ", permission);
           //**********************************************************//
           //ELIMANDO MENU OPERATIONAL REPORT//
@@ -109,6 +121,18 @@ export class LoginComponent implements OnInit {
           //LEADS//
           for (let i = 0; i < permission.length; i++) {
             if(permission[i].idCatSubMenu == 12){
+              permission.splice(i, 1)
+            }
+          }
+          // //SERVICE CALENDAR//
+          for (let i = 0; i < permission.length; i++) {
+            if(permission[i].idCatSubMenu == 7){
+              permission.splice(i, 1)
+            }
+          }
+          // //ACTIVITY//
+          for (let i = 0; i < permission.length; i++) {
+            if(permission[i].idCatSubMenu == 4){
               permission.splice(i, 1)
             }
           }

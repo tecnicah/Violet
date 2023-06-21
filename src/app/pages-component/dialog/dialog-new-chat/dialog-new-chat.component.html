@@ -148,9 +148,9 @@
 
 <div fxLayout="row" fxLayoutGap="10px">
   <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
-    <h2 mat-dialog-title class="modal-form__title">
-      Messages
-    </h2>
+    <h4 mat-dialog-title>
+      New chat
+    </h4>
   </div>
   <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
     <mat-icon [mat-dialog-close]="true" style="cursor:pointer; color: #9d3292;" id="close">close</mat-icon>
@@ -158,16 +158,113 @@
 </div>
 
 <mat-dialog-content class="mat-typography">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <input type="text" placeholder="Search"
+        style="width: 100%;
+        box-sizing: border-box;
+        border-top: 2px solid #ccc;
+        border-left: 2px solid #ccc;
+        border-right: 2px solid #ccc;
+        border-bottom: 3px solid #9d3292;
+        border-radius: 4px;
+        font-size: 12px;
+        background-color: white;
+        background-image: url('/assets/icons/searchicon.png');
+        background-position: 10px 10px; 
+        background-repeat: no-repeat;
+        padding: 12px 20px 12px 40px;" [(ngModel)]="contact.userName">
+  </div>
 
-  <br>
-  <div style="display: flex; justify-content: space-between;">
+  <div fxLayout="row" fxLayoutAlign="space-around center" style="padding: 10px 0" *ngIf="newMessageToSend.userList.length > 0">
+    <mat-chip-list class="chips" cdkDropListOrientation="horizontal">
+      <mat-chip *ngFor="let item of newMessageToSend.userList; let i = index">
+        {{getName(item)}}
+        <mat-icon matChipRemove (click)="deleteUser(i)">cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+  
+  <div fxLayout="row" fxLayoutAlign="space-around center" style="padding: 10px 0" *ngIf="isGroup">
+    <input type="text" placeholder="Enter the subject of the group"
+        style="width: 100%;
+        box-sizing: border-box;
+        border-top: 2px solid #ccc;
+        border-left: 2px solid #ccc;
+        border-right: 2px solid #ccc;
+        border-bottom: 3px solid #9d3292;
+        border-radius: 4px;
+        font-size: 12px;
+        background-color: white;
+        background-position: 10px 10px; 
+        background-repeat: no-repeat;
+        padding: 12px 20px 12px 20px;" [(ngModel)]="newMessageToSend.groupName">
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="space-around center" style="padding: 10px 0" *ngIf="isGroup && newMessageToSend.userList.length > 0">
+    <button mat-raised-button color="primary" (click)="send(null);" *ngIf="newMessageToSend.userList.length > 0">Continue</button>
+    <button mat-raised-button color="accent" (click)="cancel();" *ngIf="newMessageToSend.userList.length > 0">Cancel</button>
+  </div>
+
+  <mat-list *ngIf="!isGroup">
+    <mat-list-item style="margin: 15px 0; cursor:pointer;" (click)="addGroup()">
+      <img matListAvatar src="./assets/585e4d1ccb11b227491c339b.png" alt="">
+      <span matLine> 
+        <b style="font-size:14px;"> 
+          New group
+        </b>
+      </span>
+    </mat-list-item>
+  </mat-list>
+  
+  <mat-list id="divNewChat" [style.height]="_innerHeight" style="overflow-y: auto;" *ngIf="!isGroup">
+    <ng-container *ngFor="let element of caUsers | filterBy: contact">
+      <mat-list-item style="margin: 15px 0; cursor:pointer;" (click)="send(element.id);">
+        <img matListAvatar [src]="_services.url_images+element.avatar" alt="" class="img" *ngIf="element.avatar != null">
+        <img matListAvatar src="./assets/avatar.svg" alt="" class="img" *ngIf="element.avatar == null">
+        <span matLine> 
+          <b style="font-size:14px;"> 
+            {{element?.userName}}
+          </b>
+        </span>
+        <p matLine>
+          <span style="font-size:12px;"> 
+            {{element.title}}
+          </span>
+        </p>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+
+  <mat-selection-list #group id="divNewChat" [style.height]="_innerHeight" style="overflow-y: auto;" *ngIf="isGroup">
+    <ng-container *ngFor="let element of caUsers | filterBy: contact; let i = index">
+      <mat-list-option style="margin: 15px 0; cursor:pointer;" (click)="setOption(group.selectedOptions.selected.length, element, i);">
+        <img matListAvatar [src]="_services.url_images+element.avatar" alt="" class="img" *ngIf="element.avatar != null">
+        <img matListAvatar src="./assets/avatar.svg" alt="" class="img" *ngIf="element.avatar == null">
+        <span matLine> 
+          <b style="font-size:14px;"> 
+            {{element?.userName}}
+          </b>
+        </span>
+        <p matLine>
+          <span style="font-size:12px;"> 
+            {{element.title}}
+          </span>
+        </p>
+      </mat-list-option>
+    </ng-container>
+  </mat-selection-list>
+  
+  <p>
+    <!-- Options selected: {{group.selectedOptions.selected.length}} -->
+  </p>
+  <!-- <div style="display: flex; justify-content: space-between;">
     <mat-form-field class="example-full-width" style="flex-basis: 100%;">
       <mat-label>Group Name</mat-label>
       <input matInput placeholder="Enter name" [(ngModel)]="newMessageToSend.groupName">
     </mat-form-field>
-  </div>
+  </div> -->
 
-  <div style="display: flex; justify-content: space-between;">
+  <!-- <div style="display: flex; justify-content: space-between;">
     <mat-form-field class="example-full-width" style="flex-basis: 30%;">
       <mat-label>Name Contact</mat-label>
       <input matInput placeholder="Enter name" [(ngModel)]="contact.user">
@@ -175,9 +272,10 @@
 
 
     <h4 style="flex-basis: 60%;" *ngIf="newMessageToSend.userList.length > 0">Users Selected</h4>
-  </div>
+  </div> -->
 
-  <div style="display: flex; justify-content: space-between;">
+
+  <!-- <div style="display: flex; justify-content: space-between;">
     <div class="recients" style="flex-basis: 30%;">
 
       <table>
@@ -208,7 +306,7 @@
       </mat-chip-list>
     </mat-grid-list>
 
-  </div>
+  </div> -->
 
 
 
@@ -235,14 +333,8 @@
     </mat-grid-tile>
 
   </mat-grid-list-->
-
-  <br>
-  <br>
-  <br>
-
-
 </mat-dialog-content>
-
+<!-- 
 <mat-dialog-actions>
   <div class="texting" *ngIf="!sending">
     <mat-grid-list cols="12" rowHeight="20px">
@@ -352,4 +444,4 @@
       <p class="browser" id="images_only_new" (click)="openFileSelector()">Browse File</p>
     </ng-template>
   </ngx-file-drop>
-</mat-dialog-actions>
+</mat-dialog-actions> -->

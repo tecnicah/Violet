@@ -11,27 +11,22 @@
   <mat-grid-list cols="4" rowHeight="60px">
     <!-- multicheck cuando se crea un servicio  -->
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.id == 0  && data.action == 'new'">
-      <mat-form-field class="input_central">
-        <mat-label>Service</mat-label>
-        <mat-select
-        matNativeControl
-        required
-        multiple
-        [disabled]="GetService.length == 0"
-        [(ngModel)]="data.idService"
-        [formControl]="toppings">
-          <mat-option [value]="100" (click)="selectAll(ev)"
-          #ev>SelectAll</mat-option>
-          <mat-option *ngFor="let item of GetService" [value]="item.service1">{{item.service}}</mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint *ngIf="valid_service" style="color: #e91e63;">Field is required</mat-hint>
-      </mat-form-field>
+      <form [formGroup]="searchUserForm" fxFlex fxLayout="column" autocomplete="off" style="margin: 30px">
+        <mat-form-field class="input_central">
+          <mat-label>Service </mat-label>
+          <mat-select required multiple [disabled]="GetService.length == 0" formControlName="userType">
+            <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+            <mat-option *ngFor="let item of GetService" [value]="item.service1">{{item.service}}</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint *ngIf="valid_service" style="color: #e91e63;">Field is required</mat-hint>
+        </mat-form-field>
+      </form>
     </mat-grid-tile>
     <!-- select cuando se actualiza un servicio  -->
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.id != 0">
-      <mat-form-field appearance="fill" class="textarea input_central">
-        <mat-label>Service</mat-label>
+      <mat-form-field class="input_central">
+        <mat-label>Servicejhgj</mat-label>
         <mat-select [(ngModel)]="data.idService" disabled>
           <mat-option *ngFor="let item of GetService" [value]="item.service1">
             {{item.service}}
@@ -72,9 +67,9 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="scopeDescription"> Scope Description </th>
       <td mat-cell *matCellDef="let element">
         <!-- {{element.scopeDescription}}  -->
-        <p *ngIf="element.standarScopeDocuments == 0" [innerHTML]="element.scopeDescription"></p>
+        <p style="text-align: left !important;" *ngIf="element.standarScopeDocuments == 0" [innerHTML]="element.scopeDescription"></p>
         <div *ngIf="element.standarScopeDocuments == 1">
-          Description Premier
+          Standard Description
         </div>
 
       </td>
@@ -85,7 +80,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Documents </th>
       <td mat-cell *matCellDef="let element">
         <div *ngIf="element.standarScopeDocuments == 1">
-          Documents Premier
+          Standard Documents 
         </div>
         <div *ngIf="element.standarScopeDocuments == 0">
           {{element.documentLocationCountries.length}}
@@ -98,7 +93,8 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element; let i = index">
         <div [hidden]="data.action == 'new'">
-          <img src="/assets/icons/pencil.png" (click)="addCountry(element, i)" style="width: 20px;">
+          <img src="/assets/icons/pencil.png" (click)="addCountry(element, i)" style="width: 20px;"
+          *ngIf="(permission_edit || permission_write)">
         </div>
       </td>
     </ng-container>
@@ -108,8 +104,8 @@
   </table>
 
   <div class="textarea margin_table" style="text-align: end;">
-    <button [disabled]="data.idService == undefined" (click)="addCountry(null, 0)" class="btnr btnr--add" matRipple
-      matRippleColor="rgba(157, 50, 146, 0.5)">
+    <button [disabled]="searchUserForm.controls.userType.value == ''" (click)="addCountry(null, 0)" class="btnr btnr--add" matRipple
+      matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="(permission_edit || permission_write)">
       Add Country
     </button>
   </div>
@@ -119,6 +115,6 @@
 
 <mat-dialog-actions align="end">
   <div class="page__section-buttong" *ngIf="permission_write || permission_edit">
-    <button (click)="validar()">Save</button>
+    <button (click)="validar()" *ngIf="(permission_edit || permission_write)">Save</button>
   </div>
 </mat-dialog-actions>

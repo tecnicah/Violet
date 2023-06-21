@@ -8,7 +8,6 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 import { DialogEscalationLevels } from '../escalation-levels/escalationLevel.component';
 import { LoaderComponent } from '../../../../app/shared/loader';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import { HexBase64Latin1Encoding } from 'crypto';
 
 @Component({
     selector: 'view-escalation-dialog',

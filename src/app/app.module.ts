@@ -20,7 +20,7 @@ import {matMenuAnimations, MatMenuModule} from '@angular/material/menu';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { AssigneeAndFamilyInfoDirective } from './layouts/single-pages/assignee-and-family-info.directive';
-import { AgmCoreModule } from '@agm/core';
+
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { NgxIconCalendarModule } from 'ngx-icon-calendar'
 import {TranslateModule} from '@ngx-translate/core';
@@ -34,7 +34,8 @@ import { OrderModule } from 'ngx-order-pipe';
 import { EditorModule } from '@progress/kendo-angular-editor';
 import { NgxMaskModule } from 'ngx-mask';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-
+import  {MatCurrencyFormatModule} from 'mat-currency-format';
+import { IrComponent } from './ir/ir.component';
 
 @NgModule({
   declarations: [
@@ -44,9 +45,11 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     AppHeaderComponent,
     SpinnerComponent,
     AppSidebarComponent,
-    AssigneeAndFamilyInfoDirective
+    AssigneeAndFamilyInfoDirective,
+    IrComponent
   ],
   imports: [
+    MatCurrencyFormatModule,
     OrderModule,
     NgxIconCalendarModule,
     BrowserModule,
@@ -62,18 +65,13 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     HttpClientModule,
     SharedModule,
     FilterPipeModule,
-    RouterModule.forRoot(AppRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(AppRoutes, { useHash: true, relativeLinkResolution: 'legacy', scrollPositionRestoration: 'top' }),
     NgxMaskModule.forRoot({
       validation: true,
     }),
     TranslateModule.forRoot(),
     MatMenuModule,
-    AgmCoreModule.forRoot({
-      // please get your own API key here:
-      // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
-      apiKey: 'AIzaSyBF-AEeoIsOV8elnHA3zQ5h5lgFMp5TaF4',
-      libraries: ["places"]
-    }),
+    
     GooglePlaceModule,
     NgxPermissionsModule.forRoot(),
     MatTableExporterModule,

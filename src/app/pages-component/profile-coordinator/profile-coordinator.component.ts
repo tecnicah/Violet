@@ -30,6 +30,12 @@ export class ProfileCoordinatorComponent implements OnInit {
   loader:LoaderComponent = new LoaderComponent();
   // data_coordinator: any = {};
   id: number;
+  validaciones: any = {
+    name: false,
+    serviceLine: false,
+    address: false
+  };
+
   constructor(public router: Router, public _services : ServiceGeneralService, public _routerParams: ActivatedRoute, public _dialog: MatDialog, private _permissions: NgxPermissionsService) { }
 
   public typePrefix = {
@@ -661,25 +667,51 @@ export class ProfileCoordinatorComponent implements OnInit {
     console.log('numero con prefix', this.data_coordinator.phoneNumber);
     console.log("data a guardar: ", this.data_coordinator);
 
-
-      this._services.service_general_put("Profile/UpdateProfile", this.data_coordinator).subscribe((data => {
-        if(data.success){
-          console.log(data);
-           const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: "Update Data"
-                },
-                width: "350px"
-              });
-              this.loader.hideLoader();
-              this.temporalDocument = [];
-              this.ngOnInit();
+debugger;
+    if(this.data_coordinator.name != "")
+    {
+      if(this.data_coordinator.immigration || this.data_coordinator.relocation)
+      {
+        if(this.data_coordinator.personalInformation.currentAddress)
+        {
+          this._services.service_general_put("Profile/UpdateProfile", this.data_coordinator).subscribe((data => {
+            if(data.success){
+              console.log(data);
+               const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                    data: {
+                      header: "Success",
+                      body: "Update Data"
+                    },
+                    width: "350px"
+                  });
+                  this.loader.hideLoader();
+                  this.temporalDocument = [];
+                  this.ngOnInit();
+            }
+          }),(err)=>{
+            console.log("error: ", err);
+            this.loader.hideLoader()
+          })
         }
-      }),(err)=>{
-        console.log("error: ", err);
-        this.loader.hideLoader()
-      })
+        else
+        {
+          this.validaciones.address = true;
+          document.getElementById("address").focus();
+          this.loader.hideLoader()
+        }
+      }
+      else{
+        this.validaciones.serviceLine = true;
+        window.scrollTo(0, 0);
+        this.loader.hideLoader();
+      }
+    }
+    else
+    {
+      this.validaciones.name = true;
+      document.getElementById("name").focus();
+      this.loader.hideLoader();
+    }
   }
 
   public __serverPath__:string = this._services.url_images;

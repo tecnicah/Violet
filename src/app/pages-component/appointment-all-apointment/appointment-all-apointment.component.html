@@ -1,0 +1,136 @@
+<div class="main-wrapper padding-general-x">
+    <div class="page">
+        <div class="page__path">Operations / Service Records / All Appointment</div>
+            <button class="page__path--closeButton" style="margin-top: 25px; margin-right: 17px;" (click)="goBack()">Back</button>
+            <div class="page__title title">
+            All Appointments
+            </div>
+
+            <div class="page__section" style="padding-top: 0 !important;">
+                <table mat-table matSort [dataSource]="appointment" matSort
+                  style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);" class="main-table">
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="date">Date</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">{{element.date | date: 'dd MMM yyy'}}</td>
+                  </ng-container>
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Supplier">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="supplier">To
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">{{element.supplier}}</td>
+                  </ng-container>
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Service">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="servicio">Services
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      <span class="browser" style="cursor: pointer;" (click)="getserviciosAppoitment(element)" *ngIf="element.servicio?.length>1" [matMenuTriggerFor]="servicios">
+                        {{element.servicio?.length}}
+                      </span> 
+                      <span (click)="getserviciosAppoitment(element)" *ngIf="element.servicio?.length==1">
+                        {{element.servicio[0].serviceNumber}}
+                      </span>
+                      <mat-menu #servicios="matMenu" xPosition="before">
+                        <div class="assigned_services">
+                          <div class="data browser">
+                            <mat-list>
+                              <div mat-subheader>Services</div>
+                              <mat-divider></mat-divider>
+                              <mat-list-item *ngFor="let item of element.servicio">
+                                <div matLine style="font-size: 12px;">
+                                  {{item.serviceNumber}}
+                                </div>
+                              </mat-list-item>
+                            </mat-list>
+                          </div>
+                        </div>
+                      </mat-menu>
+                    </td>
+                  </ng-container>
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Start Time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="startTime">Start
+                      Time</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      {{element.startTime}} hours
+                    </td>
+                  </ng-container>
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Location">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="location">Location
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">{{element.location}}</td>
+                  </ng-container>
+
+                   <!-- Status Column -->
+                   <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="location">Status
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">{{element.statusName}}</td>
+                  </ng-container>
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="Documents">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="document">Documents
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <span class="browser" style="cursor: pointer;" *ngIf="element.document>1" [matMenuTriggerFor]="documentos">
+                        {{element.document}}
+                      </span> 
+                      <span class="browser" *ngIf="element.document==1">
+                        <a style="color:#3A2337;" target="_blank" href="{{_services.url_images}}{{element.documentAppointments[0].fileRequest}}">{{element.documentAppointments[0].fileName}}</a> 
+                      </span>
+          
+                      <mat-menu #documentos="matMenu" xPosition="before">
+                        <div class="assigned_services">
+                          <div class="data browser">
+                            <mat-list>
+                              <div mat-subheader>Document</div>
+                              <mat-divider></mat-divider>
+                              <mat-list-item *ngFor="let item of element.documentAppointments">
+                                <div matLine>
+                                  <a style="color:#3A2337;" target="_blank" href="{{_services.url_images}}{{item.fileRequest}}">{{item.fileName}}</a> 
+                                </div>
+                              </mat-list-item>
+                            </mat-list>
+                          </div>
+                        </div>
+                      </mat-menu>
+                      
+                    </td>
+                  </ng-container>
+          
+          
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="View">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+                    <td mat-cell *matCellDef="let element; let i = index" class="text-center">
+                      <span (click)="addApointmentConsult(element, i, __userlog__.role.id == 3 && USERDATA.id == element.to)" class="font-purple-dark cursor-pointer"
+                        style="font-weight: 300;" *ngIf="__userlog__.role.id == 3 && USERDATA.id == element.to">
+                        View
+                      </span>
+                      <span (click)="addApointmentConsult(element, i, true)" class="font-purple-dark cursor-pointer"
+                        style="font-weight: 300;" *ngIf="__userlog__.role.id != 3">
+                        View
+                      </span>
+                    </td>
+                  </ng-container>      
+          
+                  <tr mat-header-row *matHeaderRowDef="appointment_table"></tr>
+                  <tr mat-row *matRowDef="let row; columns: appointment_table;"></tr>
+                </table>
+          
+                <div class="page__section text-center paginator margin-top-mini" style="margin-top: 20px;">
+                  <mat-paginator #Appointment [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+                </div>
+          
+          
+              </div>
+        </div>
+</div>

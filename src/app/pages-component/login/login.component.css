@@ -114,7 +114,7 @@
   height: 100vh;
   position: relative;
   /*background-image: url('assets/login-bg.png');*/
-  background-image: linear-gradient(to top, #4435a6, #9d3292) !important;
+  background-image: linear-gradient(to top, #3A2337, #9d3292) !important;
   background-position: center;
   background-size: cover;
 }
@@ -127,7 +127,7 @@
   left: 50%;
   box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, .9);
+  background-color: #fff;
 }
 
 .container-logo {

@@ -14,7 +14,6 @@ import {
   CalendarWeekViewBeforeRenderEvent,
 } from 'angular-calendar';
 import { startOfDay, endOfDay, isSameDay, isSameMonth, isSameMinute } from 'date-fns';
-import { ExportAsConfig } from 'ngx-export-as';
 import { CalendarDaysComponent } from '../dialog/calendar-days/calendar-days.component';
 import { ConfirmationCalendarComponent } from '../dialog/confirmation-calendar/confirmation-calendar.component';
 import { Router } from '@angular/router';
@@ -122,15 +121,6 @@ export class CalendarComponent implements OnInit {
   events: any;
   activeDayIsOpen: boolean = false;
   filteruno: boolean = false;
-  exportAsConfig: ExportAsConfig = {
-    type: 'pdf', // the type you want to download
-    elementIdOrContent: 'export',
-    options: { // html-docx-js document options
-      jsPDF: {
-        orientation: 'landscape'
-      },
-    }
-  }
 
   constructor(private cdr: ChangeDetectorRef, public _services: ServiceGeneralService, public _dialog: MatDialog, public _router: Router, ) {}
 

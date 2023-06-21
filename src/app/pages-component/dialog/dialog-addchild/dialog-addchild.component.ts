@@ -12,11 +12,20 @@ export class DialogAddchildComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef < any > , @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
   ngOnInit(): void {
+    debugger;
     console.log("DATA: ",this.data); 
   }
   //***********************************************************//
   save(){
+    debugger;
     this.data.success = true;
+    this.data.dialog = true;
+    this.dialogRef.close(this.data);
+  }
+
+  exit(){
+    this.data.success = false;
+    this.data.dialog = false;
     this.dialogRef.close(this.data);
   }
   //***********************************************************//

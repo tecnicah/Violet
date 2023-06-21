@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { DialogExportComponent } from '../dialog/dialog-export/dialog-export.component';
 import { PdfMakeWrapper, Table, Cell, Columns, Txt } from 'pdfmake-wrapper';
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'pending-authorizations-component',
@@ -32,6 +33,16 @@ export class PendingAuthorizationsComponent implements OnInit {
 
     //   @ViewChild(MatPaginator, {static: true}) paginator:MatPaginator;
     // @ViewChild(MatSort) sort:MatSort;
+    hostImm: any[]    = [];
+    hostRelo: any[] = [];
+    homeImm: any[]    = [];
+    homeRelo: any[] = [];
+    url_image: string;
+    public _viewCoordinadorImm: string[]= [];
+    public _viewCoordinadorRelo: string[]= [];
+    _viewSupplierImm: any[] = [];
+    _viewSupplierRelo: any[] = [];
+    _serviceLine: any;
 
     public __imagesPath__: string = this._services.url_images;
     public __loader__: LoaderComponent = new LoaderComponent();
@@ -44,29 +55,32 @@ export class PendingAuthorizationsComponent implements OnInit {
     maxall: number = 20;
 
 
-    ngOnInit() { this.initPageBehavior(); }
+    ngOnInit() { 
+        this.url_image = environment.images_path;
+        this.initPageBehavior(); 
+    }
 
     public initPageBehavior(): void {
 
         this.requestCataloguesData();
-        this.requestTablePendingAuthoData();
+        //this.requestTablePendingAuthoData();
 
-        this._services.service_general_get('Catalogue/GetServiceRecord/' + this.__userlog__.id)
-            .subscribe((response: any) => {
-                if (response.success) {
-                    this.service_record = response.result;
-                    console.log(this.service_record)
-                }
-                this.__loader__.hideLoader();
-            }, (error: any) => {
-                this.__loader__.hideLoader();
-            });
+        // this._services.service_general_get('Catalogue/GetServiceRecord/' + this.__userlog__.id)
+        //     .subscribe((response: any) => {
+        //         if (response.success) {
+        //             this.service_record = response.result;
+        //             console.log(this.service_record)
+        //         }
+        //         this.__loader__.hideLoader();
+        //     }, (error: any) => {
+        //         this.__loader__.hideLoader();
+        //     });
         //this.filterByPendingAcceptance();
         this.filterByPendingAssingments();
   }
   getPageSizeOptions() {
-    if (this.pending_table_data?.paginator.length > this.maxall) {
-      return [10, 20, this.pending_table_data?.paginator.length];
+    if (this.pending_table_data?.paginator?.length > this.maxall) {
+      return [10, 20, this.pending_table_data?.paginator?.length];
     }
     else {
       return [10, 20];
@@ -79,27 +93,39 @@ export class PendingAuthorizationsComponent implements OnInit {
     public pending_table_data: any = undefined;
     //public pending_autho_obj:PendingAuthoData = new PendingAuthoData();
     public pending_autho_obj: any;
-    public requestTablePendingAuthoData(url_params: string = ''): void {
+    public requestTablePendingAuthoData(url_params: string = '', pendingAssignments: boolean, pendingAcceptance: boolean): void {
+        //this.pending_table_data = [];
+        
         this.__loader__.showLoader();
         console.log('url_params => ', url_params);
+        let data_final: any;
         this._services.service_general_get(`ServiceRecord/GetPendingAuthorizations/${this.__userlog__.id + url_params}`)
             .subscribe((response: any) => {
                 console.log('Response ===> ', response);
                 if (response.success) {
-                    this.pending_autho_obj = response.result.result.value;
-                    debugger
-                    this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations);
-                    this.pending_table_data.paginator = this.pagpending;
-                    this.pendingAcceptance = false;
-                    this.pendingAssignments = true;
+                    data_final = {
+                        pendingAcceptance: response.result.result.value.pendingAcceptance,
+                        pendingAssignments: response.result.result.value.pendingAssignments,
+                        pendingAuthorizations: response.result.result.value.pendingAuthorizations
+                    }
+                    this.pending_autho_obj = data_final;
+                    if(pendingAssignments){
+                        this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations.assigment);
+                    }
+                    
+                    if(pendingAcceptance){
+                        this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations.acceptance);
+                    }
 
-                    setTimeout(() => {
-                        this.pending_table_data.sort = this.sortpending;
-                        console.log('===> ', this.pending_table_data);
-                    }, 3000);
+                    this.pending_table_data.paginator = this.pagpending;
+                    this.pending_table_data.sort = this.sortpending;
                     console.log('this.pending_autho_obj ===> ', this.pending_autho_obj);
+                    debugger;
+                    this.pendingAssignments = pendingAssignments;
+                    this.pendingAcceptance = pendingAcceptance;
+                    this.__loader__.hideLoader();
                 }
-                this.__loader__.hideLoader();
+                
             }, (error: any) => {
                 console.error('Error (GetPendingAuthorizations) => ', error);
                 this.__loader__.hideLoader();
@@ -109,7 +135,7 @@ export class PendingAuthorizationsComponent implements OnInit {
 
     public filter_data: FilterDataModel = new FilterDataModel();
     public updatePendingAuthoTableData(): void {
-
+        debugger;
         let url_params: string = '';
 
         for (let field in this.filter_data) {
@@ -121,8 +147,7 @@ export class PendingAuthorizationsComponent implements OnInit {
             }
 
         }
-
-        this.requestTablePendingAuthoData('?' + url_params.substring(1));
+        this.requestTablePendingAuthoData('?' + url_params.substring(1), this.pendingAssignments, this.pendingAcceptance);
 
     }
 
@@ -144,7 +169,7 @@ export class PendingAuthorizationsComponent implements OnInit {
 
         this.filter_data = new FilterDataModel();
 
-        this.requestTablePendingAuthoData();
+        this.requestTablePendingAuthoData('?' + "", this.pendingAssignments, this.pendingAcceptance);
     }
 
     public showExportDialog() {
@@ -291,105 +316,190 @@ export class PendingAuthorizationsComponent implements OnInit {
     }
 
     filterByPendingAcceptance() {
-        console.log("Entra a pending acceptance");
-        let data_filtrada;
-        let data_final: any;
-        this._services.service_general_get(`ServiceRecord/GetPendingAuthorizations/${this.__userlog__.id}`)
-            .subscribe((response: any) => {
-                console.log('Response ===> ', response);
-                if (response.success) {
-                    data_final = {
-                        pendingAcceptance: response.result.result.value.pendingAcceptance,
-                        pendingAssignments: response.result.result.value.pendingAssignments,
-                        pendingAuthorizations: response.result.result.value.pendingAuthorizations.acceptance
-                    }
-                    this.pending_autho_obj = data_final;
-                    this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations);
-                    this.pending_table_data.paginator = this.pagpending;
-                    this.pending_table_data.sort = this.sortpending;
-                    console.log('this.pending_autho_obj ===> ', this.pending_autho_obj);
-                    this.pendingAcceptance = true;
-                    this.pendingAssignments = false;
-                }
-                this.__loader__.hideLoader();
-            }, (error: any) => {
-                console.error('Error (GetPendingAuthorizations) => ', error);
-                this.__loader__.hideLoader();
-            });
+       
+        let url_params: string = '';
+
+        for (let field in this.filter_data) {
+
+            if (this.filter_data[field] != '') {
+
+                url_params += `&${field}=${this.filter_data[field]}`;
+
+            }
+
+        }
+        this.requestTablePendingAuthoData('?' + url_params.substring(1), false, true);
+       
     }
 
     filterByPendingAssingments() {
-        console.log("Entra a pending Assigment");
-        let data_filtrada;
-        let data_final: any;
-        this._services.service_general_get(`ServiceRecord/GetPendingAuthorizations/${this.__userlog__.id}`)
-            .subscribe((response: any) => {
-                console.log('Response ===> ', response);
-                if (response.success) {
+        let url_params: string = '';
 
-                    data_final = {
-                        pendingAcceptance: response.result.result.value.pendingAcceptance,
-                        pendingAssignments: response.result.result.value.pendingAssignments,
-                        pendingAuthorizations: response.result.result.value.pendingAuthorizations.assigment
-                    }
-                    this.pending_autho_obj = data_final;
-                    this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations);
-                    this.pending_table_data.paginator = this.pagpending;
-                    this.pending_table_data.sort = this.sortpending;
-                    console.log('this.pending_autho_obj ===> ', this.pending_autho_obj);
-                    this.pendingAssignments = true;
-                    this.pendingAcceptance = false;
-                }
-                this.__loader__.hideLoader();
-            }, (error: any) => {
-                console.error('Error (GetPendingAuthorizations) => ', error);
-                this.__loader__.hideLoader();
-            });
+        for (let field in this.filter_data) {
+
+            if (this.filter_data[field] != '') {
+
+                url_params += `&${field}=${this.filter_data[field]}`;
+
+            }
+
+        }
+
+        this.requestTablePendingAuthoData('?' + url_params.substring(1), true, false);
     }
 
-    public info_row: any = {};
-    viewData(data) {
-        this.info_row.assignee = data.assigneeName;
-        this.info_row.coordinator = data.coordinator;
+    async getServices(element) {
+        console.log(element);
+        this.hostImm    = [];
+        this.hostRelo = [];
+        this.homeImm    = [];
+        this.homeRelo = [];
+    debugger;
+        element.standaloneServices.forEach(item => {
+          console.log(item.country.toLowerCase());
+          console.log(element.homeCountry.toLowerCase());
+          if(item.country.toLowerCase() == element.homeCountry.toLowerCase()){
+            if(item.serviceLine == 1){
+              this.homeImm.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+            else{
+              this.homeRelo.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+          }
+          if(item.country.toLowerCase() == element.hostCountry.toLowerCase()){
+            if(item.serviceLine == 1){
+              this.hostImm.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+            else{
+              this.hostRelo.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+          }
+        });
+        element.bundledService.forEach(item => {
+          if(item.country.toLowerCase() == element.homeCountry.toLowerCase()){
+            if(item.serviceLine == 1){
+              this.homeImm.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+            else{
+              this.homeRelo.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+          }
+          if(item.country.toLowerCase() == element.hostCountry.toLowerCase()){
+            if(item.serviceLine == 1){
+              this.hostImm.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+            else{
+              this.hostRelo.push({
+                service_name: item.nickName,
+                numberWorkOrder: item.numberWorkOrder,
+                number_server: item.serviceNumber,
+                country: item.country
+              });
+            }
+          }
+        });
+      }
+    
+  viewCoordinador(elementImm, elementRelo){
+    console.log(elementImm, elementRelo)
+    this._viewCoordinadorImm = [];
+    this._viewCoordinadorRelo = [];
+      if(elementImm.length > 0){
+        elementImm.forEach(element => {
+        this._viewCoordinadorImm.push(element);
+      });
     }
-
-    public info_country: any = {};
-    viewCity(data) {
-        this.info_country.country = data.country;
-        this.info_country.city = data.city;
+      if(elementRelo.length > 0){
+        elementRelo.forEach(element => {
+        this._viewCoordinadorRelo.push(element);
+      });
     }
+  }
 
-    public info_partner: any = {};
-    viewPartner(data) {
-        this.info_partner.partner = data.partner;
-        this.info_partner.client = data.client;
+  viewData(elementImm, elementRelo) {
+    console.log(elementImm.length + elementRelo.length);
+    this._viewSupplierImm = [];
+    this._viewSupplierRelo = [];
+    if(elementImm.length > 0){
+        elementImm.forEach(element => {
+        this._viewSupplierImm.push(element);
+      });
     }
-
-
-    SR_WO :any;
-    consulta(element){
-        let WO = [];
-        this.SR_WO = [];
-        this._services.service_general_get('ServiceRecord/GetServices/'+element.id+'?type=1').subscribe((response: any) => {
-            response.map.value.home.forEach(E => {
-                WO.push(E);
-            });
-            response.map.value.host.forEach(E => {
-                WO.push(E);
-            });
-            this._services.service_general_get('ServiceRecord/GetServices/'+element.id+'?type=2').subscribe((response: any) => {
-                response.map.value.home.forEach(E => {
-                    WO.push(E);
-                });
-                response.map.value.host.forEach(E => {
-                    WO.push(E);
-                });
-
-                console.log("ESTAS SON LAS WO", WO)
-                this.SR_WO = WO;
-            })
-        })
+    if(elementRelo.length > 0){
+        elementRelo.forEach(element => {
+        this._viewSupplierRelo.push(element);
+      });
     }
+  }
+
+  viewConsultant(elementImm, elementRelo, serviceLine){
+    debugger;
+    console.log(elementImm + elementRelo)
+    this._viewSupplierImm = [];
+    this._viewSupplierRelo = [];
+    this._serviceLine = serviceLine;
+    if(elementImm.length > 0){
+        elementImm.forEach(element => {
+        this._viewSupplierImm.push(element);
+      });
+    }
+    if(elementRelo.length > 0){
+        elementRelo.forEach(element => {
+        this._viewSupplierRelo.push(element);
+      });
+    }
+  }
+
+  public info_country: any = {};
+  viewCity(data) {
+        this.info_country.hostCountry = data.country;
+        this.info_country.hostCity = data.city;
+        this.info_country.homeCountry = data.homeCountry;
+        this.info_country.homeCity = data.cityHomeName;
+  }
+
+  public info_partner: any = {};
+  viewPartner(data) {
+    //debugger;
+    this.info_partner.partner = data.partner;
+    this.info_partner.client = data.client;
+    this.info_partner.clientAvatar = data.clientAvatar;
+  }
 }
 
 class FilterDataModel {

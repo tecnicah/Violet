@@ -40,7 +40,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
   // housing list
   showPanelHousing:Boolean = false;
   displayedColumnsPayment: string[] = ['Payment','Amount', 'ManagementFee', 'WireFee', "AdvanceFee", 'Service', 'Recurrence','action'];
-  serviceScope : any[] = [];
+  serviceScope = null;
 
   constructor(
     public dialogRef: MatDialogRef<any>,
@@ -53,6 +53,8 @@ export class DialogTemporaryHousingComponent implements OnInit {
   public image_path:string = this._services.url_images;
   public __loader__:LoaderComponent = new LoaderComponent();
   public today_date:Date = new Date();
+  public toda :Date = new Date();
+  public today:Date = new Date();
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem("userData"));
@@ -60,16 +62,103 @@ export class DialogTemporaryHousingComponent implements OnInit {
     this.initPageApp();
 
   }
+
+         //////////////////////manage estatus 
+
+         disabled_by_permissions: boolean = false;
+         hide_by_permissions: boolean = false;
+         hide_complete: boolean = false;
+         show_completed: boolean = false;
+         show_progress: boolean = false;
+         wo_ : boolean = false;
+         sr_: boolean = false;
+       
+         setup_permissions_settings(){
+           //debugger;
+           if (!this.data.data.numberWorkOrder){
+              this.wo_ = this.data.workOrderId;
+           }
+           else{
+             this.wo_ = this.data.data.numberWorkOrder
+           }
+       
+           if(!this.data.data.number_server){
+             this.sr_ = this.data.data.serviceNumber
+           }
+           else{
+             this.sr_ = this.data.data.number_server
+           }
+       
+           if(this.user.role.id == 3){
+              this.disabled_by_permissions = true 
+           }
+           else{
+             this.hide_by_permissions = true;
+           }
+           if(this.housing_model.statusId != "39" && this.housing_model.statusId != "2" ){ //active , in progress
+             this.hide_complete= true;
+           }
+           else{
+             if(this.housing_model.statusId == "39"){
+               this.show_progress = true;
+             }
+             else{
+               this.show_completed = true;
+             }
+           }
+         }
+       
+         change_button(){
+           //debugger;
+           if(this.show_completed){
+             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+               data: {
+                 header: "Confirmation",
+                 body: "Are you sure the service is complete?"
+               },
+               width: "350px"
+             });
+         
+             dialogRef.afterClosed().subscribe(result => {
+               // ////console.log(result);
+                if (result) {
+                 this.housing_model.statusId = "37"; //penidng to completion 
+                 this.save_data();
+                }
+              });
+           }
+       
+           if(this.show_progress){
+             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+               data: {
+                 header: "Confirmation",
+                 body: "Do you want start the service?"
+               },
+               width: "350px"
+             });
+         
+             dialogRef.afterClosed().subscribe(result => {
+               // ////console.log(result);
+                if (result) {
+                 this.housing_model.statusId = "2"; //penidng to completion 
+                 this.save_data();
+                }
+              });
+           }
+         }
+         
+        //////////////////////manage estatus
+
   getURLAvatar(url: string, avatar: string) {
     var urlAvatar = url + "" + avatar;
-    console.log(urlAvatar);
+    //console.log(urlAvatar);
     return urlAvatar;
   }
   // get service scope
   getServiceScope() {
     this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.housing_model.workOrderServicesId}&client=${this.data.data.partnerId }`).subscribe(resp => {
       if (resp.success) {
-        console.log('Data ScopeService: ', resp);
+        //console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
       }
     });
@@ -95,7 +184,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
     this._services.service_general_get(`RelocationServices/GetTemporaryHousingCoordinatonById?id=${ this.data.sr_id }`)
         .subscribe( (response:any) => {
 
-          console.log('Res GetTemporaryHousingCoordinatonById => ', response);
+          //console.log('Res GetTemporaryHousingCoordinatonById => ', response);
 
           if( response.success ) {
 
@@ -116,8 +205,9 @@ export class DialogTemporaryHousingComponent implements OnInit {
             this.getDataHousing();
             this.getServiceScope();
             this.housing_model.type_housing = 1;
-            console.log('this.housing_model ==> ', this.housing_model);
-
+            //console.log('this.housing_model ==> ', this.housing_model);
+            this._supplier();
+            this.setup_permissions_settings();
           }
 
           this.__loader__.hideLoader();
@@ -133,13 +223,13 @@ export class DialogTemporaryHousingComponent implements OnInit {
   }
 
    //**CONSULTA SUPPLIER PARTNER**//
-   get_supplierPartner(){
+   get_supplierPartner_orig(){
     this._services.service_general_get("SupplierPartnerProfile/GetConsultantContactsService?supplierType=5").subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.services_catalogue = data.result.value;
         this._services.service_general_get("SupplierPartnerProfile/GetConsultantContactsService?supplierType=9").subscribe((data => {
-          console.log(data);
+          //console.log(data);
           if (data.success) {
             let suppliers = data.result.value;
             suppliers.forEach(element => {
@@ -151,6 +241,38 @@ export class DialogTemporaryHousingComponent implements OnInit {
     }));
     
   }
+
+
+  get_supplierPartner(){
+ //   //console.log(" datos a enviar supplier ============", this.housing_model.workOrderServicesId, this.data)
+    this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService="+ this.housing_model.workOrderServicesId).subscribe((data => {
+   // this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
+      if (data.success) {
+        //console.log('DATA CONSULTA SUPPLIER PARTNER: ',data.result.value);
+        this.services_catalogue = data.result.value;
+       }
+    }), (err)=>{
+      //console.log("no se realizo la consulta por falta de parametro");
+    });
+  }
+
+  Supplier:any[] = [];
+  _supplier(){
+     if(this.housing_model.supplierPartner != null && this.housing_model.supplierPartner != 0)
+     {
+    //console.log("Entre a _supplier ==========",this.housing_model.supplierPartner, +this.housing_model.workOrderServicesId)
+      this._services.service_general_get("SupplierPartnerProfile/GetAdmintContactsServiceProv?supplierPartner="+ this.housing_model.supplierPartner+"&workOrderService="+this.housing_model.workOrderServicesId).subscribe((data => {
+        // this._services.service_general_get("SupplierPartnerProfile/GetConsultantContactsService?supplierPartner="+this.data.supplierPartner+"&supplierType="+this.data.supplierType).subscribe((data => {
+           if (data.success) {
+             //console.log('DATA CONSULTA SUPPLIER: ',data.result.value);
+             this.Supplier = data.result.value;
+            }
+         }),(err)=>{
+           //console.log("No se realizo la consulta por falta de parametros");
+         });
+     }
+  }
+
   /*General Stuff*/
   public payments_table_data:any = undefined;
   public payments_table_fields:string[] = ['cam_0','cam_1','cam_2','cam_3','cam_4','cam_5','cam_6','cam_7'];
@@ -161,7 +283,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
       `RequestPayment/GetRequestPayments?WorkOrderServicesId=${ this.housing_model.workOrderServicesId }`
       ).subscribe( (response:any) => {
 
-        console.log('Payments data ====> ', response.result);
+        //console.log('Payments data ====> ', response.result);
 
         if( response.success ) {
 
@@ -204,21 +326,21 @@ export class DialogTemporaryHousingComponent implements OnInit {
   }
   //++++++++ consulta payment
   get_payment() {
-    console.log('Extracion de datos');
+    //console.log('Extracion de datos');
     this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.housing_model.workOrderServicesId).subscribe((data => {
       if (data.success) {
-        console.log('datos de tabla request', data);
+        //console.log('datos de tabla request', data);
         this.calculo = data.result.value;
         this.calculo.total = this.calculo.ammountSubTotal + this.calculo.managementFeeSubTotal + this.calculo.wireFeeSubTotal + this.calculo.advanceFeeSubTotal;
         this.payments = data.result.value.payments;
-        // console.log('datos de la tabla' + data.result.value.payments);
+        // //console.log('datos de la tabla' + data.result.value.payments);
       }
-      console.log('2° datos de la tabla', this.payments);
+      //console.log('2° datos de la tabla', this.payments);
     }))
   }
   //**METHODS PAYMENTS (NEW PAYMENT)**//
   addPayment(data) {
-    console.log('workOrderServicesId', this.housing_model.workOrderServicesId);
+    //console.log('workOrderServicesId', this.housing_model.workOrderServicesId);
     if(data == null){
       data = {
         serviceRecord: this.data.data.serviceRecordId,
@@ -238,7 +360,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
       data.sr = this.data.data.serviceRecordId;
       data.service = this.data.data.id_server;
     }
-   console.log("Data al abrir modal de payment concept: ", data);
+   //console.log("Data al abrir modal de payment concept: ", data);
    const dialogRef = this._dialog.open(DialogRequestPaymentNewComponent, {
       data: data,
       width: "95%"
@@ -254,7 +376,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
 
       if (result.success) {
           this._services.service_general_delete("RequestPayment/DeletePaymentConcept/"+data.id+"/"+result.type).subscribe((data => {
@@ -299,11 +421,11 @@ export class DialogTemporaryHousingComponent implements OnInit {
       data: this.data
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if(result.success){
         result.temporaryHousingCoordinationId = this.housing_model.id;
          this.document.push(result);
-         console.log(this.document);
+         //console.log(this.document);
       }
     });
   }
@@ -315,6 +437,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
     reminder_model.createdBy = this.user_data.id;
     reminder_model.createdDate = new Date();
     reminder_model.temporaryHousingCoordinationId = this.housing_model.id;
+    reminder_model.reminderComments = " ";
 
     this.housing_model.reminderTemporaryHousingCoordinatons.push( reminder_model );
 
@@ -330,7 +453,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
   //   });
 
   //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(result);
+  //     //console.log(result);
   //     if (result) {
   //       this._services.service_general_delete("RelocationServices/DeleteDocumentTHC?id=" + id).subscribe((data => {
   //         if (data.success) {
@@ -359,7 +482,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
         if (id == 0) {
           this.document.splice(i, 1);
@@ -395,7 +518,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
       this._services.service_general_delete(`RelocationServices/DeleteReminderTHC?id=${ reminder.id }`)
           .subscribe( (response:any) => {
 
-            console.log('Res ==> ', response);
+            //console.log('Res ==> ', response);
 
             if( response.success ) {
 
@@ -429,7 +552,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
         if (result) {
           this.housing_model.stayExtensionTemporaryHousings.splice(i, 1);
         }
@@ -481,11 +604,12 @@ export class DialogTemporaryHousingComponent implements OnInit {
   }
 
   save_data(){
-    console.log("Informacion a guardar:  ",this.housing_model);
+    this.__loader__.showLoader();
+    
     this.housing_model.updateBy = this.user.id;
     this.housing_model.documentTemporaryHousingCoordinatons = this.document;
     this.housing_model.updatedDate = new Date();
-    debugger;
+    //debugger;
     this.housing_model.serviceCompletionDate = this.housing_model.statusId == "4"
       ? this.housing_model.serviceCompletionDate != null ? this.housing_model.serviceCompletionDate : new Date()
       : null ;
@@ -496,13 +620,28 @@ export class DialogTemporaryHousingComponent implements OnInit {
         this.housing_model.commentTemporaryHosuings.push(data_comment_aux[i]);
       }
     }
-
+    //console.log("Informacion a guardar:  ",this.housing_model);
+    //console.log(JSON.stringify(this.housing_model));
     this._services.service_general_put("RelocationServices/PutTemporaryHousingCoordinaton", this.housing_model).subscribe((data => {
+      this.__loader__.showLoader();
       if (data.success) {
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
             body: "Information saved"
+          },
+          width: "350px"
+        });
+        this.dialogRef.close();
+        this.document = [];
+        this.ngOnInit();
+      }
+      else
+      {
+        const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "An error has occurred",
+            body: "The service could not be saved. contact support"
           },
           width: "350px"
         });
@@ -523,7 +662,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
   getDataHousing() {
     this._services.service_general_get('HousingList/GetAllHousing?key='+Number(this.data.data.workOrderId)).subscribe((data_housing => {
       if (data_housing.success) {
-        console.log('DATA CONSULTA HOUSING LIST: ',data_housing);
+        //console.log('DATA CONSULTA HOUSING LIST: ',data_housing);
         this.dataSourceHousing = data_housing.message;
       }
     }));
@@ -531,14 +670,14 @@ export class DialogTemporaryHousingComponent implements OnInit {
 
 
   HousingSpecs(){
-    debugger;
+    //debugger;
     const dialogRef = this._dialog.open(DialogHousingSpecificationsComponent, {
       data: this.housing_model,
       width: "95%"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
       }
     })
@@ -591,7 +730,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
     data.numberWorkOrder = this.data.data.numberWorkOrder;
     data.serviceID =  this.data.data.number_server;
     data.serviceName = this.data.data.service_name;
-    console.log("Editar Housing: ", data);
+    //console.log("Editar Housing: ", data);
     const dialogRef = this._dialog.open(DialogHomeDetailsComponent,{
       data: data,
       width: "95%"
@@ -632,25 +771,39 @@ export class DialogTemporaryHousingComponent implements OnInit {
   public reservation_catalogue:any = [];
   public ca_privacy = [];
   public documentType:any = [];
+
+  get_sr_status() {
+    this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=17").subscribe((data => {
+      //console.log("GetStatusWorkOrder ============= ",data);
+      if (data.success) {
+        this.status_catalogue = data.result;
+      }
+    }))
+  }
+
+  caPropertyTypeHousing: any[] = [];
+
   public async getCatalogos() {
 
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     //this.status_catalogue = await this._services.getCatalogueFrom('GetStatus');
-    this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=17").subscribe((data => {
-      console.log(data);
-      if (data.success) {
-        this.status_catalogue = data.result;
-      }
-    }));
+    // this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=17").subscribe((data => {
+    //   if (data.success) {
+    //     this.status_catalogue = data.result;
+    //   }
+    // }));
+    this.get_sr_status();
+    
     this.country_catalogue = await this._services.getCatalogueFrom('GetCountry');
     this.currency_catalogue = await this._services.getCatalogueFrom('GetCurrency');
     this.duration_catalogue = await this._services.getCatalogueFrom('GetDuration');
     //this.services_catalogue = await this._services.getCatalogueFrom('GetSupplierBySupplierType?key=1');
     this.responsable_catalogue = await this._services.getCatalogueFrom(`GetDependents?sr=${ this.data.app_id }`);
     this.reservation_catalogue = await this._services.getCatalogueFrom('GetReservationType');
+    this.caPropertyTypeHousing = await this._services.getCatalogueFrom('GetPropertyTypeHousing');
     //this.documentType = await this._services.getCatalogueFrom('GetDocumentType');
     this._services.service_general_get("Catalogue/GetDocumentType/1").subscribe((data => {
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         this.documentType = data.result;
       }
@@ -689,7 +842,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
 
    //**METHODS COMMENTS (NEW)**//
   addReply() {
-    console.log(this.user);
+    //console.log(this.user);
     this.housing_model.commentTemporaryHosuings.push({
       "id": 0,
       "temporaryHousingCoordinationId": this.housing_model.id,
@@ -726,13 +879,18 @@ export class DialogTemporaryHousingComponent implements OnInit {
 
   public getDaysBetweenDatesStaticField( model:any, fields_in:string[] ,field_to_append:any ):void {
 
-    const date_one:Date = new Date( model[fields_in[0]] ),
+    let date_one:Date = new Date( model[fields_in[0]] ),
       date_two:Date = new Date( model[fields_in[1]] ),
       difference_in_time:any = date_two.getTime() - date_one.getTime(),
       difference_in_days:any = difference_in_time / (1000 * 3600 * 24),
       days_container:any = document.getElementById( field_to_append );
+      if(difference_in_days < 0)
+      {
+        difference_in_days = 0;
+      }
+      
       this.housing_model.totalDays = difference_in_days;
-      console.log("HOUSING MODAL: ", this.housing_model);
+      //console.log("HOUSING MODAL: ", this.housing_model);
     if(
       !isNaN( difference_in_days ) &&
       model[fields_in[0]] != '' && model[fields_in[0]] != null &&
@@ -748,7 +906,7 @@ export class DialogTemporaryHousingComponent implements OnInit {
   public toggle_stay_section:boolean = false;
   public active:boolean = false;
   public toggleStaySection(e):void {
-         console.log(e);
+         //console.log(e);
          if(e.checked){
           this.active = true;
          }else{
@@ -813,7 +971,9 @@ class HousingModel {
   paymentResponsibilty:string = '';
   paymentsDue:number = 0;
   reservationType:string = '';
-  supplierPartner:string = '';
+  supplierPartner:any = null;
+  idAdministrativeContact:any = null;
+  idPropertyType:any = null;
   propertyAddress:string = '';
   neighborhood:string = '';
   finalReservationAmount:string = '';
@@ -957,12 +1117,12 @@ class ExtensionTemporaryHousingCoordinatonsModel {
 class ReminderTemporaryHousingCoordinatonsModel {
   id:number = 0;
   temporaryHousingCoordinationId:number = 0;
-  reminderDate:string = '';
-  reminderComments:string = '';
+  reminderDate: Date = new Date();
+  reminderComments:string = ' ';
   createdBy:number = 0;
-  createdDate:Date = undefined;
+  createdDate:Date = new Date();
   updateBy:number = 0;
-  updatedDate: string = '';
+  updatedDate:Date = new Date();
 }
 
 class SingleComment {

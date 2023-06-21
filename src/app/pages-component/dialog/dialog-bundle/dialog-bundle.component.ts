@@ -29,6 +29,8 @@ import { OtherComponent } from '../other/other.component';
 import { TenancyManagementComponent } from '../tenancy-management/tenancy-management.component';
 import { DialogLegalReviewConsultation } from '../legal-review-consultation/legal-review-consultation.component';
 import { OtherImmigrationComponent } from '../other-immigration/other-immigration.component';
+import { LoaderComponent } from 'app/shared/loader';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dialog-bundle',
@@ -39,13 +41,18 @@ export class DialogBundleComponent implements OnInit {
 
   constructor(public _dialog: MatDialog, public _services: ServiceGeneralService,
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any ,public _router: Router) { }
 
+    public __loader__:LoaderComponent = new LoaderComponent();
+    userData: any;
   public services_bundle = [];
   ngOnInit(): void {
+    this.userData = JSON.parse(localStorage.getItem('userData'));
     console.log("data recibida en el modal", this.data);
-    this._services.service_general_get("ServiceOrder/GetBundledService?wo=" + this.data.wo).subscribe((data => {
-      console.log(data);
+    this.__loader__.showLoader();
+    //this._services.service_general_get("ServiceOrder//api/ServiceOrder/GetBundledServiceByBundleId?wo=" + this.data.wo).subscribe((data => {
+    this._services.service_general_get("ServiceOrder/GetBundledServiceByBundleId?bundle_swo_id=" + this.data.bundled).subscribe((data => {
+        console.log("GetBundledServiceByBundleId =====",data);
       if (data.success) {
         for (let i = 0; i < data.result.value.length; i++) {
           const element = data.result.value[i];
@@ -54,13 +61,17 @@ export class DialogBundleComponent implements OnInit {
           }
         }
         this.services_bundle = data.result.value;
-        console.log(this.services_bundle);
+        this.__loader__.hideLoader();
+        console.log("this.services_bundle ===============",this.services_bundle);
       }
-    }))
+    }), (err) => {
+      this.__loader__.hideLoader();
+      console.log("error al cargar el bundled: ", err);
+    });
   }
 
   showService(item) {
-    console.log(item);
+    console.log("show service item =================== ",item);
     let dialog;
     switch (item.categoryId) {
       case 1:
@@ -120,8 +131,11 @@ export class DialogBundleComponent implements OnInit {
       case 20:
         dialog = DialogAirportTransportationComponent
       break;
-      case 21:
-        dialog = HomeFindingComponent
+      case 21: // home finding
+      debugger;
+        this._router.navigate(['homefindingfull/' + item.service[0].id ]);
+        this._dialog.closeAll();
+       // dialog = HomeFindingComponent
       break;
       case 22:
         dialog = LegalRenewalComponent
@@ -147,7 +161,7 @@ export class DialogBundleComponent implements OnInit {
       default:
         break;
     }
-
+    item.serviceRecordId = this.data.sr;
     item.sr_id = item.service[0].id;
     item.country_city = this.data.country_city;
     item.app_id = this.data.sr;
@@ -161,14 +175,18 @@ export class DialogBundleComponent implements OnInit {
     item.hostCountryId = this.data.country_city.country_id;
     item.workOrderId = this.data.workOrderId;
     item.data.workOrderId = this.data.workOrderId;
-    const dialogRef = this._dialog.open(dialog, {
-      data: item,
-      width: "95%"
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
+     if(item.categoryId != 21){ // home finding
+      const dialogRef = this._dialog.open(dialog, {
+        data: item,
+        width: "95%"
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+  
+      });
+     }
+    
   }
 
 }

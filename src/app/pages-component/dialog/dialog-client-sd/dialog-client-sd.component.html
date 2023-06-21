@@ -1,0 +1,40 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <h2 mat-dialog-title class="modal-form__title">Client Service Scope </h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+        <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+</div>
+
+<!-- /////////////////////////////// Scope Client Service //////////////////////////////////-->
+
+<div>
+    
+    <!-- <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <p class="subtitledos">Client Service Scope</p>
+    </mat-grid-tile> -->
+
+
+    <div *ngIf="serviceScope != null">
+        <div class="textarea" *ngIf="serviceScope.scopeDescription">
+            <div class="textarea" *ngIf="serviceScope.scopeDescription.length < 1">
+                Client Service Scope not captured or empty.
+            </div>
+            <div *ngIf="serviceScope.scopeDescription.length > 0"
+             
+                 [innerHTML]="serviceScope.scopeDescription">
+               
+            </div>
+        </div>
+        <div class="textarea" *ngIf="!serviceScope.scopeDescription">
+            Client Service Scope not captured or empty.
+        </div>
+    </div>
+    <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="!serviceScope">
+        <div class="textarea">
+            Client Service Scope not captured or empty.
+        </div>
+    </mat-grid-tile>
+</div>

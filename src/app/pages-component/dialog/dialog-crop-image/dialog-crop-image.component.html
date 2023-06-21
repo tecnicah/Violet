@@ -1,34 +1,50 @@
 <h1 mat-dialog-title>Update profile picture</h1>
 <div mat-dialog-content>
-     <input type="file" id="select_image" name="select_image" (change)="fileChangeEvent($event)" />
-     
-     <mat-grid-list cols="2" rowHeight="1:1" style="padding: 15px;">
-        <mat-grid-tile>
-            <image-cropper
-                [imageChangedEvent]="imageChangedEvent"
-                [maintainAspectRatio]="true"
-                [aspectRatio]="4 / 4"
-                format="png"
-                (imageCropped)="imageCropped($event)"
-                (imageLoaded)="imageLoaded()"
-                (cropperReady)="cropperReady()"
-                (loadImageFailed)="loadImageFailed()">
-            </image-cropper>
-        </mat-grid-tile>
-        
-        <mat-grid-tile>
-            <img [src]="data.image" />
-        </mat-grid-tile>
-      </mat-grid-list>
+
+     <div class="wrapper">
+        <input type="file" style="display:none;" id="file-input" name="file-input" (change)="fileChangeEvent($event)" >
+        <label for="file-input">
+          <span>Click to choose an image <br><mat-icon>cloud_upload</mat-icon></span>
+        </label>
+        <br/>
+        <button mat-button (click)="zoomOut()">Zoom -</button> 
+        <button mat-button (click)="zoomIn()">Zoom +</button>
+
+        <mat-grid-list cols="1" rows="1" rowHeight="400px">
+            <mat-grid-tile>
+                <mat-card class="example-card">
+            
+                <image-cropper
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="4 / 3"
+                    [resizeToWidth]="256"
+                    [cropperMinWidth]="128"
+                    [onlyScaleDown]="true"
+                    [roundCropper]="false"
+                    [transform]="transform"
+                    [alignImage]="'left'"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (cropperReady)="cropperReady($event)"
+                    (loadImageFailed)="loadImageFailed()">
+                </image-cropper>
+                    
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+       
+      </div>
     
 </div>
 <div mat-dialog-actions align="end">
     <div class="page__section-buttong" style="flex: 0 1 100px;">
-        <button (click)="onNoClick()" style="background-color: #f9f9f9;color: #9d3292;">No, cancel</button>
+        <button (click)="onNoClick()" style="background-color: #f9f9f9;color: #9d3292;">Cancel</button>
     </div>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <div class="page__section-buttong" style="flex: 0 1 100px;">
-      <button [mat-dialog-close]="data.image" cdkFocusInitial>Yes, delete</button>
+      <button [mat-dialog-close]="data.image" cdkFocusInitial>Yes</button>
     </div>
 </div>
 

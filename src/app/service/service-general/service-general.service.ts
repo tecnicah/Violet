@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -12,12 +12,17 @@ import { DashboardComponent } from 'app/pages-component/dashboard/dashboard.comp
 })
 export class ServiceGeneralService {
 
-  private url_chat: any = new signalR.HubConnectionBuilder()
-    .withUrl(`${environment.images_path}` + 'chatsocket')   // mapping to the chathub as in startup.cs
-    .withAutomaticReconnect()
-    .build();
+  private hubConnection: signalR.HubConnection; 
+  public respuestaRecibirPedido= new EventEmitter<string>();
+  public avisoAdmin = new EventEmitter<string>();
+  
+  // private url_chat: any = new signalR.HubConnectionBuilder()
+  //   .withUrl(`${environment.images_path}` + 'chatsocket')   // mapping to the chathub as in startup.cs
+  //   .withAutomaticReconnect()
+  //   .build();
 
   url_api = `${environment.API_URL}`;
+  url_noapi = `${environment.API_URL_na}`;
   url_images = `${environment.images_path}`;
   headers = new HttpHeaders();
 
@@ -30,25 +35,52 @@ export class ServiceGeneralService {
   private sharedObj = new Subject<any>();
 ​
   constructor(private http: HttpClient, public permissionsService: NgxPermissionsService) {
-    this.url_chat.onclose(async () => {
-      await this.start();
-    });
-    this.url_chat.on("ReceiveOne", (user) => { this.mapReceivedMessage( this.chat_test ); });
-    this.start();
+    // this.url_chat.onclose(async () => {
+    //   await this.start();
+    // });
+    // //this.url_chat.on("ReceiveOne", (user) => { this.mapReceivedMessage( this.chat_test ); });
+    // this.start();
+    this.crearConexion();
+    this.suscribirOnListeners();
+    this.iniciarConexion();
   }
 ​
-  
+private crearConexion() {
+
+  this.hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl(this.url_images + "chatsocket", { transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling })
+    .withAutomaticReconnect()
+    .build();
+}
+
+private iniciarConexion() {
+
+  this.hubConnection
+    .start()
+    .then(() => console.log('Connection started'))
+    .catch(err => console.log('Error while starting connection: ' + err));
+
+}
+
+private suscribirOnListeners() {
+  this.hubConnection.on("CambiarEstadoMesa", (data) => {
+    this.respuestaRecibirPedido.emit(data);
+  });
+
+  this.hubConnection.on("ReceiveOne", (data) => {
+    this.avisoAdmin.emit(data);
+  });
+}
   // Strart the connection
-  public async start() {
-    try {
-      console.log("connectedppppppppppp");
-      await this.url_chat.start();
-      console.log("connected");
-    } catch (err) {
-      console.log(err);
-      setTimeout(() => this.start(), 5000);
-    }
-  }
+  // public async start() {
+  //   try {
+  //     await this.url_chat.start();
+  //     console.log("connected");
+  //   } catch (err) {
+  //     console.log(err);
+  //     setTimeout(() => this.start(), 5000);
+  //   }
+  // }
 ​
   /*private mapReceivedMessage(user: string, message: string): void {
     this.receivedMessageObject.user = user;
@@ -56,20 +88,25 @@ export class ServiceGeneralService {
     this.sharedObj.next(this.receivedMessageObject);
   }*/
 
-  private mapReceivedMessage( chat_model:any ): void {
-    console.log('El Chat =====> ', chat_model);
-    this.sharedObj.next(this.receivedMessageObject);
-  }
+  // private mapReceivedMessage( chat_model:any ): void {
+  //   console.log('El Chat =====> ', chat_model);
+  //   this.sharedObj.next(this.receivedMessageObject);
+  // }
 
-  public retrieveMappedObject(): Observable<any> {
-    return this.sharedObj.asObservable();
-  }
+  // public retrieveMappedObject(): Observable<any> {
+  //   return this.sharedObj.asObservable();
+  // }
 
   /* Arriba estan los servicios del chat */
 
   service_general_post_with_url(url, parametros): Observable<any> {
     return this.http.post(this.url_api + url, parametros, { headers: this.headers });
   }
+
+  public service_general_get_with_url(ur){
+    return this.http.put(this.url_api+ur, { headers: this.headers });
+  }
+
 
   service_general_post_with_urlnoapi(url, parametros): Observable<any> {
     return this.http.post(this.url_images + url, parametros, { headers: this.headers });
@@ -80,15 +117,19 @@ export class ServiceGeneralService {
   }
 
   public service_general_putnoapi(url, parametros): Observable<any> {
-    return this.http.put(this.url_images + url, parametros, { headers: this.headers });
+    return this.http.put(this.url_noapi + url, parametros, { headers: this.headers });
   }
 
   public service_general_get(url): Observable<any> {
     return this.http.get(this.url_api + url, { headers: this.headers });
   }
 
+  public service_get_string(ur){
+    return this.http.get(this.url_api, { headers: this.headers });
+  }
+
   public service_general_get_noapi(url): Observable<any> {
-    return this.http.get(this.url_images + url, { headers: this.headers });
+    return this.http.get(this.url_noapi + url, { headers: this.headers });
   }
 
   public service_general_delete(url:string):Observable<any> {
@@ -113,6 +154,7 @@ export class ServiceGeneralService {
       query_on = new Promise((resolve) => {
         query.subscribe((response) => {
           resolve(response);
+          //console.log(resolve(response));
         }, (error) => {
           resolve(error);
         });
@@ -122,6 +164,31 @@ export class ServiceGeneralService {
       else return 'Error al pedir el catalogo.';
     });
   }
+
+    /* SetStatusServiceRecord */
+    public getSetStatusServiceRecord_(url): Observable<any> {
+      return this.http.get(this.url_api + url, { headers: this.headers });
+    }
+
+    public getSetStatusServiceRecord(url, params: string = ''): any {
+      const query = this.http.get(this.url_api + 'ServiceRecord/' + url + params, { headers: this.headers }),
+        query_on = new Promise((resolve) => {
+          query.subscribe((response) => {
+            debugger;
+            resolve(response);
+          }, (error) => {
+            resolve(error);
+          });
+        });
+      return query_on.then((result: any) => {
+        debugger;
+        if (result.success) {
+          console.log(result.result);
+          return result.result;
+        }
+        else return 'Error al pedir el catalogo.';
+      });
+    }
 
   private user_data:any = JSON.parse(localStorage.getItem("userData") );
   public getrol():string[] {

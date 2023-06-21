@@ -9,160 +9,189 @@
   </div>
 </div>
 <mat-dialog-content class="mat-typography">
-  <mat-grid-list cols="2" rowHeight="70px">
+  <mat-grid-list cols="3" rowHeight="70px">
     <!-- fecha -->
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data > 0">
       <div class="page__section-data">
         <span class="text-mini gray_05">Initial Autho Date</span><br />
-        {{ data.value.createdDate  }}
+        {{ data.value.createdDate }}
       </div>
     </mat-grid-tile>
     <!-- country -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 'client')">
-      <mat-form-field appearance="fill">
-        <mat-label>Country</mat-label>
-        <mat-select required [(ngModel)]="data.country" (selectionChange)="[selectCity(), getAreaCoverage()]">
-          <mat-option *ngFor="let item of dataCountry" [value]="item.id">
-            {{item.name}}
-          </mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
-      </mat-form-field>
-    </mat-grid-tile>
-    
-   
-    <!-- city -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 'client')">
-      <mat-form-field appearance="fill">
-        <mat-label>City</mat-label>
-        <mat-select  required [(ngModel)]="data.city">
-          <mat-option *ngFor="let item of dataCity" [value]="item.id">
-            {{item.city}}
-          </mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_city">Field is required</mat-hint>
-      </mat-form-field>
-    </mat-grid-tile>
-    <!-- title -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 4)">
-      <mat-form-field appearance="fill">
-        <mat-label>Job Title</mat-label>
-        <mat-select [(ngModel)]="data.title" required>
-          <mat-option *ngFor="let item of dataTitles" [value]="item.id">
-            {{item.title}}
-          </mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_title">Field is required</mat-hint>
-      </mat-form-field>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Country</mat-label>
+          <mat-select required [disabled]="edicion" [(ngModel)]="data.country"
+            (selectionChange)="[selectCity(), getAreaCoverage()]">
+            <mat-option *ngFor="let item of dataCountry" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
     </mat-grid-tile>
 
-    <!-- inputs name-->
+    <!-- city -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
-        <input matInput required placeholder="Name" [(ngModel)]="data.name">
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_name">Field is required</mat-hint>
-      </mat-form-field>
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <mat-select required [(ngModel)]="data.city" [disabled]="edicion">
+            <mat-option *ngFor="let item of dataCity" [value]="item.id">
+              {{item.city}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_city">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
     </mat-grid-tile>
 
     <!-- office -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 4)">
-      <mat-form-field appearance="fill">
-        <mat-label>Office</mat-label>
-        <mat-select [(ngModel)]="data.office" required>
-          <mat-option *ngFor="let item of dataOffice" [value]="item.id">
-            {{item.office}}
-          </mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_office">Field is required</mat-hint>
-      </mat-form-field>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Office</mat-label>
+          <mat-select [disabled]="edicion" [(ngModel)]="data.office" required>
+            <mat-option *ngFor="let item of dataOffice" [value]="item.id">
+              {{item.office}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_office">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
     </mat-grid-tile>
+
+    <!-- inputs name-->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput required placeholder="Name" [(ngModel)]="data.name">
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_name">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <!-- role -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill" *ngIf="data.role != 3">
+          <mat-label>Role</mat-label>
+          <mat-select [(ngModel)]="data.role" required (selectionChange)="selectRole(data.role)">
+            <mat-option *ngFor="let item of dataRoles" [value]="item.id">
+              {{item.role}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_role">Field is required</mat-hint>
+        </mat-form-field>
+        <span appearance="fill" *ngIf="data.role == 3">
+          Role: Supplier
+        </span>
+      </div>
+    </mat-grid-tile>
+
+
+    <!-- email -->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Premier E-mail</mat-label>
+          <input matInput required placeholder="email@email.com" [(ngModel)]="data.email" (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_emai'} );
+        validEmailAssignee( $event.target.value );
+        validateEmailServerAvailability( $event.target.value );">
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_emai">
+            Field is required
+          </span>
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai">
+            E-mail format not valid
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- title -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea" *ngIf="data.role != 3">
+        <mat-form-field appearance="fill">
+          <mat-label>Job Title</mat-label>
+          <mat-select [(ngModel)]="data.title" required>
+            <mat-option *ngFor="let item of dataTitles" [value]="item.id">
+              {{item.title}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_title">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
 
 
     <!-- phone number  -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 'client')">
-      <mat-form-field style="width: 40% !important; margin-right: 5%;">
-        <mat-label style="font-size: 12px">Prefix</mat-label>
-        <mat-select matNativeControl [(ngModel)]="prefix">
-          <mat-form-field appearance="outline" style="padding: 5px;">
-            <mat-label>Prefix</mat-label>
-            <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
-          </mat-form-field>
-          <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
-            {{ item.countriesIsdCode }} / {{ item.countriesName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field style="width: 55% !important;">
-        <mat-label>Phone Number</mat-label>
-        <input mask="(000) 000-0000000000" type="tel" matInput required placeholder="Phone Number" (keydown)="validaNumericos($event)" [(ngModel)]="data.phone">
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_phone">Field is required</mat-hint>
-      </mat-form-field>
-    </mat-grid-tile>
-
-    <!-- email -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 'client')">
-      <mat-form-field appearance="fill">
-        <mat-label>Premier E-mail</mat-label>
-        <input matInput required placeholder="email@email.com" [(ngModel)]="data.email" (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_emai'} );
-        validEmailAssignee( $event.target.value );
-        validateEmailServerAvailability( $event.target.value );">
-        <span class="label-error" *ngIf="nso_ainfo_fields.no_emai">
-          Field is required
-        </span>
-        <span class="label-error" *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai">
-          E-mail format not valid
-        </span>
-      </mat-form-field>
-    </mat-grid-tile>
-    <!-- role -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 4)">
-      <mat-form-field appearance="fill">
-        <mat-label>Role</mat-label>
-        <mat-select [(ngModel)]="data.role" required (selectionChange)="selectRole(data.role)">
-          <mat-option value='client'>Client</mat-option>
-          <mat-option *ngFor="let item of dataRoles" [value]="item.id">
-            {{item.role}}
-          </mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_role">Field is required</mat-hint>
-      </mat-form-field>
-    </mat-grid-tile>
-    <!-- supplier id de supplier es 3-->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.role == 3">
-      <mat-form-field appearance="fill">
-        <mat-label>Supplier</mat-label>
-        <mat-select [(ngModel)]="data.supplier" (selectionChange)="selectSupplier(data.supplier)">
-          <mat-option *ngFor="let item of dataSupplier" [value]="item.id">
-            {{item.supplierPartner}}
-          </mat-option>
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_supplier">Field is required</mat-hint>
-      </mat-form-field>
-    </mat-grid-tile>
-
-
-
-
-
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!(data.role == 'client')"></mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="(this.data.id != 0) && !(data.role == 'client')">
-      <div class="link">
-        <span class="h12 browser" (click)="changePassword(data.email)">Change password</span>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label style="font-size: 12px">Prefix</mat-label>
+          <mat-select matNativeControl [(ngModel)]="prefix">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Prefix</mat-label>
+              <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+            </mat-form-field>
+            <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+              {{ item.countriesIsdCode }} / {{ item.countriesName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Phone Number</mat-label>
+          <input mask="(000) 000-0000000000" type="tel" matInput required placeholder="Phone Number"
+            (keydown)="validaNumericos($event)" [(ngModel)]="data.phone">
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_phone">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- supplier id de supplier es 3
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.role == 3">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Supplier</mat-label>
+          <mat-select [(ngModel)]="data.supplier" (selectionChange)="selectSupplier(data.supplier)">
+            <mat-option *ngFor="let item of dataSupplier" [value]="item.id">
+              {{item.supplierPartner}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_supplier">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>-->
+
+
+    <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="(this.data.id != 0) && !(data.role == 'client')">
+      <div class="link">
+        <span class="h12 browser" style="font-size: 16px; color: #9d3292; font-weight: bolder;"
+          (click)="changePassword(data.email)">
+          Change password
+        </span>
+      </div>
+
     </mat-grid-tile>
   </mat-grid-list>
 </mat-dialog-content>
 <br>
-<mat-dialog-actions align="end" *ngIf="!(data.role == 'client')">
+<mat-dialog-actions align="end">
   <div class="page__section-buttong">
     <button (click)="validRole()">Save</button>
   </div>

@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { DialogExportComponent } from '../dialog/dialog-export/dialog-export.component';
 import { PdfMakeWrapper, Table } from 'pdfmake-wrapper';
 import pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
-import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { LoaderComponent } from 'app/shared/loader';
 
 @Component({
@@ -28,7 +27,8 @@ export class SupplierPartnersComponent implements OnInit {
 
   loader:LoaderComponent = new LoaderComponent();
   //displayedColumns: string[] = ['SupplierCategory', 'SupplierPartner', 'SupplierPartnerType', 'VIP', 'Country', 'City', 'ContactName', 'Phone', 'TotalServices', 'Experience', 'Contact'];
-  displayedColumns: string[] = ['SupplierPartner','SupplierCategory', 'SupplierPartnerType', 'VIP', 'City', 'ContactName', 'Phone', 'TotalServices', 'Experience', 'Contact'];
+  //displayedColumns: string[] = ['SupplierPartner','SupplierCategory', 'SupplierPartnerType', 'VIP', 'City', 'ContactName', 'Phone', 'TotalServices', 'Experience', 'Contact'];
+  displayedColumns: string[] = ['SupplierPartner','SupplierCategory', 'SupplierPartnerType', 'VIP', 'City', 'ContactName', 'Phone', 'Status'];
   supplier: any;
   ca_country: any[] = [];
   ca_city: any[] = [];
@@ -47,26 +47,16 @@ export class SupplierPartnersComponent implements OnInit {
   public filterCity: any = { city: '' };
   public filterStatus: any = { status: '' };
   public cat: any = { id: 1, category: 'Consultant supplier compan', type: 1 };
-  public cat1: any = { id: 2, category: 'Service supplier company', type: 2 };
-  public cat2: any = { id: 3, category: 'Independent consultant', type: 3 };
+  public cat1: any = { id: 2, category: 'Service provider', type: 2 };
+  public cat2: any = { id: 3, category: 'Premier Consultant', type: 3 };
   public cat4: any = { id: 0, category: 'All Categories', type: 0 };
   public cat3: any = { id: 4, category:'Consultant of a company', type: 4 };
-
-  exportAsConfig: ExportAsConfig = {
-    type: 'pdf', // the type you want to download
-    elementIdOrContent: 'export',
-    options: { // html-docx-js document options
-        jsPDF: {
-            orientation: 'landscape'
-          },
-      }
-  }
 
   filteruno: boolean = false;
 
   public __userlog__: any = JSON.parse(localStorage.getItem('userData'));
 
-  constructor( public exportAsService: ExportAsService, public _services: ServiceGeneralService, public _dialog: MatDialog, public router: Router) {}
+  constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public router: Router) {}
 
 
   //*********************************************//
@@ -139,11 +129,16 @@ export class SupplierPartnersComponent implements OnInit {
   }
 
   setCategorys() {
-    this.ca_supplierCategory[0] = this.cat;
-    this.ca_supplierCategory[1] = this.cat1;
-    this.ca_supplierCategory[2] = this.cat2;
-    this.ca_supplierCategory[3] = this.cat3;
-    this.ca_supplierCategory[4] = this.cat4;
+    // this.ca_supplierCategory[0] = this.cat;
+    // this.ca_supplierCategory[1] = this.cat1;
+    // this.ca_supplierCategory[2] = this.cat2;
+    // this.ca_supplierCategory[3] = this.cat3;
+    // this.ca_supplierCategory[4] = this.cat4;
+
+     this.ca_supplierCategory[0] = this.cat1;
+     this.ca_supplierCategory[1] = this.cat2;
+     this.ca_supplierCategory[2] = this.cat4;
+    // this.ca_supplierCategory[4] = this.cat4;
   }
 
   // si es consultant solo debe de ver el country y las ciudades donde este se encuentra
@@ -252,7 +247,8 @@ export class SupplierPartnersComponent implements OnInit {
         document.getElementById("excel").click();
       }
       if (result === 2) {
-        let tabla = [[ 'Supplier Partner','Supplier Category', 'Supplier Partner Type', 'VIP', 'Country', 'City', 'Contact Name', 'Phone', 'Total Services', 'Experience', 'Contact']];
+        //let tabla = [[ 'Supplier Partner','Supplier Category', 'Supplier Partner Type', 'VIP', 'Country', 'City', 'Contact Name', 'Phone', 'Total Services', 'Experience', 'Contact']];
+        let tabla = [[ 'Supplier Partner','Supplier Category', 'Supplier Partner Type', 'VIP', 'Country', 'City', 'Contact Name', 'Phone']];
         for (let i = 0; i < this.supplier.filteredData.length; i++) {
           const element = this.supplier.filteredData[i];
           if(element.luxuryVip == true){
@@ -268,10 +264,10 @@ export class SupplierPartnersComponent implements OnInit {
             element.name,
             element.city,
             element.contactName,
-            element.phone,
-            element.totalServices,
-            element.experience,
-            element.contact
+            element.phone
+            // , element.totalServices,
+            // element.experience,
+            // element.contact
           ])
         }
         console.log(tabla);

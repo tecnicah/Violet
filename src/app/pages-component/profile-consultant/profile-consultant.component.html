@@ -41,13 +41,16 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field appearance="fill" class="input_central_half">
-            <mat-label>Supplier Type</mat-label>
-            <mat-select [(ngModel)]="data_consultant.supplierType" (focus)="activeType = false">
+          <!--mat-form-field appearance="fill" class="input_central_half"-->
+          <div class="no-input">
+            <label>Service Line</label>
+            <div>{{getSupName(data_consultant.supplierType)}}</div>
+          </div>
+            <!--mat-select [(ngModel)]="data_consultant.supplierType" (focus)="activeType = false" (ngModelChange)="changetype()">
               <mat-option *ngFor="let item of ca_supplierType" [value]="item.id">{{item.supplierType}}</mat-option>
-            </mat-select>
-            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeType">Field is required</mat-hint>
-          </mat-form-field>
+            </!--mat-select>
+            <mat-hint-- style="color:#e91e63; font-size: 12px;" *ngIf="activeType">Field is required</mat-hint-->
+          <!--/mat-form-field-->
         </mat-grid-tile>
 
       </mat-grid-list>
@@ -93,7 +96,7 @@
 
           <!-- </div> -->
 
-          <div class="flex-img" style="justify-content: space-around; margin: 15px;">
+          <!--div class="flex-img" style="justify-content: space-around; margin: 15px;">
             <img src="assets/email.png" width="30px" height="30px" alt="">
             <div>
               <span class="text-mini gray_05">Experience</span><br />
@@ -104,7 +107,7 @@
               <p class="browser" style="font-weight:600 !important;">0</p>
             </div>
             <span>&nbsp;</span>
-          </div>
+          </!--div-->
 
 
         </mat-grid-tile>
@@ -122,13 +125,17 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central textarea">
             <mat-label [ngClass]="{valid: active_title}">Title</mat-label>
-            <mat-select matNativeControl [(ngModel)]="data_consultant.title" (focus)="active_title = false" required>
+            <mat-select [disabled]="data_consultant.title == 32"  matNativeControl [(ngModel)]="data_consultant.title" (focus)="active_title = false" required>
               <mat-form-field appearance="outline" style="padding: 5px;">
                 <mat-label>Title</mat-label>
                 <input matInput placeholder="Title" [(ngModel)]="filterTitle.title">
               </mat-form-field>
-              <mat-option *ngFor="let data of ca_title | filterBy: filterTitle" [value]="data.id">{{data.title}}</mat-option>
-              <mat-option disabled *ngIf="(ca_title | filterBy: filterTitle).length === 0">No matching elements</mat-option>
+              <mat-option *ngFor="let data of ca_title | filterBy: filterTitle" [value]="data.id">
+                {{data.title}}
+              </mat-option>
+              <mat-option disabled *ngIf="(ca_title | filterBy: filterTitle).length === 0">
+                No matching elements
+              </mat-option>
 
             </mat-select>
             <mat-error>Field is required</mat-error>
@@ -183,7 +190,7 @@
           </mat-form-field>
         </mat-grid-tile>
 
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="page__section-data font-size-12 comments input_central textarea" style="display: flex;">
             <div style="width: 100%;">
               <span class="text-mini gray_05">Active Since</span><br />
@@ -194,12 +201,24 @@
               <mat-icon class="calendar">calendar_today</mat-icon>
             </div>
           </div>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: -62px;">
-            <mat-label>Prefix</mat-label>
-            <mat-select matNativeControl [(ngModel)]="prefix" (focus)="activePrefixP = false">
+          <div class="input_central textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Active Since</mat-label>
+              <input matInput required [matDatepicker]="pickersince" placeholder="Active Since"
+                [(ngModel)]="data_consultant.createdDate" [max]="minDate">
+              <mat-datepicker-toggle matSuffix [for]="pickersince"></mat-datepicker-toggle>
+              <mat-datepicker #pickersince></mat-datepicker>
+              <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="data_consultant.createdDate == null">Field is required</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field style="width: 30% !important; margin-right: 5%;">
+            <mat-label [ngClass]="{valid: activePrefixP}">Prefix</mat-label>
+            <mat-select matNativeControl required [(ngModel)]="prefix" required (focus)="activePrefixP = false">
               <mat-form-field appearance="outline" style="padding: 5px;">
                 <mat-label>Prefix</mat-label>
                 <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
@@ -211,8 +230,8 @@
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activePrefixP">Field is required</mat-hint>
           </mat-form-field>
           <mat-form-field style="width: 50% !important;">
-            <mat-label>Mobile Phone</mat-label>
-            <input matInput placeholder="Contact Phone"  type="number" min="0" [(ngModel)]="data_consultant.phoneNumber" (focus)="varFocus();"/>
+            <mat-label [ngClass]="{valid: (activeNumberPremier || activeNumberLongitudPremier)}">Mobile Phone</mat-label>
+            <input matInput placeholder="Contact Phone" required type="number" min="0" [(ngModel)]="data_consultant.phoneNumber" (focus)="varFocus();"/>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNumberPremier">Field is required</mat-hint>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNumberLongitudPremier">Maximum length 20 characters</mat-hint>
           </mat-form-field>
@@ -232,8 +251,8 @@
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central">
-            <mat-label>Spoken Languages</mat-label>
-            <mat-select multiple [(ngModel)]="data_consultant.additional" (focus)="activelanguages = false">
+            <mat-label [ngClass]="{valid: activelanguages}">Spoken Languages</mat-label>
+            <mat-select multiple [(ngModel)]="data_consultant.additional" required (focus)="activelanguages = false">
               <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{data.name}}</mat-option>
             </mat-select>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activelanguages">Field is required</mat-hint>
@@ -243,8 +262,10 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <mat-form-field class="textarea">
             <mat-label>Professional Biography</mat-label>
-            <input matInput placeholder="Professional Biography" type="text"
-              [(ngModel)]="data_consultant.professionalBiography" />
+            <textarea matInput placeholder="Professional Biography" type="text" rows = "3"
+              [(ngModel)]="data_consultant.professionalBiography" [maxLength]="300">
+            </textarea>
+              <mat-hint align="end">{{data_consultant.professionalBiography?.length || 0}}/300</mat-hint>
           </mat-form-field>
         </mat-grid-tile>
 
@@ -279,6 +300,8 @@
           <td class="mat-cell">{{data.capacity}}</td>
           <td class="mat-cell">
             <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editVehicle(data, i);">
+            <img src="assets/icons/quit.svg"
+            style="background: transparent!important; width: 20px; margin-left: 10px;" (click)="deleteVehicle(data,i)">
           </td>
         </tr>
       </table>
@@ -288,7 +311,7 @@
       <mat-grid-list cols="4" rowHeight="60px" [hidden]="permisosConsultant == true">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <div class="page__section-button page__section-button--big" style="left: -10px;">
               <button class="button-icon button-icon--more" (click)="addVehicle()">
                 Add New Vehicle
               </button>
@@ -322,8 +345,8 @@
                 <mat-label>Country</mat-label>
                 <input matInput placeholder="Country" [(ngModel)]="filterCountry2.name">
               </mat-form-field>
-              <mat-option *ngFor="let data of ca_country | filterBy: filterCountry2" [value]="data.id">{{data.name}}</mat-option>
-              <mat-option disabled *ngIf="(ca_country | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+              <mat-option *ngFor="let data of ca_countryPersonelInfo | filterBy: filterCountry2" [value]="data.id">{{data.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_countryPersonelInfo | filterBy: filterCountry).length === 0">No matching elements</mat-option>
             </mat-select>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCountry">Field is required</mat-hint>
           </mat-form-field>
@@ -335,9 +358,9 @@
             <mat-select matNativeControl [(ngModel)]="data_consultant.personalInformation.city" (focus)="activeCity=false">
               <mat-form-field appearance="outline" style="padding: 5px;">
                 <mat-label>City</mat-label>
-                <input matInput placeholder="City" [(ngModel)]="filterCity2.city">
+                <input matInput placeholder="City" [(ngModel)]="filterCity2.name">
               </mat-form-field>
-              <mat-option *ngFor="let data of ca_city_ | filterBy: filterCity2" [value]="data.id">{{data.city}}</mat-option>
+              <mat-option *ngFor="let data of ca_city_ | filterBy: filterCity2" [value]="data.id">{{data.name}}</mat-option>
               <mat-option disabled *ngIf="(ca_city_ | filterBy: filterCity2).length === 0">No matching elements</mat-option>
             </mat-select>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCity">Field is required</mat-hint>
@@ -369,14 +392,30 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field class="input_central textarea">
+          <!-- <mat-form-field class="input_central textarea">
             <mat-label>Nationality</mat-label>
             <input matInput placeholder="Nationality" type="text"
               [(ngModel)]="data_consultant.personalInformation.nationality" (focus)="activeNationality=false"/>
               <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNationality">Field is required</mat-hint>
+          </mat-form-field> -->
+          <mat-form-field appearance="fill" class="input_central textarea">
+            <mat-label>Nationality</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_consultant.personalInformation.nationality" (focus)="activeNationality=false">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Nationality</mat-label>
+                <input matInput placeholder="Nationality" [(ngModel)]="filterNat2.name">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_nat | filterBy: filterNat2" [value]="data.value">{{data.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_nat | filterBy: filterNat).length === 0">No matching elements</mat-option>
+            </mat-select>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeNationality">Field is required</mat-hint>
           </mat-form-field>
         </mat-grid-tile>
 
+
+
+
+        
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Personal E-mail</mat-label>
@@ -390,7 +429,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field style="width: 20% !important; margin-right: 5%; margin-left: -62px;">
+          <mat-form-field style="width: 30% !important; margin-right: 5%;">
             <mat-label>Prefix</mat-label>
             <mat-select matNativeControl [(ngModel)]="prefixPersonal" (focus)="activePrefix=false">
               <mat-form-field appearance="outline" style="padding: 5px;">
@@ -497,6 +536,8 @@
           <td class="mat-cell">{{data.location}}</td>
           <td class="mat-cell">
             <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editContact(data,i)">
+            <img src="assets/icons/quit.svg"
+            style="background: transparent!important; width: 20px; margin-left: 10px;" (click)="deleteContact(data,i)">
           </td>
         </tr>
       </table>
@@ -506,7 +547,7 @@
       <mat-grid-list cols="4" rowHeight="70px" [hidden]="permisosConsultant == true">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" style="left: 6px;">
+            <div class="page__section-button page__section-button--big" style="left: -10px;">
               <button class="button-icon button-icon--more" (click)='addContact();'>
                 Add New Contact
               </button>
@@ -704,7 +745,8 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Account Number</mat-label>
-                  <input matInput required placeholder="Account Number" type="number" [(ngModel)]="item_.accountNumber">
+                  <input matInput required placeholder="Account Number" maxlength="10"
+                  type="number" [(ngModel)]="item_.accountNumber">
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -810,10 +852,10 @@
           </div>
 
           <div class="page__section documents__ascard"
-            *ngFor="let item of data_consultant.documentConsultantContactsConsultants">
+            *ngFor="let item of data_consultant.documentConsultantContactsConsultants; let i = index">
             <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-              style="background: transparent!important;">
-            <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+              style="background: transparent!important;" (click)="deleteDocs(item.id, i)">
+            <img src="assets/icons/eye-view.svg" class="page__section--card-closeButton delete eye"
                 style="background: transparent!important; margin-right: 25px;" (click)="openFileOnWindow(item.filePath)">
             <div class="page__section-input page__section-input--25 documents__ascard--task">
               {{getNameDocument(item.documentType)}}
@@ -832,7 +874,7 @@
           <div class="page__section documents__ascard" *ngFor="let item of temporalDocument; let i = index">
             <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
               style="background: transparent!important;" (click)="deleteDocument(i)">
-            <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
+            <img src="assets/icons/eye-view.svg" class="page__section--card-closeButton delete eye"
               style="background: transparent!important; margin-right: 25px;" (click)="onClickDownloadPdf(item.filePath, item.fileExtension)">  
             <div class="page__section-input page__section-input--25 documents__ascard--task">
               {{getNameDocument(item.documentType)}}
@@ -854,7 +896,7 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="addPropperty">
             <div class="page__section-button page__section-button--big"
-              style="flex: 0 1 180px !important; left: 6px !important;">
+              style="flex: 0 1 180px !important; left: -6px !important;">
               <button class="button-icon button-icon--more" (click)="addDocument()">
                 Add New Document
               </button>
@@ -961,11 +1003,11 @@
     <mat-grid-list cols="4" rowHeight="100px" [hidden]="permisosConsultant == true">
       <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section margin-top-mini page__section--justify-end" [hidden]="id == 'New'">
+        <!-- <div class="page__section margin-top-mini page__section--justify-end" *ngIf="user.role.id==19" [hidden]="id == 'New'">
           <div class="page__section-buttong btn-size">
             <button (click)="deleteProfile()">Delete</button>
           </div>
-        </div>
+        </div> -->
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section margin-top-mini page__section--justify-end">

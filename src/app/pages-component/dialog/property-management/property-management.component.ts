@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { LoaderComponent } from 'app/shared/loader';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
-import { Console } from 'console';
 import { GeneralConfirmationComponent } from '../general-confirmation/general-confirmation.component';
 import { DialogDocumentsView } from '../dialog-documents-view/dialog-documents-view.component';
 import { DialogDocumentsComponent } from '../dialog-documents/dialog-documents.component';
@@ -51,7 +50,7 @@ export class PropertyManagementComponent implements OnInit {
   newPhotoBill: any[] = [];
   newPhotoMail: any[] = [];
   newPhotoIssue: any[] = [];
-  serviceScope : any[] = [];
+  serviceScope = null;
 
 
   // temporalDocument:   any = {};
@@ -542,6 +541,7 @@ export class PropertyManagementComponent implements OnInit {
 
 
   save(){
+    this.loader.showLoader();
     console.log("Informacion a guardar:  ",this.propertyManagement);
     // this.propertyManagement.updateBy = this.user.id;
     this.propertyManagement.documentPropertyManagements = this.document;
@@ -582,6 +582,8 @@ export class PropertyManagementComponent implements OnInit {
         this.ngOnInit();
       }
     }))
+
+    this.loader.showLoader();
   }
 
   //PRIVACY//

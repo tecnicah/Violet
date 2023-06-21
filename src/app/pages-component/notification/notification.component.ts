@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogGeneralMessageComponent } from '../dialog/general-message/general-message.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FullComponent } from '../../layouts/full/full.component';
+//import { FullComponent } from '../../layouts/full/full.component';
 import { Router, Resolve } from '@angular/router';
 
 
@@ -30,8 +30,8 @@ export class NotificationComponent implements OnInit {
   });
   public __loader__: LoaderComponent = new LoaderComponent();
 
-  constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public full: FullComponent, public _router:Router,){}
-
+  //constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public full: FullComponent, public _router:Router,){}
+  constructor(public _services: ServiceGeneralService, public _dialog: MatDialog,  public _router:Router,){}
   public filterNotification: any = { type: '' };
   public filterServiceRecord: any = { numberServiceRecord: '' };
 
@@ -69,17 +69,48 @@ export class NotificationComponent implements OnInit {
   //*************************************************************//
   //CONSULTA DE INFORMACION DE LAS NOTIFICACIONES//
   ca_notification : any = {};
+  _ca_notification : any[] = [];
   get_Notification() {
-    this._services.service_general_get('Notification/GetNotificationCenter/' + this.user.id).subscribe((data => { //this.area_orientation.workOrderServicesId
+    this._ca_notification = [];
+    this._services.service_general_get('Notification/GetNotificationsAll/' + this.user.id + "?archive="+this.data_model.archive).subscribe((data => { //this.area_orientation.workOrderServicesId
       if (data.success) {
-        console.log('DATA CONSULTA NOTIFICACIONES: ', data);
-        //this.ca_notification = data.result.value;
-        this.ca_notification = new MatTableDataSource(data.result.value);
-        this.ca_notification.paginator = this.DataFollow;
-        this.ca_notification.sort = this.sort;
-        console.log(this.ca_notification);
+        console.log("DATA", data);
+        var AllNotifications = data.result.value;
+        console.log('DATA CONSULTA NOTIFICACIONES: ', data, 'concat:' , AllNotifications);
+        
+        for(var i = 0; i < AllNotifications.length; i++){
+            
+          if (this._ca_notification.length == 0 || this._ca_notification[this._ca_notification.length - 1].createdDate != AllNotifications[i].createdDate) {  
+            this._ca_notification.push({
+              createdDate: AllNotifications[i].createdDate,
+              notifications :[
+                AllNotifications[i] 
+              ]
+            });
+          } 
+          else { 
+              this._ca_notification[this._ca_notification.length - 1].notifications.push( 
+                AllNotifications[i]
+                );
+          }
+        console.log(this._ca_notification);
+        }
+
+        setTimeout(() => {
+          this.ca_notification = new MatTableDataSource(this._ca_notification);
+          this.ca_notification.paginator = this.DataFollow;
+          this.ca_notification.sort = this.sort;
+          console.log(this.ca_notification);
+        }, 300);
+        
       }
     }));
+  }
+
+  goto(url_){
+    //alert(url);
+    let url = this._router.createUrlTree([url_]);
+    window.open(url.toString(), '_blank');
   }
   //*************************************************************//
   //FILTRO DE BUSQUEDA MANUAL//
@@ -153,10 +184,12 @@ export class NotificationComponent implements OnInit {
   }
   //*************************************************************//
   archive(item,data){
-    console.log(data);
+  //  console.log(data);
+  //  let avanza = true ;
     debugger
-    if(data.checked){
-      this._services.service_general_put('Notification/PutArchive/' + item.id +"/"+ data.checked,'').subscribe((data: any) => {
+    if(data){
+    //if(data.checked){
+      this._services.service_general_put('Notification/PutArchive/' + item.id +"/"+ data,'').subscribe((data: any) => {
         if (data.success) {
           console.log("NOTIFICACION ARCHIVADA:  ", data);
           /*
@@ -173,7 +206,7 @@ export class NotificationComponent implements OnInit {
         }
       });
     }else{
-      this._services.service_general_put('Notification/PutArchive/' + item.id +"/"+ data.checked,'').subscribe((data: any) => {
+      this._services.service_general_put('Notification/PutArchive/' + item.id +"/"+ data,'').subscribe((data: any) => {
         if (data.success) {
           console.log("NOTIFICACION ARCHIVADA:  ", data);
           /*
@@ -197,14 +230,14 @@ export class NotificationComponent implements OnInit {
     if(data.view == false){
       this._services.service_general_put('Notification/PutViewed/' + data.id + '/' + true, '').subscribe((data => {
         if (data.success) {
-          this.full.get_Notification();
+         // this.full.get_Notification();
           this.ngOnInit();
         }
       }));
     }else if(data.view == true){
       this._services.service_general_put('Notification/PutViewed/' + data.id + '/' + false, '').subscribe((data => {
         if (data.success) {
-          this.full.get_Notification();
+        //  this.full.get_Notification();
           this.ngOnInit();
         }
       }));

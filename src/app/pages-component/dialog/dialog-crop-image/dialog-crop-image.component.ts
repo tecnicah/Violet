@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Dimensions, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 export interface DialogData {
@@ -16,6 +16,9 @@ export class DialogCropImageComponent implements OnInit {
   imageChangedEvent: any = '';
   //croppedImage: any = '';
   LoadedImage: any = '';
+  rotation = 0;
+  scale = 1;
+  transform: ImageTransform = {};
 
   constructor(public dialogRef: MatDialogRef<DialogCropImageComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,) { }
@@ -29,7 +32,7 @@ export class DialogCropImageComponent implements OnInit {
   imageLoaded() {
       // show cropper
   }
-  cropperReady() {
+  cropperReady(event) {
       // cropper ready
   }
   loadImageFailed() {
@@ -43,4 +46,26 @@ export class DialogCropImageComponent implements OnInit {
   ngOnInit(): void {
     
   }
+
+zoomOut() {
+    this.scale -= .1;
+    this.transform = {
+        ...this.transform,
+        scale: this.scale
+    };
+}
+
+zoomIn() {
+    this.scale += .1;
+    this.transform = {
+        ...this.transform,
+        scale: this.scale
+    };
+ }
+ updateRotation() {
+  this.transform = {
+      ...this.transform,
+      rotate: this.rotation
+  };
+}
 }

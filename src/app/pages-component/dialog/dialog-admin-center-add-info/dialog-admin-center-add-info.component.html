@@ -35,7 +35,7 @@
       <div class="textarea" style="margin-bottom: 30px;">
         <p>Photo</p>
         <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, 1)"
-          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false" accept="image/*">
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false" accept="image/*, video/*">
           <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
             Drag and Drop or
             <p class="browser" id="doc1" (click)="openFileSelector()">Browse File</p>
@@ -45,7 +45,7 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-  <mat-grid-list cols="4" rowHeight="60px">
+  <mat-grid-list cols="6" rowHeight="60px">
     <mat-grid-tile [colspan]="2" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
@@ -64,6 +64,27 @@
       </div>
     </mat-grid-tile>
 
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_final textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Type Resource</mat-label>
+          <mat-select [(ngModel)]="data_.typeId">
+            <mat-option *ngFor="let item of typeResources" [value]='item.id'>{{item.type}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Type Resource</mat-label>
+          <mat-select [(ngModel)]="data_.typeId">
+            <mat-option *ngFor="let item of typeResources" [value]='item.id'>{{item.type}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile> -->
   </mat-grid-list>
 
   <mat-grid-list cols="4" rowHeight="150px">
@@ -103,7 +124,7 @@
         </div>
         <div class="page__section-input page__section-input--6_1">
           <span class="documents__index documents__index--task">
-           
+           Type
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1">
@@ -129,6 +150,16 @@
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <!-- <span *ngIf="item.typeId == 1">Image</span>
+          <span *ngIf="item.typeId == 2">Video</span>  -->
+          <div class="input_final textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Type Resource</mat-label>
+              <mat-select [(ngModel)]="item.typeId">
+                <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
@@ -138,6 +169,75 @@
     </div>
   </mat-grid-list>
 
+  <mat-grid-list cols="1" *ngIf="data_.photoCityLivings && data_.photoCityLivings?.length > 0">
+    <div class="page__section margin-top-min">
+      <div class="page__section-name">
+        Photo City Living
+      </div>
+      <div
+        class="page__section">
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Document Name
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+           Type
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+        
+          </span>
+        </div>
+      </div>
+
+      <div class="page__section documents__ascard" *ngFor="let item of data_.photoCityLivings; let i = index">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deletePhoto(item, i)">
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{item.fileName}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <!-- <span *ngIf="item.typeId == 1">Image</span>
+          <span *ngIf="item.typeId == 2">Video</span>  -->
+          <div class="input_final textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Type Resource</mat-label>
+              <mat-select [(ngModel)]="item.typeId">
+                <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+        </div>
+      </div>
+    </div>
+  </mat-grid-list>
+  
   <mat-grid-list cols="1" *ngIf="data_.photoCityAttractions && data_.photoCityAttractions.length > 0">
     <div class="page__section margin-top-min">
       <div class="page__section-name">
@@ -162,7 +262,7 @@
         </div>
         <div class="page__section-input page__section-input--6_1">
           <span class="documents__index documents__index--task">
-           
+           Type
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1">
@@ -188,6 +288,14 @@
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <div class="input_final textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Type Resource</mat-label>
+              <mat-select [(ngModel)]="item.typeId">
+                <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
@@ -221,7 +329,7 @@
         </div>
         <div class="page__section-input page__section-input--6_1">
           <span class="documents__index documents__index--task">
-           
+           Type
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1">
@@ -247,6 +355,14 @@
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <div class="input_final textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Type Resource</mat-label>
+              <mat-select [(ngModel)]="item.typeId">
+                <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
@@ -280,7 +396,7 @@
         </div>
         <div class="page__section-input page__section-input--6_1">
           <span class="documents__index documents__index--task">
-           
+           Type
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1">
@@ -306,6 +422,14 @@
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          <div class="input_final textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Type Resource</mat-label>
+              <mat-select [(ngModel)]="item.typeId">
+                <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
         </div>

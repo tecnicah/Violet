@@ -66,11 +66,21 @@ export class DialogRequestAdditionalTimeComponent implements OnInit {
 
 
   getService(i){
-    this._services.service_general_get('Catalogue/GetServiceByWorkOrder?wo='+this.requestData[i].workOrder).subscribe(r=>{
+    this._services.service_general_get('Catalogue/GetServiceByWorkOrder?wo='+this.requestData[i].workOrder+'&idUser='+this.user.id).subscribe(r=>{
+      console.log(r);
       if(r.success){
         this.caService[i] = r.result.value;
+        if(r.result.value.length == 0){
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Pending to accept",
+              body: "The supplier has not accepted the assigned services"
+            },
+            width: "350px"
+          });
+         }
       }
-    })
+    });
   }
 
   addRequest(){

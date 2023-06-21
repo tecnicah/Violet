@@ -1,6 +1,9 @@
-<div class="main-wrapper padding-general-x">
+<!-- <div class="main-wrapper padding-general-x">
   <div class="page">
-    <div class="page__path subtitle"></div>
+    <div class="page__path subtitle">
+      <button class="page__path--closeButton" routerLink="/serviceRecord" style="cursor:pointer;">Back to Service Record</button>
+        Message Center
+    </div>
     <div class="page__title title flex__ flex_basics">
       <span class="bisics">Message Center</span>
       <div class="page__section-butuonc bisics" style="width: 120px; margin: 10px 0;">
@@ -11,15 +14,6 @@
 
     <div class="chat-container">
       <div class="contacts">
-        <!--div class="header">
-          <img [src]="_services.url_images+userData.avatar" alt="">
-          <span>{{userData.name}} {{userData.lastName}} {{userData.motherLastName}}</span>
-        </div>
-        <b>Conversations</b><br>
-        <div class="page__section-butuonc" style="width: 120px; margin: 10px 0;">
-          <button class="button-icon button-icon--send ng-star-inserted cc_pointer" (click)="newMessage()">New
-            Message</button>
-        </div-->
 
         <div>
           <mat-form-field class="example-full-width">
@@ -28,7 +22,7 @@
           </mat-form-field>
         </div>
 
-        <div class="recients">
+        <div class="recients" [style.height]="_innerHeight">
           <table style="border-collapse: collapse;">
             <tr *ngFor="let element of table_contacts | orderBy: 'lastMessageTime' | filterBy: contact" 
             [ngClass]="{'active_convertation': (element.conversationId == actual_user.conversationId)}">
@@ -37,16 +31,18 @@
                 <span></span>
                 <div class="avatares">
                   <div class="content">
-                    <img [src]="_services.url_images+element.photo"  alt="" class="img" *ngIf="element.photo != null">
+                    <img [src]="_services.url_images+element.photo"  alt="" class="img" *ngIf="element.photo != null && !element.groups">
+                    <img src="./assets/585e4d1ccb11b227491c339b.png" alt="" class="img"  *ngIf="element.photo != null && element.groups">
                     <img src="./assets/avatar.svg" alt="" class="img"  *ngIf="element.photo == null">
                   </div>
                 </div>
               </td>
               <td   class="user_chats" matRipple matRippleColor="rgba(158, 53, 149, 0.5)" (click)="getConversation(element.conversationId, element.unreadMessages); actual_user = element;" style="height: 70px; cursor: pointer;">
                 <div style="display: flex; align-items: center; width: 100%;">
-                  <span *ngIf="element.groups == true"  style="margin-left: 19px;"> {{element.groupName}} </span>
-                  <span *ngIf="element.groups == false"  style="margin-left: 19px;">{{element.name}}
-                    {{element.lastname}}</span>
+                  <span *ngIf="element.groups == true"  style="margin-left: 19px;"> {{element.groupName == null ? 'Group chat' : element.groupName}} </span>
+                  
+                  <span *ngIf="element.groups == false"  style="font-size: 14px;">{{element.name}}
+                    {{element.lastname}} <br> <span style="font-size: 12px;">{{element.profile}}</span></span><br>
                 </div>
               </td>
               <td  style="cursor: pointer;" (click)="getConversation(element.conversationId, element.unreadMessages); actual_user = element;">
@@ -71,18 +67,23 @@
       <div class="chats">
         <mat-card class="mat-elevation-z10">
           <mat-card-header>
-            <mat-card-title style="font-size: 16px; font-weight: bold;">{{actual_user.name}} {{actual_user.lastname}}
+            <mat-card-title style="font-size: 16px; font-weight: bold;">
+              <span *ngIf="actual_user.names == null">
+                {{actual_user.name}}
+              </span>
+              <span *ngIf="actual_user.names != null">
+                <span *ngFor="let element of actual_user.names; let i = index">
+                  {{element.participant}}<span>,&nbsp;&nbsp;</span>
+                </span>
+              </span>
             </mat-card-title>
             <div align="end" >
               <div class="avatares" style="width: 50px" *ngIf="conversationId != 0">
-                <div class="content" *ngIf="conversationId != 0">
+                <div class="content">
                   <img [src]="_services.url_images+actual_user.photo" *ngIf="actual_user.photo!=null" alt="" class="img" >
                   <img src="./assets/avatar.svg" *ngIf="actual_user.photo==null" alt="" class="img" >
                 </div>
               </div>
-              <!--img class="avatar" [src]="_services.url_images+actual_user.photo" *ngIf="conversationId != 0"-->
-              <!--span>&nbsp;&nbsp;&nbsp;</span>
-              <mat-icon>menu</mat-icon-->
             </div>
           </mat-card-header>
           <mat-card-content id="texting">
@@ -91,7 +92,6 @@
               (click)="openProfile(item);">
               <div class="messages-senders">
                 <div class="header">
-                  <!--img [src]="_services.url_images+item.avatar"-->
                   <h4 style="font-size: 14px; font-weight: bold; cursor: pointer !important; padding: 0;
                   margin: 0; color: #9d3292"><b>{{item.user}}</b></h4>
                   <mat-icon class="material-icons-outlined font" (click)="deleteMenssage(item)"
@@ -148,7 +148,6 @@
                     <button mat-icon-button (click)="sendMessage()">
                       <img src="/assets/icons/send.svg" alt="send" style="width: 30px;">
                     </button>
-                    <!--[disabled] = "input.value?.length == 0"-->
                   </div>
                 </mat-grid-tile>
               </mat-grid-list>
@@ -231,3 +230,231 @@
     <p class="browser" id="images_only" (click)="openFileSelector()">Browse File</p>
   </ng-template>
 </ngx-file-drop>
+ -->
+
+<div fxLayout="row" fxLayoutAlign="start start">
+  <div fxFlex="25" style="z-index:99;" 
+  class="mat-elevation-z5">
+    <div id="divHeaderName" [style.height]="_headerName">
+      <div fxLayoutAlign="space-between center" style="padding:15px">
+        <span style="font-size: 20px;
+        font-weight: 900;
+        color: rgba(0, 0, 0, 0.8);">Chats</span>
+        <mat-icon style="color:#9d3292" (click)="newMessage()" style="cursor:pointer;">add_circle_outline</mat-icon>
+      </div>
+      <div fxLayoutAlign="center center">
+        <input type="text" placeholder="Search for a chat or start a new one" [(ngModel)]="contact.name"
+        style="width: 95%;
+        box-sizing: border-box;
+        border-top: 2px solid #ccc;
+        border-left: 2px solid #ccc;
+        border-right: 2px solid #ccc;
+        border-bottom: 3px solid #9d3292;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: white;
+        background-image: url('/assets/icons/searchicon.png');
+        background-position: 10px 10px; 
+        background-repeat: no-repeat;
+        padding: 12px 20px 12px 40px;">
+      </div>
+      
+    </div>
+
+    <mat-list id="divUsers" [style.height]="_innerHeight" style="overflow-y: auto; overflow-x: hidden;">
+      <mat-list-item *ngFor="let element of table_contacts | filterBy: contact" style="cursor:pointer;" 
+      [ngClass]="{'active_convertation': element.conversationId == conversationId}" 
+      (click)="getConversation(element.conversationId,element.unreadMessages, element.userReciver); 
+      getAvatar(element);" style="margin: 15px 0;">
+        <img matListAvatar [src]="_services.url_images+element?.photo"  alt="" *ngIf="element?.photo != null && !element.groups">
+        <img matListAvatar src="./assets/585e4d1ccb11b227491c339b.png" alt="" *ngIf="element?.photo != null && element.groups">
+        <img matListAvatar src="./assets/avatar.png" alt="" *ngIf="element?.photo == null">
+        <span matLine> 
+          <b *ngIf="element.groups == true" style="font-size:14px;"> 
+            {{element.groupName == null ? 'Group chat' : element.groupName}}
+          </b>
+          <b *ngIf="element.groups == false" style="font-size:14px;">
+            {{element.name}}{{element.lastname}} - {{element.profile}}
+          </b>
+        </span>
+        <p matLine>
+          <span style="font-size:12px;"> 
+            {{element.lastMessage}}
+          </span>
+        </p>
+        <!-- <div matBadge="{{element.unreadMessages}}" *ngIf="element.unreadMessages != 0" matBadgeOverlap="false" class="demo-section"></div> -->
+        <mat-icon matBadge="{{element.unreadMessages}}" *ngIf="element.unreadMessages != 0"></mat-icon>
+        <!-- <button mat-icon-button [matMenuTriggerFor]="itemMenu">
+          <mat-icon>
+            more_vert
+          </mat-icon>
+        </button>
+        <mat-menu #itemMenu="matMenu">
+          <button mat-menu-item>
+            Option 1
+          </button>
+          <button mat-menu-item>
+            Option 2
+          </button>
+          <button mat-menu-item>
+            Option 3
+          </button>
+        </mat-menu> -->
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div fxFlex="75" *ngIf="conversationId != 0">
+    <mat-card>
+      <div id="divHeader" [style.height]="_header" fxLayout="row" fxLayoutAlign="start center" >
+        <div fxFlex="80">
+          <mat-list>  
+            <mat-list-item>
+              <img matListAvatar [src]="_services.url_images+header.photo" *ngIf="header.groupName == null && header.photo != null">
+              <img matListAvatar src="./assets/avatar.png" *ngIf="header.groupName == null && header.photo == null">
+              <img matListAvatar src="./assets/585e4d1ccb11b227491c339b.png" *ngIf="header.groupName != null">
+              
+              <p matLine>
+                <span *ngIf="header.groupName == null">
+                  {{header.name}}
+                </span>
+                <span *ngIf="header.groupName != null">
+                  <b>{{header.groupName}}</b> <br>
+                  <span style="font-size: 12px;" *ngFor="let element of header.names; let i = index">
+                    {{element.participant}}<span>&nbsp;</span>
+                  </span>
+                </span>
+              </p>                
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div fxFlex="20" align="end">
+          <button class="page__path--closeButton" routerLink="/serviceRecord" style="cursor:pointer;">Back to Service Record</button>
+        </div>
+      </div>
+
+      <mat-card-content id="divChat" [style.height]="_chat" style="overflow-y: auto; margin-top:10px; background-color: #EAE6DF;" (scroll)="onSccroll($event)">
+        <div class="msg-body" *ngFor="let item of chat">
+          <ul>
+            <li [ngClass]="{'sender': item.userId != userData.id, 'repaly': item.userId == userData.id}">
+              <p style="white-space: initial;"> 
+                {{item.message1}}    
+                <span *ngFor="let doc of item.documentMessages">
+                  <a href="{{this._services.url_images+doc.filePath}}"
+                    target="_black">
+                    <img [src]="pat(doc.filePath)" style="width: 60px;">
+                  </a>
+                </span> 
+               
+                <br>
+                <span class="time" align="end">{{item.time | date: 'dd MMM yyy hh:mm'}}
+                  <mat-icon *ngIf="item.userId == userData.id && item.unreadMessages == 1" style="color: #9d3292;
+                  font-size: 11px;">done_all</mat-icon>
+                </span>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <div id="divComments" [style.height]="_comment" style="z-index:99;">
+      <div fxLayout="row" fxLayoutAlign="space-around center" >
+        <div fxFlex="11">
+          <button mat-icon-button (click)="filesUpload('images_only')" [disabled]="conversationId == 0">
+            <img src="/assets/icons/photo.svg" alt="photo">
+          </button>
+          <button mat-icon-button (click)="filesUpload('all_documents')" [disabled]="conversationId == 0">
+            <img src="/assets/icons/document.svg" alt="document">
+          </button>
+        </div>
+        <div fxFlex="89">
+          <input id="txtComment" *ngIf="!sending" type="text" placeholder="Write a message" [(ngModel)]="continuemesage.message"
+      (keyup)="onKey($event)" style="width: 100%; border:none;" [style.height]="_comment" maxlength="256">
+          <span style="color: gray; font-size: 12px;" *ngIf="temporalDocument.length > 0">Uploaded documents
+            {{temporalDocument.length}}
+          </span>
+          <div class="sending" *ngIf="sending">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" id="upload" height="60" width="60">
+
+              <defs>
+                <style>
+                  .a {
+                    fill: #f7f7f7;
+                  }
+
+                  .b {
+                    fill: #e1e5ff;
+                  }
+
+                  .c {
+                    fill: #476bd4;
+                  }
+
+                  .d {
+                    fill: #fff;
+                  }
+
+                  .e {
+                    fill: #29cbae;
+                  }
+
+                </style>
+              </defs>
+
+              <title>iconUpload</title>
+              <g class="background" data-animator-group="true" data-animator-type="2">
+                <circle class="a" cx="19.9" cy="19.9" r="19.9" />
+              </g>
+
+              <polygon class="b progress" points="29.34 15 23.91 9.07 23.91 15 29.34 15" />
+
+              <path class="c"
+                d="M24.06,8.19H13.76A2.85,2.85,0,0,0,10.89,11V29a2.85,2.85,0,0,0,2.87,2.82H27.11A2.85,2.85,0,0,0,30,29V14.69Zm.21,1.38,4.45,4.88H24.27Z" />
+
+              <path class="d"
+                d="M29.2,29A2.08,2.08,0,0,1,27.11,31H13.76A2.08,2.08,0,0,1,11.67,29V11A2.08,2.08,0,0,1,13.76,9h9.73v6.26H29.2Z" />
+
+              <g class="arrow" data-animator-group="true" data-animator-type="0">
+
+                <path class="c"
+                  d="M23.32,17.5a4.06,4.06,0,1,0,0,5.74,4,4,0,0,0,0-5.74Zm-2.87,5.82a.64.64,0,0,1-.64-.64V19.6l-.76.76a.64.64,0,0,1-.91-.91L20,17.6l.1-.08,0,0,.06,0,.07,0,.05,0h.25l.06,0,.06,0,.07,0,0,0,.1.08,1.85,1.85a.64.64,0,0,1-.91.91l-.76-.76v3.09a.64.64,0,0,1-.64.64Z" />
+              </g>
+
+              <g class="progressLoader" data-animator-group="true" data-animator-type="2">
+                <polygon class="e" points="15 28 15 27 26 27 26 28 15 28" />
+              </g>
+
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div fxFlex="75" fxLayoutAlign="center center" *ngIf="conversationId == 0" id="divNoConversation" [style.height]="_noConversation">
+    <span style="font-size: 18px; color: #909497; text-align: center;">
+      Send and receive messages, select or create a conversation to start<br>
+      <button class="page__path--closeButton" routerLink="/serviceRecord" style="cursor:pointer;">Back to Service Record</button>
+    </span> 
+  </div>
+</div>
+<ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+    Drag and Drop or
+    <p class="browser" id="all_documents" (click)="openFileSelector()">Browse File</p>
+  </ng-template>
+</ngx-file-drop>
+
+<ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept="image/*" [multiple]="false">
+  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+    Drag and Drop or
+    <p class="browser" id="images_only" (click)="openFileSelector()">Browse File</p>
+  </ng-template>
+</ngx-file-drop>
+
+
+
+<!-- <app-chat-assignament></app-chat-assignament> -->

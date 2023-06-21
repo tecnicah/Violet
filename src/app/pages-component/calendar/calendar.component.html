@@ -22,7 +22,7 @@
             <mat-label>Search</mat-label>
             <input matInput placeholder="Search" type="text" (keyup)="applyFilter($event)"
               [(ngModel)]="data_calendar.filter" />
-            <mat-icon matSuffix style="color:#9d3292">search</mat-icon>
+            <mat-icon matSuffix style="color:#3A2337">search</mat-icon>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -209,13 +209,13 @@
           <div style="display: flex; margin: auto;">
             <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
               (viewDateChange)="closeOpenMonthViewDay()">
-              <mat-icon style="color:#9d3292;" class="browser">arrow_back_ios</mat-icon>
+              <mat-icon style="color:#3A2337;" class="browser">arrow_back_ios</mat-icon>
             </div>
 
             <h3 class="text">{{ viewDate | date: 'EEEE, dd MMM yyy' }}</h3>
 
             <div mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
-              <mat-icon style="color:#9d3292;" class="browser">arrow_forward_ios</mat-icon>
+              <mat-icon style="color:#3A2337;" class="browser">arrow_forward_ios</mat-icon>
             </div>
           </div>
 
@@ -291,13 +291,13 @@
         <div style="display: flex; margin: auto;">
           <div mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
             (viewDateChange)="closeOpenMonthViewDay()">
-            <mat-icon style="color:#9d3292;" class="browser">arrow_back_ios</mat-icon>
+            <mat-icon style="color:#3A2337;" class="browser">arrow_back_ios</mat-icon>
           </div>
 
           <h3 class="text">{{ viewDate | date: 'EEEE, dd MMM yyy' }}</h3>
 
           <div mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
-            <mat-icon style="color:#9d3292;" class="browser">arrow_forward_ios</mat-icon>
+            <mat-icon style="color:#3A2337;" class="browser">arrow_forward_ios</mat-icon>
           </div>
         </div>
 

@@ -9,6 +9,7 @@ import { DialogDocumentsComponent } from 'app/pages-component/dialog/dialog-docu
 import { MatDialog } from '@angular/material/dialog';
 import { DialogGeneralMessageComponent } from 'app/pages-component/dialog/general-message/general-message.component';
 import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
+import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop-image/dialog-crop-image.component';
 
 
 /*
@@ -23,6 +24,8 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
   })
   export class SinglePageAssigneeFamilyInfo implements OnInit {
 
+    public no_main_photo: boolean = false;
+    
     constructor(
         public _services:ServiceGeneralService,
         public _router:Router,
@@ -62,9 +65,23 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
         this.requestSettingsData();
         this.getCatalogues();
+        setTimeout(() => {
+            this.GetImmigrationProfile();    
+        }, 200);
+        
         this.assing_dependents.push( new DependentInformationsModel() );
         this.assing_pets.push( new PetsNavigationModel() );
 
+    }
+
+    GetImmigrationProfile(){
+        this._services.service_general_get(`ImmigrationProfile/GetImmigrationProfile?sr=${this.sr_request_data.serviceRecordId}`)
+        .subscribe((response: any) => {
+            console.log(response.result.value);
+            this.immgration_profile = response.result.value;
+            this.immgration_dependent = response.result.value.dependentImmigrationInfos;
+            this.immgration_languages = response.result.value.lenguageProficiencies;
+        });
     }
 
     public able_ass_section:boolean = false;
@@ -82,7 +99,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
                 if( response.success ) {
                  
                     this.sr_request_data = response.result;
-                    this.WorkOrderServiceId = this.sr_request_data.housingAvailible[0].workOrderServices;
+                    this.WorkOrderServiceId = this.sr_request_data.housingAvailible[0]?.workOrderServices;
 
                     if( this.sr_request_data.needsAssessment ) {
 
@@ -116,7 +133,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
                     }
 
-                    this._services.service_general_get('HousingSpecification/GetHousingSpecitifcationByServiceRecord/'+this.WorkOrderServiceId+'/'+this.sr_request_data.housingAvailible[0].id )
+                    this._services.service_general_get('HousingSpecification/GetHousingSpecitifcationByServiceRecord/'+this.WorkOrderServiceId+'/'+this.sr_request_data.housingAvailible[0]?.id )
                     .subscribe( (response:any) => {
                         console.log("Housing Specification: ",response.result );
                         if( response.success ) {
@@ -177,11 +194,21 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
               }
 
-              if( this.assing_information.photo != '' ) {
+            let photo_assing: string = this.assing_information.photo;
+            console.log(photo_assing);
+            if (photo_assing == undefined || photo_assing == null || photo_assing == '') {
 
-                  this.assing_information.photo = this.assing_information.photo;
+                this.no_main_photo = true;
 
-              }
+            } else {
+
+                if (this.assing_information.photo.indexOf(this.image_path) <= -1) {
+
+                    this.assing_information.photo = this.assing_information.photo;
+
+            }
+
+          }
 
               // separar prefix de phone number
               // si el valor de mobilephone no es mayor a 10 caracteres entonces no tiene prefijo y toma el valor actual desde la bd asi vienen con prefijo  93+6567567567 o sin 6567567567
@@ -440,6 +467,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
     public houses_requested:any[] = [];
     public saveHousingInformation() {
 
+        this.__loader__.showLoader();
         console.log('Data Send H ==> ', this.housing);
         console.log('Data Send H ==> ', this.housing_hom);
         console.log('Data Send H ==> ', this.housing_are);
@@ -460,7 +488,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
               debugger
               data__.forEach(E => {
                   
-                  if(E.id && E.id!=0){
+                  if(E.id!=0){
                     console.log(JSON.stringify(E));
                     this._services.service_general_put('HousingSpecification/PutCreateHousingSpecification', E)
                     .subscribe( (response:any) => {
@@ -472,6 +500,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
                                 body: 'Housing Specification has been sent successfully.'
                                 }
                             });
+                            this.__loader__.hideLoader();
                         }
                         this.__loader__.hideLoader();
                     }, (error:any) => {
@@ -481,7 +510,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
                     });
                   }
                   
-                    if(E.id && E.id==0){
+                    if(E.id==0){
                         this._services.service_general_post_with_url('HousingSpecification/AddHousingSpecification', E)
                         .subscribe( (response:any) => {
                             console.log('Response Housing ===> ', response);
@@ -492,6 +521,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
                                     body: 'Housing Specification has been sent successfully.'
                                     }
                                 });
+                                this.__loader__.hideLoader();
                             }
                             this.__loader__.hideLoader();
                         }, (error:any) => {
@@ -510,6 +540,8 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
     public saveImmgrationInformation(){
 
         if( this.validatingImmgrationForm() ) {
+
+            this.__loader__.showLoader();
 
             this.immgration_profile.serviceRecordId = this.sr_request_data.serviceRecordId;
             this.immgration_profile.educationalBackgrounds = this.immgration_education;
@@ -537,39 +569,50 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
                             body: 'Immigrations Profile has been sent successfully.'
                             }
                         });
+                        this.__loader__.hideLoader();
 
                     }
 
                 }, (error:any) => {
 
                     console.error('Error (CreateImmigrationProfile) => ', error);
+                    this.__loader__.hideLoader();
 
                 });
+
+        }
+        else
+        {
 
         }
 
     }
 
-    public saveFormsData():void {
-
+    public saveFormsData1():void {
         if( this.able_ass_section ) {
 
             this.saveAssingInformation();
 
         }
+    }
 
+    public saveFormsData2():void {
+
+    
         if( this.able_imm_section ) {
 
             this.saveImmgrationInformation();
 
         }
 
+    }
+
+    public saveFormsData3():void {
         if( this.able_hou_section ) {
 
             this.saveHousingInformation();
 
         }
-
     }
 
     public show_ass_foer:boolean = false;
@@ -594,10 +637,10 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
         if( this.assing_information.finalMove == '' ) result = false;
         if( this.assing_information.homeCountryId == '' ) result = false;
         if( this.assing_information.homeCityId == '' ) result = false;
-        if( this.assing_information.currentPosition == '' ) result = false;
+        //if( this.assing_information.currentPosition == '' ) result = false;
         if( this.assing_information.hostCountry == '' ) result = false;
         if( this.assing_information.hostCityId == '' ) result = false;
-        if( this.assing_information.newPosition == '' ) result = false;
+        //if( this.assing_information.newPosition == '' ) result = false;
         if( !this.assInforValidateDependents() ) result = false;
         if( !this.assInforValidatePets() ) result = false;
 
@@ -616,7 +659,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
     public show_imm_err:boolean = false;
     public validatingImmgrationForm():boolean {
-
+debugger;
         let result:boolean = true;
 
         this.show_imm_err = true;
@@ -636,8 +679,8 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
         if( this.immgration_profile.highestLevelEducationalId == ''  ) result = false;
         if( this.immgration_profile.assigmentInformation.legalNameHomeCountry == ''  ) result = false;
         if( this.immgration_profile.assigmentInformation.currentJobPositionTitle == ''  ) result = false;
-        if( this.immgration_profile.assigmentInformation.employmentFrom == ''  ) result = false;
-        if( this.immgration_profile.assigmentInformation.employmentTo == ''  ) result = false;
+        //if( this.immgration_profile.assigmentInformation.employmentFrom == ''  ) result = false;
+        //if( this.immgration_profile.assigmentInformation.employmentTo == ''  ) result = false;
         if( this.immgration_profile.assigmentInformation.hiringManagerEmail == ''  ) result = false;
         if( !this.validateEmail( this.immgration_profile.assigmentInformation.hiringManagerEmail )  ) result = false;
         if( !this.immgrationLanguageValidator() ) result = false;
@@ -717,7 +760,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
     }
 
     public validatingHousingForm():boolean {
-
+debugger;
         let result:boolean = true;
 
         if( this.housing.areaInterest == '' ) result = false;
@@ -781,7 +824,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
     public show_defo_err:boolean = false;
     public assInforValidateDependents():boolean {
-
+debugger;
         let result:boolean = true;
         // this.show_dependent_section
         if( this.toggleDependent ) {
@@ -797,29 +840,28 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
                 if( dependent.relationshipId == '' ) result = false;
                 if( dependent.name == '' ) result = false;
                 if( dependent.birth == '' ) result = false;
-                if( dependent.languagesId == '' ) result = false;
                 if( dependent.nationalityId == '' ) result = false;
 
-                switch( dependent.relationshipId.toString() ) {
+                // switch( dependent.relationshipId.toString() ) {
 
-                    case '1':
-                        if( dependent.email == '' ) result = false;
-                        if( dependent.phone == '' ) result = false;
-                        break;
+                //     case '1':
+                //         if( dependent.email == '' ) result = false;
+                //         if( dependent.phone == '' ) result = false;
+                //         break;
 
-                    case '2':
-                        if( dependent.currentGrade == '' ) result = false;
-                        break;
+                //     case '2':
+                //         if( dependent.currentGrade == '' ) result = false;
+                //         break;
 
-                    case '3':
-                        if( dependent.ifOther == '' ) result = false;
-                        break;
+                //     case '3':
+                //         if( dependent.ifOther == '' ) result = false;
+                //         break;
 
-                    default:
-                        result = false;
-                        break;
+                //     default:
+                //         result = false;
+                //         break;
 
-                }
+                // }
 
             });
 
@@ -913,8 +955,14 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
         // this.home_city_catalogue = await this._services.getCatalogueFrom(`GetState?country=${ country_id }`);
 
-        this.home_city_catalogue = await this._services.getCatalogueFrom('GetState', `?country=${country_id}`);
+        //this.home_city_catalogue = await this._services.getCatalogueFrom('GetState', `?country=${country_id}`);
 
+        this._services.service_general_get("CountryAdminCenter/GetCityByCountryId?countryId=" + country_id).subscribe((data => {
+            if (data.success) {
+                console.log(data.result);
+              this.home_city_catalogue = data.result;
+            }
+          }))
     }
 
     public able_host_city:boolean = false;
@@ -1021,7 +1069,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
     public photoCleaner():void {
 
-        if( this.assing_information.photo.indexOf('data:') == 0 ) {
+        if( this.assing_information.photo?.indexOf('data:') == 0 ) {
 
             this.assing_information.photo = this.assing_information.photo.split(',')[1]
 
@@ -1059,6 +1107,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
     /* Utilities ======================================> */
     public country_catalogue:any = [];
+    public home_country_catalogue:any = [];
     public marital_catalogue:any = [];
     public policytype_catalogue:any = [];
     public assduration_catalogue:any = [];
@@ -1085,6 +1134,7 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
         this.weightmeasure_catalogue = await this._services.getCatalogueFrom('GetWeightMeasure');
         this.country_catalogue = await this._services.getCatalogueFrom('GetCountry');
+        this.home_country_catalogue = await this._services.getCatalogueFrom('Generic/Countries');
         this.nationality_catalogue = await this._services.getCatalogueFrom('Nationalities');
 
         this.marital_catalogue = await this._services.getCatalogueFrom('GetMaritalStatus');
@@ -1273,28 +1323,50 @@ import { FilterPipe, FilterPipeModule } from 'ngx-filter-pipe';
 
     }
 
-    public previewSelectedPhoto( event:any, model_to:any, field_to_append:string ):void {
+    public previewSelectedPhoto(event: any, field_to_display: string, section: string = ''): void {
 
-        const event_input:any = event.target.files[0],
-            reader:FileReader = new FileReader(),
-            img_container:any = document.getElementById( field_to_append );
-
-            reader.onload = () => {
-
-                const base64:any = reader.result;
-
-                model_to.photo = base64;
-                model_to.photoExtension = event_input.type.split('/')[1];
-                img_container.src = base64;
-
-                console.log('=====> ', model_to);
-                console.log( event_input );
-
+        const dialogRef = this._dialog.open(DialogCropImageComponent, {
+          data: { image: "", name: "" },
+          width: "70%",
+          height: "95%"
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          //console.log(result);
+            if(result != undefined){
+              this.no_main_photo = false;
+    
+              const field_photo: any = document.getElementById(field_to_display),
+                //event_data: any = event.target.files[0],
+                dependent_index: string = field_to_display.split('_')[3],
+                root: any = this;
+    
+                const base64: any = result
+                ////console.log(base64.split('.')[1]);
+                switch (section) {
+    
+                  case 'dependent':
+                    this.assing_information.dependentInformations.photo = base64.split(',')[1];
+                    root.assign_dependents[dependent_index].PhotoExtension = 'png';
+                    break;
+    
+                  case 'pet':
+                    root.pets[dependent_index].photo = base64.split(',')[1];
+                    root.pets[dependent_index].PhotoExtension = 'png'
+                    break;
+    
+                  case 'profile':
+                    this.assing_information.photo = base64.split(',')[1];
+                    this.assing_information.PhotoExtension = 'png';
+                    break;
+    
+                }
+    
+                setTimeout(() => field_photo.setAttribute('src', base64), 333);
             }
-
-            reader.readAsDataURL( event_input );
-
-    }
+        });
+    
+      }
 
     /* Ultima actualizacion 3/Dic/2020 ==========================================================> */
     /* ==========================================================================================> */

@@ -19,7 +19,8 @@ import { DialogGeneralConfirmation } from '../dialog/dialog-general-confirmation
 import { GeneralConfirmationComponent } from '../dialog/general-confirmation/general-confirmation.component';
 import { DialogGeneralMessageComponent } from '../dialog/general-message/general-message.component';
 import { DialogContactsComponent } from '../dialog/dialog-contacts/dialog-contacts.component';
-import { Console } from 'console';
+import { DialogCropImageComponent } from '../dialog/dialog-crop-image/dialog-crop-image.component';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-new-partner-client',
@@ -29,6 +30,7 @@ import { Console } from 'console';
 
 export class NewPartnerClientComponent implements OnInit {
 
+  public __userlog__: any = JSON.parse(localStorage.getItem('userData'));
   public countriesImm = [];
   public countriesRel = [];
   constructor(private rutaActiva: ActivatedRoute,
@@ -54,7 +56,7 @@ export class NewPartnerClientComponent implements OnInit {
   reloTemp: any = [];
   immiTemp: any = [];
   caCliente: any = [];
-
+  public service_type_ = 1;
 
   lead_client: any = {};
   generalContractPricingInfos: any;
@@ -126,6 +128,7 @@ export class NewPartnerClientComponent implements OnInit {
     })
 
     if (this.rutaActiva.snapshot.params.id == 'new') {
+
       if (localStorage.getItem('user') == 'userClient' ) {
         this.lead_client.idTypePartnerClientProfile = 2;
         this.lead_client.name = (localStorage.getItem('name'));
@@ -134,6 +137,18 @@ export class NewPartnerClientComponent implements OnInit {
 
        }
 
+
+       this.lead_client.idCompanyType = 2; 
+       setTimeout(() => {
+        this.lead_client.belongsToPartner = parseInt(localStorage.getItem('belongsId'));
+
+       }, 300);
+
+      //  this.lead_client.belongsToPartner = localStorage.getItem('belongsId');
+
+      //  console.log("this.lead_client.belongsToPartner",this.lead_client.belongsToPartner);
+ 
+      //  localStorage.removeItem('belongsId');
 
       this.lead_client.partnerClientSince = new Date();
       this.lead_client.id = 0;
@@ -155,6 +170,14 @@ export class NewPartnerClientComponent implements OnInit {
             const element = r.result[i];
             if (element.id == this.rutaActiva.snapshot.params.id) {
               this.lead_client = element;
+              // this.lead_client.relClientPartnerProfilePricingTypes = [];
+              this.lead_client.idPricingType = [];
+              for (const iterator of this.lead_client.relClientPartnerProfilePricingTypes) {
+                this.lead_client.idPricingType.push(
+                   iterator.idPricingType
+                );
+              }
+              console.log('this.lead_client',this.lead_client)
             }
           }
           this.lead_client.clientPartnerProfileExperienceTeams = [];
@@ -164,6 +187,7 @@ export class NewPartnerClientComponent implements OnInit {
           this.activityLogs = new MatTableDataSource(this.lead_client.activityLogs);
           this.termsDeals = new MatTableDataSource(this.lead_client.termsDeals);
           this.officeInformations = new MatTableDataSource(this.lead_client.officeInformations);
+          ;
           this.client = new MatTableDataSource(this.lead_client.client);
           console.log("data lead_cliente: ",this.lead_client);
 
@@ -189,8 +213,8 @@ export class NewPartnerClientComponent implements OnInit {
               this.serviceLocationsrelo = new MatTableDataSource(this.lead_client.service_location[0].relo);
             }
             */
-            this.serviceLocationsimmi = new MatTableDataSource(this.lead_client.serviceLocations_Imm);
-            this.serviceLocationsrelo = new MatTableDataSource(this.lead_client.serviceLocations_Relo);
+            // this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
+            // this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
 
             console.log('serviceLocationsimmi', this.serviceLocationsimmi);
             console.log('serviceLocationsrelo', this.serviceLocationsrelo);
@@ -221,6 +245,7 @@ export class NewPartnerClientComponent implements OnInit {
 	public permission_read : boolean = false;
 	public permission_write : boolean = false;
 	public permission_delete : boolean = false;
+  public pathUrl : string = 'https://my.premierds.com/api-test-premier/';
 	public permission_edit : boolean = false;
 	consultaPermisos(){
 		console.log("CONSULTA PARA PERMISOS DE USUARIO");
@@ -239,9 +264,36 @@ export class NewPartnerClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCAtalogoService();
+
+    setTimeout(() => {
+      this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + 2)
+      .subscribe(r => {
+        console.log("CCCCCCCCCC",r);
+        if (r.success) {
+          this.lead_client.serviceLocationsrelo = r.result;
+          this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocationsrelo);
+
+          console.log('serviceLocationsimmi', this.serviceLocationsrelo);
+
+         
+        }
+      });
+
+    }, 300);
+
+    // setTimeout(() => {
+    //   this.Line(2);
+    // }, 5000);
   }
   goBack() {
     window.history.back();
+  }
+
+  refresh(id){
+    this.router.navigate(['/partner_client/' + id])
+    .then(() => {
+      window.location.reload();
+    });
   }
 
   applyFilter(event: Event) {
@@ -253,6 +305,7 @@ export class NewPartnerClientComponent implements OnInit {
   public ca_contactType = [];
   public caCity = [];
   public ca_Service = [];
+  public caParicingType = [];
 
   public _assigned = [];
   async catalogos() {
@@ -265,8 +318,10 @@ export class NewPartnerClientComponent implements OnInit {
     this.caCountry = await this._services.getCatalogueFrom('GetCountry');
     this.caDuration = await this._services.getCatalogueFrom('GetPaymentRecurrence');
     this.caCurrency = await this._services.getCatalogueFrom('GetCurrency');
+    ;
+    this.caParicingType = await this._services.getCatalogueFrom('GetPricingType','');
     // this.caCity = await this._services.getCatalogueFrom('GetCity');
-
+    console.log(this.caParicingType );
 
     this.catalogService = await this._services.getCatalogueFrom(`GetCataegoryByServiceLineId?serviceLineId=1`);
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
@@ -488,7 +543,7 @@ export class NewPartnerClientComponent implements OnInit {
             this.loader.showLoader();
             this._services.service_general_putnoapi('UpdateGeneralContractPricingInfo', result).subscribe(r => {
               if (r.success) {
-                this.loader.hideLoader();
+                
                 const dialog = this.dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
@@ -497,6 +552,7 @@ export class NewPartnerClientComponent implements OnInit {
                   width: "350px"
                 });
                 this.ngAfterViewInit();
+                this.loader.hideLoader();
               }
             })
           }
@@ -825,14 +881,35 @@ export class NewPartnerClientComponent implements OnInit {
 
   }
 
-  public service_type_ = 1;
   Line(param){
-    console.log(param);
+    console.log('param',param);
     if(param.index == 0){
       this.service_type_ = 1;
     }else{
       this.service_type_ = 2;
     }
+    this.service_type_ = 2;
+    this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + this.service_type_)
+    .subscribe(r => {
+      //console.log(r);
+      if (r.success) {
+        //console.log(r);
+        if(this.service_type_ == 1){
+          this.lead_client.serviceLocations_Imm = r.result;
+          this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
+
+          console.log('serviceLocationsimmi', this.serviceLocationsimmi);
+        }
+        if(this.service_type_ == 2){
+
+          this.lead_client.serviceLocations_Relo = r.result;
+          this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
+
+          console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+        }
+      }
+    });
+
     this.getCAtalogoService();
         //this.service_type_ = param;
   }
@@ -840,17 +917,57 @@ export class NewPartnerClientComponent implements OnInit {
   //////////////////////////////////////////////////////////////////////////////////////
   //office information
   dialogService(data, i) {
+;
+    let services: any[]= [{
+      action: Number,
+      country_total: Number,
+      id: Number,
+      idClientPartnerProfile: Number,
+      idService: Number,
+      idServiceLine: Number,
+      nickName: String,
+      servicesName: String  
+    }]; 
+
+    // if(this.service_type_ == 1){
+
+    //   services = this.serviceLocationsimmi?.data;
+    // }
+    // if(this.service_type_ == 2){
+
+    //   services = this.serviceLocationsrelo?.data;
+    // }
+
+    services = this.serviceLocationsrelo?.data;
 
     console.log(data, i);
     if (data == null) {
       data = {
         id: 0,
-        sl: this.service_type_,
-        action: "new"
+        sl: 2,
+        action: "new",
+        services: services,
+        servicelocationcountries: [],
+        partnerId: this.rutaActiva.snapshot.params.id
       };
     } else {
-      data.sl = this.service_type_,
+      data.service = [];
+      data.sl = 2,
       data.action = i;
+      services.forEach(element => {
+        data.service.push({
+          action: 0,
+          country_total: element.country_total,
+          id: element.id,
+          idClientPartnerProfile: element.idClientPartnerProfile,
+          idService: element.idService,
+          idServiceLine: element.idServiceLine,
+          nickName: element.nickName,
+          servicesName: element.servicesName,
+          servicelocationcountries: element.servicelocationcountries
+        });
+      });
+      data.partnerId = this.rutaActiva.snapshot.params.id
     }
     const dialogRef = this.dialog.open(DialogAddServiceComponent, {
       data: data,
@@ -859,7 +976,7 @@ export class NewPartnerClientComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-
+      ;
       // serviceLocationCountries
       // serviceLocationCountries
       if (result.success) {
@@ -877,14 +994,39 @@ export class NewPartnerClientComponent implements OnInit {
             this.loader.showLoader();
             result.services = result.idService;
             result.idService = 0;
-            if(result.services[0] == 100){
-              console.log('select all 100', result.services[0]);
-              result.services.splice(0, 1);
-            }
+            
             console.log(JSON.stringify(result))
             this._services.service_general_putnoapi('AddServiceLocation', result).subscribe(r => {
               if (r.success) {
                 console.log(r)
+                setTimeout(() => {
+                  this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + 2)
+                  .subscribe(r => {
+                    //console.log(r);
+                    if (r.success) {
+                      this.lead_client.serviceLocations_Relo = r.result;
+                      this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
+            
+                      console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+                      // if(this.service_type_ == 1){
+                      //   this.lead_client.serviceLocations_Imm = r.result;
+                      //   this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
+              
+                      //   console.log('serviceLocationsimmi', this.serviceLocationsimmi);
+                      // }
+                      // if(this.service_type_ == 2){
+              
+                      //   this.lead_client.serviceLocations_Relo = r.result;
+                      //   this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
+              
+                      //   console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+
+ 
+                      // }
+                    }
+                  });
+            
+                }, 300);
                 const dialog = this.dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
@@ -904,10 +1046,37 @@ export class NewPartnerClientComponent implements OnInit {
           } else {
             this.loader.showLoader();
             this.lead_client.services = [];
+            ;
             console.log("DATA A ACTUALIZAR: ", result);
+            // result.service = [];
             console.log(JSON.stringify(result));
             this._services.service_general_putnoapi('UpdateServiceLocation', result).subscribe(r => {
               if (r.success) {
+                console.log(r);
+                setTimeout(() => {
+                  this.Line(2);
+                }, 3000);
+                // setTimeout(() => {
+                //   this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + this.service_type_)
+                //   .subscribe(r => {
+                //     if (r.success) {
+                //       if(this.service_type_ == 1){
+                //         this.lead_client.serviceLocations_Imm = r.result;
+                //         this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
+              
+                //         console.log('serviceLocationsimmi', this.serviceLocationsimmi);
+                //       }
+                //       if(this.service_type_ == 2){
+              
+                //         this.lead_client.serviceLocations_Relo = r.result;
+                //         this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
+              
+                //         console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+                //       }
+                //     }
+                //   });
+            
+                // }, 200);
                 const dialog = this.dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
@@ -922,73 +1091,76 @@ export class NewPartnerClientComponent implements OnInit {
           }
 
         }
+   
         // aqui diferenciamos los servicios dependiendo de la SL
-        console.log(this.lead_client.serviceLocations);
-        let immi = [];
-        let immiRegistro = [];
-        let relo = [];
-        let reloRegistro = [];
+      //   console.log(this.lead_client.serviceLocations);
+      //   let immi = [];
+      //   let immiRegistro = [];
+      //   let relo = [];
+      //   let reloRegistro = [];
 
-        for (let i = 0; i < this.lead_client.serviceLocations.length; i++)
-        {
-          const element = this.lead_client.serviceLocations[i];
-          if (element.idServiceLine == 1) {
-            immi.push(element);
-          } else {
-            relo.push(element);
-          }
-        }
-        immi.forEach(element => {
-          for (let o = 0; o < element.services.length; o++) {
-            let elementS = element.services[o];
-            element.idPrueba = elementS;
-            console.log(element);
-            immiRegistro.push( {
-            action: element.action,
-            id: element.id,
-            idClientPartnerProfile: element.idClientPartnerProfile,
-            idService: elementS,
-            idServiceLine: element.idServiceLine,
-            nickName: element.nickName,
-            servicelocationcountries: element.servicelocationcountries,
-            services: element.services,
-            sl: element.sl,
-            success: element.success,
-            });
-          }
-        });
-        relo.forEach(element => {
-          for (let o = 0; o < element.services.length; o++) {
-            let elementS = element.services[o];
-            element.idPrueba = elementS;
-            console.log(element);
-            reloRegistro.push( {
-            action: element.action,
-            id: element.id,
-            idClientPartnerProfile: element.idClientPartnerProfile,
-            idService: elementS,
-            idServiceLine: element.idServiceLine,
-            nickName: element.nickName,
-            servicelocationcountries: element.servicelocationcountries,
-            services: element.services,
-            sl: element.sl,
-            success: element.success,
-            });
-          }
-        });
+      //   for (let i = 0; i < this.lead_client.serviceLocations.length; i++)
+      //   {
+      //     const element = this.lead_client.serviceLocations[i];
+      //     if (element.idServiceLine == 1) {
+      //       immi.push(element);
+      //     } else {
+      //       relo.push(element);
+      //     }
+      //   }
+      //   immi.forEach(element => {
+      //     for (let o = 0; o < element.services.length; o++) {
+      //       let elementS = element.services[o];
+      //       element.idPrueba = elementS;
+      //       console.log(element);
+      //       immiRegistro.push( {
+      //       action: element.action,
+      //       id: element.id,
+      //       idClientPartnerProfile: element.idClientPartnerProfile,
+      //       idService: elementS,
+      //       idServiceLine: element.idServiceLine,
+      //       nickName: element.nickName,
+      //       servicelocationcountries: element.servicelocationcountries,
+      //       services: element.services,
+      //       sl: element.sl,
+      //       success: element.success,
+      //       });
+      //     }
+      //   });
+      //   relo.forEach(element => {
+      //     for (let o = 0; o < element.services.length; o++) {
+      //       let elementS = element.services[o];
+      //       element.idPrueba = elementS;
+      //       console.log(element);
+      //       reloRegistro.push( {
+      //       action: element.action,
+      //       id: element.id,
+      //       idClientPartnerProfile: element.idClientPartnerProfile,
+      //       idService: elementS,
+      //       idServiceLine: element.idServiceLine,
+      //       nickName: element.nickName,
+      //       servicelocationcountries: element.servicelocationcountries,
+      //       services: element.services,
+      //       sl: element.sl,
+      //       success: element.success,
+      //       });
+      //     }
+      //   });
 
-        console.log(immi);
-        console.log(relo);
+      //   console.log(immi);
+      //   console.log(relo);
 
-        console.log('immiRegistro', immiRegistro);
-        console.log('reloRegistro', reloRegistro);
+      //   console.log('immiRegistro', immiRegistro);
+      //   console.log('reloRegistro', reloRegistro);
 
 
-        this.serviceLocationsimmi = new MatTableDataSource(immiRegistro);
-        this.serviceLocationsrelo = new MatTableDataSource(reloRegistro);
-        this.serviceLocations = new MatTableDataSource(this.lead_client.serviceLocations);
+      //   this.serviceLocationsimmi = new MatTableDataSource(immiRegistro);
+      //   this.serviceLocationsrelo = new MatTableDataSource(reloRegistro);
+      //   this.serviceLocations = new MatTableDataSource(this.lead_client.serviceLocations);
+      // }
+
+    //});
       }
-
     });
 
   }
@@ -1032,48 +1204,58 @@ export class NewPartnerClientComponent implements OnInit {
   //////////////////////////////////////////////////////////////////////////////////////
   //client
   dialogaddClient() {
+
+    localStorage.setItem('belongsId', this.lead_client.id);
+
+    window.open(window.location.origin + '/demo/partner_client/new', '_blank');
+
+
+    // this.router.navigate(['/partner_client/new']);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 100);
     // enviar company type
 
-    const dialogRef = this.dialog.open(DialogAddClientComponent, {
-      width: '350px'
-    });
+    // const dialogRef = this.dialog.open(DialogAddClientComponent, {
+    //   width: '350px'
+    // });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('result de client', result);
-      if (result.success) {
-        result.id = 0;
-        result.idClientFrom = this.lead_client.id;
-        if (this.rutaActiva.snapshot.params.id == "new") {
-           // valores para pintar en tabla client
-          for (let i = 0; i < this.caCliente.length; i++) {
-            const element = this.caCliente[i];
-            if (element.id == result.idClientTo) {
-              result.name = element.name;
-            }
-          }
-          this.lead_client.clientPartnerProfileClientIdClientFromNavigations.push(result);
-          console.log(this.lead_client.clientPartnerProfileClientIdClientFromNavigations);
-        } else {
-          this.loader.showLoader();
-          this._services.service_general_putnoapi('AddClientPartnerProfileClient', result).subscribe(r => {
-            if (r.success) {
-              this.loader.hideLoader();
-              const dialog = this.dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: "Inserted data"
-                },
-                width: "350px"
-              });
-              this.ngAfterViewInit();
-            }
-          })
-        }
-        // this.caCliente
-        this.client = new MatTableDataSource(this.lead_client.clientPartnerProfileClientIdClientFromNavigations);
-      }
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('result de client', result);
+    //   if (result.success) {
+    //     result.id = 0;
+    //     result.idClientFrom = this.lead_client.id;
+    //     if (this.rutaActiva.snapshot.params.id == "new") {
+    //        // valores para pintar en tabla client
+    //       for (let i = 0; i < this.caCliente.length; i++) {
+    //         const element = this.caCliente[i];
+    //         if (element.id == result.idClientTo) {
+    //           result.name = element.name;
+    //         }
+    //       }
+    //       this.lead_client.clientPartnerProfileClientIdClientFromNavigations.push(result);
+    //       console.log(this.lead_client.clientPartnerProfileClientIdClientFromNavigations);
+    //     } else {
+    //       this.loader.showLoader();
+    //       this._services.service_general_putnoapi('AddClientPartnerProfileClient', result).subscribe(r => {
+    //         if (r.success) {
+    //           this.loader.hideLoader();
+    //           const dialog = this.dialog.open(DialogGeneralMessageComponent, {
+    //             data: {
+    //               header: "Success",
+    //               body: "Inserted data"
+    //             },
+    //             width: "350px"
+    //           });
+    //           this.ngAfterViewInit();
+    //         }
+    //       })
+    //     }
+    //     // this.caCliente
+    //     this.client = new MatTableDataSource(this.lead_client.clientPartnerProfileClientIdClientFromNavigations);
+    //   }
 
-    });
+    // });
 
   }
   //////////////////////////////////////////////////////////////////////////////////////
@@ -1130,6 +1312,30 @@ export class NewPartnerClientComponent implements OnInit {
     };
   }
 
+  public previewSelectedPhoto(event: any, field_to_display: string, fill_model: string = ''): void {
+
+    const dialogRef = this.dialog.open(DialogCropImageComponent, {
+      data: { image: "", name: "" },
+      width: "70%",
+      height: "95%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result != undefined) {
+        const field_photo: any = document.getElementById(field_to_display),
+          //event_data = result,
+          photo_index: any = field_to_display.split('_')[3],
+          root: any = this;
+        const base64: any = result;//e.target.result;
+
+        field_photo.setAttribute('src', base64);
+        this.lead_client.photo = base64.split(',')[1];
+        this.lead_client.photoExtension = 'png';
+       
+      }
+    });
+  }
   //////////////////////////////////////////////////////////////////////////////////////
   //Delete experience team
 
@@ -1169,6 +1375,19 @@ export class NewPartnerClientComponent implements OnInit {
 
   }
 
+  changeModel(){
+    console.log(this.lead_client.idPricingType)
+    this.lead_client.relClientPartnerProfilePricingTypes = [];
+    for (const iterator of this.lead_client.idPricingType) {
+      this.lead_client.relClientPartnerProfilePricingTypes.push(
+        {
+          "id": 0,
+          "idClientPartnerProfile": 0,
+          "idPricingType": iterator
+        }
+      );
+    }
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////
   //Save
@@ -1209,19 +1428,19 @@ export class NewPartnerClientComponent implements OnInit {
     }
 
 
-    if (this.lead_client.idCompanyType == 2) {
+    // if (this.lead_client.idCompanyType == 2) {
 
-      if ( this.lead_client.belongsToPartner == undefined ) {
-        this.belongs = true;
-        console.log(this.type, this.name, this.comType, this.office);
-        window.scrollTo(0, 0);
-        return false;
-      }
-      else{
-        this.belongs = false;
+    //   if ( this.lead_client.belongsToPartner == undefined ) {
+    //     this.belongs = true;
+    //     console.log(this.type, this.name, this.comType, this.office);
+    //     window.scrollTo(0, 0);
+    //     return false;
+    //   }
+    //   else{
+    //     this.belongs = false;
 
-      }
-    }
+    //   }
+    // }
 
     if (this.lead_client.officeInformations.length == 0) {
       window.scrollTo(0, 350);
@@ -1259,9 +1478,11 @@ export class NewPartnerClientComponent implements OnInit {
       this.loader.showLoader();
       this.lead_client.idLifeCircle = 4;
 
+
       console.log(JSON.stringify(this.lead_client));
 
-
+      const pricing = this.lead_client.idPricingType;
+      this.lead_client.idPricingType = null;
       this._services.service_general_post_with_urlnoapi('AddClientPartnerProfile', this.lead_client).subscribe(r => {
         console.log(r);
         if (r.success) {
@@ -1283,10 +1504,16 @@ export class NewPartnerClientComponent implements OnInit {
       console.log('edit partner');
 
       this.lead_client.idLifeCircle = 4;
+
       this._services.service_general_putnoapi('UpdateClientPartnerProfile', this.lead_client).subscribe(r => {
         console.log(r);
         if (r.success) {
           console.log("REGISTRO ACTUALIZADO PARTNER PROFILE: ", r);
+          this.loader.hideLoader();
+          setTimeout(() => {
+            this.ngOnInit();
+          }, 500);
+          
           const dialog = this.dialog.open(DialogGeneralMessageComponent, {
             data: {
               header: "Success",
@@ -1294,8 +1521,8 @@ export class NewPartnerClientComponent implements OnInit {
             },
             width: "350px"
           });
-          this.ngOnInit();
-          this.loader.hideLoader();
+
+          
         }
       })
     } else if (this.lead && this.rutaActiva.snapshot.params.id == 'new') {
@@ -1319,18 +1546,22 @@ export class NewPartnerClientComponent implements OnInit {
       this._services.service_general_putnoapi('UpdateClientPartnerProfile', this.lead_client).subscribe(r => {
         console.log("REGISTRO ACTUALIZADO PARTNER PROFILE: ", r);
         if (r.success) {
+          this.loader.hideLoader();
+          setTimeout(() => {
+            this.ngOnInit();
+          }, 500);
           const dialog = this.dialog.open(DialogGeneralMessageComponent, {
             data: {
               header: "Success",
               body: "Update data"
             },
             width: "350px"
-          });
-          this.loader.hideLoader();
+          });         
         }
       })
     }
-    console.log(JSON.stringify(this.lead_client));
+
+    console.log((this.lead_client));
   }
   // aqui direcciona el perfil
 

@@ -1,0 +1,58 @@
+<h1 mat-dialog-title>Payment</h1>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayoutAlign="space-around center" >
+        <div class="input_central wid">
+            <mat-form-field appearance="fill">
+                <mat-label>School Expenses Payment</mat-label>
+                <mat-select [(ngModel)]="school_payment.schoolExpensesPayment">
+                  <mat-option *ngFor="let item of ca_school_expenses_payment" [value]="item.id">{{item.schoolExpensesPayment}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="input_central wid">
+            <mat-form-field appearance="fill">
+                <mat-label>Responsible</mat-label>
+                <mat-select [(ngModel)]="school_payment.responsible">
+                  <mat-option *ngFor="let item of ca_responsible" [value]="item.id">{{item.responsable}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="input_central wid">
+            <mat-form-field appearance="fill">
+                <mat-label>Recurrence</mat-label>
+                <mat-select [(ngModel)]="school_payment.recurrence">
+                  <mat-option *ngFor="let item of ca_recurrence" [value]="item.id">{{item.paymentRecurrence1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around center" >
+        <div class="input_central wid">
+            <mat-form-field appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" placeholder="Amount"
+                  [(ngModel)]="school_payment.amount">
+            </mat-form-field>
+        </div>
+        <div class="input_central wid">
+            <mat-form-field appearance="fill">
+                <mat-label>Currency</mat-label>
+                <mat-select [(ngModel)]="school_payment.currency">
+                  <mat-option *ngFor="let item of ca_currency" [value]="item.id">{{item.currency}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="input_central wid">
+            <mat-form-field appearance="fill">
+                <mat-label>Detail</mat-label>
+                <input matInput placeholder="Detail"
+                  [(ngModel)]="school_payment.description">
+            </mat-form-field>            
+        </div>
+
+    </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial (click)="save()">Save</button>
+</div>

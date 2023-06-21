@@ -60,26 +60,26 @@
       </ng-container>
 
       <mat-menu #servicios="matMenu" xPosition="before">
-        <!--div class="bg"></div>
         <div class="assigned_services">
-          <p class="services" *ngFor="let item of servicios_sr" style="font-size: 10px !important; color: #000000DE !important;">
-            {{item.service}} / {{item.numberWorkOrder}} / {{item.serviceNumber}}
-          </p>
-        </div-->
-
-        <div>
-          <span *ngFor="let item of servicios_sr">
-            <button mat-menu-item style="font-size: 10px; color: #9d3292;"
-              >{{item.service}} / {{item.numberWorkOrder}} / {{item.serviceNumber}}</button>
-          </span>
+          <div style="text-align: left;">
+            <mat-list>
+              <div mat-subheader>Services</div>
+              <mat-divider></mat-divider>
+              <mat-list-item *ngFor="let item of servicios_sr">
+                <div mat-line style="font-size: 12px !important;"><b>{{item.service}}</b></div>
+                <div mat-line style="font-size: 10px;"> 
+                 {{item.serviceNumber}}
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </div>
         </div>
-
       </mat-menu>
 
       <!-- Position Column -->
       <ng-container matColumnDef="cam_4">
         <th mat-header-cell *matHeaderCellDef class="text-center">
-          Autho Date
+          Autho
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           {{ dateWorker( element.autho ) | date:'dd MMM yyy' }}
@@ -92,7 +92,13 @@
           %Complete
         </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          {{ element.complete }}
+          <div *ngIf="element.servicesLine == 'Immigration'">
+            {{ element.completeImm }}
+          </div>
+          <div *ngIf="element.servicesLine == 'Relocation'">
+            {{ element.completeRelo }}
+          </div>
+          
         </td>
       </ng-container>
 
@@ -100,12 +106,19 @@
       <ng-container matColumnDef="cam_6">
         <th mat-header-cell *matHeaderCellDef class="text-center"></th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          <!-- <div class="table-row__check"> -->
+          <div *ngIf="USERDATA.profileUsers[0].immigration && element.servicesLine == 'Immigration'">
             <img style="width: 18px; cursor: pointer;" (click)="performServiceRecord( element.id )" class="cursor-pointer"
               src="../../../../assets/icons/pencil.png" />
             <span>&nbsp;</span>
             <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteService(element.id)" >
-          <!-- </div> -->
+          </div>
+
+          <div *ngIf="USERDATA.profileUsers[0].relocation && element.servicesLine == 'Relocation'">
+            <img style="width: 18px; cursor: pointer;" (click)="performServiceRecord( element.id )" class="cursor-pointer"
+              src="../../../../assets/icons/pencil.png" />
+            <span>&nbsp;</span>
+            <img src="assets\icons\delete.png" style="width: 18px; cursor: pointer;" (click)="deleteService(element.id)" >
+          </div>
         </td>
       </ng-container>
 
