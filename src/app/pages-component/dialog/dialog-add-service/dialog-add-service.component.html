@@ -26,7 +26,7 @@
     <!-- select cuando se actualiza un servicio  -->
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.id != 0">
       <mat-form-field class="input_central">
-        <mat-label>Servicejhgj</mat-label>
+        <mat-label>Service</mat-label>
         <mat-select [(ngModel)]="data.idService" disabled>
           <mat-option *ngFor="let item of GetService" [value]="item.service1">
             {{item.service}}

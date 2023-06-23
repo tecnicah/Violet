@@ -8,6 +8,7 @@ import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-cli
 import { DialogWireTransferComponent } from '../dialog-wire-transfer/dialog-wire-transfer.component';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 import { DialogDocumentsView } from './../dialog-documents-view/dialog-documents-view.component';
+import { LoaderComponent } from 'app/shared/loader';
 
 @Component({
   selector: 'app-dialog-office-information',
@@ -20,7 +21,8 @@ export class DialogOfficeInformationComponent implements OnInit {
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialog: MatDialog) { }
-
+    loader: LoaderComponent = new LoaderComponent();
+    
     caCountry: any[] = [];
     ccity:any[] = [];
     caTypeOffice:any[] = [];
@@ -146,6 +148,7 @@ export class DialogOfficeInformationComponent implements OnInit {
   }
 
   getcity(data) {
+    this.loader.showLoader();
     console.log('data para consultar el city', data);
     // this.ccity = [];
     // Catalogue/GetState?country=
@@ -153,6 +156,7 @@ export class DialogOfficeInformationComponent implements OnInit {
     this._services.service_general_get("Catalogue/Generic/Cities/" + data.idState).subscribe((data => {
       if (data.success) {
         this.ccity = data.result;
+        this.loader.hideLoader();
       }
     }))
   }

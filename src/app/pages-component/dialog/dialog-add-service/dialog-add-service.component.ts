@@ -387,6 +387,7 @@ export class DialogAddServiceComponent implements OnInit {
     }
 
     this.data.success = true;
+    this.data.catalogServices = this.GetService;
     console.log('data ', this.data);
     this.dialogRef.close(this.data);
   }

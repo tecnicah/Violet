@@ -916,6 +916,7 @@ export class NewPartnerClientComponent implements OnInit {
 
   //////////////////////////////////////////////////////////////////////////////////////
   //office information
+  _lead_client_table: any = [];
   dialogService(data, i) {
 ;
     let services: any[]= [{
@@ -988,7 +989,24 @@ export class NewPartnerClientComponent implements OnInit {
              // cambiar el idService a 0 y services  va con el arreglo
             result.services = result.idService;
             result.idService = 0;
+           
+            result.services.forEach(element => {
+              result.catalogServices.forEach(item => {
+                if(element == item.service1){
+                  this._lead_client_table.push({
+                    id: result.id,
+                    servicesName: item.service,
+                    nickName: result.nickName,
+                    servicelocationcountries: result.servicelocationcountries,
+                    obj_guardar: result
+                  })
+                }
+              });              
+            });
             this.lead_client.serviceLocations.push(result);
+            console.log("AdDDD");
+
+            this.serviceLocationsrelo = new MatTableDataSource(this._lead_client_table);
           }
           else {
             this.loader.showLoader();

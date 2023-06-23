@@ -334,53 +334,75 @@
 
       <!-- Weight Column -->
       <ng-container matColumnDef="uno">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="idPricingSchedule"> Contract type </th>
-        <td mat-cell *matCellDef="let element"> {{element.pricingSchedule1}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="idPricingSchedule"> Service Line </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.relContractPricingInfoServiceLines.length == 1">
+            <span *ngFor="let item of element.relContractPricingInfoServiceLines; let i = index">
+            
+              <span *ngIf="item.idServiceLine == 1">
+                I
+              </span>
+              <span *ngIf="item.idServiceLine == 2">
+                R
+              </span>
+          
+            </span>  
+          </span>
+          <span *ngIf="element.relContractPricingInfoServiceLines.length > 1">
+            I/R
+          </span>
+        </td>
       </ng-container>
 
-      <!-- Position Column -->
       <ng-container matColumnDef="dos">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractEffectiveDate"> Contract Effective Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.contractEffectiveDate | date : 'dd MMM yyy'}} </td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="tres">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractExpirationDate"> Contract Expiration Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.contractExpirationDate | date : 'dd MMM yyy'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="cuatro">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="paymentRecurrence"> Contract Type </th>
         <td mat-cell *matCellDef="let element">
           {{element.pricingSchedule1}}
         </td>
       </ng-container>
       
+      <ng-container matColumnDef="tres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="paymentRecurrence"> Contract Name </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.contractName}}
+        </td>
+      </ng-container>
 
+      <!-- Position Column -->
+      <ng-container matColumnDef="cuatro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractEffectiveDate"> Contract Effective Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.contractEffectiveDate | date : 'dd MMM yyy'}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
       <ng-container matColumnDef="cinco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="contractExpirationDate"> Contract Expiration Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.contractExpirationDate | date : 'dd MMM yyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="seis">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="paymentRecurrence"> Payment Recurrence </th>
         <td mat-cell *matCellDef="let element">
           {{element.paymentRecurrence1}}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="seis">
+      <ng-container matColumnDef="siete">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="referralFee"> Referral Fee </th>
         <td mat-cell *matCellDef="let element">
           {{element.referralFee}}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="siete">
+      <ng-container matColumnDef="ocho">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element; let i = index">
           <img src="/assets/icons/pencil.png" (click)="contractDialog(element, i)" *ngIf="permission_write || permission_edit" style="width: 20px;">
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="siete"></tr>
-      <tr mat-row *matRowDef="let row; columns: siete;"></tr>
+      <tr mat-header-row *matHeaderRowDef="ocho"></tr>
+      <tr mat-row *matRowDef="let row; columns: ocho;"></tr>
     </table>
 
     <div class="textarea" style="text-align: end;">

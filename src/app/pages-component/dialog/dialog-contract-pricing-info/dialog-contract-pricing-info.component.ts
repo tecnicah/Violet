@@ -55,28 +55,44 @@ export class DialogContractPricingInfoComponent implements OnInit {
     this.catalogos();
   }
 
+  caServiceLine:Array<any> = [];
   caReferralPaymentType:Array<any> = [];
   caServicePaymentRecurrence:Array<any> = [];
   caThirdPartyPaymentRecurrence:Array<any> = [];
   async catalogos(){
     this._services.service_general_get('Catalogue/GetReferralPaymentType').subscribe((r)=>{
-      console.warn(r);
+      
       if(r.success){
         this.caReferralPaymentType = r.result.value;
       }
-    })
+    });
+    this._services.service_general_get('Catalogue/GetServiceLine').subscribe((r)=>{
+      console.log("Catalogo",r);
+      if(r.success){
+        this.caServiceLine = r.result;
+
+        if(this.data.relContractPricingInfoServiceLines.length > 0){
+          this.data.idServiceLine = [];
+          for (const iterator of this.data.relContractPricingInfoServiceLines) {
+            this.data.idServiceLine.push(
+              iterator.id
+            );
+          }
+        }
+      }
+    });
     this._services.service_general_get('Catalogue/GetServicePaymentRecurrence').subscribe((r)=>{
       console.warn(r);
       if(r.success){
         this.caServicePaymentRecurrence = r.result.value;
       }
-    })
+    });
     this._services.service_general_get('Catalogue/GetThirdPartyPaymentRecurrence').subscribe((r)=>{
       console.warn(r);
       if(r.success){
         this.caThirdPartyPaymentRecurrence = r.result.value;
       }
-    })
+    });
     this.caCompanyType = await this._services.getCatalogueFrom('GetCompanyType');
     this.caResponsiblePremierOffice = await this._services.getCatalogueFrom('GetResponsiblePremierOffice');
     this.caLifeCircle = await this._services.getCatalogueFrom('GetLifeCircle');
@@ -86,6 +102,21 @@ export class DialogContractPricingInfoComponent implements OnInit {
     // this.caDuration = await this._services.getCatalogueFrom('GetPaymentRecurrence');
     this.caPrecingSchedule = await this._services.getCatalogueFrom('GetPrecingSchedule');
     this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
+  }
+
+  changeModel()
+  {
+    console.log(this.data.idServiceLine)
+    this.data.relContractPricingInfoServiceLines = [];
+    for (const iterator of this.data.idServiceLine) {
+      this.data.relContractPricingInfoServiceLines.push(
+        {
+          "id": 0,
+          "idGeneralContractPricingInfo": 0,
+          "idServiceLine": iterator
+        }
+      );
+    }
   }
 
   getDocument(id){
@@ -145,6 +176,9 @@ export class DialogContractPricingInfoComponent implements OnInit {
   isValid:boolean = false;
       //*************************************************************//
   //VALIDACIONES//
+  active_serviceLine:boolean = false;
+  active_contractType:boolean = false;
+  active_contractName:boolean = false;
   active_contractEffectiveDate:boolean = false;
   active_contractExpirationDate:boolean = false;
   active_idReferralFee :boolean = false;
@@ -158,6 +192,13 @@ export class DialogContractPricingInfoComponent implements OnInit {
   valida_form(){
 
 
+    if(this.data.idServiceLine == undefined || this.data.idServiceLine.length == 0){
+      this.active_serviceLine = true;
+    }
+
+    if(this.data.contractName == undefined || this.data.contractName.length == 0){
+      this.active_contractName = true;
+    }
 
     if(this.data.contractEffectiveDate == undefined || this.data.contractEffectiveDate.length == 0){
       this.active_contractEffectiveDate = true;

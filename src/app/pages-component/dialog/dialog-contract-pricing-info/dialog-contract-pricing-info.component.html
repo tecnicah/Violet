@@ -17,9 +17,77 @@
   <mat-grid-list cols="4" rowHeight="60px">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill" class="input_central">
-        <mat-label [ngClass]="{ valid: active_contractEffectiveDate }"
-          >Contract Effective Date</mat-label
+        <mat-label [ngClass]="{ valid: active_serviceLine }">
+          Service Line
+        </mat-label>
+        <mat-select
+        matNativeControl
+        multiple
+        (focus)="active_serviceLine = false"
+        required
+        [(ngModel)]="data.idServiceLine" (ngModelChange)="changeModel()">
+        <mat-option *ngFor="let item of caServiceLine" [value]="item.id">{{
+          item.serviceLine
+        }}</mat-option>
+      </mat-select>
+      <mat-error>Field is required</mat-error>
+      <mat-hint
+        style="color: #e91e63; font-size: 12px"
+        *ngIf="active_serviceLine"
+        >Field is required</mat-hint
+      >
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{ valid: active_contractType }"
+          >Contract Type</mat-label
         >
+        <mat-select
+          matNativeControl
+          [(ngModel)]="data.idPricingSchedule"
+          (focus)="active_contractType = false"
+          required
+          (ngModelChange)="namepricing()"
+        >
+          <mat-option
+            *ngFor="let item of caPrecingSchedule"
+            [value]="item.id"
+            >{{ item.pricingSchedule1 }}</mat-option
+          >
+        </mat-select>
+        <mat-error>Field is required</mat-error>
+        <mat-hint
+          style="color: #e91e63; font-size: 12px"
+          *ngIf="active_idPricingSchedule"
+          >Field is required</mat-hint
+        >
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{ valid: active_contractName }"
+          >Contract Name</mat-label
+        >
+        <input matInput placeholder="Contract Name" (focus)="active_contractName = false"
+        required
+        [(ngModel)]="data.contractName"/>
+        <mat-error>Field is required</mat-error>
+        <mat-hint
+          style="color: #e91e63; font-size: 12px"
+          *ngIf="active_contractName"
+          >Field is required</mat-hint
+        >
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{ valid: active_contractEffectiveDate }">
+          Contract Effective Date
+        </mat-label>
         <input
           matInput
           [matDatepicker]="picker"
@@ -67,33 +135,6 @@
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill" class="input_central">
-        <mat-label [ngClass]="{ valid: active_idReferralFee }"
-          >Referral Fee</mat-label
-        >
-        <input matInput placeholder="Referral Fee" (focus)="active_idReferralFee = false"
-        required
-        [(ngModel)]="data.referralFee"/>
-        <!--mat-select
-          matNativeControl
-          (focus)="active_idReferralFee = false"
-          required
-          [(ngModel)]="data.idReferralFee"
-        >
-          <mat-option *ngFor="let item of caReferrelFee" [value]="item.id">{{
-            item.referralFee1
-          }}</mat-option>
-        </!--mat-select-->
-        <mat-error>Field is required</mat-error>
-        <mat-hint
-          style="color: #e91e63; font-size: 12px"
-          *ngIf="active_idReferralFee"
-          >Field is required</mat-hint
-        >
-      </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <mat-form-field appearance="fill" class="input_final">
         <mat-label [ngClass]="{ valid: active_idReferralFeeType }"
           >Referral Payment Type</mat-label
         >
@@ -101,7 +142,7 @@
           matNativeControl
           (focus)="active_idReferralFeeType = false"
           required
-          [(ngModel)]="data.IdReferralPaymentType"
+          [(ngModel)]="data.idReferralPaymentType"
         >
           <mat-option *ngFor="let item of caReferralPaymentType" [value]="item.id">{{
             item.description
@@ -111,33 +152,6 @@
         <mat-hint
           style="color: #e91e63; font-size: 12px"
           *ngIf="active_idReferralFeeType"
-          >Field is required</mat-hint
-        >
-      </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <mat-form-field appearance="fill" class="input_central">
-        <mat-label [ngClass]="{ valid: active_idPricingSchedule }"
-          >Pricing Schedule</mat-label
-        >
-        <mat-select
-          matNativeControl
-          [(ngModel)]="data.idPricingSchedule"
-          (focus)="active_idPricingSchedule = false"
-          required
-          (ngModelChange)="namepricing()"
-        >
-          <mat-option
-            *ngFor="let item of caPrecingSchedule"
-            [value]="item.id"
-            >{{ item.pricingSchedule1 }}</mat-option
-          >
-        </mat-select>
-        <mat-error>Field is required</mat-error>
-        <mat-hint
-          style="color: #e91e63; font-size: 12px"
-          *ngIf="active_idPricingSchedule"
           >Field is required</mat-hint
         >
       </mat-form-field>
@@ -177,7 +191,7 @@
         (focus)="active_IdServicePaymentRecurrence = false"
         required
         matNativeControl
-        [(ngModel)]="data.IdServicePaymentRecurrence"
+        [(ngModel)]="data.idServicePaymentRecurrence"
         (ngModelChange)="namepaymentRecurrence()"
       >
         <mat-option *ngFor="let item of caServicePaymentRecurrence" [value]="item.id">{{
@@ -193,28 +207,46 @@
     </mat-form-field>
   </mat-grid-tile>
 
-<mat-grid-tile [colspan]="1" [rowspan]="1">
-    <mat-form-field appearance="fill" class="input_final">
-      <mat-label [ngClass]="{ valid: active_IdThirdPartyPaymentRecurrence }"
-        >Third Party Payment Recurrence</mat-label
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{ valid: active_IdThirdPartyPaymentRecurrence }"
+          >Third Party Payment Recurrence</mat-label
+        >
+        <mat-select
+          (focus)="active_IdThirdPartyPaymentRecurrence = false"
+          required
+          matNativeControl
+          [(ngModel)]="data.idThirdPartyPaymentRecurrence"
+          (ngModelChange)="namepaymentRecurrence()"
+        >
+          <mat-option *ngFor="let item of caThirdPartyPaymentRecurrence" [value]="item.id">{{
+            item.description
+          }}</mat-option>
+        </mat-select>
+        <mat-error>Field is required</mat-error>
+        <mat-hint
+          style="color: #e91e63; font-size: 12px"
+          *ngIf="active_IdThirdPartyPaymentRecurrence"
+          >Field is required</mat-hint
+        >
+      </mat-form-field>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <mat-form-field>
+      <mat-label
+        >Billing Instructions</mat-label
       >
-      <mat-select
-        (focus)="active_IdThirdPartyPaymentRecurrence = false"
-        required
-        matNativeControl
-        [(ngModel)]="data.IdThirdPartyPaymentRecurrence"
-        (ngModelChange)="namepaymentRecurrence()"
-      >
-        <mat-option *ngFor="let item of caThirdPartyPaymentRecurrence" [value]="item.id">{{
-          item.description
-        }}</mat-option>
-      </mat-select>
-      <mat-error>Field is required</mat-error>
-      <mat-hint
-        style="color: #e91e63; font-size: 12px"
-        *ngIf="active_IdThirdPartyPaymentRecurrence"
-        >Field is required</mat-hint
-      >
+      <textarea
+        matInput
+        #input
+        maxlength="500"
+        placeholder="Billing Instructions"
+        type="text"
+        [(ngModel)]="data.billingInstruction"
+      ></textarea>
     </mat-form-field>
   </mat-grid-tile>
 </mat-grid-list>
