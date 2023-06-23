@@ -1126,20 +1126,22 @@ export class SchoolSearchComponent implements OnInit {
   
 
                 this.school_search.schoolingInformations.forEach(element => {
-                  _schoolingInformations.push({
-                    id: 0,
-                    schoolingSearchId: this.data.data.service[0].id,
-                    relationshipId: element.relationshipId,
-                    avatar: element.photo,
-                    name: element.name,
-                    sex: element.sex, 
-                    birth: element.birth,
-                    age: element.age,
-                    nationality: element.nationality, 
-                    currentGrade: element.currentGrade,
-                    comments: element.comments,
-                    active: true 
-                  });  
+                  if(element.active){
+                    _schoolingInformations.push({
+                      id: 0,
+                      schoolingSearchId: this.data.data.service[0].id,
+                      relationshipId: element.relationshipId,
+                      avatar: element.photo,
+                      name: element.name,
+                      sex: element.sex, 
+                      birth: element.birth,
+                      age: element.age,
+                      nationality: element.nationality, 
+                      currentGrade: element.currentGrade,
+                      comments: element.comments,
+                      active: true 
+                    });
+                  }  
                 });
                   
                 console.log(JSON.stringify(_schoolingInformations));

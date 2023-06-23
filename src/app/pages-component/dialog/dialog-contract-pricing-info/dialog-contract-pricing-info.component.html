@@ -187,6 +187,16 @@
       <mat-label [ngClass]="{ valid: active_IdServicePaymentRecurrence }"
         >Service Payment Recurrence</mat-label
       >
+      <input matInput placeholder="Contract Name" (focus)="active_IdServicePaymentRecurrence = false"
+      required
+      [(ngModel)]="data.idServicePaymentRecurrence"/>
+      <mat-error>Field is required</mat-error>
+      <mat-hint
+        style="color: #e91e63; font-size: 12px"
+        *ngIf="active_IdServicePaymentRecurrence"
+        >Field is required</mat-hint
+      >
+<!-- 
       <mat-select
         (focus)="active_IdServicePaymentRecurrence = false"
         required
@@ -197,7 +207,7 @@
         <mat-option *ngFor="let item of caServicePaymentRecurrence" [value]="item.id">{{
           item.description
         }}</mat-option>
-      </mat-select>
+      </mat-select> -->
       <mat-error>Field is required</mat-error>
       <mat-hint
         style="color: #e91e63; font-size: 12px"
@@ -212,7 +222,16 @@
         <mat-label [ngClass]="{ valid: active_IdThirdPartyPaymentRecurrence }"
           >Third Party Payment Recurrence</mat-label
         >
-        <mat-select
+        <input matInput placeholder="Contract Name" (focus)="active_IdThirdPartyPaymentRecurrence = false"
+        required
+        [(ngModel)]="data.idThirdPartyPaymentRecurrence"/>
+        <mat-error>Field is required</mat-error>
+        <mat-hint
+          style="color: #e91e63; font-size: 12px"
+          *ngIf="active_IdThirdPartyPaymentRecurrence"
+          >Field is required</mat-hint
+        >
+        <!-- <mat-select
           (focus)="active_IdThirdPartyPaymentRecurrence = false"
           required
           matNativeControl
@@ -222,7 +241,7 @@
           <mat-option *ngFor="let item of caThirdPartyPaymentRecurrence" [value]="item.id">{{
             item.description
           }}</mat-option>
-        </mat-select>
+        </mat-select> -->
         <mat-error>Field is required</mat-error>
         <mat-hint
           style="color: #e91e63; font-size: 12px"
