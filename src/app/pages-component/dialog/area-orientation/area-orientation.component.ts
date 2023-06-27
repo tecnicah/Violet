@@ -17,6 +17,8 @@ import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
 import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
 
+import {WorkPartnerI} from '../../../interfaces/dtoWork.interface';
+
 
 @Component({
   selector: 'app-area-orientation',
@@ -57,7 +59,12 @@ export class AreaOrientationComponent implements OnInit {
   date = new Date();
   serviceScope = null;
 
+  datos: WorkPartnerI = {
+    workOrderServicesId: 0,
+    partner_id: 0
+  };
 
+  isVisible : boolean =false;
 
   loader: LoaderComponent = new LoaderComponent();
 
@@ -226,9 +233,15 @@ export class AreaOrientationComponent implements OnInit {
 
     this._services.service_general_get('RelocationServices/GetAreaOrientationById?id=' + this.data.data.service[0].id).subscribe((data => {
       if (data.success) {
+
+
         
         this.area_orientation = data.result;
         console.log('DATA CONSULTA GetAreaOrientationById ======================= : ', this.area_orientation);
+
+        this.datos.workOrderServicesId = this.area_orientation.workOrderServicesId;
+        this.datos.partner_id = this.data.data.partnerId;
+        this.isVisible =true;
        
            this.a_o = this.area_orientation;
 
