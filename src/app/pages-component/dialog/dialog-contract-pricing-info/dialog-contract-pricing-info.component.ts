@@ -188,6 +188,7 @@ export class DialogContractPricingInfoComponent implements OnInit {
   active_IdServicePaymentRecurrence :boolean = false;
   active_IdThirdPartyPaymentRecurrence :boolean = false;
   active_description :boolean = false;
+  active_referralFee :boolean = false;
 
   valida_form(){
 
@@ -237,14 +238,18 @@ export class DialogContractPricingInfoComponent implements OnInit {
       this.active_description = true;
     }
 
+    if(this.data.referralFee == undefined || this.data.referralFee.length == 0){
+      this.active_referralFee = true;
+    }
+
 
     if(this.validationForm())
     {
       
       this.isValid =true;
-      let referal = this.getReferralFerr(this.data.idReferralFee);
-      this.data['referralFee'] = referal;
-      console.log(referal);
+      // let referal = this.getReferralFerr(this.data.idReferralFee);
+      // this.data['referralFee'] = referal;
+      //console.log(referal);
       this.data.success = true;
       this.dialogRef.close(this.data);
     }else{

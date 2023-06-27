@@ -135,6 +135,23 @@
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill" class="input_central">
+        <mat-label [ngClass]="{ valid: active_referralFee }"
+          >Referral Fee</mat-label
+        >
+        <input type="number" matInput placeholder="Referral Fee" (focus)="active_referralFee = false"
+        required
+        [(ngModel)]="data.referralFee"/>
+        <mat-error>Field is required</mat-error>
+        <mat-hint
+          style="color: #e91e63; font-size: 12px"
+          *ngIf="active_referralFee"
+          >Field is required</mat-hint
+        >
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill" class="input_central">
         <mat-label [ngClass]="{ valid: active_idReferralFeeType }"
           >Referral Payment Type</mat-label
         >
@@ -187,7 +204,7 @@
       <mat-label [ngClass]="{ valid: active_IdServicePaymentRecurrence }"
         >Service Payment Recurrence</mat-label
       >
-      <input matInput placeholder="Contract Name" (focus)="active_IdServicePaymentRecurrence = false"
+      <input type="number" matInput placeholder="Number of days" (focus)="active_IdServicePaymentRecurrence = false"
       required
       [(ngModel)]="data.idServicePaymentRecurrence"/>
       <mat-error>Field is required</mat-error>
@@ -222,7 +239,7 @@
         <mat-label [ngClass]="{ valid: active_IdThirdPartyPaymentRecurrence }"
           >Third Party Payment Recurrence</mat-label
         >
-        <input matInput placeholder="Contract Name" (focus)="active_IdThirdPartyPaymentRecurrence = false"
+        <input type="number" matInput placeholder="Number of days" (focus)="active_IdThirdPartyPaymentRecurrence = false"
         required
         [(ngModel)]="data.idThirdPartyPaymentRecurrence"/>
         <mat-error>Field is required</mat-error>
