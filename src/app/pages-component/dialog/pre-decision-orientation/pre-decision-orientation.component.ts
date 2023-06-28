@@ -95,10 +95,10 @@ export class PreDecisionOrientationComponent implements OnInit {
         this.area_orientation = data.result;
         this.GetBasicServiceData();
         this.setup_permissions_settings();
+        this.get_text_status();
         console.log('DATA RelocationServices/GetPredecisionOrientationById : ', this.area_orientation);
         if (this.area_orientation.commentPredecisionOrientations.length == 0) {
-          this.addReply();
-          this.get_text_status();
+          this.addReply();          
         }
 
         this.showPanelHousing = this.area_orientation.housing;
@@ -133,9 +133,24 @@ export class PreDecisionOrientationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       //debugger;
       // //console.log(result);
+      this.loader.showLoader();
       if (result.success) {
         this.area_orientation.statusId = result.id; //penidng to completion 
         this.get_text_status();
+
+        this._services.service_general_put("RelocationServices/PutPreDecisionOrientationStatus", this.area_orientation).subscribe((data => {
+          if (data.success) {
+            //console.log(data);
+            const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Success",
+                body: "Update Data"
+              },
+              width: "350px"
+            });
+            this.loader.hideLoader();
+          }
+        }));
       }
       else {
         //nada 
