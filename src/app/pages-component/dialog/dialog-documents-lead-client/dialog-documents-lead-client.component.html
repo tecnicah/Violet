@@ -92,7 +92,7 @@
         </mat-form-field>
       </mat-grid-tile-->
 
-      <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="!data.status">
+      <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="data.status">
         <mat-form-field appearance="fill">
           <mat-label [ngClass]="{valid: active_description}" >Description</mat-label>
           <input matInput placeholder="Description"  #message maxlength="500"  (focus)="active_description = false" required  [(ngModel)]="temporalDocument.description">
