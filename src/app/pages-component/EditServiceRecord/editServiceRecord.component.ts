@@ -1923,7 +1923,7 @@ const msg = (user, contact, message) => ({
       const dialogRef = this._dialog.open(moda, {
         data: {
           sr: this.SO_ID,
-          data: type
+          data: type,
         }, 
         maxWidth: '95vw',
         maxHeight: '90vh',

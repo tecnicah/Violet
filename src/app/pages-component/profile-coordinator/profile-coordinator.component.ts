@@ -294,7 +294,7 @@ export class ProfileCoordinatorComponent implements OnInit {
        }
     })
 
-    this._services.service_general_get('Catalogue/GetDocumentType/1').subscribe((data => {
+    this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
       if (data.success) {
           this.ca_documentType = data.result;
       }

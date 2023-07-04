@@ -2,18 +2,19 @@
   <div class="page">
     <div class="page__path subtitle">
       <span>My Profile</span>
-      <button class="page__path--closeButton" routerLinkActive="router-link-active" (click)="goBack()">
+      <button
+        class="page__path--closeButton"
+        routerLinkActive="router-link-active"
+        (click)="goBack()"
+      >
         <!-- [routerLink]="['/directory']"  -->
         Back
       </button>
     </div>
 
     <mat-grid-list cols="4" rowHeight="60px">
-
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__title title">
-          ID-{{id}}
-        </div>
+        <div class="page__title title">ID-{{ id }}</div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
@@ -21,27 +22,46 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central textarea">
           <mat-label>Responsible Premier Office</mat-label>
-          <mat-select matNativeControl [(ngModel)]="data_coordinator.responsablePremierOffice">
-            <mat-option *ngFor="let data of ca_office" [value]="data.id">{{data.office}}</mat-option>
+          <mat-select
+            matNativeControl
+            [(ngModel)]="data_coordinator.responsablePremierOffice"
+          >
+            <mat-option *ngFor="let data of ca_office" [value]="data.id">{{
+              data.office
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
-
     </mat-grid-list>
 
     <mat-grid-list cols="4" rowHeight="70px">
-
       <mat-grid-tile [colspan]="1" [rowspan]="3">
         <div class="page__sectionConsultant page__section-inputs no-padding-tb">
-          <div class="page__sectionConsultant page__section-inputs no-padding-tb">
-            <div class="page__sectionConsultant page__section-input--x no-padding-tb">
-              <input type="file" id="file" name="file" class="display-none" accept="image/*" (change)="img( $event)" />
+          <div
+            class="page__sectionConsultant page__section-inputs no-padding-tb"
+          >
+            <div
+              class="page__sectionConsultant page__section-input--x no-padding-tb"
+            >
+              <input
+                type="file"
+                id="file"
+                name="file"
+                class="display-none"
+                accept="image/*"
+                (change)="img($event)"
+              />
               <div class="input__image">
                 <label for="file" class="input__image-label">
                   <div class="input__image-label--cardConsultant">
-                    <img id="lead_client_avatar" src="assets/images/users/avatar.png" />
+                    <img
+                      id="lead_client_avatar"
+                      src="assets/images/users/avatar.png"
+                    />
                   </div>
-                  <span class="input__image-label--cardSpanConsultant">Edit Photo</span>
+                  <span class="input__image-label--cardSpanConsultant"
+                    >Edit Photo</span
+                  >
                 </label>
               </div>
             </div>
@@ -59,9 +79,11 @@
           </button>
         </div> -->
 
-        <div class="flex-img" style="justify-content: space-around; margin: 15px;">
-
-          <img src="assets/email.png" width="30px" alt="">
+        <div
+          class="flex-img"
+          style="justify-content: space-around; margin: 15px"
+        >
+          <!-- <img src="assets/email.png" width="30px" alt="">
 
 
           <div>
@@ -72,22 +94,24 @@
           <div>
             <span class="text-mini gray_05">Total Services</span><br />
             <p class="browser" style="font-weight:600 !important;">0</p>
-          </div>
+          </div> -->
 
           <span>&nbsp;</span>
-
         </div>
-
-
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field class="input_central textarea">
           <mat-label>Name</mat-label>
-          <input id="name" matInput placeholder="Name" type="text" [(ngModel)]="data_coordinator.name" required/>
-          <mat-error *ngIf="validaciones.name">
-            Name required
-          </mat-error>
+          <input
+            id="name"
+            matInput
+            placeholder="Name"
+            type="text"
+            [(ngModel)]="data_coordinator.name"
+            required
+          />
+          <mat-error *ngIf="validaciones.name"> Name required </mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
@@ -95,30 +119,45 @@
         <mat-form-field appearance="fill" class="input_central textarea">
           <mat-label>Title</mat-label>
           <mat-select matNativeControl [(ngModel)]="data_coordinator.title">
-            <mat-option *ngFor="let data of ca_title" [value]="data.id">{{data.title}}</mat-option>
+            <mat-option *ngFor="let data of ca_title" [value]="data.id">{{
+              data.title
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <span class="fixed-label" style="top: 8px !important">Service Line</span>
+        <span class="fixed-label" style="top: 8px !important"
+          >Service Line</span
+        >
         <div class="position-relative page__section">
-          <mat-checkbox class="mat-check-anti-margin" [(ngModel)]="data_coordinator.immigration">Immigration
+          <mat-checkbox
+            class="mat-check-anti-margin"
+            [(ngModel)]="data_coordinator.immigration"
+            >Immigration
           </mat-checkbox>
-          <mat-checkbox class="example-margin" [(ngModel)]="data_coordinator.relocation">Relocation</mat-checkbox>
-          <mat-error style="font-size: 12px;" *ngIf="validaciones.serviceLine">
+          <mat-checkbox
+            class="example-margin"
+            [(ngModel)]="data_coordinator.relocation"
+            >Relocation</mat-checkbox
+          >
+          <mat-error style="font-size: 12px" *ngIf="validaciones.serviceLine">
             Service line required
           </mat-error>
         </div>
-        
       </mat-grid-tile>
-
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central textarea">
           <mat-label>Country</mat-label>
-          <mat-select matNativeControl [(ngModel)]="data_coordinator.country" (ngModelChange)="getCity();">
-            <mat-option *ngFor="let data of ca_country" [value]="data.id">{{data.name}}</mat-option>
+          <mat-select
+            matNativeControl
+            [(ngModel)]="data_coordinator.country"
+            (ngModelChange)="getCity()"
+          >
+            <mat-option *ngFor="let data of ca_country" [value]="data.id">{{
+              data.name
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
@@ -127,48 +166,71 @@
         <mat-form-field appearance="fill" class="input_central textarea">
           <mat-label>City</mat-label>
           <mat-select matNativeControl [(ngModel)]="data_coordinator.city">
-            <mat-option *ngFor="let data of ca_city" [value]="data.id">{{data.city}}</mat-option>
+            <mat-option *ngFor="let data of ca_city" [value]="data.id">{{
+              data.city
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12 comments input_central textarea" style="display: flex;">
-          <div style="width: 100%;">
+        <div
+          class="page__section-data font-size-12 comments input_central textarea"
+          style="display: flex"
+        >
+          <div style="width: 100%">
             <span class="text-mini gray_05">Active Since</span><br />
-            {{data_coordinator.createdDate | date: 'dd MMM yyyy'}}
+            {{ data_coordinator.createdDate | date : "dd MMM yyyy" }}
           </div>
 
-          <div style="text-align:end; width: auto !important;">
+          <div style="text-align: end; width: auto !important">
             <mat-icon class="calendar">calendar_today</mat-icon>
           </div>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <mat-form-field style="width: 40% !important; margin-right: 5%;">
+        <mat-form-field style="width: 40% !important; margin-right: 5%">
           <mat-label>Prefix</mat-label>
           <mat-select matNativeControl [(ngModel)]="prefix">
-            <mat-form-field appearance="outline" style="padding: 5px;">
+            <mat-form-field appearance="outline" style="padding: 5px">
               <mat-label>Prefix</mat-label>
-              <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+              <input
+                matInput
+                placeholder="prefix"
+                [(ngModel)]="typePrefix.countriesName"
+              />
             </mat-form-field>
-            <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+            <mat-option
+              *ngFor="let item of prefixCatalog | filterBy : typePrefix"
+              [value]="item.countriesIsdCode"
+            >
               {{ item.countriesIsdCode }} / {{ item.countriesName }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field style="width: 55% !important;">
+        <mat-form-field style="width: 55% !important">
           <mat-label>Phone Number</mat-label>
-          <input matInput placeholder="Contact Phone" type="number" min="0"
-            [(ngModel)]="data_coordinator.phoneNumber"  (keydown)="validaNumericos($event)"/>
+          <input
+            matInput
+            placeholder="Contact Phone"
+            type="number"
+            min="0"
+            [(ngModel)]="data_coordinator.phoneNumber"
+            (keydown)="validaNumericos($event)"
+          />
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field class="input_central textarea">
           <mat-label>Premier E-mail</mat-label>
-          <input matInput placeholder="Premier E-mail" type="text" [(ngModel)]="data_coordinator.email" />
+          <input
+            matInput
+            placeholder="Premier E-mail"
+            type="text"
+            [(ngModel)]="data_coordinator.email"
+          />
         </mat-form-field>
       </mat-grid-tile>
 
@@ -176,7 +238,9 @@
         <mat-form-field appearance="fill" class="input_central">
           <mat-label>Spoken Languages</mat-label>
           <mat-select multiple [(ngModel)]="data_coordinator.additional">
-            <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{data.name}}</mat-option>
+            <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{
+              data.name
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
@@ -184,14 +248,21 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <mat-form-field class="textarea">
           <mat-label>Professional Biography</mat-label>
-          <input matInput placeholder="Professional Biography" type="text"
-            [(ngModel)]="data_coordinator.professionalBiography" />
+          <input
+            matInput
+            placeholder="Professional Biography"
+            type="text"
+            [(ngModel)]="data_coordinator.professionalBiography"
+          />
         </mat-form-field>
       </mat-grid-tile>
-
     </mat-grid-list>
 
-    <mat-grid-list cols="4" rowHeight="70px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="4"
+      rowHeight="70px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
           <p>My Team</p>
@@ -201,24 +272,54 @@
     </mat-grid-list>
 
     <div class="carts_team_container" [hidden]="permisosConsultant == true">
-      <div class="cart_team mat-elevation-z8"
-        *ngFor="let item_ of data_coordinator.operationLeaderCreatedByNavigations; let i = index">
+      <div
+        class="cart_team mat-elevation-z8"
+        *ngFor="
+          let item_ of data_coordinator.operationLeaderCreatedByNavigations;
+          let i = index
+        "
+      >
         <!-- <img src="{{_services.url_images}}{{getDataTeamPhoto(item_.consultant)}}" class="avatar"> -->
         <img
-          [src]="getDataTeamPhoto(item_.consultant) == '' || getDataTeamPhoto(item_.consultant) == null ? 'assets/images/users/avatar.png' : _services.url_images + getDataTeamPhoto(item_.consultant)"
-          class="avatar">
+          onerror="this.src='./../../../assets/avatar.png'"
+          [src]="
+            getDataTeamPhoto(item_.consultant) == '' ||
+            getDataTeamPhoto(item_.consultant) == null
+              ? 'assets/images/users/avatar.png'
+              : _services.url_images + getDataTeamPhoto(item_.consultant)
+          "
+          class="avatar"
+        />
         <div>
-          <span class="title_card">{{getDataTeam(item_.consultant)}}</span>
-          <span class="title_card">{{getDataTeamTile(item_.consultant)}}</span>
+          <span class="title_card">{{ getDataTeam(item_.consultant) }}</span>
+          <span class="title_card">{{
+            getDataTeamTile(item_.consultant)
+          }}</span>
         </div>
-        <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteOperationLeader(i)" *ngIf="user.role==19">
+        <img
+          src="/assets/icons/delete.png"
+          class="delete_tem"
+          (click)="deleteOperationLeader(i)"
+          *ngIf="user.role == 19"
+        />
       </div>
     </div>
-    <mat-grid-list cols="5" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="5"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="5" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button class="button-icon button-icon--more" (click)="addOperationLeader();" *ngIf="user.role==19">
+          <div
+            class="page__section-button page__section-button--big"
+            style="left: 6px"
+          >
+            <button
+              class="button-icon button-icon--more"
+              (click)="addOperationLeader()"
+              *ngIf="user.role == 19"
+            >
               Add New
             </button>
           </div>
@@ -226,7 +327,11 @@
       </mat-grid-tile>
     </mat-grid-list>
     <!-- client -->
-    <mat-grid-list cols="5" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="5"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea">
           <p class="subtitledos">Clients</p>
@@ -234,16 +339,44 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list cols="4" rowHeight="110px" [hidden]="permisosConsultant == true">
-      <mat-grid-tile *ngFor="let item of ca_cliente" [colspan]="1" [rowspan]="1">
-        <div style="width: 87%; height: 64%; border-radius: 4px; margin-left: -10px;" class="mat-elevation-z8">
-          <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
-            <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
-              <div class="pageCard__section pageCard__section-input--x no-padding-tbCard">
+    <mat-grid-list
+      cols="4"
+      rowHeight="110px"
+      [hidden]="permisosConsultant == true"
+    >
+      <mat-grid-tile
+        *ngFor="let item of ca_cliente"
+        [colspan]="1"
+        [rowspan]="1"
+      >
+        <div
+          style="
+            width: 87%;
+            height: 64%;
+            border-radius: 4px;
+            margin-left: -10px;
+          "
+          class="mat-elevation-z8"
+        >
+          <div
+            class="pageCard__section pageCard__section-inputs no-padding-tbCard"
+          >
+            <div
+              class="pageCard__section pageCard__section-inputs no-padding-tbCard"
+            >
+              <div
+                class="pageCard__section pageCard__section-input--x no-padding-tbCard"
+              >
                 <div class="inputCard__image">
                   <div class="inputCard__image-label--card cursor-pointer">
                     <img
-                      [src]="item.photo == '' || item.photo == null ? 'assets/images/users/avatar.png' : _services.url_images + item.photo">
+                      onerror="this.src='./../../../assets/avatar.png'"
+                      [src]="
+                        item.photo == '' || item.photo == null
+                          ? 'assets/images/users/avatar.png'
+                          : _services.url_images + item.photo
+                      "
+                    />
                   </div>
                 </div>
               </div>
@@ -251,20 +384,32 @@
           </div>
           <div class="divtext">
             <span class="title" title="{{ item.name }}">
-              {{ ( item.name.length > 9 )? ( item.name | slice:0:9 )+ '...' : ( item.name ) }}
-            </span> <br>
+              {{
+                item.name.length > 9
+                  ? (item.name | slice : 0 : 9) + "..."
+                  : item.name
+              }}
+            </span>
+            <br />
 
             <span class="textcard" title="{{ item.country }}">
-              {{ ( item.country.length > 9 )? ( item.country | slice:0:9 )+ '...' : ( item.country ) }}
+              {{
+                item.country.length > 9
+                  ? (item.country | slice : 0 : 9) + "..."
+                  : item.country
+              }}
             </span>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
 
-
     <!-- office -->
-    <mat-grid-list cols="5" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="5"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea">
           <p class="subtitledos">Offices</p>
@@ -272,25 +417,60 @@
       </mat-grid-tile>
     </mat-grid-list>
     <!-- card -->
-    <mat-grid-list cols="5" rowHeight="110px" [hidden]="permisosConsultant == true">
-      <mat-grid-tile *ngFor="let item of data_coordinator.offices; let i = index" [colspan]="1" [rowspan]="1">
-        <div style="width: 87%; height: 64%; border-radius: 4px; margin-left: -10px;" class="mat-elevation-z8">
-          <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
-            <div class="pageCard__section pageCard__section-inputs no-padding-tbCard">
-              <div class="pageCard__section pageCard__section-input--x no-padding-tbCard">
+    <mat-grid-list
+      cols="5"
+      rowHeight="110px"
+      [hidden]="permisosConsultant == true"
+    >
+      <mat-grid-tile
+        *ngFor="let item of data_coordinator.offices; let i = index"
+        [colspan]="1"
+        [rowspan]="1"
+      >
+        <div
+          style="
+            width: 87%;
+            height: 64%;
+            border-radius: 4px;
+            margin-left: -10px;
+          "
+          class="mat-elevation-z8"
+        >
+          <div
+            class="pageCard__section pageCard__section-inputs no-padding-tbCard"
+          >
+            <div
+              class="pageCard__section pageCard__section-inputs no-padding-tbCard"
+            >
+              <div
+                class="pageCard__section pageCard__section-input--x no-padding-tbCard"
+              >
                 <div class="inputCard__image">
                   <div class="inputCard__image-label--card cursor-pointer">
                     <img
-                      [src]="getPhotoOffice(item.office1) == null || getPhotoOffice(item.office1) == '' ? 'assets/images/users/avatar.png' : _services.url_images + getPhotoOffice(item.office1)">
+                      onerror="this.src='./../../../assets/avatar.png'"
+                      [src]="
+                        getPhotoOffice(item.office1) == null ||
+                        getPhotoOffice(item.office1) == ''
+                          ? 'assets/images/users/avatar.png'
+                          : _services.url_images + getPhotoOffice(item.office1)
+                      "
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="divtext-office">
-            <span class="title-office">{{getNameOffice(item.office1)}}</span> <br>
+            <span class="title-office">{{ getNameOffice(item.office1) }}</span>
+            <br />
           </div>
-          <img src="/assets/icons/delete.png" class="delete-office" (click)="deleteOffice(i)" *ngIf="user.role==19">
+          <img
+            src="/assets/icons/delete.png"
+            class="delete-office"
+            (click)="deleteOffice(i)"
+            *ngIf="user.role == 19"
+          />
         </div>
       </mat-grid-tile>
     </mat-grid-list>
@@ -305,11 +485,22 @@
       </div>
     </div> -->
 
-    <mat-grid-list cols="5" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="5"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="5" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button class="button-icon button-icon--more" (click)="addOffice()" *ngIf="user.role==19">
+          <div
+            class="page__section-button page__section-button--big"
+            style="left: 6px"
+          >
+            <button
+              class="button-icon button-icon--more"
+              (click)="addOffice()"
+              *ngIf="user.role == 19"
+            >
               Add New
             </button>
           </div>
@@ -317,7 +508,11 @@
       </mat-grid-tile>
     </mat-grid-list>
     <!-- countries of service -->
-    <mat-grid-list cols="5" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="5"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea">
           <p class="subtitledos">Countries of Services</p>
@@ -326,23 +521,48 @@
     </mat-grid-list>
 
     <div class="carts_team_container" [hidden]="permisosConsultant == true">
-      <div class="cart_team_country mat-elevation-z8"
-        *ngFor="let item of data_coordinator.countryServices; let i = index">
+      <div
+        class="cart_team_country mat-elevation-z8"
+        *ngFor="let item of data_coordinator.countryServices; let i = index"
+      >
         <img
-          [src]="getImageCountry(item.country) == null || getImageCountry(item.country) == '' ? 'assets/images/users/avatar.png' : _services.url_images + getImageCountry(item.country)"
-          class="avatar">
-        <div style="margin-left: 0px;">
-          <span class="text_card">{{getNameCountry(item.country)}}</span>
+          onerror="this.src='./../../../assets/avatar.png'"
+          [src]="
+            getImageCountry(item.country) == null ||
+            getImageCountry(item.country) == ''
+              ? 'assets/images/users/avatar.png'
+              : _services.url_images + getImageCountry(item.country)
+          "
+          class="avatar"
+        />
+        <div style="margin-left: 0px">
+          <span class="text_card">{{ getNameCountry(item.country) }}</span>
         </div>
-        <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteCountry(i)" *ngIf="user.role==19">
+        <img
+          src="/assets/icons/delete.png"
+          class="delete_tem"
+          (click)="deleteCountry(i)"
+          *ngIf="user.role == 19"
+        />
       </div>
     </div>
 
-    <mat-grid-list cols="5" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="5"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="5" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button class="button-icon button-icon--more" (click)="addCountry()" *ngIf="user.role==19">
+          <div
+            class="page__section-button page__section-button--big"
+            style="left: 6px"
+          >
+            <button
+              class="button-icon button-icon--more"
+              (click)="addCountry()"
+              *ngIf="user.role == 19"
+            >
               Add New
             </button>
           </div>
@@ -374,26 +594,41 @@
           <th class="mat-header-cell">Capacity</th>
           <th class="mat-header-cell"></th>
         </tr>
-        <tr class="mat-row" *ngFor="let data of data_coordinator.vehicleConsultants; let i = index">
-          <td class="mat-cell">{{getVehicle(data.vehicleType)}}</td>
-          <td class="mat-cell">{{data.vehicleMake}}</td>
-          <td class="mat-cell">{{data.vehicleModel}}</td>
-          <td class="mat-cell">{{data.year}}</td>
-          <td class="mat-cell">{{data.plateNumber}}</td>
-          <td class="mat-cell">{{data.capacity}}</td>
+        <tr
+          class="mat-row"
+          *ngFor="
+            let data of data_coordinator.vehicleConsultants;
+            let i = index
+          "
+        >
+          <td class="mat-cell">{{ getVehicle(data.vehicleType) }}</td>
+          <td class="mat-cell">{{ data.vehicleMake }}</td>
+          <td class="mat-cell">{{ data.vehicleModel }}</td>
+          <td class="mat-cell">{{ data.year }}</td>
+          <td class="mat-cell">{{ data.plateNumber }}</td>
+          <td class="mat-cell">{{ data.capacity }}</td>
           <td class="mat-cell">
-            <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editVehicle(data, i);">
+            <img
+              src="assets\icons\pencil.png"
+              style="width: 20px"
+              (click)="editVehicle(data, i)"
+            />
           </td>
         </tr>
       </table>
       <!--CLOSE TABLE PAYMENTS VEHICLE-->
       <!--------------------------------------------------------------------------------------->
       <mat-grid-list cols="4" rowHeight="60px">
-
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" style="left: 6px;">
-              <button class="button-icon button-icon--more" (click)="addVehicle()">
+            <div
+              class="page__section-button page__section-button--big"
+              style="left: 6px"
+            >
+              <button
+                class="button-icon button-icon--more"
+                (click)="addVehicle()"
+              >
                 Add New Vehicle
               </button>
             </div>
@@ -401,8 +636,11 @@
         </mat-grid-tile>
       </mat-grid-list>
 
-
-      <mat-grid-list cols="4" rowHeight="60px" *ngIf="data_coordinator.personalInformation">
+      <mat-grid-list
+        cols="4"
+        rowHeight="60px"
+        *ngIf="data_coordinator.personalInformation"
+      >
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="textarea">
             <p class="subtitledos">Personal Information</p>
@@ -412,20 +650,32 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Current Address</mat-label>
-            <input id="address" matInput placeholder="Current Address" type="text" ngi
-              [(ngModel)]="data_coordinator.personalInformation.currentAddress" required />
-              <mat-error *ngIf="validaciones.address">
-                Current address required
-              </mat-error>
+            <input
+              id="address"
+              matInput
+              placeholder="Current Address"
+              type="text"
+              ngi
+              [(ngModel)]="data_coordinator.personalInformation.currentAddress"
+              required
+            />
+            <mat-error *ngIf="validaciones.address">
+              Current address required
+            </mat-error>
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central textarea">
             <mat-label>Country</mat-label>
-            <mat-select matNativeControl [(ngModel)]="data_coordinator.personalInformation.country"
-              (ngModelChange)="getCity()">
-              <mat-option *ngFor="let data of ca_country" [value]="data.id">{{data.name}}</mat-option>
+            <mat-select
+              matNativeControl
+              [(ngModel)]="data_coordinator.personalInformation.country"
+              (ngModelChange)="getCity()"
+            >
+              <mat-option *ngFor="let data of ca_country" [value]="data.id">{{
+                data.name
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
@@ -433,8 +683,13 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central textarea">
             <mat-label>City</mat-label>
-            <mat-select matNativeControl [(ngModel)]="data_coordinator.personalInformation.city">
-              <mat-option *ngFor="let data of ca_city" [value]="data.id">{{data.city}}</mat-option>
+            <mat-select
+              matNativeControl
+              [(ngModel)]="data_coordinator.personalInformation.city"
+            >
+              <mat-option *ngFor="let data of ca_city" [value]="data.id">{{
+                data.city
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
@@ -442,8 +697,12 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>ZIP Code</mat-label>
-            <input matInput placeholder="ZIP Code" type="text"
-              [(ngModel)]="data_coordinator.personalInformation.zipCode" />
+            <input
+              matInput
+              placeholder="ZIP Code"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.zipCode"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
@@ -453,9 +712,17 @@
           <div class="input_central textarea">
             <mat-form-field appearance="fill">
               <mat-label>Date of Birth</mat-label>
-              <input matInput required [matDatepicker]="pickerocho" placeholder="Date of Birth"
-                [(ngModel)]="data_coordinator.personalInformation.dateBirth">
-              <mat-datepicker-toggle matSuffix [for]="pickerocho"></mat-datepicker-toggle>
+              <input
+                matInput
+                required
+                [matDatepicker]="pickerocho"
+                placeholder="Date of Birth"
+                [(ngModel)]="data_coordinator.personalInformation.dateBirth"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="pickerocho"
+              ></mat-datepicker-toggle>
               <mat-datepicker #pickerocho></mat-datepicker>
             </mat-form-field>
           </div>
@@ -464,45 +731,71 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Nationality</mat-label>
-            <input matInput placeholder="Nationality" type="text"
-              [(ngModel)]="data_coordinator.personalInformation.nationality" />
+            <input
+              matInput
+              placeholder="Nationality"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.nationality"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Personal E-mail</mat-label>
-            <input matInput placeholder="Personal E-mail" type="text"
-              [(ngModel)]="data_coordinator.personalInformation.personalEmail" />
+            <input
+              matInput
+              placeholder="Personal E-mail"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.personalEmail"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field style="width: 40% !important; margin-right: 5%;">
+          <mat-form-field style="width: 40% !important; margin-right: 5%">
             <mat-label>Prefix</mat-label>
             <mat-select matNativeControl [(ngModel)]="prefixPersonal">
-              <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-form-field appearance="outline" style="padding: 5px">
                 <mat-label>Prefix</mat-label>
-                <input matInput placeholder="prefix" [(ngModel)]="typePrefixPersonal.countriesName">
+                <input
+                  matInput
+                  placeholder="prefix"
+                  [(ngModel)]="typePrefixPersonal.countriesName"
+                />
               </mat-form-field>
-              <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefixPersonal;"
-                [value]="item.countriesIsdCode">
+              <mat-option
+                *ngFor="
+                  let item of prefixCatalog | filterBy : typePrefixPersonal
+                "
+                [value]="item.countriesIsdCode"
+              >
                 {{ item.countriesIsdCode }} / {{ item.countriesName }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field style="width: 55% !important;">
+          <mat-form-field style="width: 55% !important">
             <mat-label>Personal Phone</mat-label>
-            <input matInput placeholder="Personal Phone" type="number" min="0"  (keydown)="validaNumericos($event)"
-              [(ngModel)]="data_coordinator.personalInformation.personalPhone" />
+            <input
+              matInput
+              placeholder="Personal Phone"
+              type="number"
+              min="0"
+              (keydown)="validaNumericos($event)"
+              [(ngModel)]="data_coordinator.personalInformation.personalPhone"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Allergies</mat-label>
-            <input matInput placeholder="Personal Phone" type="text"
-              [(ngModel)]="data_coordinator.personalInformation.allergies" />
+            <input
+              matInput
+              placeholder="Personal Phone"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.allergies"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
@@ -515,15 +808,24 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>School</mat-label>
-            <input matInput placeholder="School" type="text"
-              [(ngModel)]="data_coordinator.personalInformation.school" />
+            <input
+              matInput
+              placeholder="School"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.school"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Major</mat-label>
-            <input matInput placeholder="Major" type="text" [(ngModel)]="data_coordinator.personalInformation.major" />
+            <input
+              matInput
+              placeholder="Major"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.major"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
@@ -531,9 +833,17 @@
           <div class="input_central textarea">
             <mat-form-field appearance="fill">
               <mat-label>Graduation Year</mat-label>
-              <input matInput required [matDatepicker]="picker" placeholder="Graduation Year"
-                [(ngModel)]="data_coordinator.personalInformation.graduation">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <input
+                matInput
+                required
+                [matDatepicker]="picker"
+                placeholder="Graduation Year"
+                [(ngModel)]="data_coordinator.personalInformation.graduation"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </div>
@@ -550,8 +860,12 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <mat-form-field class="input_central textarea">
             <mat-label>Hobbies & Passions</mat-label>
-            <input matInput placeholder="Hobbies & Passions" type="text"
-              [(ngModel)]="data_coordinator.personalInformation.hobbiesPassions" />
+            <input
+              matInput
+              placeholder="Hobbies & Passions"
+              type="text"
+              [(ngModel)]="data_coordinator.personalInformation.hobbiesPassions"
+            />
           </mat-form-field>
         </mat-grid-tile>
 
@@ -560,12 +874,14 @@
             <p class="subtitledos">Emergency Contact</p>
           </div>
         </mat-grid-tile>
-
       </mat-grid-list>
 
       <!--------------------------------------------------------------------------------------->
       <!--TABLE EMERGENCY CONTACT -->
-      <table class="mat-elevation-z8 textarea mat-table" *ngIf="data_coordinator.personalInformation">
+      <table
+        class="mat-elevation-z8 textarea mat-table"
+        *ngIf="data_coordinator.personalInformation"
+      >
         <tr class="mat-header-row">
           <th class="mat-header-cell">Contact Name</th>
           <th class="mat-header-cell">Relationship</th>
@@ -574,14 +890,24 @@
           <th class="mat-header-cell">Location</th>
           <th class="mat-header-cell"></th>
         </tr>
-        <tr class="mat-row" *ngFor="let data of data_coordinator.personalInformation.emergencyContacts; let i = index">
-          <td class="mat-cell">{{data.contactName}}</td>
-          <td class="mat-cell">{{data.relationship}}</td>
-          <td class="mat-cell">{{data.phoneNumber}}</td>
-          <td class="mat-cell">{{data.homeNumber}}</td>
-          <td class="mat-cell">{{data.location}}</td>
+        <tr
+          class="mat-row"
+          *ngFor="
+            let data of data_coordinator.personalInformation.emergencyContacts;
+            let i = index
+          "
+        >
+          <td class="mat-cell">{{ data.contactName }}</td>
+          <td class="mat-cell">{{ data.relationship }}</td>
+          <td class="mat-cell">{{ data.phoneNumber }}</td>
+          <td class="mat-cell">{{ data.homeNumber }}</td>
+          <td class="mat-cell">{{ data.location }}</td>
           <td class="mat-cell">
-            <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editContact(data,i)">
+            <img
+              src="assets\icons\pencil.png"
+              style="width: 20px"
+              (click)="editContact(data, i)"
+            />
           </td>
         </tr>
       </table>
@@ -591,8 +917,14 @@
       <mat-grid-list cols="4" rowHeight="70px">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" style="left: 6px;">
-              <button class="button-icon button-icon--more" (click)='addContact();'>
+            <div
+              class="page__section-button page__section-button--big"
+              style="left: 6px"
+            >
+              <button
+                class="button-icon button-icon--more"
+                (click)="addContact()"
+              >
                 Add New Contact
               </button>
             </div>
@@ -601,11 +933,14 @@
       </mat-grid-list>
     </div>
 
-
     <!----------------------------------------------------------------------------------->
     <!--SECCION PARA RECURSOS HUMANOS "HABILITAR CUANDO SE TENGA EL ROL ASIGNADO"-->
 
-    <mat-grid-list cols="4" rowHeight="70px" *ngxPermissionsOnly="['Human Resources']">
+    <mat-grid-list
+      cols="4"
+      rowHeight="70px"
+      *ngxPermissionsOnly="['Human Resources']"
+    >
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
           <p class="subtitledos">Compensation & Benefits</p>
@@ -614,13 +949,23 @@
     </mat-grid-list>
 
     <div *ngIf="data_coordinator.personalInformation">
-      <div *ngFor="let item of data_coordinator.personalInformation.compesationBenefits">
-        <mat-grid-list cols="4" rowHeight="70px" *ngxPermissionsOnly="['Human Resources']">
+      <div
+        *ngFor="
+          let item of data_coordinator.personalInformation.compesationBenefits
+        "
+      >
+        <mat-grid-list
+          cols="4"
+          rowHeight="70px"
+          *ngxPermissionsOnly="['Human Resources']"
+        >
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <mat-form-field appearance="fill" class="input_central textarea">
               <mat-label>Place of Work</mat-label>
               <mat-select matNativeControl [(ngModel)]="item.placeWork">
-                <mat-option *ngFor="let data of ca_office" [value]="data.id">{{data.office}}</mat-option>
+                <mat-option *ngFor="let data of ca_office" [value]="data.id">{{
+                  data.office
+                }}</mat-option>
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
@@ -628,8 +973,13 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <mat-form-field class="input_central textarea">
               <mat-label>Base Compensation</mat-label>
-              <input matInput placeholder="Base Compensation" type="number" min="O"
-                [(ngModel)]="item.baseCompesation" />
+              <input
+                matInput
+                placeholder="Base Compensation"
+                type="number"
+                min="O"
+                [(ngModel)]="item.baseCompesation"
+              />
             </mat-form-field>
           </mat-grid-tile>
 
@@ -637,7 +987,11 @@
             <mat-form-field appearance="fill" class="input_central textarea">
               <mat-label>Currency</mat-label>
               <mat-select matNativeControl [(ngModel)]="item.currency">
-                <mat-option *ngFor="let data of ca_currency" [value]="data.id">{{data.currency}}</mat-option>
+                <mat-option
+                  *ngFor="let data of ca_currency"
+                  [value]="data.id"
+                  >{{ data.currency }}</mat-option
+                >
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
@@ -645,7 +999,13 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <mat-form-field class="input_central textarea">
               <mat-label>Taxes</mat-label>
-              <input matInput placeholder="Taxes" type="number" min="0" [(ngModel)]="item.taxes" />
+              <input
+                matInput
+                placeholder="Taxes"
+                type="number"
+                min="0"
+                [(ngModel)]="item.taxes"
+              />
             </mat-form-field>
           </mat-grid-tile>
 
@@ -653,7 +1013,9 @@
             <mat-form-field appearance="fill" class="input_central textarea">
               <mat-label>Benefit</mat-label>
               <mat-select matNativeControl [(ngModel)]="item.benefit">
-                <mat-option *ngFor="let data of ca_benefit" [value]="data.id">{{data.benefit}}</mat-option>
+                <mat-option *ngFor="let data of ca_benefit" [value]="data.id">{{
+                  data.benefit
+                }}</mat-option>
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
@@ -661,7 +1023,13 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <mat-form-field class="input_central textarea">
               <mat-label>Ammount</mat-label>
-              <input matInput placeholder="Ammount" type="number" min="0" [(ngModel)]="item.ammount" />
+              <input
+                matInput
+                placeholder="Ammount"
+                type="number"
+                min="0"
+                [(ngModel)]="item.ammount"
+              />
             </mat-form-field>
           </mat-grid-tile>
 
@@ -669,7 +1037,11 @@
             <mat-form-field appearance="fill" class="input_central textarea">
               <mat-label>Frequency</mat-label>
               <mat-select matNativeControl [(ngModel)]="item.frequency">
-                <mat-option *ngFor="let data of ca_duration" [value]="data.id">{{data.recurrence}}</mat-option>
+                <mat-option
+                  *ngFor="let data of ca_duration"
+                  [value]="data.id"
+                  >{{ data.recurrence }}</mat-option
+                >
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
@@ -679,12 +1051,21 @@
       </div>
     </div>
 
-
-    <mat-grid-list cols="4" rowHeight="70px" *ngxPermissionsOnly="['Human Resources']">
+    <mat-grid-list
+      cols="4"
+      rowHeight="70px"
+      *ngxPermissionsOnly="['Human Resources']"
+    >
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
-            <button class="button-icon button-icon--more" (click)="addBenefit()">
+          <div
+            class="page__section-button page__section-button--big"
+            style="left: 6px"
+          >
+            <button
+              class="button-icon button-icon--more"
+              (click)="addBenefit()"
+            >
               Add Benefit
             </button>
           </div>
@@ -692,13 +1073,20 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list cols="4" rowHeight="70px" *ngxPermissionsOnly="['Human Resources']">
-
+    <mat-grid-list
+      cols="4"
+      rowHeight="70px"
+      *ngxPermissionsOnly="['Human Resources']"
+    >
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field class="input_central textarea">
           <mat-label>Total Compensation</mat-label>
-          <input matInput placeholder="Total Compensation" type="text"
-            [(ngModel)]="data_coordinator.personalInformation.totalCompesation" />
+          <input
+            matInput
+            placeholder="Total Compensation"
+            type="text"
+            [(ngModel)]="data_coordinator.personalInformation.totalCompesation"
+          />
         </mat-form-field>
       </mat-grid-tile>
 
@@ -707,48 +1095,70 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <mat-form-field class="input_central textarea">
           <mat-label>RH Comments</mat-label>
-          <input matInput placeholder="RH Comments" type="text"
-            [(ngModel)]="data_coordinator.personalInformation.rhComments" />
+          <input
+            matInput
+            placeholder="RH Comments"
+            type="text"
+            [(ngModel)]="data_coordinator.personalInformation.rhComments"
+          />
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-
     </mat-grid-list>
     <!--TERMINA SECCION BENEFITS PARA RECURSOS HUMANOS-->
     <!--------------------------------------------------------------------------------->
-
-
 
     <div [hidden]="permisosConsultant == true">
       <mat-grid-list cols="4" rowHeight="100px">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
             <p class="page__section-name">Payment Information</p>
-            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_coordinator.togglePayment">
+            <mat-slide-toggle
+              (change)="paymentInformation($event)"
+              [checked]="data_coordinator.togglePayment"
+            >
             </mat-slide-toggle>
           </div>
         </mat-grid-tile>
       </mat-grid-list>
 
-      <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;" *ngIf="show">
-        <div *ngFor="let item_ of data_coordinator.personalInformation.paymentInformationProfiles">
+      <div
+        class="mat-elevation-z5"
+        style="padding: 10px; margin-top: 20px; margin-bottom: 20px"
+        *ngIf="show"
+      >
+        <div
+          *ngFor="
+            let item_ of data_coordinator.personalInformation
+              .paymentInformationProfiles
+          "
+        >
           <mat-grid-list cols="4" rowHeight="70px">
             <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div style="display: flex; justify-content: space-between; width: 100%;">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
+                "
+              >
                 <span>
-                  <p class="subtitle" style="font-size: 12px;">
+                  <p class="subtitle" style="font-size: 12px">
                     Payment Methods
                   </p>
-                  <mat-checkbox class="example-margin" style="display: none;">
-                    <span class="subtitle" style="font-size: 12px;">Credit Card</span>
+                  <mat-checkbox class="example-margin" style="display: none">
+                    <span class="subtitle" style="font-size: 12px"
+                      >Credit Card</span
+                    >
                   </mat-checkbox>
                 </span>
                 <span>
-                  <p class="subtitle" style="font-size: 12px;">
-                    Fiscal Invoice
-                  </p>
-                  <mat-checkbox class="example-margin" [(ngModel)]="item_.fiscalInvoice">
+                  <p class="subtitle" style="font-size: 12px">Fiscal Invoice</p>
+                  <mat-checkbox
+                    class="example-margin"
+                    [(ngModel)]="item_.fiscalInvoice"
+                  >
                   </mat-checkbox>
                 </span>
               </div>
@@ -756,19 +1166,27 @@
 
             <mat-grid-tile [colspan]="4" [rowspan]="1">
               <div class="textarea textarea">
-                <mat-checkbox class="example-margin" [(ngModel)]="item_.wireTransfer">
-                  <span class="subtitle" style="font-size: 12px;">Wire Transfer</span>
+                <mat-checkbox
+                  class="example-margin"
+                  [(ngModel)]="item_.wireTransfer"
+                >
+                  <span class="subtitle" style="font-size: 12px"
+                    >Wire Transfer</span
+                  >
                 </mat-checkbox>
               </div>
             </mat-grid-tile>
-
 
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Account Type</mat-label>
                   <mat-select [(ngModel)]="item_.accountType">
-                    <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}</mat-option>
+                    <mat-option
+                      *ngFor="let item of ca_accountType"
+                      [value]="item.id"
+                      >{{ item.accountType }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -778,9 +1196,18 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Account Holders Name</mat-label>
-                  <input matInput required placeholder="Account Holders Name" type="text" #message_holdername
-                    maxlength="100" [(ngModel)]="item_.accountHoldersName">
-                  <mat-hint align="end">{{message_holdername.value.length}} / 100</mat-hint>
+                  <input
+                    matInput
+                    required
+                    placeholder="Account Holders Name"
+                    type="text"
+                    #message_holdername
+                    maxlength="100"
+                    [(ngModel)]="item_.accountHoldersName"
+                  />
+                  <mat-hint align="end"
+                    >{{ message_holdername.value.length }} / 100</mat-hint
+                  >
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -789,9 +1216,18 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Bank Name</mat-label>
-                  <input matInput required placeholder="Bank Name" type="text" #message_bankname maxlength="100"
-                    [(ngModel)]="item_.bankName">
-                  <mat-hint align="end">{{message_bankname.value.length}} / 100</mat-hint>
+                  <input
+                    matInput
+                    required
+                    placeholder="Bank Name"
+                    type="text"
+                    #message_bankname
+                    maxlength="100"
+                    [(ngModel)]="item_.bankName"
+                  />
+                  <mat-hint align="end"
+                    >{{ message_bankname.value.length }} / 100</mat-hint
+                  >
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -799,7 +1235,13 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Account Number</mat-label>
-                  <input matInput required placeholder="Account Number" type="number" [(ngModel)]="item_.accountNumber">
+                  <input
+                    matInput
+                    required
+                    placeholder="Account Number"
+                    type="number"
+                    [(ngModel)]="item_.accountNumber"
+                  />
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -807,8 +1249,13 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Routing Number (ABA)</mat-label>
-                  <input matInput required placeholder="Routing Number (ABA)" type="number"
-                    [(ngModel)]="item_.routingNumber">
+                  <input
+                    matInput
+                    required
+                    placeholder="Routing Number (ABA)"
+                    type="number"
+                    [(ngModel)]="item_.routingNumber"
+                  />
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -816,8 +1263,12 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-                  <input matInput required placeholder="SWIFT / BIC Code ( If Applies)"
-                    [(ngModel)]="item_.swiftBicCode">
+                  <input
+                    matInput
+                    required
+                    placeholder="SWIFT / BIC Code ( If Applies)"
+                    [(ngModel)]="item_.swiftBicCode"
+                  />
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -826,8 +1277,15 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Currency</mat-label>
-                  <mat-select placeholder="Currency" [(ngModel)]="item_.currency">
-                    <mat-option *ngFor="let data of ca_currency" [value]="data.id">{{data.currency}}</mat-option>
+                  <mat-select
+                    placeholder="Currency"
+                    [(ngModel)]="item_.currency"
+                  >
+                    <mat-option
+                      *ngFor="let data of ca_currency"
+                      [value]="data.id"
+                      >{{ data.currency }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -837,8 +1295,14 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Wire Fee Approx</mat-label>
-                  <input matInput required placeholder="Wire Fee Approx" type="number" min="0"
-                    [(ngModel)]="item_.wireFeeApprox">
+                  <input
+                    matInput
+                    required
+                    placeholder="Wire Fee Approx"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="item_.wireFeeApprox"
+                  />
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -847,37 +1311,52 @@
               <div class="input_final textarea">
                 <mat-form-field appearance="fill">
                   <mat-label>Bank Address</mat-label>
-                  <input matInput required placeholder="Bank Address" type="text" #message_bankaddress maxlength="150"
-                    [(ngModel)]="item_.bankAddress">
-                  <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
+                  <input
+                    matInput
+                    required
+                    placeholder="Bank Address"
+                    type="text"
+                    #message_bankaddress
+                    maxlength="150"
+                    [(ngModel)]="item_.bankAddress"
+                  />
+                  <mat-hint align="end"
+                    >{{ message_bankaddress.value.length }} / 150</mat-hint
+                  >
                 </mat-form-field>
               </div>
             </mat-grid-tile>
 
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_final">
-                <p class="subtitle" style="font-size: 12px; margin: 0;">International Payment Acceptance</p>
-                <mat-checkbox class="example-margin" [(ngModel)]="item_.internationalPaymentAcceptance">
+                <p class="subtitle" style="font-size: 12px; margin: 0">
+                  International Payment Acceptance
+                </p>
+                <mat-checkbox
+                  class="example-margin"
+                  [(ngModel)]="item_.internationalPaymentAcceptance"
+                >
                 </mat-checkbox>
               </div>
             </mat-grid-tile>
 
             <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
           </mat-grid-list>
         </div>
       </div>
     </div>
 
-
-    <mat-grid-list cols="4" rowHeight="60px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="4"
+      rowHeight="60px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
           <p class="page__section-name">Documents</p>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
 
     <!----------------------------------------------------------------------------------------->
     <!--UPLOAD DOCUMENT-->
@@ -906,52 +1385,94 @@
           </div>
         </div>
 
-        <div class="page__section documents__ascard"
-          *ngFor="let item of data_coordinator.documentConsultantContactsConsultants">
-          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;">
-          <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important; margin-right: 25px;" (click)="openFileOnWindow(item.filePath)">
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getNameDocument(item.documentType)}}
+        <div
+          class="page__section documents__ascard"
+          *ngFor="
+            let item of data_coordinator.documentConsultantContactsConsultants
+          "
+        >
+          <img
+            src="assets/icons/quit.svg"
+            class="page__section--card-closeButton delete"
+            style="background: transparent !important"
+          />
+          <img
+            src="../../../../assets/icons/eye-view.svg"
+            class="page__section--card-closeButton delete"
+            style="background: transparent !important; margin-right: 25px"
+            (click)="openFileOnWindow(item.filePath)"
+          />
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ getNameDocument(item.documentType) }}
           </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{item.createdDate | date: 'dd MMM yyyy'}}
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ item.createdDate | date : "dd MMM yyyy" }}
           </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getDocumentStatus(item.status)}}
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ getDocumentStatus(item.status) }}
           </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getNamePrivacy(item.privacy)}}
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ getNamePrivacy(item.privacy) }}
           </div>
         </div>
 
-
-        <div class="page__section documents__ascard" *ngFor="let item of temporalDocument; let i = index">
-          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" (click)="deleteDocument(i)">
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getNameDocument(item.documentType)}}
+        <div
+          class="page__section documents__ascard"
+          *ngFor="let item of temporalDocument; let i = index"
+        >
+          <img
+            src="assets/icons/quit.svg"
+            class="page__section--card-closeButton delete"
+            style="background: transparent !important"
+            (click)="deleteDocument(i)"
+          />
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ getNameDocument(item.documentType) }}
           </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{item.createdDate | date: 'dd MMM yyyy'}}
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ item.createdDate | date : "dd MMM yyyy" }}
           </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getDocumentStatus(item.status)}}
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ getDocumentStatus(item.status) }}
           </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getNamePrivacy(item.privacy)}}
+          <div
+            class="page__section-input page__section-input--25 documents__ascard--task"
+          >
+            {{ getNamePrivacy(item.privacy) }}
           </div>
         </div>
       </div>
     </mat-grid-list>
 
-    <mat-grid-list cols="4" rowHeight="70px" [hidden]="permisosConsultant == true">
+    <mat-grid-list
+      cols="4"
+      rowHeight="70px"
+      [hidden]="permisosConsultant == true"
+    >
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big"
-            style="flex: 0 1 180px !important; left: 6px !important;">
-            <button class="button-icon button-icon--more" (click)="addDocument()">
+          <div
+            class="page__section-button page__section-button--big"
+            style="flex: 0 1 180px !important; left: 6px !important"
+          >
+            <button
+              class="button-icon button-icon--more"
+              (click)="addDocument()"
+            >
               Add New Document
             </button>
           </div>
@@ -1059,11 +1580,18 @@
       </div>
     </div> -->
 
-
-    <mat-grid-list cols="4" rowHeight="100px" [hidden]="permisosConsultant == true" class="page__section margin-top-mini page__section--justify-end">
+    <mat-grid-list
+      cols="4"
+      rowHeight="100px"
+      [hidden]="permisosConsultant == true"
+      class="page__section margin-top-mini page__section--justify-end"
+    >
       <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section margin-top-mini page__section--justify-end" *ngIf="user.role.id==19">
+        <div
+          class="page__section margin-top-mini page__section--justify-end"
+          *ngIf="user.role.id == 19"
+        >
           <div class="page__section-buttong btn-size">
             <button (click)="deleteProfile()">Delete</button>
           </div>
@@ -1077,6 +1605,5 @@
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
   </div>
 </div>

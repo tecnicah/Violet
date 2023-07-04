@@ -9,6 +9,7 @@ import { DialogDocumentsComponent } from '../dialog-documents/dialog-documents.c
 import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/dialog-request-payment-new.component';
 import { DialogDeletepaymentconceptComponent } from '../dialog-deletepaymentconcept/dialog-deletepaymentconcept.component';
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
+import { WorkPartnerI } from 'app/interfaces/dtoWork.interface';
 
 
 @Component({
@@ -21,6 +22,14 @@ export class OtherComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
+  datos: WorkPartnerI = {
+    workOrderServicesId: 0,
+    partner_id: 0
+  };
+
+  isVisible : boolean =false;
+
+  
   loader: LoaderComponent = new LoaderComponent();
   user: any;
   show: boolean = false;
@@ -160,6 +169,14 @@ export class OtherComponent implements OnInit {
       if (resp.success) {
         this.loader.hideLoader();
         this.dataOther = resp.result;
+
+        console.log("---------",this.dataOther);
+
+
+        this.datos.workOrderServicesId = this.dataOther.workOrderServices;
+        this.datos.partner_id = this.data.data.partnerId;
+        this.isVisible = true;
+
         this.getServiceScope();
         this.getdeliver();
         this.get_payment();

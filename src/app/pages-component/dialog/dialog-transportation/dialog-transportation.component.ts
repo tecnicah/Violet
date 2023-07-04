@@ -16,6 +16,7 @@ import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocati
 import { json } from '@angular-devkit/core';
 import { stringify } from 'querystring';
 import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
+import { WorkPartnerI } from 'app/interfaces/dtoWork.interface';
 
 
 
@@ -65,6 +66,13 @@ export class DialogTransportationComponent implements OnInit {
   loader: LoaderComponent = new LoaderComponent();
   show: boolean = false;
   serviceScope = null;
+
+  datos: WorkPartnerI = {
+    workOrderServicesId: 0,
+    partner_id: 0
+  };
+
+  isVisible : boolean =false;
 
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
@@ -247,9 +255,19 @@ change_button(){
       //debugger;
       if (data.success) {
         
+
         console.log("Transport", data.result);
+
+
         if (data.result.value.length > 0) {
+
+
+
           this.transportation = data.result.value[0];
+          this.datos.workOrderServicesId = this.transportation.workOrderServicesId;
+          this.datos.partner_id = this.data.data.partnerId;
+          this.isVisible =true;
+
           this.setup_permissions_settings();
           this.getServiceScope();
           this.get_text_status();

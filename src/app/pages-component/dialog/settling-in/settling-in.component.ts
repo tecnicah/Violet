@@ -37,7 +37,11 @@ export class SettlingInComponent implements OnInit {
   constructor(public router: Router, public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _services: ServiceGeneralService,
-    public _dialog: MatDialog) { }
+    public _dialog: MatDialog) {
+      console.log("data----",data)
+     
+      
+     }
 
 
   calculo: any = {};

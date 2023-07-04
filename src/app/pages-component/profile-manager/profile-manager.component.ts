@@ -67,7 +67,16 @@ export class ProfileManagerComponent implements OnInit {
           this.getCity();
           this.loader.hideLoader();
           if(this.data_coordinator.photo != null && this.data_coordinator.photo != ''){
-            document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data_coordinator.photo);
+            // document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data_coordinator.photo);
+            const image = new Image();
+            image.src = this._services.url_images + this.data_coordinator.photo;
+            image.onload = function() {
+              document.getElementById('lead_client_avatar').setAttribute('src', image.src);
+            };
+
+            image.onerror = function() {
+              document.getElementById('lead_client_avatar').setAttribute('src', './../../../assets/avatar.png');
+            };
           }
           let language_additional;
           this.data_coordinator.additional = [];
@@ -121,6 +130,7 @@ export class ProfileManagerComponent implements OnInit {
 
 
   }
+  workingPlaceholder ='./../../../assets/avatar.png';
   goBack() {
     window.history.back();
   }
@@ -226,7 +236,7 @@ export class ProfileManagerComponent implements OnInit {
        }
     })
 
-    this._services.service_general_get('Catalogue/GetDocumentType/1').subscribe((data => {
+    this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
       if (data.success) {
           this.ca_documentType = data.result;
       }
@@ -595,6 +605,7 @@ export class ProfileManagerComponent implements OnInit {
       }
     }
   }
+
   //FUNCION PARA CONSULTA DE FOTOGRAFIA//
   getDataTeamPhoto(id){
     for (let i = 0; i < this.ca_assignedTeam.length; i++) {
