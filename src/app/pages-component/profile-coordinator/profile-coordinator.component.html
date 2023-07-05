@@ -279,15 +279,11 @@
           let i = index
         "
       >
-        <!-- <img src="{{_services.url_images}}{{getDataTeamPhoto(item_.consultant)}}" class="avatar"> -->
         <img
+          src="{{ _services.url_images }}{{
+            getDataTeamPhoto(item_.consultant)
+          }}"
           onerror="this.src='./../../../assets/avatar.png'"
-          [src]="
-            getDataTeamPhoto(item_.consultant) == '' ||
-            getDataTeamPhoto(item_.consultant) == null
-              ? 'assets/images/users/avatar.png'
-              : _services.url_images + getDataTeamPhoto(item_.consultant)
-          "
           class="avatar"
         />
         <div>
@@ -300,11 +296,12 @@
           src="/assets/icons/delete.png"
           class="delete_tem"
           (click)="deleteOperationLeader(i)"
-          *ngIf="user.role == 19"
         />
       </div>
     </div>
-    <mat-grid-list
+
+   
+    <!-- <mat-grid-list
       cols="5"
       rowHeight="60px"
       [hidden]="permisosConsultant == true"
@@ -325,7 +322,7 @@
           </div>
         </div>
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> -->
     <!-- client -->
     <mat-grid-list
       cols="5"
@@ -339,11 +336,30 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list
+    <div class="carts_team_container" [hidden]="permisosConsultant == true">
+      <div class="cart_team mat-elevation-z8" *ngFor="let item of ca_cliente">
+        <img
+          onerror="this.src='./../../../assets/avatar.png'"
+          [src]="
+            item.photo == '' || item.photo == null
+              ? 'assets/images/users/avatar.png'
+              : _services.url_images + item.photo
+          "
+          class="avatar"
+        />
+        <div>
+          <span class="title_card">{{ item.name }}</span>
+          <span class="text_card">{{ item.country }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- <mat-grid-list
       cols="4"
       rowHeight="110px"
       [hidden]="permisosConsultant == true"
     >
+    
       <mat-grid-tile
         *ngFor="let item of ca_cliente"
         [colspan]="1"
@@ -402,7 +418,7 @@
           </div>
         </div>
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> -->
 
     <!-- office -->
     <mat-grid-list
@@ -417,6 +433,33 @@
       </mat-grid-tile>
     </mat-grid-list>
     <!-- card -->
+    <div class="carts_team_container" [hidden]="permisosConsultant == true">
+      <div
+        class="cart_team_office mat-elevation-z8"
+        *ngFor="let item of data_coordinator.offices; let i = index"
+      >
+        <img
+          onerror="this.src='./../../../assets/avatar.png'"
+          [src]="
+            getPhotoOffice(item.office1) == null ||
+            getPhotoOffice(item.office1) == ''
+              ? 'assets/images/users/avatar.png'
+              : _services.url_images + getPhotoOffice(item.office1)
+          "
+          class="avatar"
+        />
+        <div>
+          <span class="text_card">{{ getNameOffice(item.office1) }}</span>
+        </div>
+        <img
+          src="/assets/icons/delete.png"
+          class="delete_tem"
+          *ngIf="user.role == 19"
+          (click)="deleteOffice(i)"
+        />
+      </div>
+    </div>
+<!-- 
     <mat-grid-list
       cols="5"
       rowHeight="110px"
@@ -473,9 +516,9 @@
           />
         </div>
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> 
 
-    <!-- <div class="carts_team_container">
+    <div class="carts_team_container">
       <div class="cart_team_office mat-elevation-z8" *ngFor="let item of data_coordinator.offices; let i = index">
         <img [src]="getPhotoOffice(item.office1) == null || getPhotoOffice(item.office1) == '' ? 'assets/images/users/avatar.png' : _services.url_images + getPhotoOffice(item.office1)" class="avatar">
         <div>
@@ -483,7 +526,7 @@
         </div>
         <img src="/assets/icons/delete.png" class="delete_tem" (click)="deleteOffice(i)">
       </div>
-    </div> -->
+    </div>  -->
 
     <mat-grid-list
       cols="5"
@@ -668,6 +711,41 @@
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central textarea">
             <mat-label>Country</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_coordinator.personalInformation.country"
+              (ngModelChange)="getCity_()" (focus)="activeCountry=false">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="Country" [(ngModel)]="filterCountry2.name">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_countryPersonelInfo | filterBy: filterCountry2" [value]="data.id">{{data.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_countryPersonelInfo | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+            </mat-select>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCountry">Field is required</mat-hint>
+          </mat-form-field>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field appearance="fill" class="input_central textarea">
+            <mat-label>City</mat-label>
+            <mat-select matNativeControl [(ngModel)]="data_coordinator.personalInformation.city" (focus)="activeCity=false">
+              <mat-form-field appearance="outline" style="padding: 5px;">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="City" [(ngModel)]="filterCity2.name">
+              </mat-form-field>
+              <mat-option *ngFor="let data of ca_city_ | filterBy: filterCity2" [value]="data.id">{{data.name}}</mat-option>
+              <mat-option disabled *ngIf="(ca_city_ | filterBy: filterCity2).length === 0">No matching elements</mat-option>
+            </mat-select>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCity">Field is required</mat-hint>
+          </mat-form-field>
+        </mat-grid-tile>
+
+ 
+
+<!-- 
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field appearance="fill" class="input_central textarea">
+            <mat-label>Country </mat-label>
             <mat-select
               matNativeControl
               [(ngModel)]="data_coordinator.personalInformation.country"
@@ -692,7 +770,7 @@
               }}</mat-option>
             </mat-select>
           </mat-form-field>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field class="input_central textarea">

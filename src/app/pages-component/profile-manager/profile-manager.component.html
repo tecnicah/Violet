@@ -589,9 +589,44 @@
         </mat-form-field>
       </mat-grid-tile>
 
+      <!-- init -->
+      
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central textarea">
           <mat-label>Country</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_coordinator.personalInformation.country"
+            (ngModelChange)="getCity_()" (focus)="activeCountry=false">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Country</mat-label>
+              <input matInput placeholder="Country" [(ngModel)]="filterCountry2.name">
+            </mat-form-field>
+            <mat-option *ngFor="let data of ca_countryPersonelInfo | filterBy: filterCountry2" [value]="data.id">{{data.name}}</mat-option>
+            <mat-option disabled *ngIf="(ca_countryPersonelInfo | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCountry">Field is required</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central textarea">
+          <mat-label>City</mat-label>
+          <mat-select matNativeControl [(ngModel)]="data_coordinator.personalInformation.city" (focus)="activeCity=false">
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>City</mat-label>
+              <input matInput placeholder="City" [(ngModel)]="filterCity2.name">
+            </mat-form-field>
+            <mat-option *ngFor="let data of ca_city_ | filterBy: filterCity2" [value]="data.id">{{data.name}}</mat-option>
+            <mat-option disabled *ngIf="(ca_city_ | filterBy: filterCity2).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeCity">Field is required</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+      <!--  -->
+<!--       
+
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field appearance="fill" class="input_central textarea">
+          <mat-label style="padding-top: 0px">Country</mat-label>
           <mat-select
             matNativeControl
             [(ngModel)]="data_coordinator.personalInformation.country"
@@ -616,7 +651,7 @@
             }}</mat-option>
           </mat-select>
         </mat-form-field>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field class="input_central textarea">
