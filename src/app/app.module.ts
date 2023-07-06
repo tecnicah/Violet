@@ -36,6 +36,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import  {MatCurrencyFormatModule} from 'mat-currency-format';
 import { IrComponent } from './ir/ir.component';
+import { ImgFallbackDirective } from './directive/img-fallback.directive';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { IrComponent } from './ir/ir.component';
     SpinnerComponent,
     AppSidebarComponent,
     AssigneeAndFamilyInfoDirective,
-    IrComponent
+    IrComponent,
+    ImgFallbackDirective
   ],
   imports: [
     MatCurrencyFormatModule,

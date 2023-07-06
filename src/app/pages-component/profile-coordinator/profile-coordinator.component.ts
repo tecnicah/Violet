@@ -108,6 +108,7 @@ export class ProfileCoordinatorComponent implements OnInit {
             }
            }))
           this.getCity();
+          this.getCity_();
           this.loader.hideLoader();
           if(this.data_coordinator.photo != null && this.data_coordinator.photo != ''){
             document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data_coordinator.photo);
@@ -272,6 +273,7 @@ export class ProfileCoordinatorComponent implements OnInit {
   ca_documentStatus = [];
   ca_vehicle = [];
   async catalogos(){
+    this.ca_countryPersonelInfo = await this._services.getCatalogueFrom('Generic/Countries');
     this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
@@ -294,7 +296,7 @@ export class ProfileCoordinatorComponent implements OnInit {
        }
     })
 
-    this._services.service_general_get('Catalogue/GetDocumentType/1').subscribe((data => {
+    this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
       if (data.success) {
           this.ca_documentType = data.result;
       }
@@ -310,6 +312,24 @@ export class ProfileCoordinatorComponent implements OnInit {
       }
     }))
   }
+  ca_countryPersonelInfo:Array<any> = [];
+
+  //CONSULTA CIUDAD//
+  public filterCity: any = { city: '' };
+  public filterCountry2: any = { name: '' };
+  public filterCity2: any = { name: '' };
+  public filterCountry: any = { name: '' };
+  activeCountry: boolean = false;
+  activeCity: boolean = false;
+  ca_city_ = [];
+  getCity_() {
+    this._services.service_general_get('CountryAdminCenter/GetCityByCountryId?countryId=' + this.data_coordinator.personalInformation.country).subscribe((data => {
+      if (data.success) {
+        this.ca_city_ = data.result;
+      }
+    }))
+  }
+
   //*********************************************************************************//
   //FUNCION PARA EDICION DE FOTOGRAFIA//
   img(event){
@@ -667,7 +687,6 @@ export class ProfileCoordinatorComponent implements OnInit {
     console.log('numero con prefix', this.data_coordinator.phoneNumber);
     console.log("data a guardar: ", this.data_coordinator);
 
-debugger;
     if(this.data_coordinator.name != "")
     {
       if(this.data_coordinator.immigration || this.data_coordinator.relocation)

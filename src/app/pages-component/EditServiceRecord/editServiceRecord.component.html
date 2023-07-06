@@ -3811,7 +3811,7 @@
         </div>
         <div class="page__section">
           <div class="page__title">
-            Relocation Services
+            Relocation Services 
           </div>
         </div>
         <div *ngIf="relocation_home_services?.length > 0">
@@ -3939,7 +3939,7 @@
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                  
-                  <span class="link" (click)="open_standalone_modal(element, edit_sr_model.assigneeInformations[0].homeCountryId)"
+                  <span class="link" (click)="open_standalone_modal(element, edit_sr_model.assigneeInformations[0].homeCountryId, element.service_name)"
                     *ngIf="element.serviceType == 'Standalone'"> {{element.service_name}}</span>
                   <span class="link" (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
                     *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span> 

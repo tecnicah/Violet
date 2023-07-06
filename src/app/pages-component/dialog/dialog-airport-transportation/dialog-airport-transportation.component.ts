@@ -14,6 +14,7 @@ import { DialogDocumentsView } from '../dialog-documents-view/dialog-documents-v
 import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/dialog-request-payment-new.component';
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
 import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
+import { WorkPartnerI } from 'app/interfaces/dtoWork.interface';
 
 @Component({
   selector: 'app-dialog-airport-transportation',
@@ -60,6 +61,12 @@ export class DialogAirportTransportationComponent implements OnInit {
   loader: LoaderComponent = new LoaderComponent();
   show: boolean = false;
   serviceScope = null;
+  datos: WorkPartnerI = {
+    workOrderServicesId: 0,
+    partner_id: 0
+  };
+
+  isVisible : boolean =false;
 
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
@@ -246,6 +253,9 @@ change_button(){
         console.log("Transport", data.result);
         if (data.result.value.length > 0) {
           this.transportation = data.result.value[0];
+          this.datos.workOrderServicesId = this.transportation.workOrderServicesId;
+          this.datos.partner_id = this.data.data.partnerId;
+          this.isVisible =true;
           this.setup_permissions_settings();
           this.getServiceScope();
           this.get_text_status();

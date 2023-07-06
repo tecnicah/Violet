@@ -63,7 +63,7 @@ export class DialogAddReminderDetailComponent implements OnInit {
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Success",
-          body: "Document Saved"
+          body: "Reminder Saved"
         },
         width: "350px"
       });
@@ -96,7 +96,7 @@ export class DialogAddReminderDetailComponent implements OnInit {
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Success",
-          body: "Document Saved"
+          body: "Reminder Saved"
         },
         width: "350px"
       });
