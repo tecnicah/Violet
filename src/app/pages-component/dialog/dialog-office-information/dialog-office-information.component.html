@@ -171,6 +171,8 @@
       <td mat-cell *matCellDef="let element let i = index">
         <img src="/assets/icons/pencil.png" (click)="dialogContact(element, i)"
         *ngIf="permission_write || permission_edit" style="width: 20px;">
+        <img src="/assets/icons/delete.png" (click)="deleteContact(element, i)"
+        *ngIf="permission_write || permission_edit" style="width: 20px;">
       </td>
     </ng-container>
 

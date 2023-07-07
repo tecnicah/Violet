@@ -518,7 +518,7 @@ export class NewPartnerClientComponent implements OnInit {
           if (this.lead_client.id == 0) {
             this.lead_client.generalContractPricingInfos.push(result);
           } else {
-            console.log(JSON.stringify(result));
+            console.log(result);
             this.loader.showLoader();
             this._services.service_general_putnoapi('AddGeneralContractPricingInfo', result).subscribe(r => {
               if (r.success) {

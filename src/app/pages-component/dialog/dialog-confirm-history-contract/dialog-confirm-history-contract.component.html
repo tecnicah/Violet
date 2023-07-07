@@ -1,0 +1,19 @@
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutGap="10px" class="margin-bottom-m">
+        <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" class="messagges">
+            The previous contract is saved in the history and a new contract will be created
+            <br>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+   
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button (click)="no()">Just edit</button>
+    </div>
+    &nbsp;&nbsp;
+    <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button (click)="yes()">Save</button> 
+    </div>
+</mat-dialog-actions>

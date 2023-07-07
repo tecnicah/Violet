@@ -9,6 +9,7 @@ import { DialogWireTransferComponent } from '../dialog-wire-transfer/dialog-wire
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 import { DialogDocumentsView } from './../dialog-documents-view/dialog-documents-view.component';
 import { LoaderComponent } from 'app/shared/loader';
+import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-dialog-office-information',
@@ -21,71 +22,71 @@ export class DialogOfficeInformationComponent implements OnInit {
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialog: MatDialog) { }
-    loader: LoaderComponent = new LoaderComponent();
-    
-    caCountry: any[] = [];
-    ccity:any[] = [];
-    caTypeOffice:any[] = [];
-    ca_accountType: any[] = [];
-    ca_creditCard: any[] = [];
-    ca_currency: any[] = [];
-    caDocumentType: any[] = [];
-    ca_account: any[] = [];
+  loader: LoaderComponent = new LoaderComponent();
 
-    officeContacts: any;
+  caCountry: any[] = [];
+  ccity: any[] = [];
+  caTypeOffice: any[] = [];
+  ca_accountType: any[] = [];
+  ca_creditCard: any[] = [];
+  ca_currency: any[] = [];
+  caDocumentType: any[] = [];
+  ca_account: any[] = [];
 
-    paymentMetod: boolean = false;
+  officeContacts: any;
 
-    ELEMENT_DATA: any[] = [
-      {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-      {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-      {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-      {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-      {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'}
-    ];
-    // filtros
-    public filterCountry: any = { name: '' };
-    public filterState: any = { name: '' };
-    public filterCity: any = { name: '' };
+  paymentMetod: boolean = false;
 
-    dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  ELEMENT_DATA: any[] = [
+    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
+  ];
+  // filtros
+  public filterCountry: any = { name: '' };
+  public filterState: any = { name: '' };
+  public filterCity: any = { name: '' };
+
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;
 
-    siete: string[] =  ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete'];
+  siete: string[] = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete'];
 
-    userData = JSON.parse(localStorage.getItem('userData'));
+  userData = JSON.parse(localStorage.getItem('userData'));
 
-   //*********************************************//
-	public permission_read : boolean = false;
-	public permission_write : boolean = false;
-	public permission_delete : boolean = false;
-	public permission_edit : boolean = false;
-	consultaPermisos(){
-		console.log("CONSULTA PARA PERMISOS DE USUARIO");
-		let url = localStorage.getItem('url_permisos');
-		this._services.service_general_get('Role/'+url).subscribe(data=>{
-			if(data.success){
-			   console.log("Permisos: ", data.result.value)
-			   this.permission_read = data.result.value[0].reading;
-			   this.permission_write = data.result.value[0].writing;
-			   this.permission_edit = data.result.value[0].editing;
-			   this.permission_delete = data.result.value[0].deleting;
-			}
-		})
+  //*********************************************//
+  public permission_read: boolean = false;
+  public permission_write: boolean = false;
+  public permission_delete: boolean = false;
+  public permission_edit: boolean = false;
+  consultaPermisos() {
+    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    let url = localStorage.getItem('url_permisos');
+    this._services.service_general_get('Role/' + url).subscribe(data => {
+      if (data.success) {
+        console.log("Permisos: ", data.result.value)
+        this.permission_read = data.result.value[0].reading;
+        this.permission_write = data.result.value[0].writing;
+        this.permission_edit = data.result.value[0].editing;
+        this.permission_delete = data.result.value[0].deleting;
+      }
+    })
   }
   //*********************************************//
   ngOnInit(): void {
     this.consultaPermisos();
     console.log(this.data);
-    if(this.data.officeContacts){
+    if (this.data.officeContacts) {
       console.log('office contact', this.data.officeContacts);
       this.officeContacts = new MatTableDataSource(this.data.officeContacts);
-    }else{
+    } else {
       this.data.officeContacts = [];
       this.data.documentOfficeInformations = [];
     }
-    if(!this.data.paymentInformationOffices){
+    if (!this.data.paymentInformationOffices) {
       this.data.paymentInformationOffices = [];
       this.data.paymentInformationOffices.push({
         wireTransferPaymentInformationOffices: [],
@@ -105,7 +106,7 @@ export class DialogOfficeInformationComponent implements OnInit {
       })
     }
 
-    if(this.data.idCountry != null && this.data.idCountry != undefined && this.data.idCountry != 0){
+    if (this.data.idCountry != null && this.data.idCountry != undefined && this.data.idCountry != 0) {
       this.getState(this.data);
       this.getcity(this.data);
     }
@@ -118,11 +119,11 @@ export class DialogOfficeInformationComponent implements OnInit {
 
   ca_contactType = [];
   ca_city = [];
-  ca_state =[];
+  ca_state = [];
   async catalogos() {
     // Catalogue/Generic/Countries
-    this._services.service_general_get('Catalogue/Generic/Countries').subscribe(r =>{
-      if(r.success){
+    this._services.service_general_get('Catalogue/Generic/Countries').subscribe(r => {
+      if (r.success) {
         this.caCountry = r.result;
       }
     })
@@ -161,9 +162,9 @@ export class DialogOfficeInformationComponent implements OnInit {
     }))
   }
 
-  get_contacType(id){
+  get_contacType(id) {
     for (let i = 0; i < this.ca_contactType.length; i++) {
-      if(this.ca_contactType[i].id == id){
+      if (this.ca_contactType[i].id == id) {
         return this.ca_contactType[i].type;
       }
     }
@@ -173,7 +174,7 @@ export class DialogOfficeInformationComponent implements OnInit {
   get_city(id) {
     if (this.officeContacts.data[0].idCountry = !undefined && this.officeContacts.data[0].idCity) {
       for (let i = 0; i < this.ccity.length; i++) {
-        if(this.ccity[i].id == id){
+        if (this.ccity[i].id == id) {
           return this.ccity[i].name;
         }
       }
@@ -181,65 +182,65 @@ export class DialogOfficeInformationComponent implements OnInit {
     }
   }
 
-  get_account(id){
+  get_account(id) {
     for (let i = 0; i < this.ca_account.length; i++) {
-      if(this.ca_account[i].id == id){
+      if (this.ca_account[i].id == id) {
         return this.ca_account[i].accountType;
       }
     }
     return id;
   }
 
-  getDocument(id){
+  getDocument(id) {
     for (let i = 0; i < this.caDocumentType.length; i++) {
       const element = this.caDocumentType[i];
-      if(id == element.id){
+      if (id == element.id) {
         return element.documentType;
       }
     }
   }
 
-  DialogDocumentsLeadClientComponent(data){
-    if(data == null){
-      data = {id: 0};
+  DialogDocumentsLeadClientComponent(data) {
+    if (data == null) {
+      data = { id: 0 };
     }
     const dialogRef = this._dialog.open(DialogDocumentsLeadClientComponent, {
       data: data, width: '90%'
-  });
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
 
-     if(result.success){
-       result.idOfficeInformation = this.data.id;
-       console.log(result);
-       this.data.documentOfficeInformations.push(result);
-     }
+      if (result.success) {
+        result.idOfficeInformation = this.data.id;
+        console.log(result);
+        this.data.documentOfficeInformations.push(result);
+      }
 
-  });
+    });
   }
 
-  typename(){
+  typename() {
     for (let i = 0; i < this.caTypeOffice.length; i++) {
       const element = this.caTypeOffice[i];
-      if(this.data.idTypeOffice == element.id){
+      if (this.data.idTypeOffice == element.id) {
         this.data.typeOffice = element.type;
       }
     }
   }
 
-  countryname(){
+  countryname() {
     for (let i = 0; i < this.caCountry.length; i++) {
       const element = this.caCountry[i];
-      if(this.data.idCountry == element.id){
+      if (this.data.idCountry == element.id) {
         this.data.country = element.name;
       }
     }
   }
 
-  cityname(){
+  cityname() {
     for (let i = 0; i < this.ccity.length; i++) {
       const element = this.ccity[i];
-      if(this.data.idCity == element.id){
+      if (this.data.idCity == element.id) {
         // this.data.typeOffice = element.state;
         this.data.city = element.city;
       }
@@ -265,12 +266,12 @@ export class DialogOfficeInformationComponent implements OnInit {
 
   }
 
-  dialogContact(contact: any, i){
+  dialogContact(contact: any, i) {
     let data;
-    if(contact == null){
-      data= {id : 0, action: "new", idState : this.data.idState };
+    if (contact == null) {
+      data = { id: 0, action: "new", idState: this.data.idState };
     }
-    else{
+    else {
 
       data = {
         action: i,
@@ -291,39 +292,39 @@ export class DialogOfficeInformationComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogContactsComponent, {
       data: data,
       width: '90%'
-  });
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-      if(result.success){
-        if(result.action == "new"){
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        if (result.action == "new") {
           result.idOfficeInformation = this.data.id;
-          if(this.data.id == 0){
+          if (this.data.id == 0) {
             this.data.officeContacts.push(result);
-          }else{
-            this._services.service_general_putnoapi('AddOfficeContact',result).subscribe(r =>{
-              if(r.success){
-              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                data: {
-                  header: "Success",
-                  body: "Inserted data"
-                },
-                width: "350px"
-              });
+          } else {
+            this._services.service_general_putnoapi('AddOfficeContact', result).subscribe(r => {
+              if (r.success) {
+                const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                  data: {
+                    header: "Success",
+                    body: "Inserted data"
+                  },
+                  width: "350px"
+                });
               }
             })
           }
-        }else{
-        this._services.service_general_putnoapi('UpdateOfficeContact',result).subscribe(r =>{
-          if(r.success){
-            const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-              data: {
-                header: "Success",
-                body: "Updated data"
-              },
-              width: "350px"
-            });
-          }
-        })
+        } else {
+          this._services.service_general_putnoapi('UpdateOfficeContact', result).subscribe(r => {
+            if (r.success) {
+              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                data: {
+                  header: "Success",
+                  body: "Updated data"
+                },
+                width: "350px"
+              });
+            }
+          })
         }
         console.log(this.data.officeContacts);
         this.officeContacts = new MatTableDataSource(this.data.officeContacts);
@@ -331,78 +332,78 @@ export class DialogOfficeInformationComponent implements OnInit {
     });
   }
 
-  editWireTransfer(data_, i){
+  editWireTransfer(data_, i) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       data: data_,
       width: "95%"
-     });
+    });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      if(result.success){
+      if (result.success) {
         this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices[i] = result;
       }
-     })
+    })
   }
 
-  addWireTransfer(){
+  addWireTransfer() {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       width: "95%"
-     });
+    });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      if(result.success){
+      if (result.success) {
         result.idPaymentInformationOffice = this.data.id;
-        if(this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices){
+        if (this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices) {
           this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices.push(result)
-        }else{
+        } else {
           this.data.paymentInformationOffices.push({
             wireTransferPaymentInformationOffices: [result]
           })
         }
         debugger
-    }
-     })
+      }
+    })
   }
 
   //*************************************************************//
   //VALIDACIONES//
-  active_type:boolean = false;
-  active_comercialName:boolean = false;
-  active_legalName:boolean = false;
-  active_country :boolean = false;
-  active_state :boolean = false;
-  active_city :boolean = false;
-  active_address :boolean = false;
+  active_type: boolean = false;
+  active_comercialName: boolean = false;
+  active_legalName: boolean = false;
+  active_country: boolean = false;
+  active_state: boolean = false;
+  active_city: boolean = false;
+  active_address: boolean = false;
   active_code: boolean = false;
   active_contact: boolean = false;
 
 
-  
-  valida_form(){
-    if(this.data.idTypeOffice == undefined){
+
+  valida_form() {
+    if (this.data.idTypeOffice == undefined) {
       this.active_type = true;
     }
-    if(this.data.commercialName == undefined || this.data.commercialName.length == 0){
+    if (this.data.commercialName == undefined || this.data.commercialName.length == 0) {
       this.active_comercialName = true;
     }
-    if(this.data.legalName == undefined || this.data.legalName.length == 0){
+    if (this.data.legalName == undefined || this.data.legalName.length == 0) {
       this.active_legalName = true;
     }
-    if(this.data.idState == undefined){
+    if (this.data.idState == undefined) {
       this.active_state = true;
     }
-    if(this.data.idCountry == undefined){
+    if (this.data.idCountry == undefined) {
       this.active_country = true;
     }
-    if(this.data.idCity == undefined){
+    if (this.data.idCity == undefined) {
       this.active_city = true;
     }
-    if(this.data.currentAddress == undefined || this.data.currentAddress.length == 0){
+    if (this.data.currentAddress == undefined || this.data.currentAddress.length == 0) {
       this.active_address = true;
     }
-    if(this.data.zipCode == undefined || this.data.zipCode.length == 0){
+    if (this.data.zipCode == undefined || this.data.zipCode.length == 0) {
       this.active_code = true;
     }
     if (this.data.officeContacts == undefined || this.data.officeContacts.length == 0) {
@@ -419,18 +420,18 @@ export class DialogOfficeInformationComponent implements OnInit {
     }
 
 
-    if(this.data.idTypeOffice != undefined && this.data.commercialName != undefined && this.data.legalName != undefined
+    if (this.data.idTypeOffice != undefined && this.data.commercialName != undefined && this.data.legalName != undefined
       && this.data.idCountry != undefined && this.data.idState != undefined && this.data.idCity != undefined && this.data.currentAddress != undefined
-      &&  this.data.zipCode != undefined  &&  this.data.officeContacts.length != 0){
+      && this.data.zipCode != undefined && this.data.officeContacts.length != 0) {
       this.save();
     }
   }
 
-  save(){
-     // extraer el nombre de city ya que al crear una oficina en un NP&C no se obtiene el nombre y hay que mandarlo para que se pinte
-     if(this.data.action == 'new'){
+  save() {
+    // extraer el nombre de city ya que al crear una oficina en un NP&C no se obtiene el nombre y hay que mandarlo para que se pinte
+    if (this.data.action == 'new') {
       this.ccity.forEach(city => {
-        if(city.id == this.data.idCity){
+        if (city.id == this.data.idCity) {
           this.data.city = city.name;
         }
       });
@@ -438,5 +439,33 @@ export class DialogOfficeInformationComponent implements OnInit {
     console.log('data office', this.data);
     this.data.success = true;
     this.dialogRef.close(this.data);
+  }
+
+  deleteContact(item, i) {
+    console.log(this.officeContacts, i)
+    let data = this.officeContacts.data;
+
+    const dialogRef = this._dialog.open(DialogConfirmComponent, {
+      data: {
+        header: "Delete confirmation",
+        body: "Are you sure to delete this contact?"
+      }, width: '350px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {     
+        if (item.id != 0 && item.id != null && item.id != undefined) {
+          console.log('aqui va el servicio');
+          data.splice(i, 1);
+          this.officeContacts.data = data;
+        } else {
+          data.splice(i, 1);
+          this.officeContacts.data = data;
+        }
+      }
+
+    });
+
   }
 }

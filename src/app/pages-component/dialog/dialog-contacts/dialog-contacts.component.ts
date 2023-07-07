@@ -18,6 +18,9 @@ export class DialogContactsComponent implements OnInit {
   caTypeOffice: any[] = [];
   caCity: any[] = [];
   // filtros
+  // filtros
+  public filterCountry: any = { name: '' };
+  public filterState: any = { name: '' };
   public filterCity: any = { name: '' };
   public prefix;
   typePrefix = {
@@ -108,7 +111,16 @@ export class DialogContactsComponent implements OnInit {
   }
   // GetOfficeContactType
   // GetContactType
+
+  caCountry: Array<any> = [];
+  ca_state: Array<any> = [];
   async catalogos(){
+
+    this._services.service_general_get('Catalogue/Generic/Countries').subscribe(r =>{
+      if(r.success){
+        this.caCountry = r.result;
+      }
+    })
 
     this._services.service_general_get("AdminCenter/GetContactType").subscribe((data => {
       if (data.success) {
@@ -120,10 +132,28 @@ export class DialogContactsComponent implements OnInit {
     this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
     console.log('catalog prefix', this.prefixCatalog);
     this.getcity();
+    this.getState(this.data.idCountry);
 
     // PhoneCode
     // this.caCity = await this._services.getCatalogueFrom('GetCity');
   }
+  getState(data) {
+    this._services.service_general_get("Catalogue/Generic/States/" + data.idCountry).subscribe((data => {
+      if (data.success) {
+        this.ca_state = data.result;
+      }
+    }))
+  }
+
+  countryname(){
+    for (let i = 0; i < this.caCountry.length; i++) {
+      const element = this.caCountry[i];
+      if(this.data.idCountry == element.id){
+        this.data.country = element.name;
+      }
+    }
+  }
+
   public showGeneralMessageDialog(title: string = "No title", body: string = "No content"): void {
 
     const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
@@ -189,6 +219,8 @@ export class DialogContactsComponent implements OnInit {
   active_contactType:boolean = false;
   active_contactName:boolean = false;
   active_title:boolean = false;
+  active_state:boolean = false;
+  active_country:boolean = false;
   active_city: boolean = false;
   active_phone: boolean = false;
 

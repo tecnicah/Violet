@@ -23,6 +23,7 @@
         <mat-select
         matNativeControl
         multiple
+        [disabled]="disabled"
         (focus)="active_serviceLine = false"
         required
         [(ngModel)]="data.idServiceLine" (ngModelChange)="changeModel()">
@@ -49,6 +50,7 @@
           [(ngModel)]="data.idPricingSchedule"
           (focus)="active_contractType = false"
           required
+          [disabled]="disabled"
           (ngModelChange)="namepricing()"
         >
           <mat-option
@@ -73,6 +75,7 @@
         >
         <input matInput placeholder="Contract Name" (focus)="active_contractName = false"
         required
+        [disabled]="disabled"
         [(ngModel)]="data.contractName"/>
         <mat-error>Field is required</mat-error>
         <mat-hint
@@ -90,6 +93,7 @@
         </mat-label>
         <input
           matInput
+          [disabled]="disabled"
           [matDatepicker]="picker"
           (focus)="active_contractEffectiveDate = false"
           required
@@ -116,6 +120,7 @@
           [min]="minDate"
           [matDatepicker]="pickers"
           [(ngModel)]="data.contractExpirationDate"
+          (ngModelChange)="history = true; compareDates();"
           (focus)="active_contractExpirationDate = false"
           required
         />
@@ -140,6 +145,7 @@
         >
         <input type="number" matInput placeholder="Referral Fee" (focus)="active_referralFee = false"
         required
+        [disabled]="disabled"
         [(ngModel)]="data.referralFee"/>
         <mat-error>Field is required</mat-error>
         <mat-hint
@@ -157,6 +163,7 @@
         >
         <mat-select
           matNativeControl
+          [disabled]="disabled"
           (focus)="active_idReferralFeeType = false"
           required
           [(ngModel)]="data.idReferralPaymentType"
@@ -182,6 +189,7 @@
         <mat-select
           (focus)="active_idPaymentRecurrence = false"
           required
+          [disabled]="disabled"
           matNativeControl
           [(ngModel)]="data.idPaymentRecurrence"
           (ngModelChange)="namepaymentRecurrence()"
@@ -206,6 +214,7 @@
       >
       <input type="number" matInput placeholder="Number of days" (focus)="active_IdServicePaymentRecurrence = false"
       required
+      [disabled]="disabled"
       [(ngModel)]="data.idServicePaymentRecurrence"/>
       <mat-error>Field is required</mat-error>
       <mat-hint
@@ -239,7 +248,7 @@
         <mat-label [ngClass]="{ valid: active_IdThirdPartyPaymentRecurrence }"
           >Third Party Payment Recurrence</mat-label
         >
-        <input type="number" matInput placeholder="Number of days" (focus)="active_IdThirdPartyPaymentRecurrence = false"
+        <input type="number" matInput placeholder="Number of days" [disabled]="disabled" (focus)="active_IdThirdPartyPaymentRecurrence = false"
         required
         [(ngModel)]="data.idThirdPartyPaymentRecurrence"/>
         <mat-error>Field is required</mat-error>
@@ -277,6 +286,7 @@
       >
       <textarea
         matInput
+        [disabled]="disabled"
         #input
         maxlength="500"
         placeholder="Billing Instructions"
@@ -295,6 +305,7 @@
         >
         <textarea
           matInput
+          [disabled]="disabled"
           #input
           maxlength="500"
           placeholder="Description"
@@ -380,7 +391,7 @@
       (click)="DialogDocumentsLeadClientComponent(null)"
       matRipple
       matRippleColor="rgba(157, 50, 146, 0.5)"
-      *ngIf="permission_write || permission_edit"
+      *ngIf="(permission_write || permission_edit) && !disabled"
     >
       Add New Document
     </button>
@@ -390,8 +401,8 @@
 <mat-dialog-actions align="end">
   <div
     class="page__section-buttong"
-    *ngIf="permission_write || permission_edit"
+    *ngIf="(permission_write || permission_edit) && !disabled"
   >
-    <button (click)="save()">Save</button>
+    <button (click)="save()">{{(history && data.action != 'new') ? 'Create new contract' : 'Save'}}</button>
   </div>
 </mat-dialog-actions>
