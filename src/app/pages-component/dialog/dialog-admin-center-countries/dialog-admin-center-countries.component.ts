@@ -63,6 +63,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
             });
           });
         });
+        this.getCatalogos();
       }
     })
 

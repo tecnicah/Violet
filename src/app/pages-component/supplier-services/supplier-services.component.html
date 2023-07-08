@@ -61,14 +61,21 @@
               <div class="input__image">
                 <label for="ass_prof_photo_input" class="input__image-label">
                   <div class="input__image-label--cardConsultant">
-                    <img [class.display-none]="no_main_photo"
+                    <!-- <img [class.display-none]="no_main_photo"
                     src="{{_services.url_images}}{{data.photo}}"
                     id='ass_prof_photo' />
-                    <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" />
+                    <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" /> -->
+                    <img 
+                      id="lead_client_avatar"
+                      src="./../../../assets/avatar.png"
+                    />
                   </div>
-                  <span class="input__image-label--cardSpan" (click)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')">Edit Photo</span>
+                 
                 </label>
               </div>
+              <span style="top: 70%;
+              position: absolute;
+              left: 25%; cursor: pointer;" (click)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')">Edit Photo</span>
             </div>
           </div>
         </div>
@@ -115,7 +122,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label [ngClass]="{valid: active_serviceLine}">Service Line</mat-label>
-          <mat-select [(ngModel)]="data.serviceLine" (focus)="active_serviceLine = false" required>
+          <mat-select [(ngModel)]="data.serviceLine" (focus)="active_serviceLine = false" disabled required>
             <mat-option *ngFor="let item of ca_serviceLine" [value]="item.id" (click)="serviceLineOption(item.id)">{{item.serviceLine}}</mat-option>
           </mat-select>
           <mat-error>Field is required</mat-error>
@@ -157,12 +164,12 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12" style="height: 70%;">
+        <!-- <div class="page__section-data font-size-12" style="height: 70%;">
           <div>
             <span class="text-mini gray_05">Total Services</span><br />
             <p class="browser">0</p>
           </div>
-        </div>
+        </div> -->
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -204,7 +211,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label [ngClass]="{valid: active_since}">Supplier Since</mat-label>
-          <input matInput [matDatepicker]="pickertres" placeholder="Supplier Since"
+          <input [max]="minDate" matInput [matDatepicker]="pickertres" placeholder="Supplier Since"
             [(ngModel)]="data.supplierSince" (ngModelChange)="active_since = false" required>
           <mat-error>Field is required</mat-error>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_since">Field is required</mat-hint>
@@ -414,6 +421,14 @@
         </div>
       </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="textarea" style="height: 60%;">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Web site</mat-label>
+            <input matInput placeholder="Web site" [(ngModel)]="data.supplierPartnerDetails[0].webSite">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
     </mat-grid-list>
     <!-------------->
 
@@ -433,6 +448,14 @@
         </div>
       </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="textarea" style="height: 60%;">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Web site</mat-label>
+            <input matInput placeholder="Web site" [(ngModel)]="data.supplierPartnerDetails[0].webSite">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
     </mat-grid-list>
     <!-------------->
 
@@ -484,7 +507,7 @@
         <div class="textarea" style="height: 60%;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label>Grade</mat-label>
-            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].grade">             
+            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].grade" (ngModelChange)="changeModelGrade()" multiple>             
               <mat-option *ngFor="let item of schoolgrades_catalogue" [value]="item.id">{{item.grade}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -495,7 +518,7 @@
         <div class="textarea" style="height: 60%;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label>Languages</mat-label>
-            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].language">             
+            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].language" (ngModelChange)="changeModelLanguage()" multiple>             
               <mat-option *ngFor="let item of languages_catalogue" [value]="item.id">{{item.name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -648,7 +671,7 @@
           </mat-form-field>
         </mat-grid-tile-->
 
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label [ngClass]="{valid: element.typeValid}">Type</mat-label>
             <mat-select [(ngModel)]="element.type" (focus)="element.typeValid = false" required>
@@ -657,7 +680,7 @@
             <mat-error>Field is required</mat-error>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="element.typeValid">Field is required</mat-hint>
           </mat-form-field>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <!--mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central_half">
@@ -726,9 +749,9 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile-->
-
+        <!--  -->
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field appearance="fill" class="input_central_half">
+          <mat-form-field appearance="fill" class="input_central_half" *ngIf="data.supplierType != 13 && data.supplierType != 11 && data.supplierType != 34">
             <mat-label>Additional Cities</mat-label>
             <mat-select multiple [(ngModel)]="element.additional" (focus)="element.additionalValid = false">
               <!--mat-option *ngFor="let item of  ca_city[i]" [value]="item.id">{{item.city}}
@@ -1130,7 +1153,7 @@
         <mat-grid-list cols="1">
           <div class="page__section margin-top-min">
             <div class="page__section-name">
-              Service Documents
+              Supplier Documents
             </div>
             <div class="page__section">
               <div class="page__section-input page__section-input--6_2">
@@ -1193,7 +1216,7 @@
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="addPropperty" *ngIf="permission_write || permission_edit">
               <div class="page__section-button page__section-button--big"
-                style="flex: 0 1 180px !important; left: 6px !important; width: 160px;">
+                style="flex: 0 1 180px !important; width: 160px;">
                 <button class="button-icon button-icon--more" (click)="addNewDocument(i);">
                   Add New Document
                 </button>

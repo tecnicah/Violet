@@ -120,8 +120,24 @@ export class SupplierServicesComponent implements OnInit {
     }));
     */
     this.catalogos();
+
     this.verificaNodos();
     
+    if (this.data.photo != null && this.data.photo != '') {
+      // document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data_coordinator.photo);
+      const image = new Image();
+      image.src = this._services.url_images + this.data.photo;
+      image.onload = function () {
+        document.getElementById('lead_client_avatar').setAttribute('src', image.src);
+      };
+
+      image.onerror = function () {
+        document.getElementById('lead_client_avatar').setAttribute('src', './../../../assets/avatar.png');
+      };
+    }
+
+    this.data.serviceLine = 2;
+
   }
 
 
@@ -184,6 +200,42 @@ export class SupplierServicesComponent implements OnInit {
         this.data = data.result;
         console.log("dataaaa",data.result);
         // revisa si es consultor y tiene permisos en secciones
+
+        this.data.supplierPartnerDetails[0].grade = [];
+        for (const iterator of data.result.relSupplierPartnerProfileServiceDetailGrades) {
+          this.data.supplierPartnerDetails[0].grade.push(
+             iterator.gradeId
+          );
+        }
+
+        this.data.supplierPartnerDetails[0].language = [];
+        for (const iterator of data.result.relSupplierPartnerProfileServiceDetailLanguages) {
+          this.data.supplierPartnerDetails[0].language.push(
+             iterator.languageId
+          );
+        }
+
+        switch(this.data.supplierType) {
+          case 34:
+            this.type_document = 27;
+            break;
+          case 11:
+            this.type_document = 28;
+            break;
+          case 13:
+            this.type_document = 28;
+            break;
+          default:
+            // code block
+        }
+    
+        this._services.service_general_get('Catalogue/GetDocumentType/'+ this.type_document).subscribe((data => {
+          if (data.success) {
+            this.ca_documentType = data.result;
+            //console.log(this.ca_documentType);
+          }
+        }));
+
         let photo_assing: string = this.data.photo;
 
           //console.log(photo_assing);
@@ -220,7 +272,23 @@ export class SupplierServicesComponent implements OnInit {
         //console.log("esta es la consulta del servicio: ", this.data);
         for (let i = 0; i < this.data.areasCoverageServices.length; i++) {
           if (this.data.areasCoverageServices[i].paymentInformationServices.length > 0) {
-            this.data.areasCoverageServices[i].payment = true;
+            debugger;
+            for(let j = 0; j < this.data.areasCoverageServices[i].paymentInformationServices.length; j++)
+            {
+              if(this.data.areasCoverageServices[i].paymentInformationServices[j].creditCard){
+                this.data.areasCoverageServices[i].payment = true;
+                break;
+              }
+              if(this.data.areasCoverageServices[i].paymentInformationServices[j].cash){
+                this.data.areasCoverageServices[i].payment = true;
+                break;
+              }
+              if(this.data.areasCoverageServices[i].paymentInformationServices[j].checks){
+                this.data.areasCoverageServices[i].payment = true;
+                break;
+              }
+            }
+            
           }
           if (this.data.areasCoverageServices[i].paymentInformationServices[0]?.wireTransferServices.length > 0) {
             this.data.areasCoverageServices[i].wire = true;
@@ -267,6 +335,7 @@ export class SupplierServicesComponent implements OnInit {
   ca_term = [];
   ca_currency = [];
   creditCardAux = [];
+  type_document: number = 0;
   async catalogos() {
     this.schoolgrades_catalogue = await this._services.getCatalogueFrom('GetGradeSchooling');
     this.languages_catalogue = await this._services.getCatalogueFrom('GetLanguages');
@@ -282,12 +351,7 @@ export class SupplierServicesComponent implements OnInit {
     this.ca_areacoverage = await this._services.getCatalogueFrom('GetAreaCoverageType');
     this.ca_vehiculo = await this._services.getCatalogueFrom('GetVehicleType');
     //this.ca_documentType = await this._services.getCatalogueFrom('GetDocumentType');
-    this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
-      if (data.success) {
-        this.ca_documentType = data.result;
-        //console.log(this.ca_documentType);
-      }
-    }))
+
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
     this.ca_language = await this._services.getCatalogueFrom('GetLanguages');
@@ -306,11 +370,33 @@ export class SupplierServicesComponent implements OnInit {
     if (this.id_serivice_ != 'nuevo') {
       this.consultaInformacionServicio(this.id_serivice_);
     }
+
   }
 
   display_default_fields:boolean = true;
 
   set_display_default_fields(){
+    switch(this.data.supplierType) {
+      case 34:
+        this.type_document = 27;
+        break;
+      case 11:
+        this.type_document = 28;
+        break;
+      case 13:
+        this.type_document = 28;
+        break;
+      default:
+        // code block
+    }
+
+    this._services.service_general_get('Catalogue/GetDocumentType/'+ this.type_document).subscribe((data => {
+      if (data.success) {
+        this.ca_documentType = data.result;
+        //console.log(this.ca_documentType);
+      }
+    }));
+
    if(this.data.supplierType == 13 || this.data.supplierType == 11 || this.data.supplierType == 28 || 
     this.data.supplierType == 33 || this.data.supplierType == 27 || this.data.supplierType == 24 || 
     this.data.supplierType == 5 || this.data.supplierType == 9 || this.data.supplierType == 12 || this.data.supplierType == 34){
@@ -347,7 +433,8 @@ export class SupplierServicesComponent implements OnInit {
             this.data.photo =  base64.split(',')[1];
             this.data.photoExtension = "png";
           
-            setTimeout(() => field_photo.setAttribute('src', base64), 333);
+            // setTimeout(() => field_photo.setAttribute('src', base64), 333);
+            document.getElementById('lead_client_avatar').setAttribute('src', '' + base64);
         }
     });
 
@@ -511,7 +598,8 @@ export class SupplierServicesComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogNewContactComponent, {
       width: "90%",
       data: {
-        country: this.data.areasCoverageServices[i].country
+        country: this.data.areasCoverageServices[i].country,
+        supplier_type: this.type_document
       }
     });
 
@@ -707,11 +795,13 @@ export class SupplierServicesComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogDocumentProfileSupplierComponent, {
       width: "90%",
       data: {
-        city: this.data.areasCoverageServices[i].primaryCity
+        city: this.data.areasCoverageServices[i].primaryCity,
+        supplier_type: this.type_document
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       if (result.success) {
         result.areaCoverage = 0;
         this.data.areasCoverageServices[i].documentAreasCoverageServices.push(result);
@@ -898,6 +988,7 @@ export class SupplierServicesComponent implements OnInit {
       contador++;
     }
     debugger;
+    this.data.relocation = true;
     if (this.data.immigration == undefined && this.data.relocation == undefined) {
       this.active_serviceLine = true;
       this.seccionUno++;
@@ -941,11 +1032,11 @@ export class SupplierServicesComponent implements OnInit {
     let validacion_area = false;
     for (let index = 0; index < this.data.areasCoverageServices.length; index++) {
       validacion_area = false;
-      if (this.data.areasCoverageServices[index].type == undefined || this.data.areasCoverageServices[index].type == '' || this.data.areasCoverageServices[index].type == null) {
-        this.data.areasCoverageServices[index].typeValid = true;
-        contador++;
-        validacion_area = true;
-      }
+      // if (this.data.areasCoverageServices[index].type == undefined || this.data.areasCoverageServices[index].type == '' || this.data.areasCoverageServices[index].type == null) {
+      //   this.data.areasCoverageServices[index].typeValid = true;
+      //   contador++;
+      //   validacion_area = true;
+      // }
       if (this.data.areasCoverageServices[index].country == undefined || this.data.areasCoverageServices[index].country == '' || this.data.areasCoverageServices[index].country == null) {
         this.data.areasCoverageServices[index].countryValid = true;
         contador++;
@@ -980,6 +1071,58 @@ export class SupplierServicesComponent implements OnInit {
     //console.log(this.data)
   }
   //************************************************************//
+
+  // this.data.relSupplierPartnerProfileServiceDetailGrades.push({
+  //   id: 0,
+  //   supplierPartnerProfileServiceId: 0,
+  //   gradeId: 1
+  // },
+  // {
+  //   id: 0,
+  //   supplierPartnerProfileServiceId: 0,
+  //   gradeId: 2
+  // });
+
+  // this.data.relSupplierPartnerProfileServiceDetailLanguages.push({
+  //   id: 0,
+  //   supplierPartnerProfileServiceId: 0,
+  //   languageId: 1
+  // },
+  // {
+  //   id: 0,
+  //   supplierPartnerProfileServiceId: 0,
+  //   languageId: 2
+  // });
+
+
+  changeModelGrade(){
+    console.log(this.data.supplierPartnerDetails[0].grade)
+    this.data.relSupplierPartnerProfileServiceDetailGrades = [];
+    for (const iterator of this.data.supplierPartnerDetails[0].grade) {
+      this.data.relSupplierPartnerProfileServiceDetailGrades.push(
+        {
+          id: 0,
+          supplierPartnerProfileServiceId: 0,
+          gradeId: parseInt(iterator)
+        }
+      );
+    }
+  }
+
+  changeModelLanguage(){
+    console.log(this.data.supplierPartnerDetails[0].language)
+    this.data.relSupplierPartnerProfileServiceDetailLanguages = [];
+    for (const iterator of this.data.supplierPartnerDetails[0].language) {
+      this.data.relSupplierPartnerProfileServiceDetailLanguages.push(
+        {
+          id: 0,
+          supplierPartnerProfileServiceId: 0,
+          languageId: parseInt(iterator)
+        }
+      );
+    }
+  }
+  
   save() {
     this.loader.showLoader();
     this.data.createdBy = this.user.id;
@@ -1022,6 +1165,36 @@ export class SupplierServicesComponent implements OnInit {
 
     if (this.data.id == 0) {
       //console.log("ENTRA A POST");
+
+      console.log("PostService", this.data);
+      
+      // this.data.relSupplierPartnerProfileServiceDetailGrades = [];
+      // this.data.relSupplierPartnerProfileServiceDetailLanguages = [];
+
+      // this.data.relSupplierPartnerProfileServiceDetailGrades.push({
+      //   id: 0,
+      //   supplierPartnerProfileServiceId: 0,
+      //   gradeId: 1
+      // },
+      // {
+      //   id: 0,
+      //   supplierPartnerProfileServiceId: 0,
+      //   gradeId: 2
+      // });
+
+      // this.data.relSupplierPartnerProfileServiceDetailLanguages.push({
+      //   id: 0,
+      //   supplierPartnerProfileServiceId: 0,
+      //   languageId: 1
+      // },
+      // {
+      //   id: 0,
+      //   supplierPartnerProfileServiceId: 0,
+      //   languageId: 2
+      // });
+
+      this.data.supplierPartnerDetails[0].grade = null;
+      this.data.supplierPartnerDetails[0].language = null;
       this._services.service_general_post_with_url('SupplierPartnerProfile/PostService', this.data).subscribe(data => {
         //console.log("save supplier: ", data);
         if (data.success) {
@@ -1137,6 +1310,8 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   updateDate() {
+    this.data.supplierPartnerDetails[0].grade = null;
+    this.data.supplierPartnerDetails[0].language = null;
     this._services.service_general_put('SupplierPartnerProfile/PutService', this.data).subscribe((data => {
       //console.log("save supplier: ", data);
       if (data.success) {

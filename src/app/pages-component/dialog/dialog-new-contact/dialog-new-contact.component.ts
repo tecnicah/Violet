@@ -111,7 +111,7 @@ debugger;
   //************************************************************//
   async catalogos() {
     //this.ca_documentType = await this._services.getCatalogueFrom('GetDocumentType');
-    this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
+    this._services.service_general_get('Catalogue/GetDocumentType/'+this.data.supplier_type).subscribe((data => {
       if (data.success) {
         this.ca_documentType = data.result; 
         console.log(this.ca_documentType);
@@ -147,7 +147,8 @@ debugger;
       width: "90%",
       data: {
         country: this.administrativeContactsServices.country,
-        city: this.administrativeContactsServices.city
+        city: this.administrativeContactsServices.city,
+        supplier_type: this.data.supplier_type
       }
     });
 

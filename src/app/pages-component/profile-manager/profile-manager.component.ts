@@ -51,7 +51,7 @@ export class ProfileManagerComponent implements OnInit {
   //CONSULTA CIUDAD//
   ca_city_ = [];
   getCity_() {
-    this._services.service_general_get('CountryAdminCenter/GetCityByCountryId?countryId=' + this.data_coordinator.personalInformation.country).subscribe((data => {
+    this._services.service_general_get('CountryAdminCenter/GetCityByCountryId?countryId=' + this.data_coordinator?.personalInformation?.country).subscribe((data => {
       if (data.success) {
         this.ca_city_ = data.result;
       }

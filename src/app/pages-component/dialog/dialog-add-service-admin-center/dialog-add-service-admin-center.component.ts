@@ -241,17 +241,24 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
   addCountry(data, i) {
     console.log('data form', data, + 'indice' + i);
     // opcion cuando se crea un servicio nuevo y puede elegir muchos paises
-    if (this.data.id == 0 && data == null) {
+    if (i== 'new') {
       data = {id : 0, action: "new",  serviceCountries:  this.serviceCountries?.data};
     }
     // opcion cuando es un servicio ya creado y se le quiere agregar un pais nuevo ya no hay multicheck
-    else if (this.data.id != 0 && data == null) {
-      data = {id : 0, action: 0, serviceCountries:  this.serviceCountries?.data};
+    if (i == 'edit') {
+      data = {id : 0, action: "edit",  serviceCountries:  this.serviceCountries?.data};
     }
-    //opcion cuando editas un country
-    else {
-      data.action = i;
+    if (i == 'tabla') {
+      data = {id : 0, action: "tabla",  serviceCountries:  this.serviceCountries?.data};
     }
+    // opcion cuando es un servicio ya creado y se le quiere agregar un pais nuevo ya no hay multicheck
+    // else if (this.data.id != 0 && data == null) {
+    //   data = {id : 0, action: 0, serviceCountries:  this.serviceCountries?.data};
+    // }
+    // //opcion cuando editas un country
+    // else {
+    //   data.action = i;
+    // }
     const dialogRef = this._dialog.open(DialogAddCountrySeccionCountryComponent, {
       data: data,
       width: '90%'
