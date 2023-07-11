@@ -487,7 +487,7 @@
     <!-------------->
 
     <!--SCHOOL-->
-    <mat-grid-list cols="5" rowHeight="70px" [hidden]="permisosConsultant == true" *ngIf="data.supplierType == 34">
+    <mat-grid-list cols="5" rowHeight="100px" [hidden]="permisosConsultant == true" *ngIf="data.supplierType == 34">
       <mat-grid-tile [colspan]="5" [rowspan]="1">
         <div class="textarea">
           <p class="page__section-name">Supplier Partner Details</p>
@@ -506,10 +506,12 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea" style="height: 60%;">
           <mat-form-field appearance="fill" class="input_central_half">
-            <mat-label>Grade</mat-label>
-            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].grade" (ngModelChange)="changeModelGrade()" multiple>             
+            <mat-label [ngClass]="{valid: active_grade}">Grade</mat-label>
+            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].grade" (focus)="active_grade = false" required (ngModelChange)="changeModelGrade()" multiple>             
               <mat-option *ngFor="let item of schoolgrades_catalogue" [value]="item.id">{{item.grade}}</mat-option>
             </mat-select>
+            <mat-error>Field is required</mat-error>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_grade">Field is required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -517,10 +519,12 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea" style="height: 60%;">
           <mat-form-field appearance="fill" class="input_central_half">
-            <mat-label>Languages</mat-label>
-            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].language" (ngModelChange)="changeModelLanguage()" multiple>             
+            <mat-label [ngClass]="{valid: active_language}">Languages</mat-label>
+            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].language" (focus)="active_language = false" required (ngModelChange)="changeModelLanguage()" multiple>             
               <mat-option *ngFor="let item of languages_catalogue" [value]="item.id">{{item.name}}</mat-option>
             </mat-select>
+            <mat-error>Field is required</mat-error>
+            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_language">Field is required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>

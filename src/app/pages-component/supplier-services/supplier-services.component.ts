@@ -977,11 +977,27 @@ export class SupplierServicesComponent implements OnInit {
   active_legalName: boolean = false;
   active_since: boolean = false;
   active_type: boolean = false;
+  active_grade: boolean = false;
+  active_language: boolean = false;
   seccionUno = 0;
 
   valida_form() {
     let contador = 0;
     this.seccionUno = 0;
+    if(this.data.supplierType == 34){
+      if (this.data.supplierPartnerDetails[0].grade == undefined || this.data.supplierPartnerDetails[0].grade == '' || this.data.supplierPartnerDetails[0].grade == null) {
+        this.active_grade= true;
+        this.seccionUno++;
+        contador++;
+      }
+
+      if (this.data.supplierPartnerDetails[0].language == undefined || this.data.supplierPartnerDetails[0].language == '' || this.data.supplierPartnerDetails[0].language == null) {
+        this.active_language= true;
+        this.seccionUno++;
+        contador++;
+      }
+    }
+
     if (this.data.status == undefined || this.data.status == '' || this.data.status == null) {
       this.active_status = true;
       this.seccionUno++;
