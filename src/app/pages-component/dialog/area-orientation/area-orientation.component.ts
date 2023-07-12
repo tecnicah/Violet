@@ -796,40 +796,59 @@ export class AreaOrientationComponent implements OnInit {
 
   change_status_detail() {
     ////debugger;
+    console.log("this.area_orientation",this.area_orientation);
     const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
       data: {
         header: "Confirmation",
         body: "What is the status of the service?",
         rol: this.user.role.id,
         category: 18, //departurre
-        type: "area_prientation"
+        type: "area_prientation",
+        // data: this.area_orientation,
+        type_id: 18,
+        srId: this.data.sr,
+        wos_id: this.area_orientation.workOrderServicesId,
       },
       width: "350px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
       //debugger;
-      // //console.log(result);
+      console.log(result);
       this.loader.showLoader();
-      if (result.success) {
-        this.area_orientation.statusId = result.id; //penidng to completion 
-        this.get_text_status();
-        this._services.service_general_put("RelocationServices/PutAreaOrientationStatus", this.area_orientation).subscribe((data => {
-          if (data.success) {
-            //console.log(data);
-            const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-              data: {
-                header: "Success",
-                body: "Update Data"
-              },
-              width: "350px"
-            });
-            this.loader.hideLoader();
-          }
-        }))
+      if(result != undefined){
+        if (result.success) {
+          this.area_orientation.statusId = result.id; //penidng to completion 
+          this.get_text_status();
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Success",
+              body: "Update Data"
+            },
+            width: "350px"
+          });
+          this.loader.hideLoader();
+          // this._services.service_general_put("RelocationServices/PutAreaOrientationStatus", this.area_orientation).subscribe((data => {
+          //   if (data.success) {
+          //     //console.log(data);
+          //     const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          //       data: {
+          //         header: "Success",
+          //         body: "Update Data"
+          //       },
+          //       width: "350px"
+          //     });
+          //     this.loader.hideLoader();
+          //   }
+          // }))
+        }
+        else {
+          this.loader.hideLoader();
+        } 
       }
-      else {
-        //nada 
+      else
+      {
+        this.loader.hideLoader();
       }
     });
   };

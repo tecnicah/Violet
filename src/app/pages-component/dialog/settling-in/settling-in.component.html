@@ -264,9 +264,9 @@
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
         </mat-grid-tile>
-        <div *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
+        <div>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <div class="input_central wid">
+            <div class="input_central wid" *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
               <mat-form-field appearance="fill">
                 <mat-label>Transport Type</mat-label>
                 <mat-select [(ngModel)]="settlingin.transportType">
@@ -276,14 +276,14 @@
             </div>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <div class="input_central wid">
+            <div class="input_central wid" *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
               <mat-form-field color="accent" appearance="fill">
                 <mat-label>Make / Model</mat-label>
                 <input matInput [(ngModel)]="settlingin.makeModel">
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="settlingin.carLease">
             <div class="input_central wid">
               <mat-form-field appearance="fill">
                 <mat-label>Initial Date</mat-label>
@@ -294,7 +294,7 @@
             </div>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <div class="input_central wid">
+            <div class="input_central wid" *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
               <mat-form-field appearance="fill">
                 <mat-label>Completion Date</mat-label>
                 <input [min]="settlingin.carInitial"   matInput required [matDatepicker]="Date_Completed_Car" [(ngModel)]="settlingin.carCompleted">
@@ -334,8 +334,8 @@
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
         </mat-grid-tile>
-        <div *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div>
+          <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
             <div class="input_central wid">
               <mat-form-field appearance="fill">
                 <mat-label>Transport Type</mat-label>
@@ -345,7 +345,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
                 <mat-label>Make / Model</mat-label>
@@ -353,7 +353,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="settlingin.carLease">
             <div class="input_central wid">
               <mat-form-field appearance="fill">
                 <mat-label>Initial Date</mat-label>
@@ -363,7 +363,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-grid-tile [colspan]="1" [rowspan]="1"  *ngIf="settlingin.carPurchaseLease || settlingin.carLease">
             <div class="input_central wid">
               <mat-form-field appearance="fill">
                 <mat-label>Completion Date</mat-label>
