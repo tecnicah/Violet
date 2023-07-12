@@ -122,8 +122,8 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
     if (fileSizeInBytes > maxSizeInBytes) {
       console.log('El archivo excede el tamaño máximo permitido.');
-      this.snackBar.open('El archivo excede el tamaño máximo permitido.', "", {
-        duration: 2000,
+      this.snackBar.open(`The file exceeds the maximum size allowed ${mg} mb`, "", {
+        duration: 2500,
       });
       return true;
       // Aquí puedes mostrar un mensaje de error o realizar alguna acción adicional
@@ -150,7 +150,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
           console.log(droppedFile.relativePath);
           console.log(file, this.files);
 
-          if (this.isValidSize(file, 1.8)) {
+          if (this.isValidSize(file, 2)) {
             return
           }
 
@@ -200,9 +200,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
   }
 
   public droppedPdf(files: NgxFileDropEntry[]) {
-    if (this.isValidSize(files, 19)) {
-      return
-    }
+   
 
     this.files = files;
     for (const droppedFile of files) {
@@ -212,6 +210,10 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         const reader = new FileReader();
         fileEntry.file((file: File) => {
+
+          if (this.isValidSize(file, 20)) {
+            return
+          }
 
           // Here you can access the real file
           console.log(droppedFile.relativePath);
