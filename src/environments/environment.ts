@@ -14,6 +14,8 @@ export const environment = {
 
    images_path: "https://my.premierds.net/api-test-premier/",
    URL_EXPORT: 'https://my.premierds.net/demo/',
-   API_URL: "https://my.premierds.net/api-test-premier/api/", //demo sean
+   API_URL: "https://tecnicah.site/back/violet/api/",
+
+  //  API_URL: "https://my.premierds.net/api-test-premier/api/", //demo sean
    API_URL_na: 'https://my.premierds.net/api-test-premier/', //dev
 }

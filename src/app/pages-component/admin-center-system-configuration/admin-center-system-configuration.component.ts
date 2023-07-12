@@ -74,11 +74,11 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
   search;
   selectCatalogs = [
     { value: 'countries', name: 'Countries' },
-    { value: 'emergency response', name: 'Emergency Response' },
+    // { value: 'emergency response', name: 'Emergency Response' },
     { value: 'offices', name: 'Offices' },
     { value: 'services', name: 'Services' },
-    { value: 'slider', name: 'Slider' },
-    { value: 'upcoming', name: 'Upcoming' },
+    // { value: 'slider', name: 'Slider' },
+    // { value: 'upcoming', name: 'Upcoming' },
   ];
   public filterCatalog: any = { name: '' };
 

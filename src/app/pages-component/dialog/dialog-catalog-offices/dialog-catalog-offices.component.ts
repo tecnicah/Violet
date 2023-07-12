@@ -52,7 +52,19 @@ export class DialogCatalogOfficesComponent implements OnInit {
             this.data.phone = this.data.phone.substr(posicion + 1);
           }
 
-          document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data.image);
+          const image = new Image();
+          image.src = this._services.url_images+this.data.image;
+          image.onload = function () {
+            document.getElementById('lead_client_avatar').setAttribute('src', image.src);
+            
+          };
+
+          image.onerror = function () {
+            document.getElementById('lead_client_avatar').setAttribute('src', './../../../assets/avatar.png');
+          };
+
+
+          // document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data.image);
           console.log('foto', this.data.image);
 
           console.log('respuesta de actualizacion', r);

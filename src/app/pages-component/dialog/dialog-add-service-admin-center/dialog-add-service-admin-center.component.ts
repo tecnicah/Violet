@@ -132,7 +132,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
     // this.GetService = await this._services.getCatalogueFrom('GetService');
     this.GetServiceLine = await this._services.getCatalogueFrom('GetServiceLine');
     this.GetCountry = await this._services.getCatalogueFrom('GetCountry');
-    //this.getService();
+    this.getService();
   }
 
   getCountry() {
@@ -156,6 +156,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
   }
 
   getService() {
+    this.data.serviceLine = 2;
     console.log(this.data.serviceLine);
     if (this.data.serviceLine == 1) {
       this._services.service_general_get(`Catalogue/GetServiceByServiceLine?idServiceLine=${this.data.serviceLine}`).subscribe(r=>{
@@ -177,15 +178,14 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
       this._services.service_general_get(`Catalogue/GetServiceByServiceLine?idServiceLine=${this.data.serviceLine}`).subscribe(r=>{
         if(r.success){
           this.GetService = r.result.value;
-          this.data.serviceRelo?.forEach(element => {
-            this.GetService?.forEach((service, index) => {
-                //console.log(element.service,'==',service.service);
-                if(element.service.toLowerCase() == service.service.toLowerCase()){
-                  console.log(element.service,'==',service.service);
-                  this.GetService.splice(index, 1);
-                }
-            });
-          });
+          // this.data.serviceRelo?.forEach(element => {
+          //   this.GetService?.forEach((service, index) => {
+          //       if(element.service.toLowerCase() == service.service.toLowerCase()){
+          //         console.log(element.service,'==',service.service);
+          //         this.GetService.splice(index, 1);
+          //       }
+          //   });
+          // });
         }
       })
     }

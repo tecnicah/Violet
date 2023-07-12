@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { LoaderComponent } from 'app/shared/loader';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
   loader: LoaderComponent = new LoaderComponent();
 
 
-  constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog,
+  constructor(public snackBar: MatSnackBar, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog,
     private fb: FormBuilder) {
     // this.formCities = this.fb.group({
     //   cityName: ['', Validators.required]
@@ -112,7 +113,30 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
   public files: NgxFileDropEntry[] = [];
 
+  isValidSize(files: any, mg: number) {
+
+    const file = files;
+    const fileSizeInBytes = file.size;
+    const maxSizeInBytes = mg * 1024 * 1024; // 18 MB
+    console.log("megas", file, files, mg, fileSizeInBytes, maxSizeInBytes)
+
+    if (fileSizeInBytes > maxSizeInBytes) {
+      console.log('El archivo excede el tamaño máximo permitido.');
+      this.snackBar.open('El archivo excede el tamaño máximo permitido.', "", {
+        duration: 2000,
+      });
+      return true;
+      // Aquí puedes mostrar un mensaje de error o realizar alguna acción adicional
+    } else {
+      console.log('El archivo cumple con el tamaño máximo permitido.');
+
+      // Aquí puedes realizar alguna acción con el archivo válido
+      return false;
+    }
+  }
+
   public dropped(files: NgxFileDropEntry[]) {
+
     this.files = files;
     for (const droppedFile of files) {
 
@@ -125,6 +149,10 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
           // Here you can access the real file
           console.log(droppedFile.relativePath);
           console.log(file, this.files);
+
+          if (this.isValidSize(file, 1.8)) {
+            return
+          }
 
           fileEntry.file(file => {
             reader.readAsDataURL(file);
@@ -172,6 +200,10 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
   }
 
   public droppedPdf(files: NgxFileDropEntry[]) {
+    if (this.isValidSize(files, 19)) {
+      return
+    }
+
     this.files = files;
     for (const droppedFile of files) {
 
