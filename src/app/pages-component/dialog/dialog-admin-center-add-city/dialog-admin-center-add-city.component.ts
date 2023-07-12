@@ -9,7 +9,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { LoaderComponent } from 'app/shared/loader';
-import { NgxFileDropEntry,FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 
 
 @Component({
@@ -38,7 +38,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
   public timefilter: any = { timeZone: '' };
   public cityfilter: any = { name: '' };
-  loader:LoaderComponent = new LoaderComponent();
+  loader: LoaderComponent = new LoaderComponent();
 
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog,
@@ -48,22 +48,27 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
     // });
   }
 
+  isVioletApp: boolean = false;
+
   ngOnInit(): void {
-    console.log(this.data_);
+
     this.data_ = this.data;
-    if(this.data_.fileRequest != null){
+    if (this.data_.fileRequest != null) {
       this.data_.fileRequest = this._services.url_images + this.data_.fileRequest;
     }
-    if(this.data_.resorucesGuideRequest != null){
+    if (this.data_.resorucesGuideRequest != null) {
       this.data_.resorucesGuideRequest = this._services.url_images + this.data_.resorucesGuideRequest;
     }
     console.log("Data recibida", this.data_);
-    if(this.data.id > 0)
-    {
-       this.searchcity = this.data.city;
-       this.buscar_ciudades_pornombre();
+    if (this.data.id > 0) {
+      this.searchcity = this.data.city;
+      this.buscar_ciudades_pornombre();
     }
-   
+
+    if (this.data_.origin == "violetApp") {
+      this.isVioletApp = true;
+    }
+
     //console.log(this.data.country);
     // this.loader.showLoader();
     // this._services.service_general_get("CountryAdminCenter/GetCityByCountryName?countryName=" + this.data.country).subscribe((data => {
@@ -74,7 +79,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
     //     });
     //   }
     //     this.lista_ciudades = data.result;
-      
+
     //   console.log(" Todas la ciudades ======================== " , this.options)
     // }));
 
@@ -99,8 +104,8 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
     this.getCatalogos();
   }
 
-  change_city_text(){
-    if(this.searchcity.length > 2){
+  change_city_text() {
+    if (this.searchcity.length > 2) {
       this.buscar_ciudades_pornombre();
     }
   }
@@ -231,15 +236,15 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
     console.log(event);
   }
 
-  buscar_ciudades_pornombre(){
+  buscar_ciudades_pornombre() {
     this.loader.showLoader();
     this._services.service_general_get("CountryAdminCenter/GetCityByCountryCityNames?countryName=" + this.data.country + '&cityname=' + this.searchcity).subscribe((data => {
       this.loader.hideLoader();
       if (data.success) {
         this.lista_ciudades = data.result;
-        console.log(" Todas la ciudades GetCityByCountryCityNames ======================== " , this.options)
+        console.log(" Todas la ciudades GetCityByCountryCityNames ======================== ", this.options)
       }
-        
+
     }));
 
   }
@@ -259,12 +264,12 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
     console.log(this.ca_timeZone);
 
     this._services.service_general_get("CountryAdminCenter/GetTypeResources")
-    .subscribe((data => {
-      console.log("Type",data);
+      .subscribe((data => {
+        console.log("Type", data);
         if (data.success) {
           this.typeResources = data.result;
         }
-        
+
       }));
   }
   //**************************************************************************//
@@ -495,7 +500,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
                 }
               }))
             }
-  
+
           }
         }
       }
