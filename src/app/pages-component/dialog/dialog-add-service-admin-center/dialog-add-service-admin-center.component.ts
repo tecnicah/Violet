@@ -342,7 +342,6 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
 
   // serviceCountries
   validar(){
-    debugger;
 
       if (!this.searchUserForm.controls.userType.value && !this.data.service1) {
         this.valid_service = true;

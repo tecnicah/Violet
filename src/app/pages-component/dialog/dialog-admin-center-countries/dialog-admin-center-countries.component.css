@@ -1,10 +1,14 @@
-.addPropperty{
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+.addPropperty {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
-
 th.mat-header-cell {
-    text-align: center !important;
+  text-align: center !important;
+}
+
+.page__section-button > button,
+.page__section-button > label {
+  margin-right: 0.5rem !important;
 }

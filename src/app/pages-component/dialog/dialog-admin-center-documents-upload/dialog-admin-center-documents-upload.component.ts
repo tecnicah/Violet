@@ -10,7 +10,7 @@ import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 
 })
 export class DialogAdminCenterDocumentsUploadComponent implements OnInit {
 
-  constructor(public _services: ServiceGeneralService, public dialogRef: MatDialogRef < any > , @Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(public _services: ServiceGeneralService, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   documents: any = {}
   caDocumentType: any[] = [];
@@ -97,7 +97,44 @@ export class DialogAdminCenterDocumentsUploadComponent implements OnInit {
     console.log(event);
   }
 
+  valid_idDocumentType: boolean = false;
+  valid_idPrivacy: boolean = false;
+
+  isValidar() {
+
+    if (this.documents.idDocumentType == undefined || this.documents.idDocumentType == null || this.documents.idDocumentType == 0) {
+      this.valid_idDocumentType = true;
+    } else {
+      this.valid_idDocumentType = false;
+    }
+
+    if (this.documents.idPrivacy == undefined || this.documents.idPrivacy == null || this.documents.idPrivacy == 0) {
+      this.valid_idPrivacy = true;
+    } else {
+      this.valid_idPrivacy = false;
+    }
+
+
+
+
+
+    console.log("datos", this.valid_idPrivacy, this.valid_idDocumentType, this.temporalDocument.fileName);
+
+
+    if (this.valid_idPrivacy == true || this.valid_idDocumentType == true || this.temporalDocument.fileName == undefined) {
+      return true;
+    } else {
+      return false;
+    }
+
+
+  }
+
   save() {
+
+    if (this.isValidar()) {
+      return
+    }
 
     this.temporalDocument = {
       "id": 0,
