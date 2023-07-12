@@ -820,27 +820,7 @@ export class AreaOrientationComponent implements OnInit {
         if (result.success) {
           this.area_orientation.statusId = result.id; //penidng to completion 
           this.get_text_status();
-          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-            data: {
-              header: "Success",
-              body: "Update Data"
-            },
-            width: "350px"
-          });
           this.loader.hideLoader();
-          // this._services.service_general_put("RelocationServices/PutAreaOrientationStatus", this.area_orientation).subscribe((data => {
-          //   if (data.success) {
-          //     //console.log(data);
-          //     const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-          //       data: {
-          //         header: "Success",
-          //         body: "Update Data"
-          //       },
-          //       width: "350px"
-          //     });
-          //     this.loader.hideLoader();
-          //   }
-          // }))
         }
         else {
           this.loader.hideLoader();

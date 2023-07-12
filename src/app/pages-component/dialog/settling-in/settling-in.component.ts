@@ -197,9 +197,12 @@ export class SettlingInComponent implements OnInit {
         header: "Confirmation",
         body: "What is the status of the service?",
         rol: this.user.role.id,
-        category: 15,
+        category: 19,
         type: "school_search",
-        data: this.cestatus
+        data: this.cestatus,
+        type_id: 19,
+        srId: this.data.sr,
+        wos_id: this.settlingin.workOrderServicesId,
       },
       width: "350px"
     });
