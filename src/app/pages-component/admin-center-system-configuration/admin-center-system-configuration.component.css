@@ -53,3 +53,7 @@
   display: block;
   margin-left: 2rem;
 } */
+.page__section-butuonc > button {
+  margin-right: 0.5rem !important;
+
+}
