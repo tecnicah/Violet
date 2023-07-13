@@ -501,7 +501,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header="idTypeOffice"> Offices </th>
         <td mat-cell *matCellDef="let element"  [matMenuTriggerFor]="officeHQ"> {{officeType(element.idTypeOffice)}} 
 
-        <mat-menu #officeHQ="matMenu" yPosition="above">
+        <!-- <mat-menu #officeHQ="matMenu" yPosition="above">
           <div class="bg"></div>
           <div class="assigned_services">
             <div class="data browser">
@@ -521,7 +521,7 @@
               </mat-list>
             </div>
           </div>
-        </mat-menu>
+        </mat-menu> -->
       </td>
         <!-- {{officeType(element.idTypeOffice)}} -->
       </ng-container>

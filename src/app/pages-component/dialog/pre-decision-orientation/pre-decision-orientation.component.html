@@ -8,7 +8,7 @@
       <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
     </div>
   </div>
-  <mat-dialog-content class="mat-typography">
+  <mat-dialog-content class="mat-typography" style="height: calc(100% - 96px);max-height: unset">
     <!-----------------------------------primera seccion-------------------------------------->
     <mat-grid-list cols="5" rowHeight="70px">
 
@@ -442,7 +442,7 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div *ngIf="dataSourceHousing.length > 0" class="page__section-button page__section-button--big">
+          <div *ngIf="dataSourceSchool.length > 0" class="page__section-button page__section-button--big">
             <button class="button-icon button-icon--report" (click)="exportersc.exportTable('xls')">
               Export SL
             </button>
@@ -450,11 +450,11 @@
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <div class="addPropperty">
-            <!-- <div class="page__section-button page__section-button--big" >
+            <div class="page__section-button page__section-button--big" >
               <button  class="button-icon button-icon--send">
                 Send Schools
               </button>
-            </div> -->
+            </div>
 
             <div class="page__section-button page__section-button--big">
               <button (click)="addSchool()" class="button-icon button-icon--more">
@@ -472,8 +472,11 @@
 
         <!-- Position Column -->
         <ng-container matColumnDef="School No.">
-          <th mat-header-cell *matHeaderCellDef>Schooling</th>
-          <td mat-cell *matCellDef="let element"> {{element.schoolNo}} </td>
+          <th mat-header-cell *matHeaderCellDef>Send</th>
+          <td mat-cell *matCellDef="let element"> 
+            <mat-checkbox [(ngModel)]="element.sendSchool" (change)="setSchool($event.checked, element, i)" >
+            </mat-checkbox>    
+          </td>
         </ng-container>
 
         <!-- Position Column -->

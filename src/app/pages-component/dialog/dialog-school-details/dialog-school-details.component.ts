@@ -89,18 +89,18 @@ export class DialogSchoolDetailsComponent implements OnInit {
     if (this.SchoolDetails.supplierPartner.id != null && this.SchoolDetails.supplierPartner.id != 0) {
       this.data.othersupplier = '';
       // this.loader.showLoader();
-      this._services.service_general_get('SupplierPartnerProfile/GetService?key=' + this.SchoolDetails.supplierPartner.id).subscribe((data => {
+      this._services.service_general_get('SupplierPartnerProfile/GetSchoolDetail?id=' + this.SchoolDetails.supplierPartner.id).subscribe((data => {
         if (data.success) {
           console.log("supplier escuela ========================",data)
           let suppdet = data.result; 
-           this.SchoolDetails.ib= suppdet.supplierPartnerDetails[0].ib;
-           this.SchoolDetails.uniform=  suppdet.supplierPartnerDetails[0].uniform;
-            this.SchoolDetails.medicalRecordNeeded = suppdet.supplierPartnerDetails[0].medical;
-            this.SchoolDetails.transportationOffered = suppdet.supplierPartnerDetails[0].transportationOffered;
-            this.SchoolDetails.address = suppdet.supplierPartnerDetails[0].address;
-            this.SchoolDetails.grade = suppdet.supplierPartnerDetails[0].grade;
-            this.SchoolDetails.languages = suppdet.supplierPartnerDetails[0].language;
-            this.SchoolDetails.webSite = suppdet.supplierPartnerDetails[0].webSite;
+           this.SchoolDetails.ib= suppdet.ib;
+           this.SchoolDetails.uniform=  suppdet.uniform;
+            this.SchoolDetails.medicalRecordNeeded = suppdet.medical;
+            this.SchoolDetails.transportationOffered = suppdet.transportationOffered;
+            this.SchoolDetails.address = suppdet.address;
+            this.SchoolDetails.grade = suppdet.grade;
+            this.SchoolDetails.languages = suppdet.languages;
+            this.SchoolDetails.webSite = suppdet.webSite;
         }
       }))
     }
@@ -164,6 +164,10 @@ export class DialogSchoolDetailsComponent implements OnInit {
       this.SchoolDetails.updatedDate = new Date();
       this.SchoolDetails.updatedDate = new Date();
       this.SchoolDetails.sendSchool = false;
+      this.SchoolDetails.grade = 1;
+      this.SchoolDetails.languages = 1;
+      this.SchoolDetails.workOrderServicesId = this.data.workOrderServicesId;
+      this.SchoolDetails.supplierId = this.SchoolDetails.supplierPartner; 
       console.log(this.SchoolDetails);
 
       this._services.service_general_post_with_url("SchoolsList/PostSchools", this.SchoolDetails).subscribe((data => {

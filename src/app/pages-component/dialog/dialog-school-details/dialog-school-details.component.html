@@ -123,7 +123,7 @@
             <input matInput placeholder="Address" #message_address maxlength="50" [(ngModel)]="SchoolDetails.otherLangauge">
           </mat-form-field>
         </div> -->
-        <div class="input_central" *ngIf="data.id == 0">
+        <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>School Name</mat-label>
             <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
@@ -131,177 +131,102 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="input_central" *ngIf="data.id != 0">
-          <mat-form-field appearance="fill">
-            <mat-label>School Name</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
-              <mat-option *ngFor="let item of SupplierCompany" [value]="item.id"> {{item.comercialName}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
       </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="3" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Address</mat-label>
-            <input matInput placeholder="Address" #message_address maxlength="100" [(ngModel)]="SchoolDetails.address">
-            <mat-hint align="end">{{message_address.value.length}} / 100</mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Grade</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.grade">
-              <mat-option *ngFor="let data of ca_grade" [value]="data.id">{{data.grade}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Langauge</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.languages">
-              <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{data.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Langauge</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.schoolingListLanguanges" [formControl]="toppings" multiple>
-              <mat-option *ngFor="let data of ca_languages" [value]="data.id">
-                {{data.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">IB</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.ib"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">Uniform</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.uniform"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0; ">Medical Records Needed</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.medicalRecordNeeded"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div style="height: 100%; ">
-          <p class="subtitle" style="font-size: 8px; margin: 0; ">Transportation Offered</p>
-          <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.transportationOffered"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-
-      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Registered Partner School</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
-              <mat-option *ngFor="let item of SupplierCompany" [value]="item.id"> {{item.comercialName}}</mat-option>
-              <mat-option [value]=0> Other </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div> 
-      </mat-grid-tile>-->
+      <div *ngIf="SchoolDetails.supplierPartner != 0">
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+          <div style="display: flex;" class="input_central comments">
+            <div>
+              <p class="subtitle">Address</p>
+              <p class="title">{{SchoolDetails.address}}</p>
+            </div>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="display: flex;" class="input_central comments">
+            <div>
+              <p class="subtitle">Grade</p>
+              <p class="title">{{SchoolDetails.grade}}</p>
+            </div>
+          </div>
+          <!-- <div class="input_central">
+            <mat-form-field appearance="fill">
+              <mat-label>Grade</mat-label>
+              <mat-select [(ngModel)]="SchoolDetails.grade">
+                <mat-option *ngFor="let data of ca_grade" [value]="data.id">{{data.grade}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="display: flex;" class="input_central comments">
+            <div>
+              <p class="subtitle">Langauge</p>
+              <p class="title">{{SchoolDetails.languages}}</p>
+            </div>
+          </div>
+          <!-- <div class="input_central">
+            <mat-form-field appearance="fill">
+              <mat-label>Langauge</mat-label>
+              <mat-select [(ngModel)]="SchoolDetails.languages">
+                <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{data.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+        </mat-grid-tile>
+  
+        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_central">
+            <mat-form-field appearance="fill">
+              <mat-label>Langauge</mat-label>
+              <mat-select [(ngModel)]="SchoolDetails.schoolingListLanguanges" [formControl]="toppings" multiple>
+                <mat-option *ngFor="let data of ca_languages" [value]="data.id">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile> -->
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="height: 100%; ">
+            <p class="subtitle" style="font-size: 8px; margin: 0;">IB</p>
+            <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.ib" [disabled]="true"></mat-checkbox>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="height: 100%; ">
+            <p class="subtitle" style="font-size: 8px; margin: 0;">Uniform</p>
+            <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.uniform" [disabled]="true"></mat-checkbox>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="height: 100%; ">
+            <p class="subtitle" style="font-size: 8px; margin: 0; ">Medical Records Needed</p>
+            <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.medicalRecordNeeded" [disabled]="true"></mat-checkbox>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="height: 100%; ">
+            <p class="subtitle" style="font-size: 8px; margin: 0; ">Transportation Offered</p>
+            <mat-checkbox class="example-margin" [(ngModel)]="SchoolDetails.transportationOffered" [disabled]="true"></mat-checkbox>
+          </div>
+        </mat-grid-tile>
+  
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <div style="display: flex;" class="input_central comments">
+            <div>
+              <p class="subtitle">URL</p>
+              <p class="title">{{SchoolDetails.webSite}}</p>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </div>
       
-      <!--<mat-grid-tile [colspan]="1" [rowspan]="1">
-         <div class="input_central" *ngIf="data.supplierPartner != null && data.supplierPartner != 0">
-          <mat-form-field appearance="fill">
-            <mat-label>Contact</mat-label>
-            <mat-select [(ngModel)]="data.supplier">
-              <mat-option [value]=null>No Contact Person</mat-option>
-              <mat-option *ngFor="let item of Supplier" [value]="item.id"> {{item.contactName}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>  -->
-        <!-- <div class="input_central" *ngIf="SchoolDetails.supplierPartner == null || SchoolDetails.supplierPartner == 0">
-          <mat-form-field appearance="fill">
-            <mat-label>External Partner School</mat-label>
-            <input matInput placeholder="Conctat Name" #message maxlength="100" [(ngModel)]="SchoolDetails.othersupplier">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
-
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>URL</mat-label>
-            <input matInput placeholder="Web Site" [(ngModel)]="SchoolDetails.webSite">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      
-
-      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Admissions</mat-label>
-            <input matInput placeholder="Admissions" [(ngModel)]="SchoolDetails.admision">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>$ Per Month</mat-label>
-            <input matInput type="number" placeholder="$ Per Month" type="number" min="0" [(ngModel)]="SchoolDetails.perMonth">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>$ For Enrollment</mat-label>
-            <input matInput type="number" placeholder="$ For Enrollment" type="number" min="0" [(ngModel)]="SchoolDetails.forEnrollment">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Fees & Enrollment</mat-label>
-            <input matInput type="number" placeholder="Fees & Enrollment" type="number" min="0" [(ngModel)]="SchoolDetails.feesEnrollment">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Currency</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.currency">
-              <mat-option *ngFor="let data of ca_currency" [value]="data.id">{{data.currency}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
-
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">
