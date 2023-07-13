@@ -81,8 +81,9 @@ export class CountriesComponent implements OnInit {
   //ABRE MODAL PARA AGREGAR NUEVA COUNTRY//
   addCountry(){
     console.log("ABRE MODAL COUNTRY");
+    // data_.origin = 'violetApp';  origin: 'systemConfiguration'
     const dialogRef = this._dialog.open(DialogAdminCenterCountriesComponent, {
-      data: { id : 0, origin: 'systemConfiguration'},
+      data: { id : 0, origin: 'violetApp'},
       width: "95%"
     });
 

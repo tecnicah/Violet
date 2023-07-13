@@ -47,6 +47,8 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
     console.log("Data que recibe modal: ", this.data);
     this.user = JSON.parse(localStorage.getItem('userData'));
 
+    this.getCatalogos();
+
     this._services.service_general_get('Catalogue/Generic/Countries').subscribe(r => {
       if (r.success) {
         this.catalogoCountry = r.result;
@@ -113,6 +115,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
     this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/25');
     this.caCountry = await this._services.getCatalogueFrom('GetPrivacy');
     this.caStatus = await this._services.getCatalogueFrom('GetDocumentStatus');
+    console.log("El get si jala", this.ca_currency);
     this.loader.hideLoader();
   }
   //******************************************************//
@@ -235,7 +238,47 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
       }
     })
   }
+  valid_idCurrency: boolean = false;
+  valid_idLenguage: boolean = false;
+  valid_country: boolean = false;
+
+
+
+
+  isValidar() {
+
+    if (this.ddlCountry == undefined || this.ddlCountry == null || this.ddlCountry == 0) {
+      this.valid_country = true;
+    } else {
+      this.valid_country = false;
+    }
+
+    if (this.data_.idCurrency == undefined || this.data_.idCurrency == null || this.data_.idCurrency == 0) {
+      this.valid_idCurrency = true;
+    } else {
+      this.valid_idCurrency = false;
+    }
+
+    if (this.data_.idLenguage == undefined || this.data_.idLenguage == null || this.data_.idLenguage == 0) {
+      this.valid_idLenguage = true;
+    }
+    else {
+      this.valid_idLenguage = false;
+    }
+
+
+    if (this.valid_idCurrency == true || this.valid_idLenguage == true || this.valid_country == true) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
   save() {
+    if (this.isValidar()) {
+      return
+    }
+
     this.loader.showLoader();
     //console.log(this.filterCountry);
     //console.log(this.ddlCountry.name);
@@ -437,7 +480,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
   }
 
   public __serverPath__: string = this._services.url_images;
-  
+
   public openRepairsFileOnWindow(url_in: string): void {
     debugger;
     const server_url: string = this.__serverPath__ + url_in;

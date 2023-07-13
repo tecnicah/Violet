@@ -3,8 +3,14 @@
   <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
     <h2 mat-dialog-title class="modal-form__title">Working Documents</h2>
   </div>
-  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
-    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  <div
+    fxFlex.gt-lg="10"
+    fxFlex.gt-md="10"
+    fxFlex.gt-xs="100"
+    fxFlex="100"
+    align="end"
+  >
+    <mat-icon [mat-dialog-close]="true" style="cursor: pointer">close</mat-icon>
   </div>
 </div>
 
@@ -12,18 +18,30 @@
 <mat-dialog-content class="mat-typography">
   <mat-grid-list cols="4" rowHeight="160px">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div style="width: 100%;">
-        <div style="display: flex; justify-content: space-between;">
+      <div style="width: 100%">
+        <div style="display: flex; justify-content: space-between">
           <p class="subtitle">Upload Documents</p>
-          <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyy' }}</b></p>
+          <p class="subtitle">
+            Uploaded Date: <b>{{ today | date : "dd MMM yyy" }}</b>
+          </p>
         </div>
-        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
-          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
-          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        <ngx-file-drop
+          class="file-drop"
+          dropZoneLabel="Drop files here"
+          (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)"
+          (onFileLeave)="fileLeave($event)"
+          [multiple]="false"
+        >
+          <ng-template
+            ngx-file-drop-content-tmp
+            let-openFileSelector="openFileSelector"
+          >
             Drag and Drop or
             <p class="browser" (click)="openFileSelector()">Browse File</p>
           </ng-template>
         </ngx-file-drop>
+        <div style="color:#e91e63; font-size: 12px;" *ngIf="temporalDocument.fileName == undefined">Field is required</div>
       </div>
     </mat-grid-tile>
   </mat-grid-list>
@@ -43,14 +61,19 @@
   </div>
   <!-----------------------------------primera seccion-------------------------------------->
   <mat-grid-list cols="3" rowHeight="70px">
-
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Document Type</mat-label>
           <mat-select [(ngModel)]="documents.idDocumentType">
-            <mat-option *ngFor="let item of caDocumentType" [value]="item.id"> {{item.documentType}}</mat-option>
+            <mat-option *ngFor="let item of caDocumentType" [value]="item.id">
+              {{ item.documentType }}</mat-option
+            >
           </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint *ngIf="valid_idDocumentType" style="color: #e91e63"
+            >Field is required</mat-hint
+          >
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -91,23 +114,25 @@
           Approved
         </div>
       </div> -->
-
     </mat-grid-tile>
-
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Privacy</mat-label>
           <mat-select [(ngModel)]="documents.idPrivacy">
-            <mat-option *ngFor="let item of caCountry" [value]="item.id"> {{item.privacy}}</mat-option>
+            <mat-option *ngFor="let item of caCountry" [value]="item.id">
+              {{ item.privacy }}</mat-option
+            >
           </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint *ngIf="valid_idPrivacy" style="color: #e91e63"
+            >Field is required</mat-hint
+          >
         </mat-form-field>
       </div>
     </mat-grid-tile>
-
   </mat-grid-list>
-
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

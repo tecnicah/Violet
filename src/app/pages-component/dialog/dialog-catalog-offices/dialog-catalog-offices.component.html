@@ -1,12 +1,21 @@
 <!-----------------------------------header-------------------------------------->
 <div fxLayout="row">
   <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
-    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id == 0">Add Office</h2>
-    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id != 0">Update Office</h2>
-
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id == 0">
+      Add Office
+    </h2>
+    <h2 mat-dialog-title class="modal-form__title" *ngIf="this.data.id != 0">
+      Update Office
+    </h2>
   </div>
-  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
-    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  <div
+    fxFlex.gt-lg="10"
+    fxFlex.gt-md="10"
+    fxFlex.gt-xs="100"
+    fxFlex="100"
+    align="end"
+  >
+    <mat-icon [mat-dialog-close]="true" style="cursor: pointer">close</mat-icon>
   </div>
 </div>
 <mat-dialog-content class="mat-typography">
@@ -15,12 +24,27 @@
     <mat-grid-tile [colspan]="1" [rowspan]="3">
       <div class="flex-img">
         <div>
-          <img src="assets/images/users/avatar.png" id="lead_client_avatar" class="avatar">
+          <img
+            src="./../../../../assets/images/users/avatar.png"
+            id="lead_client_avatar"
+            class="avatar"
+          />
         </div>
-        <div style="height: 10px;">&nbsp;</div>
-        <input class="btnr btnr--pencil" hidden type="file" id="file" accept="image/*" (change)="img($event)">
-        <button onclick="document.getElementById('file').click()" class="btnr btnr--pencil" matRipple
-          matRippleColor="rgba(157, 50, 146, 0.5)">
+        <div style="height: 10px">&nbsp;</div>
+        <input
+          class="btnr btnr--pencil"
+          hidden
+          type="file"
+          id="file"
+          accept="image/*"
+          (change)="img($event)"
+        />
+        <button
+          onclick="document.getElementById('file').click()"
+          class="btnr btnr--pencil"
+          matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)"
+        >
           Edit Photo
         </button>
       </div>
@@ -29,22 +53,35 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Office Name</mat-label>
-        <input matInput required placeholder="Office Name" [(ngModel)]="data.office">
+        <input
+          matInput
+          required
+          placeholder="Office Name"
+          [(ngModel)]="data.office"
+        />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_office">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_office"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- country -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Country</mat-label>
-        <mat-select required [(ngModel)]="data.country" (selectionChange)="selectCity()">
+        <mat-select
+          required
+          [(ngModel)]="data.country"
+          (selectionChange)="selectCity()"
+        >
           <mat-option *ngFor="let item of dataCountry" [value]="item.id">
-            {{item.name}}
+            {{ item.name }}
           </mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_country"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- city -->
@@ -53,82 +90,127 @@
         <mat-label>City</mat-label>
         <mat-select [(ngModel)]="data.city" required>
           <mat-option *ngFor="let item of dataCity" [value]="item.id">
-            {{item.city}}
+            {{ item.city }}
           </mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_city">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_city"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- direccion -->
     <mat-grid-tile [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Address</mat-label>
-        <input matInput required placeholder="Av. #5" [(ngModel)]="data.address">
+        <input
+          matInput
+          required
+          placeholder="Av. #5"
+          [(ngModel)]="data.address"
+        />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_address">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_address"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- currency -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Currency</mat-label>
-        <mat-select required [(ngModel)]="data.currency" (selectionChange)="selectCity()">
+        <mat-select
+          required
+          [(ngModel)]="data.currency"
+          (selectionChange)="selectCity()"
+        >
           <mat-option *ngFor="let item of dataCurrency" [value]="item.id">
-            {{item.currency}}
+            {{ item.currency }}
           </mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_country"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- zip -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Zip Code</mat-label>
-        <input matInput required placeholder="2215" [(ngModel)]="data.zip">
+        <input matInput required placeholder="2215" [(ngModel)]="data.zip" />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_zip">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_zip"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- phone -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <mat-form-field style="width: 40% !important; margin-right: 5%;">
+      <mat-form-field style="width: 40% !important; margin-right: 5%">
         <mat-label>Prefix</mat-label>
         <mat-select matNativeControl [(ngModel)]="prefix">
-          <mat-form-field appearance="outline" style="padding: 5px;">
+          <mat-form-field appearance="outline" style="padding: 5px">
             <mat-label>Prefix</mat-label>
-            <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName">
+            <input
+              matInput
+              placeholder="prefix"
+              [(ngModel)]="typePrefix.countriesName"
+            />
           </mat-form-field>
-          <mat-option *ngFor="let item of prefixCatalog | filterBy: typePrefix;" [value]="item.countriesIsdCode">
+          <mat-option
+            *ngFor="let item of prefixCatalog | filterBy : typePrefix"
+            [value]="item.countriesIsdCode"
+          >
             {{ item.countriesIsdCode }} / {{ item.countriesName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field style="width: 55% !important;">
+      <mat-form-field style="margin-left: 0.5rem" style="width: 55% !important">
         <mat-label>Phone Number</mat-label>
-        <input mask="(000) 000-0000" type="tel" matInput required placeholder="Phone Number" [(ngModel)]="data.phone">
+        <input
+          mask="(000) 000-0000"
+          type="tel"
+          matInput
+          required
+          placeholder="Phone Number"
+          [(ngModel)]="data.phone"
+        />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_phone">Field is required</mat-hint>
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_phone"
+          >Field is required</mat-hint
+        >
       </mat-form-field>
     </mat-grid-tile>
     <!-- email -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>E-mail</mat-label>
-        <input matInput required placeholder="email@email.com" [(ngModel)]="data.email" (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_emai'} );
-        validEmailAssignee( $event.target.value );
-        validateEmailServerAvailability( $event.target.value );" >
+        <input
+          matInput
+          required
+          placeholder="email@email.com"
+          [(ngModel)]="data.email"
+          (change)="
+            removeErrorLabel($event.target.value, {
+              handler: nso_ainfo_fields,
+              field: 'no_emai'
+            });
+            validEmailAssignee($event.target.value);
+            validateEmailServerAvailability($event.target.value)
+          "
+        />
         <span class="label-error" *ngIf="nso_ainfo_fields.no_emai">
           Field is required
         </span>
-        <span class="label-error" *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai">
+        <span
+          class="label-error"
+          *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai"
+        >
           E-mail format not valid
         </span>
       </mat-form-field>
     </mat-grid-tile>
-
-
   </mat-grid-list>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

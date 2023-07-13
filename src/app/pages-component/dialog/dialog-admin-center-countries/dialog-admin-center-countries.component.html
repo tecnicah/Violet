@@ -36,6 +36,7 @@
               </mat-option>
             </mat-select>
             <mat-error>Field is required</mat-error>
+            <mat-hint *ngIf="valid_country" style="color: #e91e63;">Field is required</mat-hint>
           </mat-form-field>
 
           <!-- <mat-form-field appearance="fill">
@@ -50,6 +51,8 @@
           <mat-form-field appearance="fill">
             <mat-label>Country</mat-label>
             <input matInput placeholder="Country" [(ngModel)]="data.country" [disabled]="true">
+            <mat-error>Field is required</mat-error>
+            <mat-hint *ngIf="valid_country" style="color: #e91e63;">Field is required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -58,8 +61,7 @@
         <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Description</mat-label>
-            <input matInput placeholder="Description" [(ngModel)]="data_.description"
-              [disabled]="data.origin == 'violetApp'">
+            <input matInput placeholder="Description" [(ngModel)]="data_.description">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -68,20 +70,25 @@
         <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Currency</mat-label>
-            <mat-select [(ngModel)]="data_.idCurrency" [disabled]="data.origin == 'violetApp'">
+            <mat-select [(ngModel)]="data_.idCurrency">
               <mat-option *ngFor="let item of ca_currency" [value]="item.id">{{item.currency}}</mat-option>
             </mat-select>
+            <mat-error>Field is required</mat-error>
+            <mat-hint *ngIf="valid_idCurrency" style="color: #e91e63;">Field is required</mat-hint>
           </mat-form-field>
         </div>
+        
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Principal Language</mat-label>
-            <mat-select [(ngModel)]="data_.idLenguage" [disabled]="data.origin == 'violetApp'">
+            <mat-select [(ngModel)]="data_.idLenguage">
               <mat-option *ngFor="let item of ca_language" [value]="item.id">{{item.name}}</mat-option>
             </mat-select>
+            <mat-error>Field is required</mat-error>
+            <mat-hint *ngIf="valid_idLenguage" style="color: #e91e63;">Field is required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
