@@ -52,7 +52,7 @@
           </mat-form-field>
         </div>
       </mat-grid-tile> -->
-
+<!-- 
     <mat-grid-tile
       [colspan]="1"
       [rowspan]="1"
@@ -80,7 +80,7 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
     <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'systemConfiguration'">
         <div class="input_central textarea" >
@@ -105,9 +105,7 @@
 
     <mat-grid-tile
       [colspan]="1"
-      [rowspan]="1"
-      *ngIf="this.data_.origin == 'systemConfiguration'"
-    >
+      [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>City Name </mat-label>
@@ -136,9 +134,7 @@
 
     <mat-grid-tile
       [colspan]="1"
-      [rowspan]="1"
-      *ngIf="this.data_.origin == 'systemConfiguration'"
-    >
+      [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Time Zone</mat-label>
@@ -157,7 +153,6 @@
               >{{ item.timeZone }}</mat-option
             >
             <mat-option
-              disabled
               *ngIf="(ca_timeZone | filterBy : timefilter).length === 0"
               >No matching elements</mat-option
             >
@@ -166,25 +161,6 @@
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile
-      [colspan]="1"
-      [rowspan]="1"
-      *ngIf="this.data_.origin == 'violetApp'"
-    >
-      <div class="input_central textarea">
-        <mat-form-field appearance="fill">
-          <mat-label>Time Zone</mat-label>
-          <mat-select [(ngModel)]="data_.idTimeZone" disabled>
-            <mat-option
-              disabled
-              *ngFor="let item of ca_timeZone"
-              [value]="item.id"
-              >{{ item.timeZone }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </mat-grid-tile>
 
     <mat-grid-tile *ngIf="isVioletApp" [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
