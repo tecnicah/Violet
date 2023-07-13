@@ -590,6 +590,10 @@ export class PreDecisionOrientationComponent implements OnInit {
       this.getDataSchool();
     })
   }
+  //Send School
+  sendSchool(){
+
+  }
   //**********************************************************************************//
   //**METHODS PAYMENTS (NEW PAYMENT)**//
   addPayment(data) {

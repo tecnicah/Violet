@@ -451,7 +451,7 @@
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <div class="addPropperty">
             <div class="page__section-button page__section-button--big" >
-              <button  class="button-icon button-icon--send">
+              <button  class="button-icon button-icon--send" (click)="sendSchool();">
                 Send Schools
               </button>
             </div>
@@ -472,11 +472,8 @@
 
         <!-- Position Column -->
         <ng-container matColumnDef="School No.">
-          <th mat-header-cell *matHeaderCellDef>Send</th>
-          <td mat-cell *matCellDef="let element"> 
-            <mat-checkbox [(ngModel)]="element.sendSchool" (change)="setSchool($event.checked, element, i)" >
-            </mat-checkbox>    
-          </td>
+          <th mat-header-cell *matHeaderCellDef>School No</th>
+          <td mat-cell *matCellDef="let element"> {{element.schoolNo}} </td>
         </ng-container>
 
         <!-- Position Column -->
