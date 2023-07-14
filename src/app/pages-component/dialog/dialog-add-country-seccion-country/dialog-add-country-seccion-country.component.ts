@@ -78,6 +78,8 @@ export class DialogAddCountrySeccionCountryComponent implements OnInit {
       userType: new FormControl('')
     });
     this.catalogos();
+
+    this.searchUserForm.controls.userType.patchValue([1082]);
   }
 
   onChangedEditor(event: any): void {

@@ -14,7 +14,7 @@
   <mat-grid-list cols="4" rowHeight="60px">
 
     <!-- add countru multicheck en caso de que la data reciba action = new -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action == 'new'">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <form [formGroup]="searchUserForm" fxFlex fxLayout="column" autocomplete="off" style="margin: 30px">
         <!-- mat-form-field appearance="fill" class="textarea input_central">
           <mat-label>Country</mat-label>
@@ -37,7 +37,7 @@
       </form>
     </mat-grid-tile>
     <!-- country se mostrara sin multicheck cuando el action sea 0 ya que es un update -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new'">
+    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new'">
       <mat-form-field class="textarea input_central">
         <mat-label>Country</mat-label>
         <mat-select [disabled]="data.id != 0" [(ngModel)]="data.country">
@@ -46,7 +46,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
     <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <p>Standar Scope & Documents</p>

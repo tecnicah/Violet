@@ -288,6 +288,9 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
             // result.service = this.data.id;
             // result.createdBy= user.id;
             // result.createdDate= new Date();
+            debugger;
+            console.log(result);
+            delete result['country'];
             this.data.serviceCountries.push(result);
           });
           
@@ -349,7 +352,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
 
   // serviceCountries
   validar(){
-
+debugger;
       if (!this.searchUserForm.controls.userType.value && !this.data.service1) {
         this.valid_service = true;
       }
@@ -378,7 +381,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
     else {
       this.valid_country = false;
     }
-
+debugger;
     if(this.valid_service == false && this.valid_country == false && this.valid_serviceLine == false){
       this.save();
     }
@@ -412,6 +415,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
         });
       });
       this.loader.showLoader();
+      
       console.log(JSON.stringify(this.serviceData),this.serviceData);
       this._services.service_general_post_with_url('AdminCenter/AddService',this.serviceData).subscribe(r =>{
         console.log(r);
