@@ -8,7 +8,7 @@
       <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
     </div>
   </div>
-  <mat-dialog-content class="mat-typography">
+  <mat-dialog-content class="mat-typography" style="height: calc(100% - 96px);max-height: unset">
     <!-----------------------------------primera seccion-------------------------------------->
     <mat-grid-list cols="5" rowHeight="70px">
 
@@ -220,6 +220,8 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="75px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Houses</p>
@@ -280,8 +282,8 @@
         <ng-container matColumnDef="Send">
           <th mat-header-cell *matHeaderCellDef> Send </th>
           <td mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.wassended || element.status != 'Pending'"
-              [disabled]="element.status != 'Pending'" (change)="onChangeDemo($event, element)">
+            <mat-checkbox [checked]="element.wassended" [disabled]="element.status != 'Pending'"
+            (change)="onChangeDemo($event, element)">
             </mat-checkbox>
           </td>
         </ng-container>
@@ -337,7 +339,7 @@
     <!--END SECTION HOUSING-->
     <!---------------------------------------------------------------------->
     <!---------------------------------------------------------------------->
-    <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-list cols="4" rowHeight="75px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name" style="width: 100%;">Schools</p>
@@ -349,92 +351,7 @@
     </mat-grid-list>
     <!---------------------------------------------------------------------------------------------------->
     <div *ngIf="area_orientation.schooling">
-      <!--START CARD SCHOOLNG-->
-      <div *ngFor="let data of area_orientation.schoolings; let i = index">
-        <div *ngIf="data.active" class="mat-elevation-z8 textarea">
-          <mat-card>
-            <div align="end">
-              <img src="assets/icons/quit.svg" class="delete" (click)="deleteChild(i)">
-            </div>
-            <mat-grid-list cols="4" rowHeight="70px">
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_central">
-                  <p class="subtitle" style="font-size:10px;">Relationship</p>
-                  <p class="title" style="font-size:12px;">Child</p>
-                  <!-- <p class="title" style="font-size:12px;">{{getApplicant(data.relationshipId)}}</p> -->
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_central">
-                  <p class="subtitle" style="font-size:10px;">Name</p>
-                  <p class="title" style="font-size:12px;">{{data.name}}</p>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_central">
-                  <p class="subtitle" style="font-size:10px;">Date of Birth</p>
-                  <p class="title" style="font-size:12px;">{{data.birth | date:'dd MMM yyy'}}</p>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div style="height: 80%;">
-                  <p class="subtitle" style="font-size: 10px; margin: 0;">Sex</p>
-                  <p class="title" style="font-size:12px;">
-                    <spam *ngIf="data.sex == 1">Male</spam>
-                    <spam *ngIf="data.sex == 2">Female</spam>
-
-                  </p>
-
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_central">
-                  <p class="subtitle" style="font-size:10px;">Age</p>
-                  <p class="title" style="font-size:12px;">{{getAge(data.birth)}}</p>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.nationality">
-                <div class="input_central">
-                  <p class="subtitle" style="font-size:10px;">Nationality</p>
-                  <p class="title" style="font-size:12px;">{{getNacionality(data.nationality)}}</p>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="1" [rowspan]="1">
-                <div class="input_central">
-                  <p class="subtitle" style="font-size:10px;">Current Grade</p>
-                  <p class="title" style="font-size:12px;">{{getGrade(data.currentGrade)}}</p>
-                </div>
-              </mat-grid-tile>
-
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div>
-                  <p class="subtitle" style="font-size:10px;">Additional Comments</p>
-                  <p class="title" style="font-size:12px;">{{data.comments}}</p>
-                </div>
-              </mat-grid-tile>
-
-            </mat-grid-list>
-          </mat-card>
-        </div>
-      </div>
-      <!--CLOSE CARD-->
-      <!---------------------------------------------------------------------------------------------------->
       <mat-grid-list cols="4" rowHeight="70px">
-        <!--<mat-grid-tile [colspan]="4" [rowspan]="1">
-           <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" >
-              <button class="button-icon button-icon--more"  (click)="addChild();">
-                Add Child
-              </button>
-            </div>
-          </div> 
-        </mat-grid-tile>-->
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="wid">
@@ -442,7 +359,7 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div *ngIf="dataSourceHousing.length > 0" class="page__section-button page__section-button--big">
+          <div *ngIf="dataSourceSchool.length > 0" class="page__section-button page__section-button--big">
             <button class="button-icon button-icon--report" (click)="exportersc.exportTable('xls')">
               Export SL
             </button>
@@ -450,11 +367,11 @@
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1">
           <div class="addPropperty">
-            <!-- <div class="page__section-button page__section-button--big" >
-              <button  class="button-icon button-icon--send">
-                Send Schools
+            <div class="page__section-button page__section-button--big" >
+              <button  class="button-icon button-icon--send" (click)="sent_schooling_list();" *ngIf="sl_to_send.length > 0">
+                ({{sl_to_send.length}}) Send Schools
               </button>
-            </div> -->
+             </div>
 
             <div class="page__section-button page__section-button--big">
               <button (click)="addSchool()" class="button-icon button-icon--more">
@@ -465,21 +382,29 @@
         </mat-grid-tile>
 
       </mat-grid-list>
-      <!----------------------------------------------------------------------------------------->
       <!--TABLE SCHOOLS LIST-->
       <table mat-table matTableExporter #exportersc="matTableExporter" [dataSource]="dataSourceSchool"
         class="mat-elevation-z8 textarea">
 
         <!-- Position Column -->
+        <ng-container matColumnDef="Send">
+          <th mat-header-cell *matHeaderCellDef>Send</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.sendSchool" (change)="setSchool($event.checked, element, i)" [disabled]="element.sendSchool" >
+            </mat-checkbox>    
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
         <ng-container matColumnDef="School No.">
-          <th mat-header-cell *matHeaderCellDef>Schooling</th>
+          <th mat-header-cell *matHeaderCellDef>School No</th>
           <td mat-cell *matCellDef="let element"> {{element.schoolNo}} </td>
         </ng-container>
 
         <!-- Position Column -->
         <ng-container matColumnDef="School Name">
           <th mat-header-cell *matHeaderCellDef>School Name</th>
-          <td mat-cell *matCellDef="let element"> {{element.schoolName}} </td>
+          <td mat-cell *matCellDef="let element">{{element.schoolName}}</td>
         </ng-container>
 
         <!-- Weight Column -->
@@ -499,6 +424,8 @@
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element">
             <img src="assets/icons/pencil.png" style="width: 20px;" (click)="editSchool(element)">
+              &nbsp;&nbsp;
+            <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteSchoollist(element)">            
           </td>
         </ng-container>
 
@@ -507,17 +434,210 @@
       </table>
 
       <br><br>
-    </div>
+
+      <!--START CARD SCHOOLNG-->
+      <div *ngFor="let data of area_orientation.schoolings; let i = index">
+        <div class="mat-elevation-z8 textarea">
+          <!----------------------------------------------------------------------------------------->
+          <mat-grid-list cols="4" rowHeight="50px">
+    
+            <mat-grid-tile [colspan]="4" [rowspan]="1">
+              <div class="wid">
+                <p class="page__section-name" style="margin: 0 0 0 20px; width: 100%;">Child {{1+i}}</p>
+              </div>
+            </mat-grid-tile>
+            <div align="end">
+              <img src="assets/icons/quit.svg" class="delete" (click)="deleteChild(i, data)">
+            </div>
+          </mat-grid-list>
+          <!---------------------------------------------------------------------------------------------------->
+          <!--START CARD CHILD 1-->
+          <mat-list>
+            <div mat-subheader>Child Information</div>
+            <mat-divider></mat-divider>
+            <mat-list-item style="height: auto !important; padding-top: 10px;">
+              <img *ngIf="data.photo.split('api-test-premier/')[1] != ''" src="{{data.photo}}" matListAvatar alt="">
+              <img *ngIf="data.photo.split('api-test-premier/')[1] == ''" src="assets/images/users/avatar.png" matListAvatar alt="">
+              <!-- <img src="assets/images/users/avatar.png" matListAvatar alt="">  -->
+              <div mat-line>
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Name (as show on passport)</p>
+                    <p class="title" style="font-size:12px;">{{data.name}}</p>
+                  </div>
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Gender</p>
+                    <p class="title" style="font-size:12px;">
+                      <span *ngIf="data.sex == 1">Female</span>
+                      <span *ngIf="data.sex == 2">Male</span>
+                    </p>
+                  </div>
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Date of Birth</p>
+                    <p class="title" style="font-size:12px;">{{data.birth | date:'dd MMM yyy'}}</p>
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Age</p>
+                    <p class="title" style="font-size:12px;">{{data.age}}</p>
+                  </div>
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Languages Spoken</p>
+                    <p class="title" style="font-size:12px;" *ngFor="let language of data.languageDependentInformations">
+                     {{language.name}}
+                    </p>
+                  </div>
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Nationality</p>
+                    <p class="title" style="font-size:12px;">
+                      {{data.nationality}}
+                    </p>
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                  <div fxFlex="30">
+                    <p class="subtitle" style="font-size:10px;">Current Grade</p>
+                    <p class="title" style="font-size:12px;">
+                      {{data.grade}}
+                    </p>
+                  </div>
+                  <div fxFlex="30">
+                    
+                  </div>
+                  <div fxFlex="30">
+                   
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                  <div>
+                    <p class="subtitle" style="font-size:10px;">Additional Comments</p>
+                    <p class="title" style="font-size:12px;">{{data.aditionalComments}}</p>
+                  </div>
+                </div>
+              </div>
+            </mat-list-item>
+          </mat-list>
+          <mat-card>
+    
+            <!--START CARD CHILD 1 CHOSEN-->
+            <mat-grid-list cols="4" rowHeight="70px">
+              <mat-grid-tile [colspan]="4" [rowspan]="1">
+                <div class="wid">
+                  <p class="page__section-name" style="width: 100%; font-size: 14px;">
+                    Chosen School/Child {{i + 1}}  <!--Child {{data.numberChild}} / Chosen School -->
+                  </p>
+                </div>
+              </mat-grid-tile>
+            </mat-grid-list>
+    
+            <div>
+              <div class="page__section-button page__section-button--big">
+                <button class="button-icon button-icon--more" (click)="addPayment(data.id)">
+                  Add Payment
+                </button>
+              </div>
+              <br>
+              <!-- <table mat-table [dataSource]="dataSourcePayment[i]?.paymentSchoolingInformations" class="mat-elevation-z8 textarea">
+    
+                <ng-container matColumnDef="Payment">
+                  <th mat-header-cell *matHeaderCellDef>School Expenses Payment</th>
+                  <td mat-cell *matCellDef="let element; let i = index;" class="browser" (click)="editPayment(element)"> 
+                   {{element.schoolExpensesPaymentNavigation?.schoolExpensesPayment}}  
+                  </td>
+                 
+                </ng-container>
+            
+                <ng-container matColumnDef="Responsible">
+                  <th mat-header-cell *matHeaderCellDef>Responsible</th>
+                  <td mat-cell *matCellDef="let element"> {{element.responsibleNavigation?.responsable}} </td>
+                </ng-container>
+            
+            
+                <ng-container matColumnDef="Amount">
+                  <th mat-header-cell *matHeaderCellDef>Amount</th>
+                  <td mat-cell *matCellDef="let element"> 
+                    {{element.amount}} 
+                  </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="Currency">
+                  <th mat-header-cell *matHeaderCellDef> Currency </th>
+                  <td mat-cell *matCellDef="let element"> {{element.currencyNavigation?.currency}} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="Recurrence">
+                  <th mat-header-cell *matHeaderCellDef> Recurrence </th>
+                  <td mat-cell *matCellDef="let element"> {{element.recurrenceNavigation?.name}} </td>
+                </ng-container>
+      
+                <ng-container matColumnDef="Detail">
+                  <th mat-header-cell *matHeaderCellDef> Detail </th>
+                  <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="action">
+                  <th mat-header-cell *matHeaderCellDef> </th>
+                  <td mat-cell *matCellDef="let element">
+                    <div>
+                      <img src="assets/icons/delete.png" style="width: 20px;" (click)="deletePayment(element)">
+                    </div>
+                  </td>
+                </ng-container>          
+            
+                <ng-container matColumnDef="Schooling Status">
+                  <th mat-header-cell *matHeaderCellDef> Schooling Status </th>
+                  <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.status == 'School Selected'" style="font-weight: bolder;">
+                      {{element.status}}
+                    </span>
+                    <span *ngIf="element.status != 'School Selected'">
+                      {{element.status}}
+                    </span>
+                  </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;"></tr>
+              </table> -->
+            </div>
+    
+          </mat-card>
+          <!--CLOSE CARD-->
+          <!---------------------------------------------------------------------------------------------------->
+    
+          <!---------------------------------------------------------------------------------------------------->
+    
+    
+        </div>
+      </div>
+    
+      <!--CLOSE CARD-->
+      <!---------------------------------------------------------------------------------------------------->
+      <mat-grid-list cols="4" rowHeight="70px">
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="addPropperty">
+            <div class="page__section-button page__section-button--big" >
+              <button class="button-icon button-icon--more"  (click)="addChild();">
+                Add Child
+              </button>
+            </div>
+          </div> 
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <!----------------------------------------------------------------------------------------->
+      </div>
 
     <br>
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="permanentHome != undefined">
+    <!-- <mat-grid-list cols="4" rowHeight="70px" *ngIf="permanentHome != undefined">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Service Details</p>
         </div>
       </mat-grid-tile>
-    </mat-grid-list>
-
+    </mat-grid-list> -->
+    
     <app-card-service-detaill *ngIf="this.isVisible" [datos]="datos"></app-card-service-detaill>
 
 

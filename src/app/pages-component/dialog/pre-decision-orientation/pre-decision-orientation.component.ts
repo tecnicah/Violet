@@ -43,7 +43,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   displayedColumnsHousing: string[] = ['Send', 'Property Type', 'Address', 'Neighborhood', 'Price', 'Currency', 'Housing Status', 'Actions'];
   //SCHOOLING LIST//
   dataSourceSchool: any[] = [];
-  displayedColumnsSchool: string[] = ['School No.', 'School Name', 'Dependent', 'Schooling Status', 'Actions'];
+  displayedColumnsSchool: string[] = ['Send', 'School No.', 'School Name', 'Dependent', 'Schooling Status', 'Actions'];
   //PAYMENTS
   dataSourcePayment: any[] = [];
   displayedColumnsPayment: string[] = ['Payment', 'Amount', 'ManagementFee', 'WireFee', "AdvanceFee", 'Service', 'Recurrence', 'action'];
@@ -67,7 +67,8 @@ export class PreDecisionOrientationComponent implements OnInit {
   cr: string = "Reply";
   loader: LoaderComponent = new LoaderComponent();
   serviceScope = { "documentcountries": "", "scopeDescription":""};
-
+  atributos_generales;
+  sl_to_send: any[] =[];
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -97,10 +98,15 @@ export class PreDecisionOrientationComponent implements OnInit {
         this.setup_permissions_settings();
         this.get_text_status();
         console.log('DATA RelocationServices/GetPredecisionOrientationById : ', this.area_orientation);
-        if (this.area_orientation.commentPredecisionOrientations.length == 0) {
-          this.addReply();          
-        }
-
+        setTimeout(() => {
+          this._services.service_general_get('RelocationServices/GetChildrenBySchoolingPredecision?sr='+ this.atributos_generales.sr_id + '&predecisionId='+ data.result.id)
+          .subscribe(res => {
+            if (res.success) {
+              this.area_orientation.schoolings = res.applicant.value;
+            }
+          });
+        }, 300);
+       
         this.showPanelHousing = this.area_orientation.housing;
         this.showPanelSchooling = this.area_orientation.schooling;
 
@@ -108,8 +114,9 @@ export class PreDecisionOrientationComponent implements OnInit {
         this.dataSource = this.area_orientation.extensionAreaOrientations;
         this.getDataHousing();
         this.getDataSchool();
+        
         this.loader.hideLoader();
-        this.getServiceScope();
+        // this.getServiceScope();
       }
     }), (err) => {
       this.loader.hideLoader();
@@ -315,21 +322,63 @@ export class PreDecisionOrientationComponent implements OnInit {
   }
 
 
+  validatedeleteHousing(_data_) {
 
+    if (_data_.wassended || _data_.status != 'Pending') {
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Not Allowed",
+          body: "The property has already been sent, it cannot be deleted."
+        },
+        width: "350px"
+      });
+    }
+    else {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure to delete the property?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          // this.save();
+          this.delete_housing(_data_);
+        }
+      });
+    }
+  }
+
+  delete_housing(_data_) {
+    this.loader.showLoader();
+
+    this._services.service_general_put("HousingList/LogicDeleteHousing", _data_.id).subscribe((data => {
+      console.log("guardar db: ", data);
+
+      if (data.success) {
+        console.log(data);
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Information saved"
+          },
+          width: "350px"
+        });
+        this.loader.hideLoader();
+        this.getDataHousing();
+        // this.dialogRef.close();
+        // this.ngOnInit();
+      }
+    }), (err) => {
+      this.loader.hideLoader();
+      this.getDataHousing();
+      console.log("error: ", err);
+    })
+  }
 
   //***********************************************************************************//
-  getDataSchool_() {
-    //BRING DATA TABLE SCHOOLING LIST//
-    this._services.service_general_get('SchoolsList/GetAllSchool?sr=' + Number(this.data.sr)).subscribe((data_schooling_list => {//this.area_orientation.workOrderServicesId
-      ////console.log('DATA CONSULTA SCHOOLING LIST: ', data_schooling_list);
-      if (data_schooling_list.success) {
-        //////console.log('DATA CONSULTA SCHOOLING LIST: ',data_schooling_list);
-        this.dataSourceSchool = data_schooling_list.message;
-        //BRING DATA TABLE PAYMENTS//
-        ////this.get_payment();
-      }
-    }));
-  }
 
   getDataSchool() {
     debugger;
@@ -506,7 +555,8 @@ export class PreDecisionOrientationComponent implements OnInit {
         no_permanent: true
         ,idServiceDetail: this.data.data.service[0].id
         ,shared: 0,
-        cat_service_id: 17
+        cat_service_id: 17,
+        catCategoryId: 12
       },
       width: "95%"
     }); 
@@ -580,8 +630,10 @@ export class PreDecisionOrientationComponent implements OnInit {
   }
   //EDITAR ESCUELA//
   editSchool(data_) {
-    ////console.log("Editar escuela: ", data_);
-    data_.sr = this.data.sr;
+    console.log("Editar escuela: ", data_);
+    // data_.sr = this.data.sr;
+    data_.wo_= this.wo_;
+    data_.sr_= this.sr_;
     const dialogRef = this._dialog.open(DialogSchoolDetailsComponent, {
       data: data_,
       width: "95%"
@@ -590,6 +642,86 @@ export class PreDecisionOrientationComponent implements OnInit {
       this.getDataSchool();
     })
   }
+  //Send School
+  setSchool(event, obj, index){
+    if(event){
+      
+      this.sl_to_send.push(obj.id);
+    }
+    else
+    {
+      this.sl_to_send.slice(index, 1)
+    }
+  }
+
+  sent_schooling_list() {
+    //
+    this.loader.showLoader
+    let list_obj = { list: this.sl_to_send, id_sr: this.data.data.serviceRecordId }
+
+    console.log("DATA A enviar la servicio : ", list_obj);
+    this._services.service_general_post_with_url("SchoolsList/SendSchoolList", list_obj).subscribe((data => {
+      this.loader.hideLoader();
+      //
+      //console.log("resultado de SendPropertys: ", data, data.result.value);
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Success",
+          body: "Schools Sent"
+        },
+        width: "350px"
+      });
+      this.getDataSchool();
+
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("Error en SendPropertys: ", err);
+    })
+  }
+
+  //Delete Schools
+  deleteSchoollist(element) {
+
+    if (element.status != 'Pending') {
+      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Not Allowed",
+          body: "The school has already been sent, it cannot be deleted."
+        },
+        width: "350px"
+      });
+    }
+    else {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure to delete the school?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this._services.service_general_post_with_url(`SchoolsList/DeleteSchools?key=`+ element.id, element.id).subscribe((data) =>{
+            console.log('respuesta de eliminacion', data);
+            if (data.success) {
+              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                data: {
+                  header: "Success",
+                  body: `Deleted School`
+                },
+                width: "350px"
+              });
+              this.getDataSchool();
+            }
+          }, (error) => {
+              
+          })
+        }
+      });
+    }
+  }
+
   //**********************************************************************************//
   //**METHODS PAYMENTS (NEW PAYMENT)**//
   addPayment(data) {
@@ -1063,7 +1195,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   ///////////////////////////// JUNIO 2023 
 
 
-  atributos_generales;
+
 
 isVisible:boolean =false;
 
