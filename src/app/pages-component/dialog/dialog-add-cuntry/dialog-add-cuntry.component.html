@@ -19,6 +19,7 @@
             <mat-label>Country</mat-label>
             <input matInput placeholder="Country" [(ngModel)]="filerCountry.name">
           </mat-form-field>
+          <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
           <mat-option *ngFor="let item of caCounty | filterBy:filerCountry" [value]="item.id">
             {{item.name}}
           </mat-option>
@@ -76,7 +77,7 @@
   </mat-grid-list>
   <mat-grid-list cols="4" rowHeight="300px" *ngIf="(data.standarScopeDocuments === 0)">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="data.scopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
+      <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="data.scopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </mat-grid-tile>
   </mat-grid-list>
 

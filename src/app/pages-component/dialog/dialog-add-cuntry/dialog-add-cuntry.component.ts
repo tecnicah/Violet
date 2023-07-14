@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-client/dialog-documents-lead-client.component';
 import { environment } from 'environments/environment';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-dialog-add-cuntry',
@@ -83,6 +84,22 @@ export class DialogAddCuntryComponent implements OnInit {
 			   this.permission_delete = data.result.value[0].deleting;
 			}
 		})
+  }
+
+  @ViewChild('allSelected') private allSelected: MatOption;
+  // metodo que selecciona todos los servicios en el multicheck
+  toggleAllSelection() {
+    debugger;
+
+    if (this.allSelected.selected) {
+      this.data.idCountry = [0];
+      for (const iterator of this.caCounty) {
+        this.data.idCountry.push(iterator.id);
+      }
+    } else {
+      this.data.idCountry = [];
+    }
+    console.log(this.data.idCountry);
   }
   //*********************************************//
 
@@ -244,6 +261,9 @@ export class DialogAddCuntryComponent implements OnInit {
 
 
   save() {
+    if (this.allSelected.selected) {
+      this.data.idCountry.splice(0,1);
+    }
     this.data.success = true;
     this.dialogRef.close(this.data);
   }

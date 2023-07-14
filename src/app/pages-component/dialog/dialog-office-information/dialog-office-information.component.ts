@@ -36,6 +36,7 @@ export class DialogOfficeInformationComponent implements OnInit {
   officeContacts: any;
 
   paymentMetod: boolean = false;
+  paymentMetodPremier: boolean = false;
 
   ELEMENT_DATA: any[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -137,6 +138,28 @@ export class DialogOfficeInformationComponent implements OnInit {
     this.ca_account = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
     // this.ca_city = await this._services.getCatalogueFrom('GetCity');
+    for (const cc of this.ca_creditCard) {
+      cc.cheksupliers = false;
+      cc.chekpremier = false;
+      if (this.data.paymentInformationOfficeSuppliers.length > 0) {
+        this.paymentMetod = true;
+        for (const iterator of this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers) {
+          if (cc.id == iterator.creditCard) {
+            cc.cheksupliers = true;
+          }
+        }
+      }
+      if (this.data.paymentInformationOfficePremiers.length > 0) {
+        this.paymentMetodPremier = true;
+        for (const iterator of this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers) {
+          if (cc.id == iterator.creditCard) {
+            cc.chekpremier = true;
+          }
+        }
+      }
+    }
+
+    console.log(this.ca_creditCard);
   }
 
   // state
@@ -332,7 +355,7 @@ export class DialogOfficeInformationComponent implements OnInit {
     });
   }
 
-  editWireTransfer(data_, i) {
+  editWireTransfer(data_, i, nodo) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       data: data_,
       width: "95%"
@@ -341,12 +364,16 @@ export class DialogOfficeInformationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result.success) {
-        this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices[i] = result;
+        if (nodo == 1) {
+          this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers[i] = result;
+        } else {
+          this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers[i] = result;
+        }
       }
     })
   }
 
-  addWireTransfer() {
+  addWireTransfer(nodo) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       width: "95%"
     });
@@ -355,12 +382,22 @@ export class DialogOfficeInformationComponent implements OnInit {
       console.log(result);
       if (result.success) {
         result.idPaymentInformationOffice = this.data.id;
-        if (this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices) {
-          this.data.paymentInformationOffices[0].wireTransferPaymentInformationOffices.push(result)
+        if (nodo == 1) {
+          if (this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers) {
+            this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.push(result)
+          } else {
+            this.data.paymentInformationOfficeSuppliers.push({
+              wireTransferPaymentInformationOfficeSuppliers: [result]
+            })
+          }
         } else {
-          this.data.paymentInformationOffices.push({
-            wireTransferPaymentInformationOffices: [result]
-          })
+          if (this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers) {
+            this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers.push(result)
+          } else {
+            this.data.paymentInformationOfficePremiers.push({
+              wireTransferPaymentInformationOfficePremiers: [result]
+            })
+          }
         }
         debugger
       }
@@ -436,6 +473,25 @@ export class DialogOfficeInformationComponent implements OnInit {
         }
       });
     }
+    for (const cc of this.ca_creditCard) {
+      this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
+      this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficePremiers = [];
+
+      if (cc.cheksupliers) {
+        this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
+          creditCard: cc.id,
+          paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
+        })
+      }
+
+      if (cc.cheksupliers) {
+        this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
+          creditCard: cc.id,
+          paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
+        })
+      }
+
+    }
     console.log('data office', this.data);
     this.data.success = true;
     this.dialogRef.close(this.data);
@@ -454,11 +510,17 @@ export class DialogOfficeInformationComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result) {     
+      if (result) {
         if (item.id != 0 && item.id != null && item.id != undefined) {
           console.log('aqui va el servicio');
-          data.splice(i, 1);
-          this.officeContacts.data = data;
+          this.loader.showLoader();
+          this._services.service_general_deleteno_api('DeleteOfficeContact?id=' + item.id).subscribe((r) => {
+            this.loader.hideLoader();
+            if (r.success) {
+              data.splice(i, 1);
+              this.officeContacts.data = data;
+            }
+          })
         } else {
           data.splice(i, 1);
           this.officeContacts.data = data;

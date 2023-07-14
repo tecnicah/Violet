@@ -78,7 +78,19 @@ export class DialogAddServiceComponent implements OnInit {
     this.consultaPermisos();
   
     //
-    this.serviceLocationCountries = new MatTableDataSource(this.data.serviceLocationCountries);
+    if(this.data.id == 0){
+      let data: any[] = [];
+      for (const iterator of this.data.obj_guardar.servicelocationcountries[0].countries) {
+        data.push({
+          idCountry: iterator,
+          scopeDescription: this.data.obj_guardar.servicelocationcountries[0].scopeDescription,
+          documentLocationCountries: this.data.obj_guardar.servicelocationcountries[0].documentLocationCountries,
+        })
+      }
+      this.serviceLocationCountries = new MatTableDataSource(data);
+    }else{
+      this.serviceLocationCountries = new MatTableDataSource(this.data.serviceLocationCountries);
+    }
     console.log('this.serviceLocationCountries', this.serviceLocationCountries);
     // /AdminCenter/Services/ClientPartner
     // this._services.service_general_get("Catalogue/GetServiceByServiceLine?idServiceLine="+this.data.sl).subscribe

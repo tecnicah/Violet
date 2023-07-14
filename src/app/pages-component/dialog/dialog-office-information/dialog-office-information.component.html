@@ -188,7 +188,7 @@
   </div>
 
   <div class="textarea margin_table">
-    <p class="subtitledos">Payment Information</p>
+    <p class="subtitledos">Payment Information Partner</p>
   </div>
 
   <div class="textarea margin_table">
@@ -203,7 +203,7 @@
             <p class="subtitle" style="font-size: 12px;">
               Payment Methods
             </p>
-            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOffices[0].creditCard">
+            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOfficeSuppliers[0].creditCard">
               <span class="subtitle" style="font-size: 12px;">Credit Card</span>
             </mat-checkbox>
           </span>
@@ -211,27 +211,20 @@
             <p class="subtitle" style="font-size: 12px;">
               Fiscal Invoice
             </p>
-            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOffices[0].fiscalInvoice"></mat-checkbox>
+            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOfficeSuppliers[0].fiscalInvoice"></mat-checkbox>
           </span>
         </div>
       </mat-grid-tile>
       <mat-grid-tile  [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard" >
-        <!-- <div class="input_final" *ngIf="data.paymentInformationOffices[0].creditCard == true">
-          <mat-checkbox class="cuadrado">
+      <div class="input_final">
+          <mat-checkbox class="cuadrado" [(ngModel)]="datacart.cheksupliers">
             <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
           </mat-checkbox>
-        </div> -->
-      </mat-grid-tile>
-      <mat-grid-tile  [colspan]="4" [rowspan]="1">
-        <div class="textarea">
-          <div class="textarea margin_table">
-            <mat-slide-toggle [(ngModel)]="data.ifSupplierPartner">Wire Transfer</mat-slide-toggle>
-          </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
 
-    <div *ngIf="data.ifSupplierPartner">
+    <div>
     <!--------------------------------------------------------------------------------------->
     <!--TABLE PAYMENTS-->
     <table class="mat-elevation-z8 textarea mat-table">
@@ -243,7 +236,7 @@
         <th class="mat-header-cell">International Payment Acceptance</th>
         <th class="mat-header-cell"></th>
       </tr>
-      <tr class="mat-row" *ngFor="let data_ of data.paymentInformationOffices[0].wireTransferPaymentInformationOffices; let k = index">
+      <tr class="mat-row" *ngFor="let data_ of data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers; let k = index">
         <td class="mat-cell">{{get_account(data_.accountType)}}</td>
         <td class="mat-cell">{{data_.accountHoldersName}}</td>
         <td class="mat-cell">{{data_.bankName}}</td>
@@ -255,7 +248,7 @@
           </div>
         </td>
         <td class="mat-cell">
-          <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editWireTransfer(data_, k);">
+          <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editWireTransfer(data_, k, 1);">
         </td>
       </tr>
 
@@ -268,7 +261,7 @@
         <div class="addPropperty">
           <div class="page__section-button page__section-button--big"
             style="flex: 0 1 180px !important; left: 6px !important;">
-            <button class="button-icon button-icon--more" (click)="addWireTransfer();">
+            <button class="button-icon button-icon--more" (click)="addWireTransfer(1);">
               Add Wire Transfer
             </button>
           </div>
@@ -282,7 +275,7 @@
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea">
-          <mat-checkbox [(ngModel)]="data.paymentInformationOffices[0].checks">
+          <mat-checkbox [(ngModel)]="data.paymentInformationOfficeSuppliers[0].checks">
             <span class="subtitle" style="font-size: 12px;">Checks</span>
           </mat-checkbox>
         </div>
@@ -290,27 +283,27 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea">
-          <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOffices[0].cash">
+          <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOfficeSuppliers[0].cash">
             <span class="subtitle" style="font-size: 12px;">Cash</span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOffices[0].checks == true">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOfficeSuppliers[0].checks == true">
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Pay to the Order Of</mat-label>
-            <input matInput [(ngModel)]="data.paymentInformationOffices[0].payToOrderOf"  placeholder="Pay to the Order Of" type="text" #message_payto maxlength="150">
+            <input matInput [(ngModel)]="data.paymentInformationOfficeSuppliers[0].payToOrderOf"  placeholder="Pay to the Order Of" type="text" #message_payto maxlength="150">
             <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOffices[0].cash == true">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOfficeSuppliers[0].cash == true">
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Comment</mat-label>
-            <input matInput [(ngModel)]="data.paymentInformationOffices[0].comment"  placeholder="Comment" type="text" #message_bankcomment maxlength="150">
+            <input matInput [(ngModel)]="data.paymentInformationOfficeSuppliers[0].comment"  placeholder="Comment" type="text" #message_bankcomment maxlength="150">
             <mat-hint align="end">{{message_bankcomment.value.length}} / 150</mat-hint>
           </mat-form-field>
         </div>
@@ -319,8 +312,140 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <mat-form-field appearance="fill">
           <mat-label>General Comments</mat-label>
-          <input matInput [(ngModel)]="data.paymentInformationOffices[0].generalComment" placeholder="General Comments" type="text" #message_pcomment maxlength="150">
+          <input matInput [(ngModel)]="data.paymentInformationOfficeSuppliers[0].generalComment" placeholder="General Comments" type="text" #message_pcomment maxlength="150">
           <mat-hint align="end">{{message_pcomment.value.length}} / 150</mat-hint>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <div class="textarea margin_table">
+    <p class="subtitledos">Payment Information Premier</p>
+  </div>
+
+  <div class="textarea margin_table">
+    <mat-slide-toggle [(ngModel)]="paymentMetodPremier"></mat-slide-toggle>
+  </div>
+
+  <div class="mat-elevation-z5" *ngIf="paymentMetodPremier" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <span>
+            <p class="subtitle" style="font-size: 12px;">
+              Payment Methods
+            </p>
+            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOfficePremiers[0].creditCard">
+              <span class="subtitle" style="font-size: 12px;">Credit Card</span>
+            </mat-checkbox>
+          </span>
+          <span>
+            <p class="subtitle" style="font-size: 12px;">
+              Fiscal Invoice
+            </p>
+            <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOfficePremiers[0].fiscalInvoice"></mat-checkbox>
+          </span>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile  [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard" >
+      <div class="input_final">
+          <mat-checkbox class="cuadrado" [(ngModel)]="datacart.chekpremier">
+            <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div>
+    <!--------------------------------------------------------------------------------------->
+    <!--TABLE PAYMENTS-->
+    <table class="mat-elevation-z8 textarea mat-table">
+      <tr class="mat-header-row">
+        <th class="mat-header-cell">Account Type</th>
+        <th class="mat-header-cell">Account Holders Name</th>
+        <th class="mat-header-cell">Bank Name</th>
+        <th class="mat-header-cell">Account Number / CLABE</th>
+        <th class="mat-header-cell">International Payment Acceptance</th>
+        <th class="mat-header-cell"></th>
+      </tr>
+      <tr class="mat-row" *ngFor="let data_ of data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers; let k = index">
+        <td class="mat-cell">{{get_account(data_.accountType)}}</td>
+        <td class="mat-cell">{{data_.accountHoldersName}}</td>
+        <td class="mat-cell">{{data_.bankName}}</td>
+        <td class="mat-cell">{{data_.accountNumber}}</td>
+        <td class="mat-cell">
+          <div class="table-row__check">
+            <img src="assets/table-icons/check.png" *ngIf="data_.internationalPaymentAcceptance" />
+            <img src="assets/table-icons/uncheck.png" *ngIf="!data_.internationalPaymentAcceptance" />
+          </div>
+        </td>
+        <td class="mat-cell">
+          <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editWireTransfer(data_, k, 2);">
+        </td>
+      </tr>
+
+
+    </table>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="addPropperty">
+          <div class="page__section-button page__section-button--big"
+            style="flex: 0 1 180px !important; left: 6px !important;">
+            <button class="button-icon button-icon--more" (click)="addWireTransfer(2);">
+              Add Wire Transfer
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    </div>
+
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea">
+          <mat-checkbox [(ngModel)]="data.paymentInformationOfficePremiers[0].checks">
+            <span class="subtitle" style="font-size: 12px;">Checks</span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea">
+          <mat-checkbox class="example-margin" [(ngModel)]="data.paymentInformationOfficePremiers[0].cash">
+            <span class="subtitle" style="font-size: 12px;">Cash</span>
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOfficePremiers[0].checks == true">
+        <div class="input_final">
+          <mat-form-field appearance="fill">
+            <mat-label>Pay to the Order Of</mat-label>
+            <input matInput [(ngModel)]="data.paymentInformationOfficePremiers[0].payToOrderOf"  placeholder="Pay to the Order Of" type="text" #message_payto maxlength="150">
+            <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.paymentInformationOfficePremiers[0].cash == true">
+        <div class="input_final">
+          <mat-form-field appearance="fill">
+            <mat-label>Comment</mat-label>
+            <input matInput [(ngModel)]="data.paymentInformationOfficePremiers[0].comment"  placeholder="Comment" type="text" #message_bankcomment maxlength="150">
+            <mat-hint align="end">{{message_bankcomment.value.length}} / 150</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <mat-form-field appearance="fill">
+          <mat-label>General Comments</mat-label>
+          <input matInput [(ngModel)]="data.paymentInformationOfficePremiers[0].generalComment" placeholder="General Comments" type="text" #message_pcomments maxlength="150">
+          <mat-hint align="end">{{message_pcomments.value.length}} / 150</mat-hint>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>

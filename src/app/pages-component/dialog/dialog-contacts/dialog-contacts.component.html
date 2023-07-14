@@ -89,7 +89,7 @@
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
-          <mat-select [(ngModel)]="data.idCountry" (selectionChange)="getState(data)" (ngModelChange)="countryname()" (focus)="active_country = false" required>
+          <mat-select [(ngModel)]="data.idCountry" (selectionChange)="getState(data.idCountry)" (ngModelChange)="countryname()" (focus)="active_country = false" required>
             <mat-form-field appearance="outline" style="padding: 5px;">
               <mat-label>Country</mat-label>
               <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
