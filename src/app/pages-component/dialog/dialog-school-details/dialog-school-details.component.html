@@ -70,12 +70,7 @@
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Child</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.dependent" *ngIf="data.id == 0">
-              <mat-option *ngFor="let item of ca_dependent" [value]="item.dependentId">
-                {{item.name}}
-              </mat-option>
-            </mat-select>
-            <mat-select [(ngModel)]="SchoolDetails.dependent" *ngIf="data.id != 0">
+            <mat-select [(ngModel)]="SchoolDetails.dependent">
               <mat-option *ngFor="let item of ca_dependent" [value]="item.dependentId">
                 {{item.name}}
               </mat-option>
@@ -83,51 +78,13 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
-
-      <!-- <mat-grid-tile [colspan]="3" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>School Name</mat-label>
-            <input matInput placeholder="School Name" #message maxlength="100" [(ngModel)]="SchoolDetails.schoolName">
-            <mat-hint align="end">{{message.value.length}} / 100</mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
-
-      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Country</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.country" (ngModelChange)="get_City($event)">
-              <mat-option *ngFor="let data of ca_country" [value]="data.id">{{data.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>City</mat-label>
-            <mat-select [(ngModel)]="SchoolDetails.city">
-              <mat-option *ngFor="let data of ca_city" [value]="data.id">{{data.city}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
 
       <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <!-- <div class="input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Other Langauge</mat-label>
-            <input matInput placeholder="Address" #message_address maxlength="50" [(ngModel)]="SchoolDetails.otherLangauge">
-          </mat-form-field>
-        </div> -->
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>School Name</mat-label>
             <mat-select [(ngModel)]="SchoolDetails.supplierPartner" (ngModelChange)="_supplier();">
-              <mat-option *ngFor="let item of SupplierCompany" [value]="item"> {{item.comercialName}}</mat-option>
+              <mat-option *ngFor="let item of SupplierCompany" [value]="item.id"> {{item.comercialName}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -149,14 +106,6 @@
               <p class="title">{{SchoolDetails.grade}}</p>
             </div>
           </div>
-          <!-- <div class="input_central">
-            <mat-form-field appearance="fill">
-              <mat-label>Grade</mat-label>
-              <mat-select [(ngModel)]="SchoolDetails.grade">
-                <mat-option *ngFor="let data of ca_grade" [value]="data.id">{{data.grade}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div> -->
         </mat-grid-tile>
   
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -166,28 +115,7 @@
               <p class="title">{{SchoolDetails.languages}}</p>
             </div>
           </div>
-          <!-- <div class="input_central">
-            <mat-form-field appearance="fill">
-              <mat-label>Langauge</mat-label>
-              <mat-select [(ngModel)]="SchoolDetails.languages">
-                <mat-option *ngFor="let data of ca_languages" [value]="data.id">{{data.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div> -->
         </mat-grid-tile>
-  
-        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central">
-            <mat-form-field appearance="fill">
-              <mat-label>Langauge</mat-label>
-              <mat-select [(ngModel)]="SchoolDetails.schoolingListLanguanges" [formControl]="toppings" multiple>
-                <mat-option *ngFor="let data of ca_languages" [value]="data.id">
-                  {{data.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile> -->
   
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div style="height: 100%; ">

@@ -864,7 +864,7 @@ export class NewServiceRecordComponent implements OnInit {
       const dialogRef = this.dialog.open(GeneralConfirmationComponent, {
         data: {
           header: "Change confirmation",
-          body: "783 If you change this option, partner providers will be eliminated. Do you want to continue?"
+          body: "If you change this option, partner providers will be eliminated. Do you want to continue?"
         },
         width: "350px"
       });
@@ -2894,85 +2894,6 @@ export class NewServiceRecordComponent implements OnInit {
   public edit_sr_model: any;
   public Host_Home_country: any = {};
 
-  public initPageSettings(id): void {
-    this.loader.showLoader();
-    this._services.service_general_get(`ServiceRecord/GetServiceRecordById?id=${id}&user=${this.USERDATA.id}`)
-      .subscribe(async (response: any) => {
-        if (response.success) {
-          this.SRDATA = response.result;
-          if (this.SRDATA.immigrationCoodinators.length > 0) {
-            if (this.SRDATA.immigrationCoodinators[0].accepted == "1900-01-01T00:00:00") {
-              this.SRDATA.immigrationCoodinators[0].accepted = null;
-            }
-          }
-
-          if (this.SRDATA.relocationCoordinators.length > 0) {
-            if (this.SRDATA.relocationCoordinators[0].accepted == "1900-01-01T00:00:00") {
-              this.SRDATA.relocationCoordinators[0].accepted = null;
-            }
-          }
-          this.edit_sr_model = this.SRDATA;
-
-          const host_country: number = this.edit_sr_model.assigneeInformations[0].hostCountry,
-            home_country: number = this.edit_sr_model.assigneeInformations[0].homeCountryId;
-
-
-          this.Host_Home_country = {
-            host_country: this.edit_sr_model.assigneeInformations[0].hostCountry,
-            home_country: this.edit_sr_model.assigneeInformations[0].homeCountryId,
-          }
-
-          this.city_host_catalogue = await this._services.getCatalogueFrom('GetState', `?country=${host_country}`);
-          this.city_home_catalogue = await this._services.getCatalogueFrom('GetState', `?country=${home_country}`);
-
-          for (let i = 0; i < this.country_catalogue.length; i++) {
-            const element = this.country_catalogue[i];
-            if (element.id == this.Host_Home_country.host_country) {
-              this.Host_Home_country.host_country_name = element.name;
-            }
-
-            if (element.id == this.Host_Home_country.home_country) {
-              this.Host_Home_country.home_country_name = element.name;
-            }
-          }
-
-          this.city_host_catalogue.forEach((city: any) => {
-
-            if (city.id == this.edit_sr_model.assigneeInformations[0].hostCityId) {
-
-              this.Host_Home_country.host_city_name = city.state;
-
-            }
-
-          });
-
-          this.Host_Home_country.homeCity_Id = this.edit_sr_model.assigneeInformations[0].homeCityId;
-          this.Host_Home_country.hostCity_Id = this.edit_sr_model.assigneeInformations[0].hostCityId;
-
-          for (let i = 0; i < this.city_host_catalogue.length; i++) {
-            const element = this.city_host_catalogue[i];
-            if (element.id == this.Host_Home_country.hostCity_Id) {
-              this.Host_Home_country.hostCity_name = element.city;
-            }
-          }
-
-          for (let i = 0; i < this.city_home_catalogue.length; i++) {
-            const element = this.city_home_catalogue[i];
-            if (element.id == this.Host_Home_country.homeCity_Id) {
-              this.Host_Home_country.homeCity_name = element.city;
-            }
-          }
-          this.loader.hideLoader();
-          console.log('[CP353] Data edit_sr_model  => ', this.edit_sr_model);
-          localStorage.setItem('partnerID', JSON.stringify(this.edit_sr_model.partnerId));
-        }
-      }, (error: any) => {
-        console.error('Error (GetServiceRecordById) => ', error);
-        this.loader.hideLoader();
-
-      });
-
-  }
 
   public showDialogentryVisa(data): void {
     data.partnerId = this.edit_sr_model.partnerId;

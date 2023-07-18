@@ -757,7 +757,15 @@
           </div>
         </div>
       </mat-grid-tile>
-
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page_section page_section-inputs">
+          <div class="page__section-input padding-top-x red">
+            <mat-checkbox [(ngModel)]="new_service_record_data.urgent" class="example-margin">
+              Create as Urgent
+            </mat-checkbox>
+          </div>
+        </div>
+        </mat-grid-tile>
     </mat-grid-list>
 
     <div class="page__section page__section-inputs">
@@ -1074,7 +1082,6 @@
               <mat-select matNativeControl required
                 [(ngModel)]="new_service_record_data.assigneeInformations[0].homeCountryId" (selectionChange)="
                 removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_home'} );
-                ableInputsFromAssignmentSection( $event.value, 'client' );
                 getcityhome(new_service_record_data.assigneeInformations[0].homeCountryId); athorizedBy();">
                 <mat-form-field appearance="outline" style="padding: 5px;">
                   <mat-label>Home Country</mat-label>
@@ -1113,7 +1120,7 @@
                 Field is required
               </span> -->
               <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].homeCityId"
-                [disabled]="!home_city_client_able"
+                [disabled]="city_home_catalogue == 0"
                 (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_city'} ); athorizedBy();Homecitychange();">
                 <mat-form-field appearance="outline" style="padding: 5px;">
                   <mat-label>Home City</mat-label>
@@ -1168,7 +1175,6 @@
               <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].hostCountry"
                 (selectionChange)="
                 removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_hhos'} );
-                ableInputsFromAssignmentSection( $event.value, 'host' );
                 getcityhost(new_service_record_data.assigneeInformations[0].hostCountry);">
                 <mat-form-field appearance="outline" style="padding: 5px;">
                   <mat-label>Host Country</mat-label>
@@ -1191,7 +1197,7 @@
             <mat-form-field appearance="fill" class="input_central">
               <mat-label>Host City</mat-label>
               <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].hostCityId"
-                [disabled]="!home_city_host_able"
+                [disabled]="country_catalogue.length >= 1"
                 (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_chos'} ); Hostcitychange();">
                 <mat-form-field appearance="outline" style="padding: 5px;">
                   <mat-label>Host city</mat-label>
@@ -2332,10 +2338,10 @@
       <!-- Finance -------------------------------------------------------- -->
     </div>
     <div class="page__section margin-top-min page__section--justify-end">
-      <div class="page__section-input page__section-input--2 text-center">
+      <!-- <div class="page__section-input page__section-input--2 text-center">
         <p class="subtitle" style="margin: 0; font-size: 12px;"> Create as Urgent</p>
         <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.urgent"></mat-checkbox>
-      </div>
+      </div> -->
       <div class="page__section-buttong">
         <!-- button (click)="continueAddServices()">
             Continue
