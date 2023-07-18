@@ -99,13 +99,22 @@ export class PreDecisionOrientationComponent implements OnInit {
         this.get_text_status();
         console.log('DATA RelocationServices/GetPredecisionOrientationById : ', this.area_orientation);
         setTimeout(() => {
-          this._services.service_general_get('RelocationServices/GetChildrenBySchoolingPredecision?sr='+ this.atributos_generales.sr_id + '&predecisionId='+ data.result.id)
-          .subscribe(res => {
+          this._services.service_general_get("RelocationServices/GetChildrenPredecisionBySrId?sr=" + this.atributos_generales.sr_id).subscribe(res => {
+      
             if (res.success) {
               console.log("GetChildrenBySchoolingPredecision", res);
               this.area_orientation.schoolings = res.applicant.value;
             }
+          }, error => {
+      
           });
+          // this._services.service_general_get('RelocationServices/GetChildrenBySchoolingPredecision?sr='+ this.atributos_generales.sr_id + '&predecisionId='+ data.result.id)
+          // .subscribe(res => {
+          //   if (res.success) {
+          //     console.log("GetChildrenBySchoolingPredecision", res);
+          //     this.area_orientation.schoolings = res.applicant.value;
+          //   }
+          // });
         }, 300);
        
         // this.showPanelHousing = this.area_orientation.housing;
@@ -305,7 +314,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
 
     this.get_predesicion();
-    this.get_dependent();
+    // this.get_dependent();
   }
   //***********************************************************************************//
   //DATA TABLE HOUSING//
@@ -386,6 +395,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     debugger;
      this._services.service_general_get('SchoolsList/GetAllSchoolByserviceid?wo_id=' + this.data.data.workOrderId + "&service_id="+this.area_orientation.id).subscribe((data_schooling_list => {
       if (data_schooling_list.success) {
+        console.log("data_schooling_list", data_schooling_list);
         this.area_orientation.schooling = data_schooling_list.message; 
         this.dataSourceSchool = data_schooling_list.message;
       }
@@ -637,6 +647,8 @@ export class PreDecisionOrientationComponent implements OnInit {
     // data_.sr = this.data.sr;
     data_.wo_= this.wo_;
     data_.sr_= this.sr_;
+    data_.sr= this.data.sr;
+    data_.workOrderServicesId= this.area_orientation.workOrderServicesId;
     const dialogRef = this._dialog.open(DialogSchoolDetailsComponent, {
       data: data_,
       width: "95%"
@@ -872,28 +884,39 @@ export class PreDecisionOrientationComponent implements OnInit {
   }
   //AGREGAR HIJO//
   addChild() {
-    // if (this.area_orientation.schoolings.length > 0) { esto se cambio por que no tiene sentido
-      if (this.area_orientation.schoolings.length != 10000) {
-      const dialogRef = this._dialog.open(DialogAddchildComponent, {
-        width: "350px",
-        data: this.area_orientation.schoolings
-      });
+    const dialogRef = this._dialog.open(DialogAddchildComponent, {
+      width: "350px",
+      data: this.area_orientation.schoolings
+    });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result.success) {
-          this.area_orientation.schoolings = result;
-          ////console.log("NUEVOS HIJOS: ", this.area_orientation);
-        }
-      });
-    } else {
-      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-        data: {
-          header: "Attention",
-          body: "No data child"
-        },
-        width: "350px"
-      });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        this.area_orientation.schoolings = result;
+        ////console.log("NUEVOS HIJOS: ", this.area_orientation);
+      }
+    });
+    // if (this.area_orientation.schoolings.length > 0) { esto se cambio por que no tiene sentido
+    //   if (this.area_orientation.schoolings.length != 10000) {
+    //   const dialogRef = this._dialog.open(DialogAddchildComponent, {
+    //     width: "350px",
+    //     data: this.area_orientation.schoolings
+    //   });
+
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     if (result.success) {
+    //       this.area_orientation.schoolings = result;
+    //       ////console.log("NUEVOS HIJOS: ", this.area_orientation);
+    //     }
+    //   });
+    // } else {
+    //   const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+    //     data: {
+    //       header: "Attention",
+    //       body: "No data child"
+    //     },
+    //     width: "350px"
+    //   });
+    // }
   }
   //**********************************************************************************//
   //DOCUMENT TYPE//

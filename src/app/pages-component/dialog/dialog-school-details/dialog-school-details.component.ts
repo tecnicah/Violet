@@ -38,17 +38,29 @@ export class DialogSchoolDetailsComponent implements OnInit {
     console.log("DATA SCHOOL DATAILS: ", this.data);
     debugger;
     if (this.data.id != 0) {
-      this._services.service_general_get("SchoolsList/GetSchool?key=" + this.data.id).subscribe((data => {
-       
+      this._services.service_general_get("SupplierPartnerProfile/GetSchoolDetail?id=" + this.data.supplierId).subscribe((data => {    
         if (data.success) {
-          console.log("SchoolsList/GetSchool : ", data.result);
-          this.SchoolDetails = data.result; 
-          debugger;
-          let d = new Date(this.SchoolDetails.visitDateTime);
-          var dateString = d.getHours() + ":" + d.getMinutes();
-          this.SchoolDetails.visitDateTime = dateString.toString(); 
-          
-          //if (this.SchoolDetails.supplierPartner == null) this.SchoolDetails.supplierPartner = 0;
+          console.log("SchoolsList/GetSchool : ", data);
+          let suppdet = data.result; 
+           this.SchoolDetails.ib= suppdet.ib;
+           this.SchoolDetails.uniform=  suppdet.uniform;
+            this.SchoolDetails.medicalRecordNeeded = suppdet.medical;
+            this.SchoolDetails.transportationOffered = suppdet.transportationOffered;
+            this.SchoolDetails.address = suppdet.address;
+            this.SchoolDetails.grade = suppdet.grade;
+            this.SchoolDetails.languages = suppdet.languages;
+            this.SchoolDetails.webSite = suppdet.webSite;
+            this.SchoolDetails.schoolingStatus = this.data.schoolingStatus;
+            this.SchoolDetails.supplierPartner = this.data.supplierId;
+            this.SchoolDetails.additionalComments = this.data.additionalComments;
+            this.SchoolDetails.dependent = this.data.dependent;
+            if(this.data.visitDate != null){
+              this.SchoolDetails.visitDate = this.data.visitDate;
+              let d = new Date(this.data.visitDateTime);
+              var dateString = d.getHours() + ":" + d.getMinutes();
+              this.SchoolDetails.visitDateTime = dateString.toString();   
+            }
+            
         }
       }));
       this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.data.workOrderServicesId).subscribe((data => {
@@ -86,10 +98,10 @@ export class DialogSchoolDetailsComponent implements OnInit {
 
   _supplier() {
     debugger;
-    if (this.SchoolDetails.supplierPartner.id != null && this.SchoolDetails.supplierPartner.id != 0) {
+    if (this.SchoolDetails.supplierPartner != null && this.SchoolDetails.supplierPartner != 0) {
       this.data.othersupplier = '';
       // this.loader.showLoader();
-      this._services.service_general_get('SupplierPartnerProfile/GetSchoolDetail?id=' + this.SchoolDetails.supplierPartner.id).subscribe((data => {
+      this._services.service_general_get('SupplierPartnerProfile/GetSchoolDetail?id=' + this.SchoolDetails.supplierPartner).subscribe((data => {
         if (data.success) {
           console.log("supplier escuela ========================",data)
           let suppdet = data.result; 
@@ -122,6 +134,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
 
     await this._services.service_general_get("ServiceRecord/GetApplicant/" + Number(this.data.sr)).subscribe((data => {
       if (data.success) {
+        console.log("data.applicant.value",data);
         this.ca_dependent = data.applicant.value;
         this.ca_dependent = this.ca_dependent.filter(c => c.relationshipId == 2)
         console.log("this.ca_dependent =============== ", this.ca_dependent)
@@ -149,7 +162,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
     debugger;
     let _dependent = [];
     this.SchoolDetails.schoolName = this.SchoolDetails.supplierPartner.comercialName;
-    this.SchoolDetails.supplierPartner = this.SchoolDetails.supplierPartner.id;
+    this.SchoolDetails.supplierPartner = this.SchoolDetails.supplierPartner;
     this.SchoolDetails.schoolingSearchId = this.data.schooling_search_id;
     
     if (this.SchoolDetails.supplierPartner == 0) this.SchoolDetails.supplierPartner = null;
@@ -190,21 +203,24 @@ export class DialogSchoolDetailsComponent implements OnInit {
   save_edit_register() {
     this.__loader__.showLoader();
     //if (this.SchoolDetails.supplierPartner == 0) this.SchoolDetails.supplierPartner = null;
-    this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.data.workOrderServicesId).subscribe((data => {
-      // this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
-      if (data.success) {
-        data.result.value.forEach(element => {
-          if(element.id == this.SchoolDetails.supplierPartner){
-            this.SchoolDetails.supplierPartner = element.id;
-            this.SchoolDetails.schoolName = element.comercialName;
-          }
-        });
-      }
-    }), (err) => {
-      console.log("no se realizo la consulta por falta de parametro");
-    });
+    // this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.data.workOrderServicesId).subscribe((data => {
+    //   // this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
+    //   if (data.success) {
+    //     data.result.value.forEach(element => {
+    //       if(element.id == this.SchoolDetails.supplierPartner){
+    //         this.SchoolDetails.supplierPartner = element.id;
+    //         this.SchoolDetails.schoolName = element.comercialName;
+    //       }
+    //     });
+    //   }
+    // }), (err) => {
+    //   console.log("no se realizo la consulta por falta de parametro");
+    // });
     debugger;
-    this.SchoolDetails.schoolingSearchId = this.data.schooling_search_id;
+    this.SchoolDetails.schoolingSearchId = this.data.schoolingSearchId;
+    this.SchoolDetails.id = this.data.id;
+    this.SchoolDetails.grade = 1;
+    this.SchoolDetails.languages = 1;
     this._services.service_general_put("SchoolsList/PutSchools", this.SchoolDetails).subscribe((data => {
       console.log("guardar db: ", data);
       if (data.success) {
