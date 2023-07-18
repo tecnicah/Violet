@@ -225,7 +225,7 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Houses</p>
-          <mat-slide-toggle [checked]="area_orientation.housing ? true : false" (change)="displayPanelHosudig($event)">
+          <mat-slide-toggle [checked]="area_orientation.housing.length > 0 ? true : false" (change)="displayPanelHosudig($event)">
           </mat-slide-toggle>
         </div>
       </mat-grid-tile>
@@ -233,7 +233,7 @@
     <!---------------------------------------------------------------------->
     <!---------------------------------------------------------------------->
     <!--SECION PARA OCULTAR SECCION HOUSING-->
-    <div *ngIf="area_orientation.housing">
+    <div *ngIf="area_orientation.housing  > 0">
       <!----------------------- INICIO BOTONERA ACCIONES HL------------------------------------>
 
       <mat-grid-list cols="5" rowHeight="70px">
@@ -343,14 +343,14 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name" style="width: 100%;">Schools</p>
-          <mat-slide-toggle [checked]="area_orientation.schooling ? true : false"
+          <mat-slide-toggle [checked]="area_orientation.schooling.length > 0 ? true : false"
             (change)="displayPanelSchooling($event)"></mat-slide-toggle>
         </div>
       </mat-grid-tile>
 
     </mat-grid-list>
     <!---------------------------------------------------------------------------------------------------->
-    <div *ngIf="area_orientation.schooling">
+    <div *ngIf="area_orientation.schooling > 0">
       <mat-grid-list cols="4" rowHeight="70px">
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -456,9 +456,9 @@
             <div mat-subheader>Child Information</div>
             <mat-divider></mat-divider>
             <mat-list-item style="height: auto !important; padding-top: 10px;">
-              <img *ngIf="data.photo.split('api-test-premier/')[1] != ''" src="{{data.photo}}" matListAvatar alt="">
-              <img *ngIf="data.photo.split('api-test-premier/')[1] == ''" src="assets/images/users/avatar.png" matListAvatar alt="">
-              <!-- <img src="assets/images/users/avatar.png" matListAvatar alt="">  -->
+              <!-- <img *ngIf="data.photo.split('api-test-premier/')[1] != ''" src="{{data.photo}}" matListAvatar alt="">
+              <img *ngIf="data.photo.split('api-test-premier/')[1] == ''" src="assets/images/users/avatar.png" matListAvatar alt=""> -->
+              <img src="assets/images/users/avatar.png" matListAvatar alt=""> 
               <div mat-line>
                 <div fxLayout="row" fxLayoutAlign="space-between center" >
                   <div fxFlex="30">
@@ -627,7 +627,7 @@
 
       </mat-grid-list>
       <!----------------------------------------------------------------------------------------->
-      </div>
+    </div>
 
     <br>
     <!-- <mat-grid-list cols="4" rowHeight="70px" *ngIf="permanentHome != undefined">

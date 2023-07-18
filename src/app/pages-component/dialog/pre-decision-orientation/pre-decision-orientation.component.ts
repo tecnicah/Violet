@@ -102,16 +102,17 @@ export class PreDecisionOrientationComponent implements OnInit {
           this._services.service_general_get('RelocationServices/GetChildrenBySchoolingPredecision?sr='+ this.atributos_generales.sr_id + '&predecisionId='+ data.result.id)
           .subscribe(res => {
             if (res.success) {
+              console.log("GetChildrenBySchoolingPredecision", res);
               this.area_orientation.schoolings = res.applicant.value;
             }
           });
         }, 300);
        
-        this.showPanelHousing = this.area_orientation.housing;
-        this.showPanelSchooling = this.area_orientation.schooling;
+        // this.showPanelHousing = this.area_orientation.housing;
+        // this.showPanelSchooling = this.area_orientation.schooling;
 
         //DATA TABLE EXTENSION//
-        this.dataSource = this.area_orientation.extensionAreaOrientations;
+        // this.dataSource = this.area_orientation.extensionAreaOrientations;
         this.getDataHousing();
         this.getDataSchool();
         
@@ -315,6 +316,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     this._services.service_general_get(`HousingList/GetSegmentedHousing?wo_id=${this.data.data.workOrderId}&id_service_detail=${this.data.data.service[0].id}&shared=${0}`).subscribe(data_housing => {
      //debugger;
       if (data_housing.success) {
+        this.area_orientation.housing = data_housing.message;
         console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
         this.dataSourceHousing = data_housing.message; 
       }
@@ -384,6 +386,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     debugger;
      this._services.service_general_get('SchoolsList/GetAllSchoolByserviceid?wo_id=' + this.data.data.workOrderId + "&service_id="+this.area_orientation.id).subscribe((data_schooling_list => {
       if (data_schooling_list.success) {
+        this.area_orientation.schooling = data_schooling_list.message; 
         this.dataSourceSchool = data_schooling_list.message;
       }
     }));
