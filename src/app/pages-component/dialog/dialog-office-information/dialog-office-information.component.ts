@@ -114,8 +114,9 @@ export class DialogOfficeInformationComponent implements OnInit {
       this.getState(this.data);
       this.getcity(this.data);
     }
-    this.catalogos();
     console.log('data push', this.data);
+    debugger
+    this.catalogos();
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -144,21 +145,57 @@ export class DialogOfficeInformationComponent implements OnInit {
     for (const cc of this.ca_creditCard) {
       cc.cheksupliers = false;
       cc.chekpremier = false;
-      if (this.data.paymentInformationOfficeSuppliers.length > 0) {
+      if (this.data.paymentInformationOfficeSuppliers != undefined && this.data.paymentInformationOfficeSuppliers.length > 0) {
         this.paymentMetod = true;
         for (const iterator of this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers) {
           if (cc.id == iterator.creditCard) {
             cc.cheksupliers = true;
           }
         }
+      } else {
+        this.data.paymentInformationOfficeSuppliers = [{
+          creditCardPaymentInformationOfficeSuppliers: [],
+          creditCard: false,
+          fiscalInvoice: false,
+          checks: false,
+          cash: false,
+          payToOrderOf: false,
+          comment: null,
+          wireTransferPaymentInformationOfficeSuppliers: [],
+          generalComment: null,
+          createdBy: this.userData.id,
+          createdDate: new Date(),
+          idOfficeInformation: this.data.id,
+          updatedBy: this.userData.id,
+          updatedDate: new Date(),
+          id:0
+        }]
       }
-      if (this.data.paymentInformationOfficePremiers.length > 0) {
+      if (this.data.paymentInformationOfficePremiers != undefined && this.data.paymentInformationOfficePremiers.length > 0) {
         this.paymentMetodPremier = true;
         for (const iterator of this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers) {
           if (cc.id == iterator.creditCard) {
             cc.chekpremier = true;
           }
         }
+      } else {
+        this.data.paymentInformationOfficePremiers = [{
+          creditCardPaymentInformationOfficePremiers: [],
+          creditCard: false,
+          fiscalInvoice: false,
+          checks: false,
+          cash: false,
+          payToOrderOf: false,
+          comment: null,
+          wireTransferPaymentInformationOfficePremiers: [],
+          generalComment: null,
+          createdBy: this.userData.id,
+          createdDate: new Date(),
+          idOfficeInformation: this.data.id,
+          updatedBy: this.userData.id,
+          updatedDate: new Date(),
+          id:0
+        }]
       }
     }
 
@@ -384,8 +421,8 @@ export class DialogOfficeInformationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result.success) {
-        result.idPaymentInformationOffice = this.data.id;
         if (nodo == 1) {
+          result.idPaymentInformationOfficeSupplier = this.data.id;
           if (this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers) {
             this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.push(result)
           } else {
@@ -394,6 +431,7 @@ export class DialogOfficeInformationComponent implements OnInit {
             })
           }
         } else {
+          result.idPaymentInformationOfficePremier = this.data.id;
           if (this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers) {
             this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers.push(result)
           } else {

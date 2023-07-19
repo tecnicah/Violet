@@ -224,6 +224,8 @@ export class DialogAddServiceComponent implements OnInit {
         // push a la data
         this.data.servicelocationcountries = [];
         result.countries = [];
+        result.countries = result.idCountry;
+        result.idCountry = result.idCountry[0];
         // result.serviceCountryLeaders = [];
         result.idServiceLocation = this.data.id;
         result.createdBy = user.id;

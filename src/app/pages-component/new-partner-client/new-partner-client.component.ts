@@ -1066,7 +1066,7 @@ export class NewPartnerClientComponent implements OnInit {
             this.lead_client.services = [];
             if(result.servicelocationcountries){
               for (const iterator of result.servicelocationcountries) {
-                iterator.idCountry = iterator.idCountry[0];
+                //iterator.idCountry = iterator.idCountry[0];
                 result.serviceLocationCountries.push(iterator);
               }
               delete result.servicelocationcountries;
