@@ -145,7 +145,7 @@
           </div>
         </mat-grid-tile>
   
-        <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div style="display: flex;" class="input_central comments">
             <div>
               <p class="subtitle">URL</p>
@@ -153,8 +153,19 @@
             </div>
           </div>
         </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div style="display: flex;" class="input_central comments">
+            <div>
+              <p class="subtitle">See location</p>
+              <p class="title"><a href="https://www.google.com/maps/search/?api=1&query={{SchoolDetails.address}}" target="_blank">
+                <mat-icon>room</mat-icon>
+              </a></p>
+            </div>
+          </div>
+        </mat-grid-tile>
       </div>
-      
+      <!-- https://www.google.com/maps/search/?api=1&query='+ this.address -->
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="input_central">
           <mat-form-field appearance="fill">

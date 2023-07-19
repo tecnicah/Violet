@@ -221,6 +221,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
     this.SchoolDetails.id = this.data.id;
     this.SchoolDetails.grade = 1;
     this.SchoolDetails.languages = 1;
+    this.SchoolDetails.supplierId = this.SchoolDetails.supplierPartner;
     this._services.service_general_put("SchoolsList/PutSchools", this.SchoolDetails).subscribe((data => {
       console.log("guardar db: ", data);
       if (data.success) {
