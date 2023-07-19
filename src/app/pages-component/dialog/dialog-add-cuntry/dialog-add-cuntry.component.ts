@@ -261,8 +261,10 @@ export class DialogAddCuntryComponent implements OnInit {
 
 
   save() {
-    if (this.allSelected.selected) {
-      this.data.idCountry.splice(0,1);
+    if(this.data.id == 0){
+      if (this.allSelected.selected) {
+        this.data.idCountry.splice(0,1);
+      }
     }
     this.data.success = true;
     this.dialogRef.close(this.data);

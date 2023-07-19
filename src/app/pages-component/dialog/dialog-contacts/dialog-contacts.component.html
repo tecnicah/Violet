@@ -104,7 +104,7 @@
     </mat-grid-tile>
 
     <!-- state -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1"  [ngClass]="{'loaderinput': ca_state.length == 0}">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label [ngClass]="{valid: active_state}">State</mat-label>
@@ -123,7 +123,7 @@
     </mat-grid-tile>
 
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1" [ngClass]="{'loaderinput': caCity.length == 0}">
       <mat-form-field appearance="fill" class="input_final">
         <mat-label [ngClass]="{valid: active_city}">City</mat-label>
         <mat-select (focus)="active_city = false" required matNativeControl [(ngModel)]="data.idCity">

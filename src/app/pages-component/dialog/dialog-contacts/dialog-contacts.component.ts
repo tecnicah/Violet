@@ -60,14 +60,14 @@ export class DialogContactsComponent implements OnInit {
     this.consultaPermisos();
     this.typePrefix.countriesName = '';
     console.log('data modal', this.data);
+    this.catalogos();
     this._services.service_general_get_noapi("GetOfficeContactById?id=" + this.data.id).subscribe((data => {
-      if (data.success) {
+      if (data.success && data.result != null) {
 
         this.data = data.result;
         this.getState(this.data.idCountry);
         this.getcity();
         console.log('data', this.data);
-        this.catalogos();
         // separar prefix de phone number
         // si el valor de mobilephone no es mayor a 10 caracteres entonces no tiene prefijo y toma el valor actual desde la bd asi vienen con prefijo  93+6567567567 o sin 6567567567
         if (this.data.phoneNumber != '' && this.data.phoneNumber != null) {
@@ -104,7 +104,7 @@ export class DialogContactsComponent implements OnInit {
   //*********************************************//
   // filtro de city dependiendo el country que se agrego en office
   getcity() {
-    // this.caCity = [];
+    this.caCity = [];
     this._services.service_general_get("Catalogue/Generic/Cities/" + this.data.idState).subscribe((data => {
       if (data.success) {
         this.caCity = data.result;
@@ -145,6 +145,8 @@ export class DialogContactsComponent implements OnInit {
     // this.caCity = await this._services.getCatalogueFrom('GetCity');
   }
   getState(data) {
+    this.ca_state = [];
+    this.caCity = [];
     this._services.service_general_get("Catalogue/Generic/States/" + data).subscribe((data => {
       if (data.success) {
         this.ca_state = data.result;

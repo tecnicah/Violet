@@ -33,6 +33,9 @@ export class DialogOfficeInformationComponent implements OnInit {
   caDocumentType: any[] = [];
   ca_account: any[] = [];
 
+  wt: boolean = false;
+  wtp: boolean = false;
+
   officeContacts: any;
 
   paymentMetod: boolean = false;
