@@ -36,16 +36,16 @@
         {{ dateWorker( edit_sr_model.initialAutho ) }}
       </div>
       <div class="page__section-button">
-       
-       
-        <!-- BOTON ON HOLD 
-          
+
+
+        <!-- BOTON ON HOLD
+
           <button (click)="InHold()" class="button-icon page__section-button--lineButtons"
           *ngIf="edit_sr_model?.status?.status != 4">
           On Hold
         </button> -->
 
-        
+
         <button (click)='active()' class="button-icon page__section-button--lineButtons"
           *ngIf="edit_sr_model?.status?.id == 4">
           Activate
@@ -65,8 +65,8 @@
       </div>-->
 
 
-      <!-- BOTON FOLLOW 
-        
+      <!-- BOTON FOLLOW
+
       <div class="page__section-button" *ngIf="permission_write">
         <button (click)="followButton()" class="button-icon button-icon--follow page__section-button--lineButtons">
           {{ follow_status_button }}
@@ -132,45 +132,50 @@
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <!-- check -->
-        <!-- <div class="input_central" style="width: 100%; height: 100%;">
-          <mat-checkbox class="example-margin textarea" [(ngModel)]="edit_sr_model.vip">
-            VIP
-          </mat-checkbox>
-        </div> -->
-        <!-- label -->
         <div class="input_central" style="width: 100%; height: 100%;">
           <div class="page__section-data font-size-12 comments input_central">
             <span class="text-mini gray_05">VIP</span>
-            <div class="table-row__check check">
-              <img id="check" [src]="check" *ngIf="edit_sr_model.vip == true" />
-              <img id="uncheck" [src]="uncheck" *ngIf="edit_sr_model.vip == false" />
+            <div><!-- class="table-row__check check"-->
+              <img style="width: 15px;height: 15px;" id="check" [src]="check" *ngIf="edit_sr_model.vip == true" />
+              <img style="width: 15px;height: 15px;" id="uncheck" [src]="uncheck" *ngIf="edit_sr_model.vip == false" />
             </div>
           </div>
         </div>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <!-- <div class="input_final red" style="width: 100%; height: 100%;">
-          <mat-checkbox class="example-margin" [(ngModel)]="edit_sr_model.confidentialMove">
-            Confidential Move
-          </mat-checkbox>
-        </div> -->
         <div class="input_central" style="width: 100%; height: 100%;">
           <div class="page__section-data font-size-12 comments input_central">
             <span class="text-mini gray_05">Confidential Move</span>
-            <div class="table-row__check check">
-              <img id="check" [src]="check" *ngIf="edit_sr_model.confidentialMove == true" />
-              <img id="uncheck" [src]="uncheck" *ngIf="edit_sr_model.confidentialMove == false" />
+            <div><!--class="table-row__check check"-->
+              <img style="width: 15px;height: 15px;" id="check" [src]="check"
+                *ngIf="edit_sr_model.confidentialMove == true" />
+              <img style="width: 15px;height: 15px;" id="uncheck" [src]="uncheck"
+                *ngIf="edit_sr_model.confidentialMove == false" />
             </div>
           </div>
         </div>
+
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central" style="width: 100%; height: 100%;">
+          <div class="page__section-data font-size-12 comments input_central">
+            <span class="text-mini gray_05">Create as Urgent</span>
+            <div><!--class="table-row__check check"-->
+              <img style="width: 15px;height: 15px;" id="check" [src]="check"
+                *ngIf="edit_sr_model.urgent == true" />
+              <img style="width: 15px;height: 15px;" id="uncheck" [src]="uncheck"
+                *ngIf="edit_sr_model.urgent == false" />
+            </div>
+          </div>
+        </div>
+
       </mat-grid-tile>
 
 
       <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="__userlog__.role.id != 2"> -->
-        <!-- select de partner -->
-        <!-- <div class="input_central" style="width: 100%;">
+      <!-- select de partner -->
+      <!-- <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Partner</mat-label>
             <mat-select matNativeControl [(ngModel)]="edit_sr_model.partnerId"
@@ -186,20 +191,21 @@
             </mat-select>
           </mat-form-field>
         </div> -->
-        <!-- label -->
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="page__section-data font-size-12 comments input_central" style="font-weight: bolder; display: flex; height:80%">
-            <div>
-              <span class="text-mini gray_05" style="font-weight: bolder;">Partner</span><br />
-              <span>
-                <a class="browser" style="font-weight: bolder;"
-                 routerLink="/partner_client/{{edit_sr_model.partnerId}}" routerLinkActive="active" rel="bookmark">
-                 {{getNamePartner(edit_sr_model.partnerId)}}
-                </a>
-              </span>
-            </div>
+      <!-- label -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central"
+          style="font-weight: bolder; display: flex; height:80%">
+          <div>
+            <span class="text-mini gray_05" style="font-weight: bolder;">Partner</span><br />
+            <span>
+              <a class="browser" style="font-weight: bolder;" routerLink="/partner_client/{{edit_sr_model.partnerId}}"
+                routerLinkActive="active" rel="bookmark">
+                {{getNamePartner(edit_sr_model.partnerId)}}
+              </a>
+            </span>
           </div>
-        </mat-grid-tile>
+        </div>
+      </mat-grid-tile>
 
       <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="__userlog__.role.id == 2">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height:80%">
@@ -214,9 +220,9 @@
         </div>
       </mat-grid-tile> -->
 
-      
-        <!-- select -->
-        <!-- <div class="input_central" style="width: 100%;">
+
+      <!-- select -->
+      <!-- <div class="input_central" style="width: 100%;">
           <mat-form-field appearance="fill">
             <mat-label>Client</mat-label>
             <mat-select matNativeControl [(ngModel)]="edit_sr_model.clientId" (selectionChange)="athorizedBy()">
@@ -232,20 +238,21 @@
             </mat-select>
           </mat-form-field>
         </div> -->
-        <!-- label -->
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="page__section-data font-size-12 comments input_central" style="font-weight: bolder; display: flex; height:80%">
-            <div>
-              <span class="text-mini gray_05" style="font-weight: bolder;">Client</span><br />
-              <span>
-                <a class="browser" style="font-weight: bolder;"
-                 routerLink="/partner_client/{{edit_sr_model.clientId}}" routerLinkActive="active" rel="bookmark">
-                 {{getNameClient(edit_sr_model.clientId)}}
-                </a>
-              </span>
-            </div>
+      <!-- label -->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central"
+          style="font-weight: bolder; display: flex; height:80%">
+          <div>
+            <span class="text-mini gray_05" style="font-weight: bolder;">Client</span><br />
+            <span>
+              <a class="browser" style="font-weight: bolder;" routerLink="/partner_client/{{edit_sr_model.clientId}}"
+                routerLinkActive="active" rel="bookmark">
+                {{getNameClient(edit_sr_model.clientId)}}
+              </a>
+            </span>
           </div>
-        </mat-grid-tile>
+        </div>
+      </mat-grid-tile>
 
       <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="__userlog__.role.id == 2">
         <div class="page__section-data font-size-12 comments input_central" style="display: flex; height:80%">
@@ -329,16 +336,16 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div> 
+        </div>
         <!-- label -->
         <div class="input_central" style="width: 100%; height: 100%;">
           <div class="page__section-data font-size-12 comments input_central">
             <div>
               <span class="text-mini gray_05">Home Country (Current Residence)</span><br />
-              <span style="text-transform: capitalize;">{{homeCountry}}</span>  
+              <span style="text-transform: capitalize;">{{homeCountry}}</span>
             </div>
           </div>
-        </div> 
+        </div>
         <!-- <mat-form-field appearance="fill" class="input_central">
           <mat-label>Home Country (Current Residence)</mat-label>
           <mat-select matNativeControl required [disabled]= "__userlog__.role.id != 100000"
@@ -368,7 +375,7 @@
             <div>
               <span class="text-mini gray_05">Home City (Current Residence)</span><br />
               <span style="text-transform: capitalize;">{{homeCity}}</span>
-              <!-- {{edit_sr_model.assigneeInformations[0].homeCityId}} 
+              <!-- {{edit_sr_model.assigneeInformations[0].homeCityId}}
                {{edit_sr_model.assigneeInformations[0].cityHomeName}}  -->
             </div>
           </div>
@@ -390,8 +397,8 @@
           </mat-select>
           <span class="label-error" *ngIf="nso_ainfo_fields.no_city">
             Field is required
-          </span> 
-          
+          </span>
+
           <mat-select matNativeControl [(ngModel)]="edit_sr_model.assigneeInformations[0].homeCityId"
             [disabled]="!home_city_client_able"
             (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_city'} ); athorizedBy();Homecitychange();">
@@ -470,14 +477,12 @@
       </div>
     </div>
     <div class="page__section-butuonc">
-      <button (click)="downloadXls()"
-        class="button-icon button-icon--export" *ngIf="USERDATA.role.id != 3">
+      <button (click)="downloadXls()" class="button-icon button-icon--export" *ngIf="USERDATA.role.id != 3">
         Export
       </button>
     </div>
     <div class="page__section no-padding-tb page__section--justify-end margin-tb-mini" *ngIf="__userlog__.role.id != 3">
-      <span (click)="goToPage('Allappointment/')"
-        class="text-mini font-purple-dark cursor-pointer padding-right-mini">
+      <span (click)="goToPage('Allappointment/')" class="text-mini font-purple-dark cursor-pointer padding-right-mini">
         View All Appointment
       </span>
     </div>
@@ -504,30 +509,31 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center" mat-sort-header="servicio">Services
           </th>
           <td mat-cell *matCellDef="let element">
-            <span class="browser" style="cursor: pointer;" (click)="getserviciosAppoitment(element)" *ngIf="element.servicio?.length>1" [matMenuTriggerFor]="servicios">
+            <span class="browser" style="cursor: pointer;" (click)="getserviciosAppoitment(element)"
+              *ngIf="element.servicio?.length>1" [matMenuTriggerFor]="servicios">
               {{element.servicio?.length}}
-            </span> 
+            </span>
             <span (click)="getserviciosAppoitment(element)" *ngIf="element.servicio?.length==1">
               {{element.servicio[0].serviceNumber}}
             </span>
           </td>
         </ng-container>
 
-          <mat-menu #servicios="matMenu" xPosition="before">
-            <div class="assigned_services">
-              <div class="data browser">
-                <mat-list>
-                  <div mat-subheader>Services</div>
-                  <mat-divider></mat-divider>
-                  <mat-list-item *ngFor="let item of serviceAppointment">
-                    <div matLine>
-                      {{item.serviceNumber}}
-                    </div>
-                  </mat-list-item>
-                </mat-list>
-              </div>
+        <mat-menu #servicios="matMenu" xPosition="before">
+          <div class="assigned_services">
+            <div class="data browser">
+              <mat-list>
+                <div mat-subheader>Services</div>
+                <mat-divider></mat-divider>
+                <mat-list-item *ngFor="let item of serviceAppointment">
+                  <div matLine>
+                    {{item.serviceNumber}}
+                  </div>
+                </mat-list-item>
+              </mat-list>
             </div>
-          </mat-menu>
+          </div>
+        </mat-menu>
 
         <!-- Position Column -->
         <ng-container matColumnDef="Start Time">
@@ -558,9 +564,10 @@
           <td mat-cell *matCellDef="let element" class="text-center">
             <span class="browser" style="cursor: pointer;" *ngIf="element.document>1" [matMenuTriggerFor]="documentos">
               {{element.document}}
-            </span> 
+            </span>
             <span class="browser" *ngIf="element.document==1">
-              <a style="color:#9d3292;" target="_blank" href="{{_services.url_images}}{{element.documentAppointments[0].fileRequest}}">{{element.documentAppointments[0].fileName}}</a> 
+              <a style="color:#9d3292;" target="_blank"
+                href="{{_services.url_images}}{{element.documentAppointments[0].fileRequest}}">{{element.documentAppointments[0].fileName}}</a>
             </span>
 
             <mat-menu #documentos="matMenu" xPosition="before">
@@ -571,14 +578,15 @@
                     <mat-divider></mat-divider>
                     <mat-list-item *ngFor="let item of element.documentAppointments">
                       <div matLine>
-                        <a style="color:#9d3292;" target="_blank" href="{{_services.url_images}}{{item.fileRequest}}">{{item.fileName}}</a> 
+                        <a style="color:#9d3292;" target="_blank"
+                          href="{{_services.url_images}}{{item.fileRequest}}">{{item.fileName}}</a>
                       </div>
                     </mat-list-item>
                   </mat-list>
                 </div>
               </div>
             </mat-menu>
-            
+
           </td>
         </ng-container>
 
@@ -587,14 +595,15 @@
         <ng-container matColumnDef="View">
           <th mat-header-cell *matHeaderCellDef class="text-center"></th>
           <td mat-cell *matCellDef="let element; let i = index" class="text-center">
-            <span (click)="addApointmentConsult(element, i, __userlog__.role.id == 3 && USERDATA.id == element.to)" class="font-purple-dark cursor-pointer"
-              style="font-weight: 300;" *ngIf="__userlog__.role.id == 3 && USERDATA.id == element.to">
+            <span (click)="addApointmentConsult(element, i, __userlog__.role.id == 3 && USERDATA.id == element.to)"
+              class="font-purple-dark cursor-pointer" style="font-weight: 300;"
+              *ngIf="__userlog__.role.id == 3 && USERDATA.id == element.to">
               <mat-icon>edit</mat-icon>
             </span>
             <span (click)="addApointmentConsult(element, i, true)" class="font-purple-dark cursor-pointer"
-            style="font-weight: 300;" *ngIf="__userlog__.role.id != 3">
-            <mat-icon>edit</mat-icon>
-          </span>
+              style="font-weight: 300;" *ngIf="__userlog__.role.id != 3">
+              <mat-icon>edit</mat-icon>
+            </span>
           </td>
         </ng-container>
 
@@ -642,11 +651,13 @@
               supplierType 3 immi -->
         <!-- (click)="item.isAdded ? null : addItemToArray(item)" -->
         <!-- __userlog__.role.id == 3 && __userlog__.profileUsers[0].supplierType == 3 : -->
-        <div class="page__section-tab" auto-click="main_imm_tab" (click)=" showTabSelected('imm', $event)" [ngClass]="{'none-visible' : !USERDATA.profileUsers[0].immigration || !wos_imm_, 'view-visible' : USERDATA.role.id == 2 && wos_imm_}">
+        <div class="page__section-tab" auto-click="main_imm_tab" (click)=" showTabSelected('imm', $event)"
+          [ngClass]="{'none-visible' : !USERDATA.profileUsers[0].immigration || !wos_imm_, 'view-visible' : USERDATA.role.id == 2 && wos_imm_}">
           Immigration
         </div>
         <!--  (__userlog__.role.id == 3) && ( __userlog__.profileUsers[0].supplierType == 1) :  -->
-        <div  class="page__section-tab" (click)="showTabSelected('rel', $event)" [ngClass]="{'none-visible' : !USERDATA.profileUsers[0].relocation || !wos_relo_, 'view-visible' : USERDATA.role.id == 2 && wos_relo_}">
+        <div class="page__section-tab" (click)="showTabSelected('rel', $event)"
+          [ngClass]="{'none-visible' : !USERDATA.profileUsers[0].relocation || !wos_relo_, 'view-visible' : USERDATA.role.id == 2 && wos_relo_}">
           Relocation
         </div>
         <div class="page__section-tab" id="reload__" (click)="showTabSelected('com', $event)">
@@ -700,7 +711,8 @@
                           id='ass_prof_photo' />
                         <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" />
                       </div>
-                      <span class="input__image-label--cardSpan" (click)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')">Edit Photo</span>
+                      <span class="input__image-label--cardSpan"
+                        (click)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')">Edit Photo</span>
                     </label>
                   </div>
                 </div>
@@ -798,7 +810,8 @@
                       removeErrorLabel( $event.target.value, {handler: fass_validator, field: 'no_emai'} );
                       validateEmailServerAvailability( $event.target.value );
                       validEmailAssignee( $event.target.value )" />
-                      <mat-icon matSuffix style="color: #9d3292; cursor: pointer;" (click)="sendAccess()">mail_outline</mat-icon>
+                  <mat-icon matSuffix style="color: #9d3292; cursor: pointer;"
+                    (click)="sendAccess()">mail_outline</mat-icon>
                   <span class="label-error" *ngIf="fass_validator.no_emai">
                     Field is required
                   </span>
@@ -1107,7 +1120,8 @@
         <div *ngIf="show_dependent_section">
           <div class="page__section page__section--card margin-bottom-min aaf_dependent"
             *ngFor="let departament of assign_dependents, index as index;">
-            <button *ngIf="permission_delete" class="page__section--card-closeButton" (click)="removeDepartament( index );">
+            <button *ngIf="permission_delete" class="page__section--card-closeButton"
+              (click)="removeDepartament( index );">
             </button>
             <div class="page__section page__section--nowrap">
               <div class="column-grid-2">
@@ -1123,14 +1137,16 @@
                             <!-- <img id="ass_dep_photo_{{ index }}"
                             [src]="departament.photo != 'http://34.237.214.147/back/api_premier_qa/Files/Dependent/83aee44a-bad4-45ce-96ce-c890c3ad9f47.' ? departament.photo : '/assets/images/users/avatar.png'" /> -->
                             <img id="ass_dep_photo_{{ index }}"
-                              [src]="departament.photo == '' ? 'assets/images/users/avatar.png': departament.photo"/>
+                              [src]="departament.photo == '' ? 'assets/images/users/avatar.png': departament.photo" />
 
                             <!-- <img src="assets/images/users/avatar.png"
                             [src]="(pet.photo == '' || pet.photo == 'http://34.237.214.147/back/api_premier_qa/' ) ? '/assets/images/users/avatar.png' : pet.photo"
                             id="ass_pet_photo_{{ i }}" /> -->
 
                           </div>
-                          <span class="input__image-label--cardSpan" (click)="previewSelectedPhoto( $event, 'ass_dep_photo_' + index, 'dependent')">Edit Photo</span>
+                          <span class="input__image-label--cardSpan"
+                            (click)="previewSelectedPhoto( $event, 'ass_dep_photo_' + index, 'dependent')">Edit
+                            Photo</span>
                         </label>
                       </div>
                     </div>
@@ -1302,7 +1318,8 @@
                     <mat-form-field class="input_central_half">
                       <mat-label>Email</mat-label>
                       <input [disabled]="profileCunsultant == true" matInput placeholder="Email" type="text"
-                        [value]="departament.email" (change)="departament.email = $event.target.value; validateEmailServerAvailabilityDependent( $event.target.value, index );" />
+                        [value]="departament.email"
+                        (change)="departament.email = $event.target.value; validateEmailServerAvailabilityDependent( $event.target.value, index );" />
 
                       <span class="label-error" *ngIf="departament.email == '' && show_ass_depd_errors">
                         Field is required
@@ -1326,10 +1343,11 @@
                   <mat-grid-tile [colspan]="3" [rowspan]="1">
                     <mat-form-field class="input_central_half">
                       <mat-label>Additional Comments</mat-label>
-                      <input [disabled]="profileCunsultant == true" matInput matInput #specialInstruccion [value]="departament.aditionalComments"
+                      <input [disabled]="profileCunsultant == true" matInput matInput #specialInstruccion
+                        [value]="departament.aditionalComments"
                         (change)="departament.aditionalComments = $event.target.value;"
                         placeholder="Schooling Preferences, Specific Educational Programs, Medical Conditions, etc." />
-                        <mat-hint align="end">{{specialInstruccion.value.length}} / 100</mat-hint>
+                      <mat-hint align="end">{{specialInstruccion.value.length}} / 100</mat-hint>
                     </mat-form-field>
                   </mat-grid-tile>
                 </mat-grid-list>
@@ -1372,12 +1390,12 @@
                         <label for="pet_input_photo_{{ i }}" class="input__image-label">
                           <div class="input__image-label--card">
                             <!-- <img id="ass_pet}_photo_{{ i }" src="assets/images/users/avatar.png" /> -->
-                            
-                            <img
-                              [src]="pet.photo == '' ? 'Files/assets/avatar.png': pet.photo"
+
+                            <img [src]="pet.photo == '' ? 'Files/assets/avatar.png': pet.photo"
                               id="ass_pet_photo_{{ i }}" />
                           </div>
-                          <span class="input__image-label--cardSpan" (click)="previewSelectedPhoto( $event, 'ass_pet_photo_' + i, 'pet')">Edit Photo</span>
+                          <span class="input__image-label--cardSpan"
+                            (click)="previewSelectedPhoto( $event, 'ass_pet_photo_' + i, 'pet')">Edit Photo</span>
                         </label>
                       </div>
                     </div>
@@ -1613,7 +1631,7 @@
               <th class="mat-header-cell" *ngIf="__userlog__.role.id != 2 && __userlog__.role.id != 3"></th>
             </tr>
             <tr class="mat-row" *ngFor="let datos of edit_sr_model.immigrationCoodinators; let k = index">
-             
+
               <td class="mat-cell">{{getTypeCoordinator(datos.coordinatorTypeId)}}</td>
               <td class="mat-cell" [matMenuTriggerFor]="coordinador"
                 (click)="view_upplier_coordinador(datos.coordinatorId)" style="cursor: pointer;">
@@ -1637,7 +1655,8 @@
                 </span>
               </td>
               <td class="mat-cell" *ngIf="__userlog__.role.id != 2 && __userlog__.role.id != 3">
-                <img *ngIf="edit_sr_model.immigrationCoodinators.length > 1" src="../../../assets/icons/quit.svg" alt="" (click)="deleteCoordinator(datos, 1, k)">
+                <img *ngIf="edit_sr_model.immigrationCoodinators.length > 1" src="../../../assets/icons/quit.svg" alt=""
+                  (click)="deleteCoordinator(datos, 1, k)">
               </td>
             </tr>
           </table>
@@ -1649,11 +1668,12 @@
             <div mat-subheader>Immigration</div>
             <mat-divider></mat-divider>
             <mat-list-item>
-               <!-- <img [src]="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt=""> -->
-               <img src="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt="">
-               <div matLine (click)="goToProfile(data_coordinator.id)" class="browser">{{data_coordinator?.coordinator}}</div>
-                 <div matLine style="font-size: 10px;">{{data_coordinator?.office}}</div>
-                  <div matLine style="font-size: 10px;">{{data_coordinator?.email}}</div>
+              <!-- <img [src]="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt=""> -->
+              <img src="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt="">
+              <div matLine (click)="goToProfile(data_coordinator.id)" class="browser">{{data_coordinator?.coordinator}}
+              </div>
+              <div matLine style="font-size: 10px;">{{data_coordinator?.office}}</div>
+              <div matLine style="font-size: 10px;">{{data_coordinator?.email}}</div>
               <div matLine style="font-size: 10px;">{{data_coordinator?.phoneNumber}}</div>
             </mat-list-item>
           </mat-list>
@@ -1663,7 +1683,7 @@
               <div class="content">
                 <img src="{{_services.url_images}}{{data_coordinator?.photo}}" alt="" class="img">
                 <div class="title">
-                
+
                 </div>
               </div>
             </div>
@@ -1706,18 +1726,17 @@
         </mat-menu>
 
         <br>
-        
-        <div fxLayout="row" fxLayoutAlign="end start" >
-          
+
+        <div fxLayout="row" fxLayoutAlign="end start">
+
           <div class="page__section-button" *ngIf="__userlog__.role.id != 2 && __userlog__.role.id != 3">
-            <button *ngIf="can_edit_exp_t"
-              class="button-icon button-icon--more margin-top-mini"
+            <button *ngIf="can_edit_exp_t" class="button-icon button-icon--more margin-top-mini"
               (click)="addCoordinador()">
               Add Coordinator
             </button>
           </div>
         </div>
-        
+
         <!---------------------------->
 
         <br>
@@ -1775,7 +1794,8 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Assigned</mat-label>
-                <input matInput disabled [matDatepicker]="team_assig" [max]="getMaxDateTo(0)" [(ngModel)]="item.assigned"
+                <input matInput disabled [matDatepicker]="team_assig" [max]="getMaxDateTo(0)"
+                  [(ngModel)]="item.assigned"
                   (dateChange)="removeErrorLabel( $event.target.value, {handler: form_imm_cord, field: 'no_dat0'} )"
                   (change)="removeErrorLabel( $event.target.value, {handler: form_imm_cord, field: 'no_dat0'} )" />
                 <mat-datepicker-toggle matSuffix [for]="team_assig"></mat-datepicker-toggle>
@@ -1841,20 +1861,21 @@
             <!-- Position Column -->
             <ng-container matColumnDef="campo_3">
               <th mat-header-cell *matHeaderCellDef class="text-center">Supplier</th>
-              <td mat-cell *matCellDef="let element" class="link" [matMenuTriggerFor]="supplier" style="cursor: pointer;">
-                
+              <td mat-cell *matCellDef="let element" class="link" [matMenuTriggerFor]="supplier"
+                style="cursor: pointer;">
+
                 <span *ngIf="element.status.trim() == 'Accepted'" class="dot__green_color"
                   (click)="view_upplier_detail(element.supplier_Detail)">
                   {{element.supplier}}
                 </span>
                 <span *ngIf="element.status.trim() == 'Pending Accepted'" class="dot__yellow_color"
-                (click)="view_upplier_detail(element.supplier_Detail)">
-                {{element.supplier}}
-              </span>
-              <span *ngIf="element.status.trim() == 'Rejected'" class="dot__red_color"
-              (click)="view_upplier_detail(element.supplier_Detail)">
-              {{element.supplier}}
-            </span>
+                  (click)="view_upplier_detail(element.supplier_Detail)">
+                  {{element.supplier}}
+                </span>
+                <span *ngIf="element.status.trim() == 'Rejected'" class="dot__red_color"
+                  (click)="view_upplier_detail(element.supplier_Detail)">
+                  {{element.supplier}}
+                </span>
                 <mat-menu #supplier="matMenu" xPosition="before">
                   <div class="bg"></div>
                   <mat-list>
@@ -1863,7 +1884,7 @@
                     <mat-list-item *ngFor="let item of supplier_detail">
                       <img src="{{_services.url_images}}{{item.photo}}" matListAvatar alt="">
                       <div matLine (click)="goToProfile(item.id)" class="browser">{{item?.name}}</div>
-                          <div matLine style="font-size: 10px;">{{item?.email}}</div>
+                      <div matLine style="font-size: 10px;">{{item?.email}}</div>
                       <div matLine style="font-size: 10px;">{{item?.phone}}</div>
                     </mat-list-item>
                   </mat-list>
@@ -1882,12 +1903,12 @@
             <!-- Position Column -->
             <ng-container matColumnDef="campo_5">
               <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance</th>
-              <td mat-cell *matCellDef="let element" class="text-center" >
+              <td mat-cell *matCellDef="let element" class="text-center">
                 <span *ngIf="element.acceptedDate == null">
                   Pending To accept
                 </span>
                 <span *ngIf="element.acceptedDate != null">
-                  {{element.acceptedDate  | date: 'dd MMM yyyy'}}
+                  {{element.acceptedDate | date: 'dd MMM yyyy'}}
                 </span>
               </td>
             </ng-container>
@@ -1896,7 +1917,8 @@
             <ng-container matColumnDef="campo_6">
               <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Services</th>
               <td mat-cell *matCellDef="let element" class="text-center browser">
-                <span [matMenuTriggerFor]="afterMenu" (click)="viewassigned_services(element)" *ngIf="__userlog__.role.id != 3">
+                <span [matMenuTriggerFor]="afterMenu" (click)="viewassigned_services(element)"
+                  *ngIf="__userlog__.role.id != 3">
                   {{element.total}}
                 </span>
                 <span *ngIf="__userlog__.role.id == 3">
@@ -1931,7 +1953,7 @@
           </table>
         </div>
         <br>
-        <div fxLayout="row" fxLayoutAlign="end start" >
+        <div fxLayout="row" fxLayoutAlign="end start">
           <div class="page__section-button" *ngIf="__userlog__.role.id != 3">
             <button (click)="showaddSuplier()" class="button-icon button-icon--more margin-top-mini"
               *ngIf="can_edit_exp_t">
@@ -1959,7 +1981,8 @@
                     </mat-option>
                     <mat-option *ngIf="hostImm > 0" [value]="edit_sr_model.assigneeInformations[0].hostCountry"
                       (click)="__supplier__(edit_sr_model.assigneeInformations[0].hostCountry, edit_sr_model.assigneeInformations[0].hostCityId,1);">
-                      {{ getNameCityHost(edit_sr_model.assigneeInformations[0].hostCityId )}}, {{ getNameCountry(edit_sr_model.assigneeInformations[0].hostCountry )}}
+                      {{ getNameCityHost(edit_sr_model.assigneeInformations[0].hostCityId )}}, {{
+                      getNameCountry(edit_sr_model.assigneeInformations[0].hostCountry )}}
                     </mat-option>
 
                   </mat-select>
@@ -2001,20 +2024,19 @@
               <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="fill" class="input_central_half">
                   <mat-label>Services to Assign</mat-label>
-                  <mat-select multiple 
-                  (focus)="active_service = false" 
-                  required 
-                  [(ngModel)]="TempDataSuplier.service" 
-                  [formControl]="toppings">
-                  <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">Select all</mat-option>
-                  <ng-container *ngFor="let item of _serviciosByConsultantImm; let i = index">  
-                    <mat-option *ngIf="!item.assignee" #thisSelected (click)="tosslePerOne(thisSelected, item.id, item.idsuplier, item.service, i);" [value]="item.id">
-                      <span style="min-width: 180px;">{{item.service}} / {{item.serviceNumber}}</span>
-                    </mat-option>
-                  </ng-container>
+                  <mat-select multiple (focus)="active_service = false" required [(ngModel)]="TempDataSuplier.service"
+                    [formControl]="toppings">
+                    <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">Select all</mat-option>
+                    <ng-container *ngFor="let item of _serviciosByConsultantImm; let i = index">
+                      <mat-option *ngIf="!item.assignee" #thisSelected
+                        (click)="tosslePerOne(thisSelected, item.id, item.idsuplier, item.service, i);"
+                        [value]="item.id">
+                        <span style="min-width: 180px;">{{item.service}} / {{item.serviceNumber}}</span>
+                      </mat-option>
+                    </ng-container>
                   </mat-select>
                 </mat-form-field>
-              
+
               </mat-grid-tile>
               <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="fill" class="input_central_half">
@@ -2068,14 +2090,15 @@
                     <mat-option *ngFor="let item of line_status | filterBy: filterStatusImiService" [value]="item.id">
                       {{ item.status }}
                     </mat-option>
-                    <mat-option disabled *ngIf="(line_status | filterBy: filterStatusImiService).length === 0">No matching
+                    <mat-option disabled *ngIf="(line_status | filterBy: filterStatusImiService).length === 0">No
+                      matching
                       elements
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -2090,7 +2113,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -2111,7 +2134,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div style="width: 100%; display: flex;">
                 <mat-form-field appearance="fill" class="input_central">
@@ -2124,7 +2147,7 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-  
+
                 <button mat-icon-button color="primary" style="margin-left: -30px; margin-top: 12px;"
                   matTooltip="Clear filter" (click)="crearfilter(1)">
                   <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
@@ -2132,9 +2155,9 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
-  
+
           <div class="page__section margin-bottom-m">
-  
+
             <table mat-table mat-sort [dataSource]="home_contry" *ngxPermissionsOnly="['1', '11', '19']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
               <!-- Position Column -->
@@ -2147,7 +2170,7 @@
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -2156,7 +2179,7 @@
                   <!-- <span class="link" *ngIf="element.serviceType != 'Standalone'">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="showDialogentryVisa(element,1)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
                 </td>
               </ng-container>
               <!-- Position Column -->
@@ -2164,27 +2187,28 @@
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                  
+
                   <span class="link" (click)="showDialogentryVisa(element,1)"
                     *ngIf="element.serviceType == 'Standalone'">{{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
-                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span> 
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
+                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span>
                 </td>
               </ng-container>
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.country}}" >
+                  <span style="cursor: pointer;" matTooltip="{{element.country}}">
                     {{element.location}}
-                  </span> 
+                  </span>
                 </td>
               </ng-container>
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span>{{element.serviceType}}</span> 
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
               <ng-container matColumnDef="Delivered To">
@@ -2206,13 +2230,13 @@
                   {{element.acceptance | date: 'dd MMM yyyy' }}
                 </td>
               </ng-container-->
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
@@ -2226,7 +2250,7 @@
               <tr mat-header-row *matHeaderRowDef="home_country_table_immi"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_immi;"></tr>
             </table>
-  
+
             <table mat-table mat-sort [dataSource]="home_contry" *ngxPermissionsOnly="['2', '3', '4', '13', '14']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
               <!-- Position Column -->
@@ -2239,7 +2263,7 @@
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -2247,7 +2271,7 @@
                   <!-- <span class="link" *ngIf="element.serviceType != 'Standalone'">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="showDialogentryVisa(element,1)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
                 </td>
               </ng-container>
               <!-- Position Column -->
@@ -2255,27 +2279,28 @@
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                  
+
                   <span class="link" (click)="showDialogentryVisa(element,1)"
                     *ngIf="element.serviceType == 'Standalone'">{{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
-                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span> 
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
+                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span>
                 </td>
               </ng-container>
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.country}}" >
+                  <span style="cursor: pointer;" matTooltip="{{element.country}}">
                     {{element.location}}
-                  </span> 
+                  </span>
                 </td>
               </ng-container>
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                   <span >{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
               <ng-container matColumnDef="Delivered To">
@@ -2297,13 +2322,13 @@
                   {{element.acceptance | date: 'dd MMM yyyy' }}
                 </td>
               </ng-container-->
-  
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container-->
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
@@ -2340,14 +2365,15 @@
                     <mat-option *ngFor="let item of line_status | filterBy: filterStatusHostCount" [value]="item.id">
                       {{ item.status }}
                     </mat-option>
-                    <mat-option disabled *ngIf="(line_status | filterBy: filterStatusHostCount).length === 0">No matching
+                    <mat-option disabled *ngIf="(line_status | filterBy: filterStatusHostCount).length === 0">No
+                      matching
                       elements
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -2362,7 +2388,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -2373,7 +2399,8 @@
                       <mat-label>Service Type</mat-label>
                       <input matInput placeholder="Service Type" [(ngModel)]="filterServiceHomeCountry.category">
                     </mat-form-field>
-                    <mat-option *ngFor="let item of line_category | filterBy: filterServiceHomeCountry" [value]="item.id">
+                    <mat-option *ngFor="let item of line_category | filterBy: filterServiceHomeCountry"
+                      [value]="item.id">
                       {{ item.category }}
                     </mat-option>
                     <mat-option disabled *ngIf="(line_category | filterBy: filterServiceHomeCountry).length === 0">No
@@ -2383,7 +2410,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div style="width: 100%; display: flex;">
                 <mat-form-field appearance="fill" class="input_central">
@@ -2403,24 +2430,24 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
-  
+
           <div class="page__section margin-bottom-m">
-  
+
             <table mat-table mat-sort [dataSource]="host_contry" *ngxPermissionsOnly="['1', '11', '19']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.statusService}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Work Order">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Category">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Category</th>
@@ -2428,7 +2455,7 @@
                   {{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}
                 </td>
               </ng-container-->
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -2436,49 +2463,50 @@
                   <!-- <span class="link" *ngIf="element.serviceType != 'Standalone'">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="showDialogentryVisa(element,2)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
 
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                 
+
                   <span class="link" (click)="showDialogentryVisa(element,2)"
                     *ngIf="element.serviceType == 'Standalone'"> {{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 2 , edit_sr_model.assigneeInformations[0].hostCountry)"
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 2 , edit_sr_model.assigneeInformations[0].hostCountry)"
                     *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.country}}" >
+                  <span style="cursor: pointer;" matTooltip="{{element.country}}">
                     {{element.location}}
-                  </span>  
+                  </span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                   <span>{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Delivered To">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Delivered To</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   {{element.deliveredTo}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Autho Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho Date</th>
@@ -2486,7 +2514,7 @@
                   {{element.authodate | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Accepted Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Accepted Date</th>
@@ -2494,15 +2522,15 @@
                   {{element.acceptance | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container-->
-  
-  
+
+
               <!-- Position Column -->
               <ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container>
-  
-  
+
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -2512,26 +2540,26 @@
                   </div> -->
                 </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="home_country_table_immi"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_immi;"></tr>
             </table>
-  
+
             <table mat-table mat-sort [dataSource]="host_contry" *ngxPermissionsOnly="['2', '3', '4', '13', '14']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.statusService}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Work Order">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Category">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Category</th>
@@ -2539,7 +2567,7 @@
                   {{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}
                 </td>
               </ng-container-->
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -2547,49 +2575,50 @@
                   <!-- <span class="link" *ngIf="element.serviceType != 'Standalone'">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="showDialogentryVisa(element,2)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
 
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                  
+
                   <span class="link" (click)="showDialogentryVisa(element,2)"
                     *ngIf="element.serviceType == 'Standalone'">{{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 2 , edit_sr_model.assigneeInformations[0].hostCountry)"
-                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span> 
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 2 , edit_sr_model.assigneeInformations[0].hostCountry)"
+                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.country}}" >
+                  <span style="cursor: pointer;" matTooltip="{{element.country}}">
                     {{element.location}}
-                  </span>  
+                  </span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                   <span>{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Delivered To">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Delivered To</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   {{element.deliveredTo}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Autho Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho Date</th>
@@ -2597,7 +2626,7 @@
                   {{element.authodate | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Accepted Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Accepted Date</th>
@@ -2605,15 +2634,15 @@
                   {{element.acceptance | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container-->
-  
-  
+
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container-->
-  
-  
+
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -2623,7 +2652,7 @@
                   </div> -->
                 </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="home_country_table_immi_"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_immi_;"></tr>
             </table>
@@ -3288,9 +3317,9 @@
               <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="fill" class="input_central_half">
                   <mat-label>Date of Issue</mat-label>
-                  <input [disabled]="profileCunsultant == true" matInput [(ngModel)]="dependent.issue" [matDatepicker]="dependent_data_issue"
-                    [value]="dependent.issue" [max]="getMaxDateTo(0)" (change)="dependent.issue = $event.target.value"
-                    (dateChange)="dependent.issue = $event.value" />
+                  <input [disabled]="profileCunsultant == true" matInput [(ngModel)]="dependent.issue"
+                    [matDatepicker]="dependent_data_issue" [value]="dependent.issue" [max]="getMaxDateTo(0)"
+                    (change)="dependent.issue = $event.target.value" (dateChange)="dependent.issue = $event.value" />
                   <mat-datepicker-toggle matSuffix [for]="dependent_data_issue"></mat-datepicker-toggle>
                   <mat-datepicker #dependent_data_issue></mat-datepicker>
                   <!-- <span class="label-error" *ngIf="dependent.issue == '' && show_immigration_errors">
@@ -3316,7 +3345,8 @@
               <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field class="input_central_half">
                   <mat-label>Issuing Authority</mat-label>
-                  <input matInput placeholder="Issuing Authority" [(ngModel)]="dependent.issuingAuthority" type="text" />
+                  <input matInput placeholder="Issuing Authority" [(ngModel)]="dependent.issuingAuthority"
+                    type="text" />
                   <!-- <span class="label-error" *ngIf="dependent.issue == '' && show_immigration_errors">
                     Field is required
                   </span> -->
@@ -3408,7 +3438,8 @@
                 <b class="dot__green_color icon-text" style="font-size: 14px;">Accepted</b>&nbsp;&nbsp;&nbsp;|
               </div>
               <div class="divIconContainer">
-                <b class="dot__yellow_color icon-text" style="font-size: 14px;">Pending Acceptance</b>&nbsp;&nbsp;&nbsp;|
+                <b class="dot__yellow_color icon-text" style="font-size: 14px;">Pending
+                  Acceptance</b>&nbsp;&nbsp;&nbsp;|
               </div>
               <div class="divIconContainer">
                 <b class="dot__red_color icon-text" style="font-size: 14px;">Rejected</b>&nbsp;&nbsp;&nbsp;
@@ -3457,7 +3488,8 @@
                 </span>
               </td>
               <td class="mat-cell" *ngIf="__userlog__.role.id != 2 && __userlog__.role.id != 3">
-                <img *ngIf="edit_sr_model.relocationCoordinators.length > 1" src="../../../assets/icons/quit.svg" alt="" (click)="deleteCoordinator(datos, 2, k)">
+                <img *ngIf="edit_sr_model.relocationCoordinators.length > 1" src="../../../assets/icons/quit.svg" alt=""
+                  (click)="deleteCoordinator(datos, 2, k)">
               </td>
             </tr>
           </table>
@@ -3470,22 +3502,22 @@
             <div mat-subheader>Relocation</div>
             <mat-divider></mat-divider>
             <mat-list-item>
-               <!-- <img [src]="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt=""> -->
-               <img src="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt="">
-               <div matLine (click)="goToProfile(data_coordinator.id)" class="browser">{{data_coordinator?.coordinator}}</div>
-                 <div matLine style="font-size: 10px;">{{data_coordinator?.office}}</div>
-                  <div matLine style="font-size: 10px;">{{data_coordinator?.email}}</div>
+              <!-- <img [src]="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt=""> -->
+              <img src="{{_services.url_images}}{{data_coordinator?.photo}}" matListAvatar alt="">
+              <div matLine (click)="goToProfile(data_coordinator.id)" class="browser">{{data_coordinator?.coordinator}}
+              </div>
+              <div matLine style="font-size: 10px;">{{data_coordinator?.office}}</div>
+              <div matLine style="font-size: 10px;">{{data_coordinator?.email}}</div>
               <div matLine style="font-size: 10px;">{{data_coordinator?.phoneNumber}}</div>
             </mat-list-item>
           </mat-list>
         </mat-menu>
         <br>
-        <div fxLayout="row" fxLayoutAlign="end start" >
-          
+        <div fxLayout="row" fxLayoutAlign="end start">
+
           <div class="page__section-button" *ngIf="__userlog__.role.id != 2 && __userlog__.role.id != 3">
             <button [disabled]="profileCunsultant == true" class="button-icon button-icon--more margin-top-mini"
-              (click)="addCoordinador()"
-              *ngIf="can_edit_exp_t">
+              (click)="addCoordinador()" *ngIf="can_edit_exp_t">
               Add Coordinator
             </button>
           </div>
@@ -3536,8 +3568,8 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Assigned</mat-label>
-                <input [disabled]="item.assigned" matInput [matDatepicker]="team_assig"
-                  [max]="getMaxDateTo(0)" [(ngModel)]="item.assigned"
+                <input [disabled]="item.assigned" matInput [matDatepicker]="team_assig" [max]="getMaxDateTo(0)"
+                  [(ngModel)]="item.assigned"
                   (dateChange)="removeErrorLabel( $event.target.value, {handler: form_imm_cord, field: 'no_dat0'} )"
                   (change)="removeErrorLabel( $event.target.value, {handler: form_imm_cord, field: 'no_dat0'} )" />
                 <mat-datepicker-toggle matSuffix [for]="team_assig"></mat-datepicker-toggle>
@@ -3591,7 +3623,7 @@
             <ng-container matColumnDef="campo_2">
               <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Company</th>
               <td mat-cell *matCellDef="let element" class="text-center">
-                
+
                 <span *ngIf="element.supplierCompany != null">
                   {{element.supplierCompany}}
                 </span>
@@ -3604,19 +3636,20 @@
             <!-- Position Column -->
             <ng-container matColumnDef="campo_3">
               <th mat-header-cell *matHeaderCellDef class="text-center">Supplier</th>
-              <td mat-cell *matCellDef="let element" class="text-center" [matMenuTriggerFor]="supplier" style="cursor: pointer;">
-                  <span *ngIf="element.status === 'Accepted'" class="dot__green_color" 
-                    (click)="view_upplier_detail(element.supplier_Detail)">
-                    {{element.supplier}}
-                  </span>
-                  <span *ngIf="element.status === 'Pending Accepted'" class="dot__yellow_color" 
-                    (click)="view_upplier_detail(element.supplier_Detail)">
-                    {{element.supplier}}
-                  </span>
-                  <span *ngIf="element.status === 'Rejected'" class="dot__green_color" 
-                    (click)="view_upplier_detail(element.supplier_Detail)">
-                    {{element.supplier}}
-                  </span>
+              <td mat-cell *matCellDef="let element" class="text-center" [matMenuTriggerFor]="supplier"
+                style="cursor: pointer;">
+                <span *ngIf="element.status === 'Accepted'" class="dot__green_color"
+                  (click)="view_upplier_detail(element.supplier_Detail)">
+                  {{element.supplier}}
+                </span>
+                <span *ngIf="element.status === 'Pending Accepted'" class="dot__yellow_color"
+                  (click)="view_upplier_detail(element.supplier_Detail)">
+                  {{element.supplier}}
+                </span>
+                <span *ngIf="element.status === 'Rejected'" class="dot__green_color"
+                  (click)="view_upplier_detail(element.supplier_Detail)">
+                  {{element.supplier}}
+                </span>
                 <mat-menu #supplier="matMenu" xPosition="before">
                   <div class="bg"></div>
                   <mat-list>
@@ -3625,7 +3658,7 @@
                     <mat-list-item *ngFor="let item of supplier_detail">
                       <img src="{{_services.url_images}}{{item.photo}}" matListAvatar alt="">
                       <div matLine (click)="goToProfile(item.id)" class="browser">{{item?.name}}</div>
-                          <div matLine style="font-size: 10px;">{{item?.email}}</div>
+                      <div matLine style="font-size: 10px;">{{item?.email}}</div>
                       <div matLine style="font-size: 10px;">{{item?.phone}}</div>
                     </mat-list-item>
                   </mat-list>
@@ -3649,7 +3682,7 @@
                   Pending To accept
                 </span>
                 <span *ngIf="element.acceptedDate != null">
-                  {{element.acceptedDate  | date: 'dd MMM yyyy'}}
+                  {{element.acceptedDate | date: 'dd MMM yyyy'}}
                 </span>
               </td>
             </ng-container>
@@ -3659,7 +3692,7 @@
               <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Services</th>
               <td mat-cell *matCellDef="let element" class="text-center browser">
                 <!-- <span [matMenuTriggerFor]="afterMenu" (click)="viewassigned_services(element)" *ngIf="__userlog__.role.id != 3"> -->
-                <span  (click)="viewassigned_services(element)" *ngIf="__userlog__.role.id != 3">
+                <span (click)="viewassigned_services(element)" *ngIf="__userlog__.role.id != 3">
                   {{element.total}}
                 </span>
                 <span *ngIf="__userlog__.role.id == 3">
@@ -3695,8 +3728,8 @@
           </table>
         </div>
         <br>
-        <div fxLayout="row" fxLayoutAlign="end start" >
-          
+        <div fxLayout="row" fxLayoutAlign="end start">
+
           <div class="page__section-button" *ngIf="__userlog__.role.id != 3">
             <button (click)="showRelocationSupForm()" class="button-icon button-icon--more margin-top-mini"
               *ngIf="can_edit_exp_t">
@@ -3727,7 +3760,8 @@
                     </mat-option>
                     <mat-option *ngIf="hostRel > 0" [value]="edit_sr_model.assigneeInformations[0].hostCountry"
                       (click)="__supplier__r(edit_sr_model.assigneeInformations[0].hostCountry, edit_sr_model.assigneeInformations[0].hostCityId,2);">
-                      {{ getNameCityHost(edit_sr_model.assigneeInformations[0].hostCityId )}}, {{ getNameCountry(edit_sr_model.assigneeInformations[0].hostCountry )}}
+                      {{ getNameCityHost(edit_sr_model.assigneeInformations[0].hostCityId )}}, {{
+                      getNameCountry(edit_sr_model.assigneeInformations[0].hostCountry )}}
                     </mat-option>
 
                   </mat-select>
@@ -3769,20 +3803,19 @@
               <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="fill" class="input_central_half">
                   <mat-label>Services to Assign</mat-label>
-                  <mat-select multiple 
-                  (focus)="active_service = false" 
-                  required 
-                  [(ngModel)]="relocation_supplier_data.service" 
-                  [formControl]="toppings">
-                  <mat-option #allSelected (click)="toggleAllSelectionRelo()" [value]="0">Select all</mat-option>
-                  <ng-container *ngFor="let item of _serviciosByConsultantRelo; let i = index">
-                    <mat-option *ngIf="!item.assignee" #thisSelected (click)="tosslePerOneRelo(thisSelected, item.id, item.idsuplier, item.service, i);" [value]="item.id">
-                      <span style="min-width: 180px;">{{item.service}} / {{item.serviceNumber}}</span>
-                    </mat-option>
-                  </ng-container>
-                </mat-select>  
+                  <mat-select multiple (focus)="active_service = false" required
+                    [(ngModel)]="relocation_supplier_data.service" [formControl]="toppings">
+                    <mat-option #allSelected (click)="toggleAllSelectionRelo()" [value]="0">Select all</mat-option>
+                    <ng-container *ngFor="let item of _serviciosByConsultantRelo; let i = index">
+                      <mat-option *ngIf="!item.assignee" #thisSelected
+                        (click)="tosslePerOneRelo(thisSelected, item.id, item.idsuplier, item.service, i);"
+                        [value]="item.id">
+                        <span style="min-width: 180px;">{{item.service}} / {{item.serviceNumber}}</span>
+                      </mat-option>
+                    </ng-container>
+                  </mat-select>
                 </mat-form-field>
-              
+
               </mat-grid-tile>
               <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="fill" class="input_central_half">
@@ -3811,7 +3844,7 @@
         </div>
         <div class="page__section">
           <div class="page__title">
-            Relocation Services 
+            Relocation Services
           </div>
         </div>
         <div *ngIf="relocation_home_services?.length > 0">
@@ -3820,9 +3853,9 @@
               Home Country: {{homeCountry}}
             </span>
           </div>
-  
+
           <mat-grid-list cols="4" rowHeight="80px">
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -3844,7 +3877,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -3859,7 +3892,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -3880,7 +3913,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div style="width: 100%; display: flex;">
                 <mat-form-field appearance="fill" class="input_central">
@@ -3900,71 +3933,73 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
-  
+
           <div class="page__section margin-bottom-m">
-  
+
             <table mat-table mat-sort [dataSource]="relocation_home_services" *ngxPermissionsOnly="['1', '11', '19']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.statusService}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Work Order">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--span class="link" (click)="open_standalone_modal(element, 1)">{{element.number_server}}
                   </span-->
-                
+
                   <!-- <span class="link" *ngIf="element.serviceType != 'Standalone'"
                   (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="open_standalone_modal(element, 1)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
 
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                 
-                  <span class="link" (click)="open_standalone_modal(element, edit_sr_model.assigneeInformations[0].homeCountryId, element.service_name)"
+
+                  <span class="link"
+                    (click)="open_standalone_modal(element, edit_sr_model.assigneeInformations[0].homeCountryId, element.service_name)"
                     *ngIf="element.serviceType == 'Standalone'"> {{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
-                    *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span> 
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
+                    *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.location}}" >
-                    {{(element.location.length>7) ?  (element.location | slice:0:7)+'..': element.location}}
-                  </span>  
+                  <span style="cursor: pointer;" matTooltip="{{element.location}}">
+                    {{(element.location.length>7) ? (element.location | slice:0:7)+'..': element.location}}
+                  </span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--span class="link" (click)="open_standalone_modal(element, 1)">{{element.serviceType}}</span-->
-                   <span>{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Autho Time">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho Time</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -3976,7 +4011,7 @@
                   </span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Time Remaining">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Time Remaining</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -3984,7 +4019,7 @@
                   <p *ngIf="element.timeRemaining < 5" style="color: red;">{{element.timeRemaining}}</p>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Autho Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho</th>
@@ -3992,7 +4027,7 @@
                   {{element.authodate | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Accepted Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance</th>
@@ -4000,20 +4035,20 @@
                   {{element.acceptance | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container>
-  
-  
+
+
               <!-- Position Column -->
               <ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container>
-  
-  
+
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!-- <div class="table-row__check" *ngIf="(permission_edit || permission_write) && element.serviceType == 'Standalone'">
-  
+
                     <img (click)="open_standalone_modal(element,1)" class="cursor-pointer"
                       src="../../../../assets/icons/pencil.png" *ngIf="element.serviceType == 'Standalone'"/>
                     <img (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)" class="cursor-pointer"
@@ -4021,27 +4056,27 @@
                   </div> -->
                 </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="home_country_table_rel"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_rel;"></tr>
             </table>
-  
+
             <table mat-table mat-sort [dataSource]="relocation_home_services"
               *ngxPermissionsOnly="['2', '3', '4', '13', '14']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.status}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Work Order">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -4052,43 +4087,44 @@
                   (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="open_standalone_modal(element, 1)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
-  
+                  {{element.number_server}}
+
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                 
+
                   <span class="link" (click)="open_standalone_modal(element, 1)"
-                  *ngIf="element.serviceType == 'Standalone'"> {{element.service_name}}</span>
-                <span class="link" (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
-                  *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span> 
+                    *ngIf="element.serviceType == 'Standalone'"> {{element.service_name}}</span>
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 1, edit_sr_model.assigneeInformations[0].homeCountryId)"
+                    *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.location}}" >
-                    {{(element.location.length>7) ?  (element.location | slice:0:7)+'..': element.location}}
-                  </span> 
+                  <span style="cursor: pointer;" matTooltip="{{element.location}}">
+                    {{(element.location.length>7) ? (element.location | slice:0:7)+'..': element.location}}
+                  </span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--span class="link" (click)="open_standalone_modal(element, 1)">{{element.serviceType}}</span-->
-                   <span>{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Autho Time">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho Time</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -4100,7 +4136,7 @@
                   </span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Time Remaining">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Time Remaining</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -4108,7 +4144,7 @@
                   <p *ngIf="element.timeRemaining < 5" style="color: red;">{{element.timeRemaining}}</p>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Autho Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho</th>
@@ -4116,7 +4152,7 @@
                   {{element.authodate | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Accepted Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance</th>
@@ -4124,15 +4160,15 @@
                   {{element.acceptance | date: 'dd MMM yyyy'}}
                 </td>
               </ng-container>
-  
-  
+
+
               <!-- Position Column -->
               <!--ng-container matColumnDef="Projected Fee" >
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container-->
-  
-  
+
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -4144,23 +4180,23 @@
                   </div> -->
                 </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="home_country_table_rel_"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_rel_;"></tr>
             </table>
           </div>
         </div>
-       
+
         <div *ngIf="relocation_host_services?.length > 0">
           <div class="page__section">
             <span class="page__section-name">
               Host Country: {{Host_Home_country.host_country_name}}
             </span>
           </div>
-  
-  
+
+
           <mat-grid-list cols="4" rowHeight="80px">
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -4174,15 +4210,16 @@
                     <mat-option *ngFor="let item of line_status | filterBy: filterStatusHomeCount" [value]="item.id">
                       {{ item.status }}
                     </mat-option>
-                    <mat-option disabled *ngIf="(line_status | filterBy: filterStatusHomeCount).length === 0">No matching
+                    <mat-option disabled *ngIf="(line_status | filterBy: filterStatusHomeCount).length === 0">No
+                      matching
                       elements
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
-  
+
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -4197,7 +4234,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_central" style="width: 100%;">
                 <mat-form-field appearance="fill">
@@ -4218,7 +4255,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div style="width: 100%; display: flex;">
                 <mat-form-field appearance="fill" class="input_central">
@@ -4238,24 +4275,24 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
-  
+
           <div class="page__section margin-bottom-m">
-  
+
             <table mat-table mat-sort [dataSource]="relocation_host_services" *ngxPermissionsOnly="['1', '11', '19']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.statusService}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Work Order">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -4266,49 +4303,50 @@
                     (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="open_standalone_modal(element, 2)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                  
+
                   <span class="link" (click)="open_standalone_modal(element, 2)"
                     *ngIf="element.serviceType == 'Standalone'">{{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)"
-                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span> 
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)"
+                    *ngIf="element.serviceType != 'Standalone'">{{element.service_name}}</span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.location}}" >
-                    {{(element.location.length>7) ?  (element.location | slice:0:7)+'..': element.location}}
-                  </span>  
+                  <span style="cursor: pointer;" matTooltip="{{element.location}}">
+                    {{(element.location.length>7) ? (element.location | slice:0:7)+'..': element.location}}
+                  </span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--span class="link" (click)="open_standalone_modal(element, 2)">{{element.serviceType}}</span-->
-                   <span >{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Autho Time">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho Time</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   {{element.authoTime}}
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Time Remaining">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Time Remaining</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -4316,7 +4354,7 @@
                   <p *ngIf="element.timeRemaining < 5" style="color: red;">{{element.timeRemaining}}</p>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Autho Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho</th>
@@ -4324,7 +4362,7 @@
                   {{element.authodate | date:'dd MMM yyy'}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Accepted Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance</th>
@@ -4332,15 +4370,15 @@
                   {{element.acceptance | date:'dd MMM yyy'}}
                 </td>
               </ng-container>
-  
-  
+
+
               <!-- Position Column -->
               <ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container>
-  
-  
+
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -4352,27 +4390,27 @@
                   </div> -->
                 </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="home_country_table_rel"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_rel;"></tr>
             </table>
-  
+
             <table mat-table mat-sort [dataSource]="relocation_host_services"
               *ngxPermissionsOnly="['2', '3', '4', '13', '14']"
               style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.status}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Work Order">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Work Order</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.numberWorkOrder}}</td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service ID">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service ID</th>
@@ -4383,49 +4421,50 @@
                   (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)">{{element.number_server}}</span>
                   <span class="link" *ngIf="element.serviceType == 'Standalone'"
                     (click)="open_standalone_modal(element, 2)">{{element.number_server}}</span> -->
-                    {{element.number_server}}
+                  {{element.number_server}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Service">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Service</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--{{(element.service_name.length>7) ?  (element.service_name | slice:0:7)+'..': element.service_name}}-->
-                 
+
                   <span class="link" (click)="open_standalone_modal(element, 2)"
                     *ngIf="element.serviceType == 'Standalone'"> {{element.service_name}}</span>
-                  <span class="link" (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)"
-                    *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span> 
+                  <span class="link"
+                    (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)"
+                    *ngIf="element.serviceType != 'Standalone'"> {{element.service_name}}</span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Location">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Location</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
-                  <span style="cursor: pointer;" matTooltip="{{element.location}}" >
-                    {{(element.location.length>7) ?  (element.location | slice:0:7)+'..': element.location}}
-                  </span>  
+                  <span style="cursor: pointer;" matTooltip="{{element.location}}">
+                    {{(element.location.length>7) ? (element.location | slice:0:7)+'..': element.location}}
+                  </span>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Program">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Program</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--span class="link" (click)="open_standalone_modal(element, 2)">{{element.serviceType}}</span-->
-                   <span>{{element.serviceType}}</span>
+                  <span>{{element.serviceType}}</span>
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Autho Time">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho Time</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   {{element.authoTime}}
                 </td>
               </ng-container>
-  
+
               <ng-container matColumnDef="Time Remaining">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Time Remaining</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -4433,7 +4472,7 @@
                   <p *ngIf="element.timeRemaining < 5" style="color: red;">{{element.timeRemaining}}</p>
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Autho Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Autho</th>
@@ -4441,7 +4480,7 @@
                   {{element.authodate | date:'dd MMM yyy'}}
                 </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Accepted Date">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Acceptance</th>
@@ -4449,20 +4488,20 @@
                   {{element.acceptance | date:'dd MMM yyy'}}
                 </td>
               </ng-container>
-  
-  
+
+
               <!-- Position Column -->
               <ng-container matColumnDef="Projected Fee">
                 <th mat-header-cell *matHeaderCellDef class="text-center">Projected Fee</th>
                 <td mat-cell *matCellDef="let element" class="text-center">{{element.projectedFee | currency}}</td>
               </ng-container>
-  
-  
+
+
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!-- <div class="table-row__check" *ngIf="(permission_edit || permission_write) && element.serviceType == 'Standalone'">
-    
+
                     <img (click)="open_bundeld_modal(element, 2, edit_sr_model.assigneeInformations[0].hostCountry)" class="cursor-pointer"
                       src="../../../../assets/icons/pencil.png" *ngIf="element.serviceType != 'Standalone'"/>
                     <img (click)="open_standalone_modal(element,2)" class="cursor-pointer"
@@ -4470,14 +4509,14 @@
                   </div> -->
                 </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="home_country_table_rel_"></tr>
               <tr mat-row *matRowDef="let row; columns: home_country_table_rel_;"></tr>
             </table>
           </div>
-  
+
         </div>
-        
+
         <!--div class="page__section margin-top-m margin-bottom-min">
           <span class="page__section-name">
             Housing Specifications
@@ -4558,7 +4597,7 @@
           </div>
           <div style="text-align: center;">
             <!-- <p>Coming soon</p> -->
-            <app-chat-assignament ></app-chat-assignament>
+            <app-chat-assignament></app-chat-assignament>
           </div>
           <!-- fin chat -->
 
@@ -4574,7 +4613,7 @@
               </button>
             </div>
           </div>
-         
+
           <div class="page__section margin-bottom-m" style="display:none">
             <div class="page__section page__section--no-padding">
               <div class="page__section no-padding">
@@ -4758,7 +4797,7 @@
               </div>
             </div>
           </div>
-           <!--Calll-->
+          <!--Calll-->
           <div style="display:none">
             <div class="page__title">
               Calls
@@ -4785,18 +4824,18 @@
                       (click)="showCallsTabSelected('calls_imm', $event.target); initCallsBehavior(1);">
                       Immigration
                     </div>
-                    <div id="relCall2" class="page__section-tab call-tab page__section-tab--active"  
+                    <div id="relCall2" class="page__section-tab call-tab page__section-tab--active"
                     (click)="showCallsTabSelected('calls_rel', $event.target); initCallsBehavior(2);">
                       Relocation
                     </div>
                   </div-->
-  
+
                 </div>
                 <div class="page__section call_window" id="calls_imm">
                   <div class="page__section">
                     <table mat-table mat-sort [dataSource]="calls_in_list_imm" #immiCallssort='matSort' matSort
                       style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
                       <!-- Position Column -->
                       <!--ng-container matColumnDef="cam_0">
                         <th mat-header-cell *matHeaderCellDef class="text-center">Service Line</th>
@@ -4804,7 +4843,7 @@
                           {{ element.serviceLine }}
                         </td>
                       </ng-container-->
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_1">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="workOrder">Work Order
@@ -4813,7 +4852,7 @@
                           {{element.workOrder}}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_2">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceRecordId">
@@ -4822,7 +4861,7 @@
                           {{element.serviceRecordId}}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_3">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="service">Service</th>
@@ -4830,7 +4869,7 @@
                           {{ element.service }}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_4">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="caller">Caller</th>
@@ -4861,12 +4900,13 @@
                       </ng-container>
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_8">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="duration">Duration</th>
+                        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="duration">Duration
+                        </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           {{ element.duration }}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_9">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="escalate">Escalation
@@ -4878,7 +4918,7 @@
                           </div>
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_10">
                         <th mat-header-cell *matHeaderCellDef class="text-center"></th>
@@ -4889,7 +4929,7 @@
                           </div>
                         </td>
                       </ng-container>
-  
+
                       <tr mat-header-row *matHeaderRowDef="calls_columsedit"></tr>
                       <tr mat-row *matRowDef="let row; columns: calls_columsedit;"
                         [class.table-field-special]="row.welcomeCall"></tr>
@@ -4915,7 +4955,7 @@
                   <div class="page__section">
                     <table mat-table mat-sort [dataSource]="calls_in_list_rel" #reloCAllssort='matSort' matSort
                       style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
                       <!-- Position Column -->
                       <!--ng-container matColumnDef="cam_0">
                         <th mat-header-cell *matHeaderCellDef class="text-center">Service Line</th>
@@ -4923,7 +4963,7 @@
                           {{ element.serviceLine }}
                         </td>
                       </ng-container-->
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_1">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="workOrder">Work Order
@@ -4932,7 +4972,7 @@
                           {{element.workOrder}}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_2">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceRecordId">
@@ -4941,7 +4981,7 @@
                           {{element.serviceRecordId}}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_3">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="service">Service</th>
@@ -4949,7 +4989,7 @@
                           {{ element.service }}
                         </td>
                       </ng-container>
-  
+
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_4">
                         <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="caller">Caller</th>
@@ -4980,7 +5020,8 @@
                       </ng-container>
                       <!-- Position Column -->
                       <ng-container matColumnDef="cam_8">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="duration">Duration</th>
+                        <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="duration">Duration
+                        </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           {{ element.duration }}
                         </td>
@@ -5006,7 +5047,7 @@
                           </div>
                         </td>
                       </ng-container>
-  
+
                       <tr mat-header-row *matHeaderRowDef="calls_columsedit"></tr>
                       <tr mat-row *matRowDef="let row; columns: calls_columsedit;"
                         [class.table-field-special]="row.welcomeCall"></tr>
@@ -5031,7 +5072,7 @@
               </div>
             </div>
           </div>
-         <br>
+          <br>
           <div class="page__title">
             E-mails
           </div>
@@ -5049,7 +5090,7 @@
                   </div>
                 </div> -->
               </div>
-          </div>
+            </div>
             <div class="page__section email_window" id="email_rel">
               <div class="page__section">
                 <table mat-table mat-sort [dataSource]="email_relocation"
@@ -5060,7 +5101,7 @@
                       {{ element.email }}
                     </td>
                   </ng-container>
-         
+
                   <ng-container matColumnDef="cam_3">
                     <th mat-header-cell *matHeaderCellDef class="text-center"></th>
                     <td mat-cell *matCellDef="let element" class="text-center">
@@ -5120,7 +5161,7 @@
               </div>
             </div> -->
           </div>
-           <!--Action Items-->
+          <!--Action Items-->
           <div style="display: none;">
             <div class="page__title">
               Action Items
@@ -5150,8 +5191,8 @@
                         initTasksBehavior(1)">
                       Immigration
                     </div>
-                    <div id="relconsultor2" class="page__section-tab task-tab page__section-tab--active " 
-                    
+                    <div id="relconsultor2" class="page__section-tab task-tab page__section-tab--active "
+
                     (click)="
                         showTaskTabSelected('task_rel', $event.target);
                         initTasksBehavior(2)">
@@ -5170,7 +5211,8 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">From</th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           <span title="{{ element.taskFrom }}">
-                            {{ (element.taskFrom?.length > 8) ? ( element.taskFrom | slice:0:10 ) + '...' : element.taskFrom }}
+                            {{ (element.taskFrom?.length > 8) ? ( element.taskFrom | slice:0:10 ) + '...' :
+                            element.taskFrom }}
                           </span>
                         </td>
                       </ng-container>
@@ -5179,7 +5221,8 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">To</th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           <span title="{{ element.taskTo }}">
-                            {{ (element.taskTo?.length > 8) ? ( element.taskTo | slice:0:10 ) + '...' : element.taskTo }}
+                            {{ (element.taskTo?.length > 8) ? ( element.taskTo | slice:0:10 ) + '...' : element.taskTo
+                            }}
                           </span>
                         </td>
                       </ng-container>
@@ -5188,7 +5231,8 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">Title</th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           <span title="{{ element.taskDescription }}">
-                            {{ ( element.taskDescription?.length > 15 ) ? ( element.taskDescription | slice:0:15 ) + '...' : element.taskDescription }}
+                            {{ ( element.taskDescription?.length > 15 ) ? ( element.taskDescription | slice:0:15 ) +
+                            '...' : element.taskDescription }}
                           </span>
                         </td>
                       </ng-container>
@@ -5280,7 +5324,8 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">From</th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           <span title="{{ element.taskFrom }}">
-                            {{ (element.taskFrom?.length > 8) ? ( element.taskFrom | slice:0:8 ) + '...' : element.taskFrom }}
+                            {{ (element.taskFrom?.length > 8) ? ( element.taskFrom | slice:0:8 ) + '...' :
+                            element.taskFrom }}
                           </span>
                         </td>
                       </ng-container>
@@ -5298,7 +5343,8 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">Title</th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                           <span title="{{ element.taskDescription }}">
-                            {{ ( element.taskDescription?.length > 15 ) ? ( element.taskDescription | slice:0:15 ) + '...' : element.taskDescription }}
+                            {{ ( element.taskDescription?.length > 15 ) ? ( element.taskDescription | slice:0:15 ) +
+                            '...' : element.taskDescription }}
                           </span>
                         </td>
                       </ng-container>
@@ -5382,7 +5428,7 @@
               </div>
             </div>
           </div>
-         
+
           <div class="page__title" style="display: none;">
             Escalations
           </div>
@@ -5651,7 +5697,7 @@
                 <div class="page__section">
                   <table mat-table mat-sort [dataSource]="dataSource" matSort
                     style="flex: 1 0 100%; box-shadow: 0 0 2px 2px rgba(0,0,0,.1);">
-  
+
                     <!-- Position Column -->
                     <ng-container matColumnDef="cam_0">
                       <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="numberWorkOrder">Work
@@ -5660,12 +5706,14 @@
                     </ng-container>
                     <!-- Position Column -->
                     <ng-container matColumnDef="cam_1">
-                      <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceLine">Service</th>
+                      <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceLine">Service
+                      </th>
                       <td mat-cell *matCellDef="let element" class="text-center">{{element.serviceLine}}</td>
                     </ng-container>
                     <!-- Position Column -->
                     <ng-container matColumnDef="cam_2">
-                      <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceNumber">Service ID
+                      <th mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header="serviceNumber">Service
+                        ID
                       </th>
                       <td mat-cell *matCellDef="let element" class="text-center">{{element.serviceNumber}}</td>
                     </ng-container>
@@ -5699,7 +5747,7 @@
                         </b>
                       </td>
                     </ng-container>
-  
+
                     <tr mat-header-row *matHeaderRowDef="comhis_part_table"></tr>
                     <tr mat-row *matRowDef="let row; columns: comhis_part_table;"></tr>
                   </table>
@@ -5721,7 +5769,7 @@
         </div>
 
         <mat-grid-list cols="5" rowHeight="50px">
-<!-- 
+          <!--
           <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="__userlog__.role.id != 3">
             <div class="input_central cdiv">
               <mat-form-field appearance="fill">
@@ -5766,14 +5814,15 @@
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="rep_fil_date_one">
                   <input matStartDate [(ngModel)]="data_directory.initialReportDate" placeholder="Start date">
-                  <input matEndDate [(ngModel)]="data_directory.finalReportDate" (dateChange)="searchDataReport();" placeholder="End date">
+                  <input matEndDate [(ngModel)]="data_directory.finalReportDate" (dateChange)="searchDataReport();"
+                    placeholder="End date">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="rep_fil_date_one"></mat-datepicker-toggle>
                 <mat-date-range-picker #rep_fil_date_one></mat-date-range-picker>
               </mat-form-field>
             </div>
           </mat-grid-tile>
-<!-- 
+          <!--
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central cdiv">
               <mat-form-field appearance="fill">
@@ -5847,7 +5896,8 @@
           </div>
           <!-- *ngIf="permission_edit || permission_write" -->
 
-          <div class="page__section-button page__section-button--biggerx" *ngIf="__userlog__.role.id == 3 || __userlog__.role.id == 19">
+          <div class="page__section-button page__section-button--biggerx"
+            *ngIf="__userlog__.role.id == 3 || __userlog__.role.id == 19">
             <button class="button-icon button-icon--time page__section-button--lineButtons--bigger"
               (click)="addRequestAddicionalTime()">
               Request Additional Time
@@ -5866,15 +5916,15 @@
             <!-- Position Column -->
             <ng-container matColumnDef="Date">
               <th mat-header-cell *matHeaderCellDef>Date</th>
-              <td mat-cell *matCellDef="let element"> 
+              <td mat-cell *matCellDef="let element">
                 <span *ngIf="element.reportDate < element.creationDate" style="color: red;">
-                  {{element.reportDate | date:'dd MMM yyy'}} 
+                  {{element.reportDate | date:'dd MMM yyy'}}
                 </span>
                 <span *ngIf="element.reportDate == element.creationDate">
-                  {{element.reportDate | date:'dd MMM yyy'}} 
+                  {{element.reportDate | date:'dd MMM yyy'}}
                 </span>
                 <span *ngIf="element.reportDate > element.creationDate">
-                  {{element.reportDate | date:'dd MMM yyy'}} 
+                  {{element.reportDate | date:'dd MMM yyy'}}
                 </span>
               </td>
             </ng-container>
@@ -5894,25 +5944,26 @@
             <!-- Symbol Column -->
             <ng-container matColumnDef="Services">
               <th mat-header-cell *matHeaderCellDef> Services </th>
-              <td mat-cell *matCellDef="let element"> 
+              <td mat-cell *matCellDef="let element">
                 <b>
                   <span *ngIf="element.services.length == 1">
-                    {{element.services[0].service}} 
+                    {{element.services[0].service}}
                   </span>
-                  <span class="browser" *ngIf="element.services.length > 1" [matMenuTriggerFor]="reportService" (click)="GetServicesByReport(element)">
-                    {{element.services.length}} 
+                  <span class="browser" *ngIf="element.services.length > 1" [matMenuTriggerFor]="reportService"
+                    (click)="GetServicesByReport(element)">
+                    {{element.services.length}}
                   </span>
-                </b> 
+                </b>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="type">
               <th mat-header-cell *matHeaderCellDef> Program </th>
-              <td mat-cell *matCellDef="let element"> 
+              <td mat-cell *matCellDef="let element">
                 <span *ngIf="element.services.length == 1">
-                  {{element.services[0].tipo}} 
+                  {{element.services[0].tipo}}
                   <!-- <span *ngFor="let itemrow of element.services[0].tipo">
-                    {{element.services[0].tipo}} 
+                    {{element.services[0].tipo}}
                   </span>                   -->
                 </span>
                 <span *ngIf="element.services.length > 1">
@@ -5930,10 +5981,10 @@
             <!-- Symbol Column -->
             <ng-container matColumnDef="Time Used">
               <th mat-header-cell *matHeaderCellDef> Time Used </th>
-              <td mat-cell *matCellDef="let element"> 
+              <td mat-cell *matCellDef="let element">
                 <span>
-                  {{element.totalTime}} 
-                </span> 
+                  {{element.totalTime}}
+                </span>
               </td>
             </ng-container>
             <ng-container matColumnDef="Actions">
@@ -5943,7 +5994,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsReport"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsReport;" [ngClass]="{'urgent': row.reportDate < row.creationDate}"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsReport;"
+              [ngClass]="{'urgent': row.reportDate < row.creationDate}"></tr>
           </table>
 
           <div class="page__section margin-top-mini">
@@ -5967,18 +6019,18 @@
 
         <mat-menu #reportService="matMenu" yPosition="above">
           <div class="bg"></div>
-            <div class="assigned_services">
-              <div class="data browser">
-                <mat-list>
-                  <div mat-subheader>Services</div>
-                  <mat-divider></mat-divider>
-                  <mat-list-item *ngFor="let item of reportServices">
-                    <div mat-line><b>{{item.service}}</b></div>
-                    <div mat-line style="font-size: 10px;">Time remaining: {{item.timeReminder}}</div>
-                  </mat-list-item>
-                </mat-list>
-              </div>
+          <div class="assigned_services">
+            <div class="data browser">
+              <mat-list>
+                <div mat-subheader>Services</div>
+                <mat-divider></mat-divider>
+                <mat-list-item *ngFor="let item of reportServices">
+                  <div mat-line><b>{{item.service}}</b></div>
+                  <div mat-line style="font-size: 10px;">Time remaining: {{item.timeReminder}}</div>
+                </mat-list-item>
+              </mat-list>
             </div>
+          </div>
         </mat-menu>
 
         <div style="display:none;">
@@ -5987,9 +6039,9 @@
               Supplier Partners Record
             </span>
           </div>
-  
+
           <mat-grid-list cols="4" rowHeight="100px">
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central">
                 <mat-label>Supplier Type</mat-label>
@@ -6004,7 +6056,7 @@
                 </mat-select>
               </mat-form-field>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central">
                 <mat-label>Supplier</mat-label>
@@ -6019,9 +6071,9 @@
                 </mat-select>
               </mat-form-field>
             </mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-  
+
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div style="margin-top: -30px; margin-right: -181px;">
                 <button (click)="cleanFilter()" mat-icon-button color="primary" matTooltip="Clear filter">
@@ -6029,9 +6081,9 @@
                 </button>
               </div>
             </mat-grid-tile>
-  
+
           </mat-grid-list>
-  
+
           <div class="page__section margin-top-min">
             <table mat-table [dataSource]="dataSourceR" class="mat-elevation-z8 textarea" #firstTable
               #firstTableSort='matSort' matSort>
@@ -6040,25 +6092,25 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="supplierType">Supplier Type</th>
                 <td mat-cell *matCellDef="let element"> {{element.supplierType}} </td>
               </ng-container>
-  
+
               <!-- Position Column -->
               <ng-container matColumnDef="Supplier Company">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="supplier_company">Supplier Company</th>
                 <td mat-cell *matCellDef="let element"> {{element.supplier_company}} </td>
               </ng-container>
-  
+
               <!-- Weight Column -->
               <ng-container matColumnDef="Supplier">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="supplier"> Supplier </th>
                 <td mat-cell *matCellDef="let element"> {{element.supplier}} </td>
               </ng-container>
-  
+
               <!-- Symbol Column -->
               <ng-container matColumnDef="Assigned Date">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="date"> Assigned </th>
                 <td mat-cell *matCellDef="let element"> {{element.date | date:'dd MMM yyy'}} </td>
               </ng-container>
-  
+
               <!-- Symbol Column -->
               <ng-container matColumnDef="Assigned Services">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="assigned_service"> Assigned Services </th>
@@ -6076,17 +6128,17 @@
                           <th mat-header-cell *matHeaderCellDef>Service</th>
                           <td mat-cell *matCellDef="let element"> {{element.service_name}} </td>
                         </ng-container>
-  
+
                         <ng-container matColumnDef="ServiceID">
                           <th mat-header-cell *matHeaderCellDef>Service ID</th>
                           <td mat-cell *matCellDef="let element"> {{element.service_id}} </td>
                         </ng-container>
-  
+
                         <ng-container matColumnDef="AcceptanceRejectedDate">
                           <th mat-header-cell *matHeaderCellDef>Acceptance-Rejected Date</th>
                           <td mat-cell *matCellDef="let element"> {{element.paymentDate}} </td>
                         </ng-container>
-  
+
                         <ng-container matColumnDef="Accepted">
                           <th mat-header-cell *matHeaderCellDef>Acceptance</th>
                           <td mat-cell *matCellDef="let element">
@@ -6096,7 +6148,7 @@
                             </div>
                           </td>
                         </ng-container>
-  
+
                         <tr mat-header-row *matHeaderRowDef="displayedColumnsS"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumnsS;"></tr>
                       </table>
@@ -6104,13 +6156,13 @@
                   </mat-menu>
                 </td>
               </ng-container>
-  
+
               <!-- Symbol Column -->
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> Status </th>
                 <td mat-cell *matCellDef="let element"> {{element.status}} </td>
               </ng-container>
-  
+
               <tr mat-header-row *matHeaderRowDef="displayedColumnsRecord"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumnsRecord;"></tr>
             </table>
@@ -6120,7 +6172,7 @@
           </div>
         </div>
 
-        
+
       </div>
       <!-- Form: Library -------------------------------------------------------- -->
       <div class="page__section-form display-none" id="tab_lib">
