@@ -64,6 +64,8 @@ export class PreDecisionOrientationComponent implements OnInit {
   nacionality: any;
   ca_document: any;
   ca_grade = [];
+  isHousing: boolean = false;
+  isSchool: boolean = false; 
   cr: string = "Reply";
   loader: LoaderComponent = new LoaderComponent();
   serviceScope = { "documentcountries": "", "scopeDescription":""};
@@ -94,12 +96,14 @@ export class PreDecisionOrientationComponent implements OnInit {
       if (data.success) {
         
         this.area_orientation = data.result;
+        this.isHousing = data.result.housing;
+        this.isSchool = data.result.schooling;
         this.GetBasicServiceData();
         this.setup_permissions_settings();
         this.get_text_status();
         console.log('DATA RelocationServices/GetPredecisionOrientationById : ', this.area_orientation);
         setTimeout(() => {
-          this._services.service_general_get("RelocationServices/GetChildrenPredecisionBySrId?sr=" + this.atributos_generales.sr_id).subscribe(res => {
+          this._services.service_general_get("RelocationServices/GetChildrenPredecisionBySrId?sr=" + this.atributos_generales.sr_id +"&work_order_service_id="+data.result.workOrderServicesId).subscribe(res => {
       
             if (res.success) {
               console.log("GetChildrenBySchoolingPredecision", res);
@@ -141,8 +145,11 @@ export class PreDecisionOrientationComponent implements OnInit {
         header: "Confirmation",
         body: "What is the status of the service?",
         rol: this.user.role.id,
-        category: 12, //categori_id pre desicion
-        type: "area_prientation"
+        category: 17, //categori_id pre desicion
+        type: "area_prientation",
+        type_id: 17,
+        srId: this.data.sr,
+        wos_id: this.area_orientation.workOrderServicesId,
       },
       width: "350px"
     });
@@ -326,6 +333,7 @@ export class PreDecisionOrientationComponent implements OnInit {
      //debugger;
       if (data_housing.success) {
         this.area_orientation.housing = data_housing.message;
+       
         console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
         this.dataSourceHousing = data_housing.message; 
       }
@@ -397,6 +405,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       if (data_schooling_list.success) {
         console.log("data_schooling_list", data_schooling_list);
         this.area_orientation.schooling = data_schooling_list.message; 
+     
         this.dataSourceSchool = data_schooling_list.message;
       }
     }));
@@ -879,44 +888,137 @@ export class PreDecisionOrientationComponent implements OnInit {
   }
   //**********************************************************************************//
   //ELIMINAR HIJO//
-  deleteChild(pos) {
-    this.area_orientation.schoolings[pos].active = false;
+  deleteChild(pos, data) {
+    console.log(pos);
+    // console.log(this.data.data.service[0].id);
+    console.log(data);
+    debugger;
+    this._services.service_general_post_with_url("RelocationServices/DeleteSchoolingPredecision", data.id).subscribe((data => {
+      if (data.success) {
+        //    //console.log(data);
+        this.loader.showLoader;
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Child Remove"
+          },
+          width: "350px"
+        });
+      }
+    }));
+    this.ngOnInit();
+    
   }
+
   //AGREGAR HIJO//
   addChild() {
-    const dialogRef = this._dialog.open(DialogAddchildComponent, {
-      width: "350px",
-      data: this.area_orientation.schoolings
+    this._services.service_general_get('RelocationServices/GetServiceChildToAddByWos_Id?wos_id='+ this.area_orientation.workOrderServicesId + '&sr_id='+ this.atributos_generales.sr_id)
+    .subscribe(res => {
+      console.log(res);
+      this.loader.showLoader
+      if (res.success) {
+        if(res.child != undefined){
+          if(res.child.length > 0){
+            let _schoolingInformations: any[] = [];
+            res.child.forEach(element => {
+              console.log("Element", element);
+              _schoolingInformations.push({
+                id: element.id,
+                active: true,
+                relationshipId: element.dependentId,
+                age: element.age,
+                birth: element.birth,
+                photo: element.photo.toString().includes("http") ? element.photo : element.photo != "" ? this._services.url_images + element.photo : "",
+                comments: element.aditionalComments,
+                name: element.name,
+                nationalityName: element.nationality,
+                nationality: element.nationalityId,
+                currentGrade: element.currentGrade,
+                grade: element.grade,
+                sex: element.sex,
+                schoolsLists: element.schoolsLists,
+                languageDependentInformations: element.languageDependentInformations 
+              });
+            });
+            const dialogRef = this._dialog.open(DialogAddchildComponent, {
+              width: "350px",
+              //  data: {"schooling": this.school_search.schoolingInformations
+              //        ,"children": this.child}
+              data: _schoolingInformations
+      
+            });
+      
+            dialogRef.afterClosed().subscribe(result => {
+              
+              debugger;
+              //this.area_orientation.schooling = result;
+              //console.log(this.area_orientation.schoolingInformations);
+              let _schoolingInformations: any[] = [];
+
+              console.log(this.area_orientation.workOrderServiceId);
+              result.forEach(element => {
+                if(element.active){
+                  _schoolingInformations.push({
+                    id: 0,
+                    schoolingSearchId: this.data.data.service[0].id,
+                    relationshipId: element.dependentId,
+                    avatar: element.photo,
+                    name: element.name,
+                    sex: element.sex, 
+                    birth: element.birth,
+                    age: element.age,
+                    nationality: element.nationality, 
+                    currentGrade: element.currentGrade,
+                    comments: element.comments,
+                    active: true,
+                    workOrderServiceId: this.area_orientation.workOrderServicesId,
+                    id_dependent: element.id,
+                  });
+                }  
+              });
+                
+              console.log(JSON.stringify(_schoolingInformations));
+    
+                  this._services.service_general_post_with_url("RelocationServices/AddServiceChild", _schoolingInformations).subscribe((data => {
+                    if (data.success) {
+                      //    //console.log(data);
+                      this.loader.hideLoader;
+                      const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                        data: {
+                          header: "Success",
+                          body: "Update Data"
+                        },
+                        width: "350px"
+                      });
+                    }
+                  }))
+                  this.ngOnInit();
+              });
+            }
+            else
+            {
+              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                data: {
+                  header: "Attention",
+                  body: "There are no more children to add to the service"
+                },
+                width: "350px"
+              });
+            }
+          }
+          else{
+            const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Attention",
+                body: "There are no more children to add to the service"
+              },
+              width: "350px"
+            })
+          }
+        }
+        
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.success) {
-        this.area_orientation.schoolings = result;
-        ////console.log("NUEVOS HIJOS: ", this.area_orientation);
-      }
-    });
-    // if (this.area_orientation.schoolings.length > 0) { esto se cambio por que no tiene sentido
-    //   if (this.area_orientation.schoolings.length != 10000) {
-    //   const dialogRef = this._dialog.open(DialogAddchildComponent, {
-    //     width: "350px",
-    //     data: this.area_orientation.schoolings
-    //   });
-
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     if (result.success) {
-    //       this.area_orientation.schoolings = result;
-    //       ////console.log("NUEVOS HIJOS: ", this.area_orientation);
-    //     }
-    //   });
-    // } else {
-    //   const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-    //     data: {
-    //       header: "Attention",
-    //       body: "No data child"
-    //     },
-    //     width: "350px"
-    //   });
-    // }
   }
   //**********************************************************************************//
   //DOCUMENT TYPE//
@@ -968,6 +1070,8 @@ export class PreDecisionOrientationComponent implements OnInit {
     this.area_orientation.createdDate = new Date();
     this.area_orientation.authoDateExtension = new Date();
     this.area_orientation.authoAcceptanceDateExtension = new Date();
+    this.area_orientation.housing = this.isHousing;
+    this.area_orientation.schooling = this.isSchool;
     ////console.log(this.area_orientation);
 
     let data_comment_aux = this.area_orientation.commentPredecisionOrientations;
@@ -990,6 +1094,8 @@ export class PreDecisionOrientationComponent implements OnInit {
       this.area_orientation.serviceCompletionDate = new Date().toISOString();
     }
     
+    this.area_orientation.schoolings = [];
+    debugger;
     this._services.service_general_put("RelocationServices/PutPreDecisionOrientation", this.area_orientation).subscribe(data => {
       if (data.success) {
         ////console.log(data);

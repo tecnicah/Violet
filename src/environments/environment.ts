@@ -8,7 +8,7 @@ export const environment = {
   production: false,
 
   //  URL_EXPORT: 'http://localhost:4200/',// mi local 
-  //API_URL: 'https://localhost:44382/api/', // mi local 
+   //API_URL: 'https://localhost:44382/api/', // mi local 
   //API_URL_na: 'https://localhost:44382/', // mi local
   //images_path: "https://localhost:44382/", 
 

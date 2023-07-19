@@ -225,7 +225,7 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name">Houses</p>
-          <mat-slide-toggle [checked]="area_orientation?.housing?.length > 0 ? true : false" (change)="displayPanelHosudig($event)">
+          <mat-slide-toggle [(ngModel)]="isHousing" (change)="displayPanelHosudig($event)">
           </mat-slide-toggle>
         </div>
       </mat-grid-tile>
@@ -233,7 +233,7 @@
     <!---------------------------------------------------------------------->
     <!---------------------------------------------------------------------->
     <!--SECION PARA OCULTAR SECCION HOUSING-->
-    <div *ngIf="area_orientation?.housing?.length > 0  > 0">
+    <div *ngIf="isHousing">
       <!----------------------- INICIO BOTONERA ACCIONES HL------------------------------------>
 
       <mat-grid-list cols="5" rowHeight="70px">
@@ -343,14 +343,14 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name" style="width: 100%;">Schools</p>
-          <mat-slide-toggle [checked]="area_orientation?.schooling?.length > 0 ? true : false"
+          <mat-slide-toggle [(ngModel)]="isSchool"
             (change)="displayPanelSchooling($event)"></mat-slide-toggle>
         </div>
       </mat-grid-tile>
 
     </mat-grid-list>
     <!---------------------------------------------------------------------------------------------------->
-    <div>
+    <div *ngIf="isSchool">
       <mat-grid-list cols="4" rowHeight="70px">
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -384,7 +384,7 @@
       </mat-grid-list>
       <!--TABLE SCHOOLS LIST-->
       <table mat-table matTableExporter #exportersc="matTableExporter" [dataSource]="dataSourceSchool"
-        class="mat-elevation-z8 textarea" *ngIf="area_orientation?.schooling?.length > 0">
+        class="mat-elevation-z8 textarea">
 
         <!-- Position Column -->
         <ng-container matColumnDef="Send">
@@ -518,91 +518,7 @@
               </div>
             </mat-list-item>
           </mat-list>
-          <mat-card>
-    
-            <!--START CARD CHILD 1 CHOSEN-->
-            <mat-grid-list cols="4" rowHeight="70px">
-              <mat-grid-tile [colspan]="4" [rowspan]="1">
-                <div class="wid">
-                  <p class="page__section-name" style="width: 100%; font-size: 14px;">
-                    Chosen School/Child {{i + 1}}  <!--Child {{data.numberChild}} / Chosen School -->
-                  </p>
-                </div>
-              </mat-grid-tile>
-            </mat-grid-list>
-    
-            <div>
-              <div class="page__section-button page__section-button--big">
-                <button class="button-icon button-icon--more" (click)="addPayment(data.id)">
-                  Add Payment
-                </button>
-              </div>
-              <br>
-              <!-- <table mat-table [dataSource]="dataSourcePayment[i]?.paymentSchoolingInformations" class="mat-elevation-z8 textarea">
-    
-                <ng-container matColumnDef="Payment">
-                  <th mat-header-cell *matHeaderCellDef>School Expenses Payment</th>
-                  <td mat-cell *matCellDef="let element; let i = index;" class="browser" (click)="editPayment(element)"> 
-                   {{element.schoolExpensesPaymentNavigation?.schoolExpensesPayment}}  
-                  </td>
-                 
-                </ng-container>
-            
-                <ng-container matColumnDef="Responsible">
-                  <th mat-header-cell *matHeaderCellDef>Responsible</th>
-                  <td mat-cell *matCellDef="let element"> {{element.responsibleNavigation?.responsable}} </td>
-                </ng-container>
-            
-            
-                <ng-container matColumnDef="Amount">
-                  <th mat-header-cell *matHeaderCellDef>Amount</th>
-                  <td mat-cell *matCellDef="let element"> 
-                    {{element.amount}} 
-                  </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="Currency">
-                  <th mat-header-cell *matHeaderCellDef> Currency </th>
-                  <td mat-cell *matCellDef="let element"> {{element.currencyNavigation?.currency}} </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="Recurrence">
-                  <th mat-header-cell *matHeaderCellDef> Recurrence </th>
-                  <td mat-cell *matCellDef="let element"> {{element.recurrenceNavigation?.name}} </td>
-                </ng-container>
-      
-                <ng-container matColumnDef="Detail">
-                  <th mat-header-cell *matHeaderCellDef> Detail </th>
-                  <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="action">
-                  <th mat-header-cell *matHeaderCellDef> </th>
-                  <td mat-cell *matCellDef="let element">
-                    <div>
-                      <img src="assets/icons/delete.png" style="width: 20px;" (click)="deletePayment(element)">
-                    </div>
-                  </td>
-                </ng-container>          
-            
-                <ng-container matColumnDef="Schooling Status">
-                  <th mat-header-cell *matHeaderCellDef> Schooling Status </th>
-                  <td mat-cell *matCellDef="let element">
-                    <span *ngIf="element.status == 'School Selected'" style="font-weight: bolder;">
-                      {{element.status}}
-                    </span>
-                    <span *ngIf="element.status != 'School Selected'">
-                      {{element.status}}
-                    </span>
-                  </td>
-                </ng-container>
-            
-                <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;"></tr>
-              </table> -->
-            </div>
-    
-          </mat-card>
+
           <!--CLOSE CARD-->
           <!---------------------------------------------------------------------------------------------------->
     

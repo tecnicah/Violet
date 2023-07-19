@@ -49,7 +49,7 @@ export class SchoolSearchComponent implements OnInit {
   ca_status_school: any;
   //TABLE SCHOOL INFORMATION//
   dataSourceSchool: any[] = [];
-  displayedColumnsSchool: string[] = ['check', 'School No.', 'School Name', 'Dependent', 'Schooling Status', 'delete'];
+  displayedColumnsSchool: string[] = ['Send', 'School No.', 'School Name', 'Dependent', 'Schooling Status', 'Actions'];
   displayedColumnsSchoolExport: string[] = ['schoolNo', 'schoolName', 'visitDate', 'grade', 'admision', 'child', 'address', 'status'];
   //TABLE REQUEST PAYMENT//
   dataSourcePayment: any[] = [];
@@ -192,9 +192,12 @@ export class SchoolSearchComponent implements OnInit {
         header: "Confirmation",
         body: "What is the status of the service?",
         rol: this.user.role.id,
-        category: 15,
+        category: 20,
         type: "school_search",
-        data: this.ca_estatus
+        data: this.ca_estatus,
+        type_id: 20,
+        srId: this.data.sr,
+        wos_id: this.school_search.workOrderServicesId
       },
       width: "350px"
     });
@@ -357,7 +360,7 @@ export class SchoolSearchComponent implements OnInit {
 
         this.school_search = data.result;
 
-        //console.log("data.result", data.result);
+        console.log("data.result", data.result);
 
         this.datos.workOrderServicesId = this.school_search.workOrderServicesId;
         this.datos.partner_id =  this.data.data.partnerId;
@@ -386,7 +389,8 @@ export class SchoolSearchComponent implements OnInit {
                   grade: element.grade,
                   sex: element.sex,
                   schoolsLists: element.schoolsLists,
-                  languageDependentInformations: element.languageDependentInformations 
+                  languageDependentInformations: element.languageDependentInformations, 
+                  schoolSelected: element.schoolSelected
                 });
               });
           }
@@ -891,38 +895,19 @@ export class SchoolSearchComponent implements OnInit {
   }
   
   //EDITAR ESCUELA//
-  editSchool(data_: any, tipo?: any) {
-    console.log(this.school_search);
-    
-    if (tipo == 1) {
-      data_ = {
-        id: data_,
-        schooling_search_id: this.school_search.id,
-        sr: Number(this.data.sr),
-        workOrderId: this.data.data.workOrderId, //this.area_orientation.workOrderServicesId,
-        service: this.data.data.serviceRecordId,
-        serviceTypeId: this.data.data.serviceTypeId,
-        wo_: this.wo_,
-        sr_: this.sr_,
-        schoolingInformations: this.school_search.schoolingInformations
-      }
-    } else {
-      data_.sr = Number(this.data.sr);
-      data_.schooling_search_id = this.school_search.id,
-      data_.wo_ = this.wo_;
-      data_.sr_ = this.sr_;
-      data_.workOrderServicesId = this.school_search.workOrderServicesId;
-      data_.schoolingInformations= this.school_search.schoolingInformations
-    }
-    // //console.log("Editar escuela: ", data_);
-
+  editSchool(data_) {
+    console.log("Editar escuela: ", data_);
+    // data_.sr = this.data.sr;
+    data_.wo_= this.wo_;
+    data_.sr_= this.sr_;
+    data_.sr= this.data.sr;
+    data_.workOrderServicesId= this.school_search.workOrderServicesId;
     const dialogRef = this._dialog.open(DialogSchoolDetailsComponent, {
       data: data_,
       width: "95%"
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getDataSchool();
-      this.load_service();
     })
   }
 

@@ -314,70 +314,47 @@
 
   <table mat-table [dataSource]="dataSourceSchool" class="mat-elevation-z8 textarea">
 
-    <ng-container matColumnDef="check">
+    <ng-container matColumnDef="Send">
       <th mat-header-cell *matHeaderCellDef>Send</th>
-      <td mat-cell *matCellDef="let element; let i = index;"> 
-        <mat-checkbox [(ngModel)]="element.sendSchool" (change)="setSchool($event.checked, element, i)" >
-        </mat-checkbox>  
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox [(ngModel)]="element.sendSchool" (change)="setSchool($event.checked, element, i)" [disabled]="element.sendSchool" >
+        </mat-checkbox>    
       </td>
-     
     </ng-container>
 
-    <ng-container matColumnDef="School No.">
+     <!-- Position Column -->
+     <ng-container matColumnDef="School No.">
       <th mat-header-cell *matHeaderCellDef>School No</th>
       <td mat-cell *matCellDef="let element"> {{element.schoolNo}} </td>
     </ng-container>
 
-
+    <!-- Position Column -->
     <ng-container matColumnDef="School Name">
       <th mat-header-cell *matHeaderCellDef>School Name</th>
-      <td mat-cell *matCellDef="let element" class="browser" (click)="editSchool(element)"> 
-        {{element.schoolName}} 
-      </td>
+      <td mat-cell *matCellDef="let element">{{element.schoolName}}</td>
     </ng-container>
 
+    <!-- Weight Column -->
     <ng-container matColumnDef="Dependent">
       <th mat-header-cell *matHeaderCellDef> Dependent </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
-
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef> </th>
-      <td mat-cell *matCellDef="let element">
-        <div>
-          <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteSchoollist(element)">
-        </div>
-        <!-- <mat-icon *ngIf="element.status == 'Pending'" (click)="deleteSchoollist(element.id)">delete_forever</mat-icon>   -->
-      </td>
-    </ng-container>
-
-
-    <!-- <ng-container matColumnDef="Currency">
-      <th mat-header-cell *matHeaderCellDef> Currency </th>
-      <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
-    </ng-container> -->
-
-
+    <!-- Symbol Column -->
     <ng-container matColumnDef="Schooling Status">
       <th mat-header-cell *matHeaderCellDef> Schooling Status </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.status == 'School Selected'" style="font-weight: bolder;">
-          {{element.status}}
-        </span>
-        <span *ngIf="element.status != 'School Selected'">
-          {{element.status}}
-        </span>
-      </td>
+      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
     </ng-container>
 
-
-    <!-- <ng-container matColumnDef="Actions">
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Actions">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element">
         <img src="assets/icons/pencil.png" style="width: 20px;" (click)="editSchool(element)">
+          &nbsp;&nbsp;
+        <img src="assets/icons/delete.png" style="width: 20px;" (click)="deleteSchoollist(element)">            
       </td>
-    </ng-container> -->
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumnsSchool"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsSchool;"></tr>
@@ -387,7 +364,7 @@
 
   <div *ngFor="let data of school_search.schoolingInformations; let i = index">
 
-    <div class="mat-elevation-z8 textarea">
+    <div class="mat-elevation-z8 textarea" style="margin-bottom: 15px;">
       <!----------------------------------------------------------------------------------------->
       <mat-grid-list cols="4" rowHeight="50px">
 
@@ -452,7 +429,10 @@
                 </p>
               </div>
               <div fxFlex="30">
-                
+                <p class="subtitle" style="font-size:10px;">School selected</p>
+                <p class="title" style="font-size:12px;">
+                  {{data.schoolSelected}}
+                </p>
               </div>
               <div fxFlex="30">
                
@@ -467,7 +447,8 @@
           </div>
         </mat-list-item>
       </mat-list>
-      <mat-card>
+      <!--  -->
+      <mat-card *ngIf="data.schoolSelected != 'School not selected'">
 
         <!--START CARD CHILD 1 CHOSEN-->
         <mat-grid-list cols="4" rowHeight="70px">
@@ -622,6 +603,7 @@
         </mat-grid-list> -->
 
       </mat-card>
+      <br>
       <!--CLOSE CARD-->
       <!---------------------------------------------------------------------------------------------------->
 
