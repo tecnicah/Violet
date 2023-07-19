@@ -67,7 +67,9 @@
 .mat-list-base .mat-list-item {
   font-size: 12px;
 }
-
+mat-menu-panel {
+height: 100%;
+}
 .mat-list-base .mat-list-item .mat-line:nth-child(n+2) {
   font-size: 12px;
 }
