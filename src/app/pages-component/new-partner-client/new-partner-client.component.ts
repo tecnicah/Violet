@@ -1065,14 +1065,13 @@ export class NewPartnerClientComponent implements OnInit {
             this.loader.showLoader();
             this.lead_client.services = [];
             if(result.servicelocationcountries){
-              
+              for (const iterator of result.servicelocationcountries) {
+                iterator.idCountry = iterator.idCountry[0];
+                result.serviceLocationCountries.push(iterator);
+              }
+              delete result.servicelocationcountries;
             }
-            for (const iterator of result.servicelocationcountries) {
-              iterator.idCountry = iterator.idCountry[0];
-              result.serviceLocationCountries.push(iterator);
-            }
-            delete result.servicelocationcountries;
-            
+
             console.log("DATA A ACTUALIZAR: ", result);
             // result.service = [];
             console.log(JSON.stringify(result));
