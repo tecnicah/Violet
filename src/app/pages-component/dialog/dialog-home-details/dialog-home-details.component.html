@@ -11,7 +11,7 @@
 <mat-dialog-content class="mat-typography">
   <!---------------------------------------------------INSERCCION---------------------------------------------------------------------->
   <!------------------------------------- ---------------------------------------------------------------------------------------------->
-  <div >
+  <div>
     <div class="contenedor">
       <mat-grid-list cols="4" rowHeight="70px">
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -19,12 +19,13 @@
             <p class="subtitle" style="font-size: 12px; float: left;">
               Sample
             </p>
-              <mat-checkbox style="float: left;" class="example-margin" [(ngModel)]='data.sample'
+            <mat-checkbox style="float: left;" class="example-margin" [(ngModel)]='data.sample'
               [checked]="data.sample"></mat-checkbox>
           </div>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central" *ngIf="(data.housingStatus == 4 || data.housingStatus == 5 || data.housingStatus == 7) && mostrar_campo">
+          <div class="input_central"
+            *ngIf="(data.housingStatus == 4 || data.housingStatus == 5 || data.housingStatus == 7) && mostrar_campo">
             <mat-form-field appearance="fill">
               <mat-label>
                 <span *ngIf="data.housingStatus != 4">Visited/Virtual Appointment</span>
@@ -37,15 +38,11 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <div class="input_central" *ngIf="(data.housingStatus == 4 || data.housingStatus == 5 || data.housingStatus == 7) && mostrar_campo">
+          <div class="input_central"
+            *ngIf="(data.housingStatus == 4 || data.housingStatus == 5 || data.housingStatus == 7) && mostrar_campo">
             <mat-form-field appearance="fill">
               <mat-label>Visit Time</mat-label>
-              <input
-                matInput
-                required
-                placeholder="Start Visit Time"
-                [(ngModel)]="data.visitTime"
-                type="time" />
+              <input matInput required placeholder="Start Visit Time" [(ngModel)]="data.visitTime" type="time" />
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -54,8 +51,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Status</mat-label>
               <mat-select [(ngModel)]="data.housingStatus" (selectionChange)="validate_status();">
-                <mat-option *ngFor="let item of caStatus" [value]="item.id" > 
-                   {{item.status}}
+                <mat-option *ngFor="let item of caStatus" [value]="item.id">
+                  {{item.status}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -84,8 +81,8 @@
                 <mat-option *ngFor="let item of Supplier" [value]="item.id"> {{item.contactName}}</mat-option>
               </mat-select>
             </mat-form-field>
-          </div> 
-          
+          </div>
+
         </mat-grid-tile>
         <mat-menu #supplier="matMenu" xPosition="before">
           <div class="bg"></div>
@@ -122,22 +119,23 @@
               <p>{{info.supplierSince | date:'dd/MMM/yyy' }}</p>
             </div>
             <div class="pie wid" style="text-align: end;">
-              <span style="width: 100%; color: blue; text-decoration: underline;" (click)="goto_profile()">View Profile</span>
-             
+              <span style="width: 100%; color: blue; text-decoration: underline;" (click)="goto_profile()">View
+                Profile</span>
+
             </div>
           </div>
         </mat-menu>
 
-         <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-        </mat-grid-tile> 
+        </mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>Property Type</mat-label>
-              <mat-select  [(ngModel)]="data.propertyType" (selectionChange)="validate_type()">
+              <mat-select [(ngModel)]="data.propertyType" (selectionChange)="validate_type()">
                 <mat-option *ngFor="let item of caPropertyTypeHousing" [value]="item.id">{{item.propertyType}}
                 </mat-option>
               </mat-select>
@@ -159,7 +157,8 @@
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>Neighborhood</mat-label>
-              <input matInput required placeholder="Neighborhood" #message maxlength="500" [(ngModel)]="data.neighborhood">
+              <input matInput required placeholder="Neighborhood" #message maxlength="500"
+                [(ngModel)]="data.neighborhood">
               <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
             </mat-form-field>
           </div>
@@ -169,7 +168,7 @@
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>ZIP Code</mat-label>
-              <input matInput  placeholder="ZIP Code" min="0" type="number" [(ngModel)]="data.zip">
+              <input matInput placeholder="ZIP Code" min="0" type="number" [(ngModel)]="data.zip">
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -178,7 +177,7 @@
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>URL</mat-label>
-              <input matInput  placeholder="Web Site" #message_url maxlength="250" [(ngModel)]="data.webSite">
+              <input matInput placeholder="Web Site" #message_url maxlength="250" [(ngModel)]="data.webSite">
               <mat-hint align="end">{{message_url.value.length}} / 250</mat-hint>
             </mat-form-field>
           </div>
@@ -188,7 +187,7 @@
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>Bedrooms</mat-label>
-              <mat-select  [(ngModel)]="data.bedrooms"  (selectionChange)="validate_values('rooms')">
+              <mat-select [(ngModel)]="data.bedrooms" (selectionChange)="validate_values('rooms')">
                 <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -199,7 +198,7 @@
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>Bathrooms</mat-label>
-              <mat-select  [(ngModel)]="data.bathrooms">
+              <mat-select [(ngModel)]="data.bathrooms">
                 <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -210,7 +209,7 @@
           <div class="input_central">
             <mat-form-field appearance="fill">
               <mat-label>Parking Spaces</mat-label>
-              <mat-select  [(ngModel)]="data.parkingSpaces">
+              <mat-select [(ngModel)]="data.parkingSpaces">
                 <mat-option *ngFor="let item of caNumbers" [value]="item"> {{item}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -221,8 +220,7 @@
             <mat-form-field appearance="fill">
               <mat-label>Size</mat-label>
               <!-- <span matPrefix>M<sup>2</sup> &nbsp;</span> -->
-              <input matInput placeholder="Square meter" type="number" 
-               [(ngModel)]="data.size">
+              <input matInput placeholder="Square meter" type="number" [(ngModel)]="data.size">
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -243,8 +241,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Price</mat-label>
               <span matPrefix>$ &nbsp;</span>
-              <input matInput placeholder="Price" type="number" 
-               [(ngModel)]="data.price" (blur)="validate_values('price')">
+              <input matInput placeholder="Price" type="number" [(ngModel)]="data.price"
+                (blur)="validate_values('price')">
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -259,17 +257,6 @@
             </mat-form-field>
           </div>
         </mat-grid-tile>
-
-        <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-          FUE ENVIADOOOOOOOOOOO: {{data.wassended}}
-          <div class="input_central textarea" *ngIf="data.wassended">
-            <p class="subtitle" style="font-size: 12px;">
-              Property Was Sent
-            </p>
-              <mat-checkbox  class="example-margin" [(ngModel)]='data.wassended'
-              [checked]="data.wassended" disabled></mat-checkbox>
-          </div>
-        </mat-grid-tile> -->
 
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div>
@@ -299,53 +286,35 @@
       </mat-grid-list>
     </div>
 
-    <!-- <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-
-        <div *ngIf= "(data.housingStatus == 7) && (data.id != 0) && (this._cat_service_id != 17)" class="page__section-buttong" style="display: flex; justify-content: flex-end; flex: 0px !important;">
-
-           <button class="button-icon" style="background-color: #3A2337; color: white; width: 200px;" (click)="inspection();">
-            Inspections & Repairs
-          </button> 
-           <span>&nbsp; &nbsp;</span>
-          <button class="button-icon" style="background-color: #4435a6; color: white; width: 200px;" (click)="lease();">
-            Lease Summary
-          </button>
-
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list> -->
-
     <mat-grid-list cols="1">
       <div class="page__section margin-top-min">
-        <div class="subtitledos">
+        <div class="subtitledos" style="text-align: left;">
           Property Documents
         </div>
         <div class="page__section documents__ascard" *ngFor="let item of temporalDocument">
           <div class="page__section-input page__section-input--6_4 documents__ascard--task">
             {{item.fileName}}
-          </div>  
+          </div>
           <div class="page__section-input page__section-input--6_2 documents__ascard--task"
             style="text-align: end; padding-right: 40px;">
             Created: {{item.createdDate | date:'dd MMM yyy'}}
           </div>
           <div class="page__section-input page__section-input--6_1 documents__ascard--task">
             <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;"   (click)="DeleteOnline(item.id)">
+              style="background: transparent!important;" (click)="DeleteOnline(item.id)">
 
             <img src="../../../../assets/icons/eye-view.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important; margin-right: 25px;" (click)="showDocumentDialogDetails(item.filePath)">
+              style="background: transparent!important; margin-right: 25px;"
+              (click)="showDocumentDialogDetails(item.filePath)">
           </div>
-          
         </div>
-
       </div>
     </mat-grid-list>
     <mat-grid-list cols="4" rowHeight="70px">
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty textarea">
-          <div class="page__section-button page__section-button--big" style="left: 6px;">
+          <div class="page__section-button page__section-button--big">
             <button class="button-icon button-icon--more" (click)="addDocument()">
               Document
             </button>
@@ -361,20 +330,13 @@
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
-    <mat-grid-list cols="10" rowHeight="80px">
-      <mat-grid-tile [colspan]="10" [rowspan]="1">
-        <div>
-          <p class="subtitledos">Comments</p>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
     <div class="comments">
-
-      <mat-grid-list cols="4" rowHeight="160px" *ngFor="let item of data.commentHousings">
+      <div class="subtitledos" style="text-align: left;">
+        Comments
+      </div>
+      <mat-grid-list cols="4" rowHeight="100px" *ngFor="let item of data.commentHousings">
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
-            <p>Comment</p>
             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
               <textarea matInput #message maxlength="500" [disabled]="item.id > 0"
                 (change)="item.comment = $event.target.value">{{item.comment}}</textarea>
@@ -383,12 +345,18 @@
           </div>
         </mat-grid-tile>
       </mat-grid-list>
+      <div class="page__section-button page__section-button--big" style="left: 6px; margin-bottom: 50px;">
+        <button class="button-icon button-icon--more" (click)="addreply(1);">
+          Comment
+        </button>
+      </div>
     </div>
-
+    <br><br><br>
+    <input type="text" id="idfocus" style="width: 0px; height: 0px; ;"/>
   </div>
   <!---------------------------------------------------Edicion------------------------------------------------------------------------->
   <!----------------------------------------------------------------------------------------------------------------------------------->
-  
+
 
 </mat-dialog-content>
 

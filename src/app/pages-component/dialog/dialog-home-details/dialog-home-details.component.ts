@@ -540,7 +540,11 @@ export class DialogHomeDetailsComponent implements OnInit {
     } else {
       this.cr = "Reply";
     }
+
+    document.getElementById("idfocus").focus();
   }
+
+  
   //***********************************************************************************************************//
   addDocument() {
     document.getElementById('docUpload').click();
@@ -791,7 +795,6 @@ export class DialogHomeDetailsComponent implements OnInit {
             notificationType: 32,
             To:1 // 1: Coordiandor de la SL , 2: Coordinadores de ambas SL , 3: Coordiandores y Manager  
            }
-          //this.SendNotificationFRont(notificationfront);
           
         }
       }), (err) => {
@@ -801,15 +804,7 @@ export class DialogHomeDetailsComponent implements OnInit {
     }
   }
 
-  SendNotificationFRont(obj){
-    this._services.service_general_post_with_url('HousingList/SendNotificationsFront', obj).subscribe((r => {
-      if (r.success) {
-        console.log("Notification Sended from Front: ", r)
-      }
-    }), (err) => {
-      console.log("Error Send Notification from Front: ", err);
-    })
-  }
+
 
   //***********************************************************************************************************//
   inspection() {
@@ -965,7 +960,7 @@ export class DialogHomeDetailsComponent implements OnInit {
     this.data.amenitiesHousingLists = this.aux_amenitis;
     //let data_comment_aux = this.data.commentHousings;
     let data_comment_aux = this.temporalComment;
-    this.data.commentHousings = [];
+   // this.data.commentHousings = [];
     for (let i = 0; i < data_comment_aux.length; i++) {
       if (data_comment_aux[i].comment != null && data_comment_aux[i].comment != undefined && data_comment_aux[i].comment.trim() != '') {
         this.data.commentHousings.push(data_comment_aux[i]);
