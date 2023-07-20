@@ -316,6 +316,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
             this.data.serviceCountries.push({
               id: element.id,
               country: element,
+              service: this.data.id,
               countries: result.country,
               scopeDescription: result.scopeDescription,
               createdBy: user.id,
@@ -332,6 +333,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
             this.data.serviceCountries.push({
               id: element.id,
               country: element,
+              service: this.data.id,
               scopeDescription: result.scopeDescription,
               createdBy: user.id,
               createdDate: new Date(),
