@@ -23,7 +23,7 @@
     </mat-grid-tile> -->
     <!-- multicheck cuando se crea un servicio  -->
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.id == 0">
-      <form [formGroup]="searchUserForm" fxFlex fxLayout="column" autocomplete="off" style="margin: 30px">
+      <form [formGroup]="searchUserForm" fxFlex fxLayout="column" autocomplete="off" style="margin-bottom;: 30px">
         <mat-form-field class="input_central">
           <mat-label>Service </mat-label>
           <mat-select required multiple [disabled]="GetService.length == 0" formControlName="userType">

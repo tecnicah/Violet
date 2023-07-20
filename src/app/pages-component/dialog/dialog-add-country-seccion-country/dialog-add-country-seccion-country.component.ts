@@ -77,7 +77,13 @@ export class DialogAddCountrySeccionCountryComponent implements OnInit {
     this.searchUserForm = this.fb.group({
       userType: new FormControl('')
     });
-    this.catalogos();
+    setTimeout(() => {
+      this.catalogos();
+      if(this.data.action == 'tabla'){
+        this.searchUserForm.controls.userType.patchValue([this.data.serviceCountries]);
+      }  
+    }, 300);
+      
   }
 
   onChangedEditor(event: any): void {
@@ -90,7 +96,7 @@ export class DialogAddCountrySeccionCountryComponent implements OnInit {
     this.caCounty = await this._services.getCatalogueFrom('GetCountry');
     console.log(this.caCounty);
     console.log(this.data.serviceCountries);
-    this.data.serviceCountries?.forEach(element => {
+    this.data?.serviceCountries?.forEach(element => {
       this.caCounty?.forEach((service, index) => {
         //console.log("2",element,"3",service);
         if (element.country == service.id) {
@@ -209,19 +215,20 @@ export class DialogAddCountrySeccionCountryComponent implements OnInit {
 
   save() {
     debugger;
-    if (this.data.id == 0) {
-      let country: any = []
-      let country_push: any = []
-      country = this.searchUserForm.controls.userType.value;
-      //console.log(country.len);
-      country.forEach(element => {
-        console.log(element);
-        if (element != 0) {
-          country_push.push(element);
-        }
-      });
-      this.data.country = country_push;
-    }
+    // if (this.data.id == 0) {
+     
+    // }
+    let country: any = []
+    let country_push: any = []
+    country = this.searchUserForm.controls.userType.value;
+    //console.log(country.len);
+    country.forEach(element => {
+      console.log(element);
+      if (element != 0) {
+        country_push.push(element);
+      }
+    });
+    this.data.country = country_push;
     this.data.success = true;
     this.dialogRef.close(this.data);
   }
