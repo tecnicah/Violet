@@ -142,61 +142,71 @@ export class DialogOfficeInformationComponent implements OnInit {
     this.ca_account = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
     // this.ca_city = await this._services.getCatalogueFrom('GetCity');
+    if (this.data.paymentInformationOfficeSuppliers != undefined && this.data.paymentInformationOfficeSuppliers.length > 0) {
+      this.paymentMetod = true;
+    }else {
+      this.data.paymentInformationOfficeSuppliers = [{
+        creditCardPaymentInformationOfficeSuppliers: [],
+        creditCard: false,
+        fiscalInvoice: false,
+        checks: false,
+        cash: false,
+        payToOrderOf: null,
+        comment: null,
+        wireTransferPaymentInformationOfficeSuppliers: [],
+        generalComment: null,
+        createdBy: this.userData.id,
+        createdDate: new Date(),
+        idOfficeInformation: this.data.id,
+        updatedBy: this.userData.id,
+        updatedDate: new Date(),
+        id:0
+      }]
+      this.paymentMetod = false;
+    }
+
+    if (this.data.paymentInformationOfficePremiers != undefined && this.data.paymentInformationOfficePremiers.length > 0) {
+      this.paymentMetodPremier = true;
+    }else {
+      this.data.paymentInformationOfficePremiers = [{
+        creditCardPaymentInformationOfficePremiers: [],
+        creditCard: false,
+        fiscalInvoice: false,
+        checks: false,
+        cash: false,
+        payToOrderOf: null,
+        comment: null,
+        wireTransferPaymentInformationOfficePremiers: [],
+        generalComment: null,
+        createdBy: this.userData.id,
+        createdDate: new Date(),
+        idOfficeInformation: this.data.id,
+        updatedBy: this.userData.id,
+        updatedDate: new Date(),
+        id:0
+      }]
+      this.paymentMetodPremier = false;
+    }
+
     for (const cc of this.ca_creditCard) {
       cc.cheksupliers = false;
       cc.chekpremier = false;
       if (this.data.paymentInformationOfficeSuppliers != undefined && this.data.paymentInformationOfficeSuppliers.length > 0) {
-        this.paymentMetod = true;
+        
         for (const iterator of this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers) {
           if (cc.id == iterator.creditCard) {
             cc.cheksupliers = true;
           }
         }
-      } else {
-        this.data.paymentInformationOfficeSuppliers = [{
-          creditCardPaymentInformationOfficeSuppliers: [],
-          creditCard: false,
-          fiscalInvoice: false,
-          checks: false,
-          cash: false,
-          payToOrderOf: false,
-          comment: null,
-          wireTransferPaymentInformationOfficeSuppliers: [],
-          generalComment: null,
-          createdBy: this.userData.id,
-          createdDate: new Date(),
-          idOfficeInformation: this.data.id,
-          updatedBy: this.userData.id,
-          updatedDate: new Date(),
-          id:0
-        }]
-      }
+      } 
+
       if (this.data.paymentInformationOfficePremiers != undefined && this.data.paymentInformationOfficePremiers.length > 0) {
-        this.paymentMetodPremier = true;
         for (const iterator of this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers) {
           if (cc.id == iterator.creditCard) {
             cc.chekpremier = true;
           }
         }
-      } else {
-        this.data.paymentInformationOfficePremiers = [{
-          creditCardPaymentInformationOfficePremiers: [],
-          creditCard: false,
-          fiscalInvoice: false,
-          checks: false,
-          cash: false,
-          payToOrderOf: false,
-          comment: null,
-          wireTransferPaymentInformationOfficePremiers: [],
-          generalComment: null,
-          createdBy: this.userData.id,
-          createdDate: new Date(),
-          idOfficeInformation: this.data.id,
-          updatedBy: this.userData.id,
-          updatedDate: new Date(),
-          id:0
-        }]
-      }
+      } 
     }
 
     console.log(this.ca_creditCard);
@@ -525,7 +535,7 @@ export class DialogOfficeInformationComponent implements OnInit {
         })
       }
 
-      if (cc.cheksupliers) {
+      if (cc.chekpremier) {
         this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
           creditCard: cc.id,
           paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
