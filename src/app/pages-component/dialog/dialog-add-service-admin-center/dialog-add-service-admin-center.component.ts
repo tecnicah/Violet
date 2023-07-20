@@ -198,11 +198,11 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
       if(r.success){
         debugger;
         this.caCounty= r.result;
-        for (let i = 0; i < this.data.serviceCountries[0].countries?.length; i++) {
-          const element = this.data.serviceCountries[0].countries[i];
+        for (let i = 0; i < this.data.serviceCountries?.length; i++) {
+          const element = this.data.serviceCountries[i];
           for (let j = 0; j < this.caCounty.length; j++) {
             const elementc = this.caCounty[j];
-            if(element ==  elementc.id){
+            if(element.country ==  elementc.id){
               // this.data.serviceCountries[i].namec = elementc.name;
               valorTabla.push({
                 namec: elementc.name,
