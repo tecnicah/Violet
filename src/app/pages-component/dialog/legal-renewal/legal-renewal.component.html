@@ -111,21 +111,6 @@
         </div>
       </mat-grid-tile>
 
-
-      <!--<mat-grid-tile [colspan]="1" [rowspan]="1">
-         <div class="page__section-data font-size-12">
-          <span class="text-mini gray_05">Country</span><br />
-          {{data.data.country}}
-        </div> 
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12">
-          <span class="text-mini gray_05">City</span><br />
-          {{data.data.location}}
-        </div>
-      </mat-grid-tile>-->
-
     </mat-grid-list>
 
     <mat-grid-list cols="4" rowHeight="70px">
@@ -231,13 +216,13 @@
               </div>
           </mat-grid-tile>
   
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
               <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
                   <div>
                       <span class="text-mini gray_05">URL</span><br />
-                      <a class="browser" style="font-size: 11px" *ngIf="permanentHome.webSite != null"
+                      <a class="browser" style="font-size: 15px; text-decoration: underline; font-weight: bolder;" *ngIf="permanentHome.webSite != null"
                           [attr.href]="permanentHome.webSite" target="_blank">
-                          {{permanentHome.webSite.substring(0, 20)}}...
+                          {{permanentHome.webSite.substring(0, 55)}}
                       </a>
                   </div>
               </div>

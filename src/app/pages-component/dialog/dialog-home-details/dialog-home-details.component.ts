@@ -332,7 +332,7 @@ export class DialogHomeDetailsComponent implements OnInit {
       });
     }
 
-    if (this._cat_service_id == 16) { // departure
+    if (this._cat_service_id == 16  || this._cat_service_id == 22) { // departure
       this.caStatus = this.caStatus.filter(x => { return x.id == 7; }); // solo permanent home 
       this.data.housingStatus = 7;
       //if (this.data.id == 0) {
