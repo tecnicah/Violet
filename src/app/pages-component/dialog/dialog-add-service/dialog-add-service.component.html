@@ -104,7 +104,7 @@
   </table>
 
   <div class="textarea margin_table" style="text-align: end;">
-    <button [disabled]="searchUserForm.controls.userType.value == ''" (click)="addCountry(null, 0)" class="btnr btnr--add" matRipple
+    <button [disabled]="searchUserForm.controls.userType.value == ''" (click)="addCountry(null, 'new')" class="btnr btnr--add" matRipple
       matRippleColor="rgba(157, 50, 146, 0.5)" *ngIf="(permission_edit || permission_write)">
       Add Country
     </button>

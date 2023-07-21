@@ -11,7 +11,7 @@
 
   <mat-grid-list cols="4" rowHeight="60px">
      <!-- add countru multicheck en caso de que la data reciba action = new -->
-     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action == 'new' && data.id == 0">
+     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="(data.action == 'new' && data.id == 0) || (data.action != 'new' && data.id == 0)">
       <mat-form-field appearance="fill" class="textarea input_central">
         <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
         <mat-select [(ngModel)]="data.idCountry" (focus)="active_country = false" required matNativeControl multiple (ngModelChange)="getStandarDocuments()">
@@ -19,6 +19,7 @@
             <mat-label>Country</mat-label>
             <input matInput placeholder="Country" [(ngModel)]="filerCountry.name">
           </mat-form-field>
+          <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
           <mat-option *ngFor="let item of caCounty | filterBy:filerCountry" [value]="item.id">
             {{item.name}}
           </mat-option>
@@ -29,7 +30,7 @@
       </mat-form-field>
     </mat-grid-tile>
     <!-- country se mostrara sin multicheck cuando el action sea 0 ya que es un update -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new' && data.id == 0">
+    <!--mat-grid-tile-- [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new' && data.id == 0">
       <mat-form-field appearance="fill" class="textarea input_central">
         <mat-label>Country</mat-label>
         <mat-select [(ngModel)]="data.idCountry" matNativeControl>
@@ -43,7 +44,7 @@
           <mat-option disabled *ngIf="(caCounty | filterBy: filerCountry).length === 0">No matching elements</mat-option>
         </mat-select>
       </mat-form-field>
-    </mat-grid-tile>
+    </!--mat-grid-tile-->
 
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.action != 'new' && data.id != 0">
       <div class="page__section-data font-size-12 comments input_central">
@@ -76,7 +77,7 @@
   </mat-grid-list>
   <mat-grid-list cols="4" rowHeight="300px" *ngIf="(data.standarScopeDocuments === 0)">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="data.scopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
+      <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="data.scopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </mat-grid-tile>
   </mat-grid-list>
 

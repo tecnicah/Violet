@@ -1,0 +1,26 @@
+.loaderinput mat-form-field, .loaderinput div{
+    display: none;
+}
+
+.loaderinput{
+    overflow: hidden;
+    background: #D0D0D0;
+}
+
+.loaderinput::before{
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    animation: loading 1s infinite;
+    background: linear-gradient(to right, transparent,#D9D9D9,transparent);
+}
+
+@keyframes loading {
+    0%{
+        transform: translateX(-100%);
+    }
+    100%{
+        transform: translateX(100%);
+    }
+}

@@ -5,7 +5,7 @@ import { ServiceGeneralService } from 'app/service/service-general/service-gener
 import { DialogAddCuntryComponent } from '../dialog-add-cuntry/dialog-add-cuntry.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DialogApplyAllScopeComponent } from '../dialog-apply-all-scope/dialog-apply-all-scope.component';
 import { MatOption } from '@angular/material/core';
 
@@ -20,15 +20,15 @@ export class DialogAddServiceComponent implements OnInit {
 
   @ViewChild('allSelected') private allSelected: MatOption;
   searchUserForm: FormGroup;
-  
+
   constructor(public dialogRef: MatDialogRef<DialogAddServiceComponent>,
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialog: MatDialog, private fb: FormBuilder) { }
-    countries:any;
-    GetService: any[] = [];
-    cuatro: string[] = ['uno', 'dos', 'tres', 'cuatro'];
-    serviceLocationCountries: any;
+  countries: any;
+  GetService: any[] = [];
+  cuatro: string[] = ['uno', 'dos', 'tres', 'cuatro'];
+  serviceLocationCountries: any;
   caCountry: any[] = [];
   config: AngularEditorConfig = {
     editable: true,
@@ -41,7 +41,7 @@ export class DialogAddServiceComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       ['bold']
-      ],
+    ],
     customClasses: [
       {
         name: "quote",
@@ -71,14 +71,26 @@ export class DialogAddServiceComponent implements OnInit {
       userType: new FormControl('')
     });
 
-    if(this.data.id != 0){
+    if (this.data.id != 0) {
       this.searchUserForm.controls.userType.setValue(this.data.idService);
     }
     this.catalogos();
     this.consultaPermisos();
-  
+
     //
-    this.serviceLocationCountries = new MatTableDataSource(this.data.serviceLocationCountries);
+    if (this.data.id == 0) {
+      let data: any[] = [];
+      for (const iterator of this.data.obj_guardar.servicelocationcountries[0].countries) {
+        data.push({
+          idCountry: iterator,
+          scopeDescription: this.data.obj_guardar.servicelocationcountries[0].scopeDescription,
+          documentLocationCountries: this.data.obj_guardar.servicelocationcountries[0].documentLocationCountries,
+        })
+      }
+      this.serviceLocationCountries = new MatTableDataSource(data);
+    } else {
+      this.serviceLocationCountries = new MatTableDataSource(this.data.serviceLocationCountries);
+    }
     console.log('this.serviceLocationCountries', this.serviceLocationCountries);
     // /AdminCenter/Services/ClientPartner
     // this._services.service_general_get("Catalogue/GetServiceByServiceLine?idServiceLine="+this.data.sl).subscribe
@@ -86,31 +98,31 @@ export class DialogAddServiceComponent implements OnInit {
   }
 
   //*********************************************//
-	public permission_read : boolean = false;
-	public permission_write : boolean = false;
-	public permission_delete : boolean = false;
-	public permission_edit : boolean = false;
-	consultaPermisos(){
-		console.log("CONSULTA PARA PERMISOS DE USUARIO");
-		let url = localStorage.getItem('url_permisos');
-		this._services.service_general_get('Role/'+url).subscribe(data=>{
-			if(data.success){
-			   console.log("Permisos: ", data.result.value)
-			   this.permission_read = data.result.value[0].reading;
-			   this.permission_write = data.result.value[0].writing;
-			   this.permission_edit = data.result.value[0].editing;
-			   this.permission_delete = data.result.value[0].deleting;
-			}
-		})
+  public permission_read: boolean = false;
+  public permission_write: boolean = false;
+  public permission_delete: boolean = false;
+  public permission_edit: boolean = false;
+  consultaPermisos() {
+    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    let url = localStorage.getItem('url_permisos');
+    this._services.service_general_get('Role/' + url).subscribe(data => {
+      if (data.success) {
+        console.log("Permisos: ", data.result.value)
+        this.permission_read = data.result.value[0].reading;
+        this.permission_write = data.result.value[0].writing;
+        this.permission_edit = data.result.value[0].editing;
+        this.permission_delete = data.result.value[0].deleting;
+      }
+    })
   }
   //*********************************************//
 
-  async catalogos(){
+  async catalogos() {
     //let im = await this._services.getCatalogueFrom('GetCataegoryByServiceLineId?serviceLineId='+this.data.sl);
     this.caCountry = await this._services.getCatalogueFrom('GetCountry');
     this.GetCountry = await this._services.getCatalogueFrom('GetCountry');
     console.log(this.GetCountry)
-    this._services.service_general_get(`AdminCenter/Services/ClientPartner/${this.data.sl}`+'?idPartner='+this.data.partnerId).subscribe((data => {
+    this._services.service_general_get(`AdminCenter/Services/ClientPartner/${this.data.sl}` + '?idPartner=' + this.data.partnerId).subscribe((data => {
       if (data.result) {
         debugger;
         this.GetService = data.result;
@@ -118,7 +130,7 @@ export class DialogAddServiceComponent implements OnInit {
         this.data.services?.forEach(element => {
           this.GetService?.forEach((service, index) => {
             //console.log("2",element,"3",service);
-            if(element.servicesName.toLowerCase() == service.service.toLowerCase()){
+            if (element.servicesName.toLowerCase() == service.service.toLowerCase()) {
               console.log(element.servicesName.toLowerCase(), '==', service.service.toLowerCase());
               this.GetService.splice(index, 1);
             }
@@ -135,23 +147,24 @@ export class DialogAddServiceComponent implements OnInit {
       }
     }
   }
-    //////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
   //office information
   addCountry(data, i) {
     console.log('data form', data);
 
     // opcion cuando se crea un servicio nuevo y puede elegir muchos paises
     if (this.data.id == 0 && data == null) {
-     debugger;
+      debugger;
 
       console.log('multicheck id servicios', this.searchUserForm.controls.userType.value);
-      data= {
-        id : 0, 
-        action: "new", 
-        idService: this.searchUserForm.controls.userType.value, 
-        standarScopeDocuments: 0, 
-        serviceLine: this.data.sl, 
-        idServiceLocation : this.data.id};
+      data = {
+        id: 0,
+        action: "new",
+        idService: this.searchUserForm.controls.userType.value,
+        standarScopeDocuments: 0,
+        serviceLine: this.data.sl,
+        idServiceLocation: this.data.id
+      };
     }
     // opcion cuando es un servicio ya creado y se le quiere agregar un pais nuevo ya no hay multicheck
     else if (this.data.id != 0 && data == null) {
@@ -164,7 +177,7 @@ export class DialogAddServiceComponent implements OnInit {
         }
       }
       // aqui se envia el id de service location para evitar duplicidad de countries
-      data = {id : 0, action: 0, idService: getIdService, standarScopeDocuments: 0, serviceLine: this.data.sl, idServiceLocation : this.data.id};
+      data = { id: 0, action: 0, idService: getIdService, standarScopeDocuments: 0, serviceLine: this.data.sl, idServiceLocation: this.data.id };
     }
     //opcion cuando editas un country
     else {
@@ -183,52 +196,66 @@ export class DialogAddServiceComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogAddCuntryComponent, {
       data: data,
       width: '90%'
-  });
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    debugger;
-    if (result.success) {
-      console.log('data save', result);
-      let user = JSON.parse(localStorage.getItem('userData'));
-      result.updatedBy = user.id;
-      result.updatedDate = new Date();
-      //  si es un create el campo country se va en 0 ya que
-      if(result.action == "new"){
-        // result.idServiceLocation = this.data.id;
-        // this.data.servicelocationcountries.push(result);
-        result.countries = result.idCountry;
-        result.idCountry = 0;
-        result.idServiceLocation = this.data.id;
-        result.createdBy= user.id;
-        result.createdDate= new Date();
-        this.data.servicelocationcountries.push(result);
-        setTimeout(() => {
-          this.getCountryNoSave();  
-        }, 100);
-        
-      }
-      //  si es un update de un service y se agrega un nuevo country
-      else if (result.action == 0 && result.id == 0) {
-        // push a la data
-        this.data.servicelocationcountries = [];
-        result.countries = [];
-        // result.serviceCountryLeaders = [];
-        result.idServiceLocation = this.data.id;
-        result.createdBy = user.id;
-        result.createdDate= new Date();
-        this.data.servicelocationcountries.push(result);
-        this.addCountryUpdate();
-      }
-      else {
-        // this.data.servicelocationcountries[result.action] = result;
-        result.countries = [];
-        if (result.documentLocationCountries.length == 0) {
-          result.documentLocationCountries = [];
+    dialogRef.afterClosed().subscribe(result => {
+      debugger;
+      if (result.success) {
+        console.log('data save', result);
+        let user = JSON.parse(localStorage.getItem('userData'));
+        result.updatedBy = user.id;
+        result.updatedDate = new Date();
+        //  si es un create el campo country se va en 0 ya que
+        if (result.action == "new") {
+          // result.idServiceLocation = this.data.id;
+          // this.data.servicelocationcountries.push(result);
+          result.countries = result.idCountry;
+          result.idCountry = 0;
+          result.idServiceLocation = this.data.id;
+          result.createdBy = user.id;
+          result.createdDate = new Date();
+          if (this.data.servicelocationcountries.length == 1) {
+
+            for (const iterator of result.countries) {
+              this.data.servicelocationcountries[0].countries.push(iterator)
+            }
+
+            for (const iterator of result.documentLocationCountries) {
+              this.data.servicelocationcountries[0].documentLocationCountries.push(iterator)
+            }
+
+          } else {
+            this.data.servicelocationcountries.push(result);
+          }
+          setTimeout(() => {
+            this.getCountryNoSave();
+          }, 100);
+
         }
-        // this.serviceLocationCountries.push(result);
-        this.data.servicelocationcountries[result.action] = result;
-        // this.serviceLocationCountries[result.action] = result;
-      }
+        //  si es un update de un service y se agrega un nuevo country
+        else if (result.action == 0 && result.id == 0) {
+          // push a la data
+          this.data.servicelocationcountries = [];
+          result.countries = [];
+          result.countries = result.idCountry;
+          result.idCountry = result.idCountry[0];
+          // result.serviceCountryLeaders = [];
+          result.idServiceLocation = this.data.id;
+          result.createdBy = user.id;
+          result.createdDate = new Date();
+          this.data.servicelocationcountries.push(result);
+          this.addCountryUpdate();
+        }
+        else {
+          // this.data.servicelocationcountries[result.action] = result;
+          result.countries = [];
+          if (result.documentLocationCountries.length == 0) {
+            result.documentLocationCountries = [];
+          }
+          // this.serviceLocationCountries.push(result);
+          this.data.servicelocationcountries[result.action] = result;
+          // this.serviceLocationCountries[result.action] = result;
+        }
 
         console.log(this.data.servicelocationcountries);
         console.log(this.serviceLocationCountries);
@@ -242,14 +269,15 @@ export class DialogAddServiceComponent implements OnInit {
   getCountryNoSave() {
     let valorTabla = [];
     this.serviceLocationCountries = [];
-    this._services.service_general_get('Catalogue/GetCountry').subscribe(r=>{
-      if(r.success){
-        this.caCounty= r.result;
+    this._services.service_general_get('Catalogue/GetCountry').subscribe(r => {
+      if (r.success) {
+        this.caCounty = r.result;
+
         for (let i = 0; i < this.data.servicelocationcountries[0].countries.length; i++) {
           const element = this.data.servicelocationcountries[0].countries[i];
           for (let j = 0; j < this.caCounty.length; j++) {
             const elementc = this.caCounty[j];
-            if(element ==  elementc.id){
+            if (element == elementc.id) {
               // this.data.serviceCountries[i].namec = elementc.name;
               valorTabla.push({
                 namec: elementc.name,
@@ -273,7 +301,7 @@ export class DialogAddServiceComponent implements OnInit {
       const dataTableCountry = this.data.servicelocationcountries[c];
       for (let j = 0; j < this.GetCountry.length; j++) {
         const elementc = this.GetCountry[j];
-        if(dataTableCountry.idCountry ==  elementc.id){
+        if (dataTableCountry.idCountry == elementc.id) {
           valorTabla.push({
             id: dataTableCountry.id,
             idCountry: dataTableCountry.idCountry,
@@ -294,7 +322,7 @@ export class DialogAddServiceComponent implements OnInit {
   }
 
   //trae los countries que tienen scope documents local para aplicar scope doc.
-  getCountryApplyScope(){
+  getCountryApplyScope() {
     this._services.service_general_get(`Catalogue/Country-Service-Location/All/${this.data.id}`).subscribe((data => {
       if (data.result) {
         this.getDataCountryScopeDoc = data.result.value;
@@ -303,13 +331,13 @@ export class DialogAddServiceComponent implements OnInit {
     }));
   }
   // Este metodo sirve para cambiar el scope documents en todos los paises agregados
-  applyScope(){
+  applyScope() {
     console.log('data para aplicar Scope Documents');
 
     const dialogRef = this._dialog.open(DialogApplyAllScopeComponent, {
       data: this.data,
       width: '90%'
-  });
+    });
   }
 
 
@@ -322,7 +350,7 @@ export class DialogAddServiceComponent implements OnInit {
 
     if (this.allSelected.selected) {
       this.searchUserForm.controls.userType
-        .patchValue([...this.GetService.map(item => item.service1),0]);
+        .patchValue([...this.GetService.map(item => item.service1), 0]);
     } else {
       this.searchUserForm.controls.userType.patchValue([]);
     }
@@ -333,7 +361,7 @@ export class DialogAddServiceComponent implements OnInit {
   valid_country: boolean = false;
   // valid_nickname: boolean = false;
 
-  validar(){
+  validar() {
 
     if (this.searchUserForm.controls.userType.value == undefined ||
       this.searchUserForm.controls.userType.value == null || this.searchUserForm.controls.userType.value == '') {
@@ -342,7 +370,7 @@ export class DialogAddServiceComponent implements OnInit {
     else {
       this.valid_service = false;
     }
-    if (this.serviceLocationCountries.data.length == 0 ) {
+    if (this.serviceLocationCountries.data.length == 0) {
       this.valid_country = true;
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
@@ -351,14 +379,14 @@ export class DialogAddServiceComponent implements OnInit {
         },
         width: "350px"
       });
-      return ;
+      return;
     }
     else {
       this.valid_country = false;
     }
 
 
-    if(this.valid_service == false && this.valid_country == false){
+    if (this.valid_service == false && this.valid_country == false) {
       this.save();
     }
 
@@ -366,9 +394,9 @@ export class DialogAddServiceComponent implements OnInit {
   save() {
 
     // quitar los registros de la tabla cuando tienen id 0  ya que estos solo son para pintar al cliente
-    if(this.data.action != 'new'){
+    if (this.data.action != 'new') {
       var value = 0
-      this.data.serviceLocationCountries = this.data.serviceLocationCountries.filter(function(item) {
+      this.data.serviceLocationCountries = this.data.serviceLocationCountries.filter(function (item) {
         return item.id !== value
       })
     }
@@ -376,11 +404,11 @@ export class DialogAddServiceComponent implements OnInit {
     if (this.data.nickName == undefined || this.data.nickName.length == 0) {
       this.data.nickName = '--';
     }
-    
-    if(this.data.action == 'new'){
+
+    if (this.data.action == 'new') {
       this.data.idService = this.searchUserForm.controls.userType.value;
       this.data.idService.forEach((element, index) => {
-        if(element == 0){
+        if (element == 0) {
           this.data.idService.splice(index, 1);
         }
       });

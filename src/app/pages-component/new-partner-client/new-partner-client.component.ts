@@ -518,7 +518,7 @@ export class NewPartnerClientComponent implements OnInit {
           if (this.lead_client.id == 0) {
             this.lead_client.generalContractPricingInfos.push(result);
           } else {
-            console.log(JSON.stringify(result));
+            console.log(result);
             this.loader.showLoader();
             this._services.service_general_putnoapi('AddGeneralContractPricingInfo', result).subscribe(r => {
               if (r.success) {
@@ -1064,7 +1064,14 @@ export class NewPartnerClientComponent implements OnInit {
           } else {
             this.loader.showLoader();
             this.lead_client.services = [];
-            ;
+            if(result.servicelocationcountries){
+              for (const iterator of result.servicelocationcountries) {
+                //iterator.idCountry = iterator.idCountry[0];
+                result.serviceLocationCountries.push(iterator);
+              }
+              delete result.servicelocationcountries;
+            }
+
             console.log("DATA A ACTUALIZAR: ", result);
             // result.service = [];
             console.log(JSON.stringify(result));

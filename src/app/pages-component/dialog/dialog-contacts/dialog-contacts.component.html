@@ -82,7 +82,48 @@
       </mat-form-field>
     </mat-grid-tile>
 
+    <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+    <!-- country -->
+
     <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
+          <mat-select [(ngModel)]="data.idCountry" (selectionChange)="getState(data.idCountry)" (ngModelChange)="countryname()" (focus)="active_country = false" required>
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>Country</mat-label>
+              <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of caCountry| filterBy: filterCountry" [value]="item.id"> {{item.name}}</mat-option>
+            <mat-option disabled *ngIf="(caCountry | filterBy: filterCountry).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- state -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1"  [ngClass]="{'loaderinput': ca_state.length == 0}">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_state}">State</mat-label>
+          <mat-select [(ngModel)]="data.idState" (selectionChange)="getcity()"  (focus)="active_state = false" required>
+            <mat-form-field appearance="outline" style="padding: 5px;">
+              <mat-label>State</mat-label>
+              <input matInput placeholder="State" [(ngModel)]="filterState.name">
+            </mat-form-field>
+            <mat-option *ngFor="let item of ca_state| filterBy: filterState" [value]="item.id"> {{item.name}}</mat-option>
+            <mat-option disabled *ngIf="(ca_state | filterBy: filterState).length === 0">No matching elements</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_state">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" [ngClass]="{'loaderinput': caCity.length == 0}">
       <mat-form-field appearance="fill" class="input_final">
         <mat-label [ngClass]="{valid: active_city}">City</mat-label>
         <mat-select (focus)="active_city = false" required matNativeControl [(ngModel)]="data.idCity">
