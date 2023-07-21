@@ -135,7 +135,7 @@ export class DialogAttendeesInspecComponent implements OnInit {
     this.data_key.inspectionNavigation = null;
     this._services.service_general_put('HousingList/PutAttendeeInspec',this.data_key).subscribe(r=>{
       if(r.success){
-        console.log(r);
+        console.log('HousingList/PutAttendeeInspec:',r);
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
@@ -145,7 +145,7 @@ export class DialogAttendeesInspecComponent implements OnInit {
         });
         r.result.success = true;
         this.loader.hideLoader();
-        this.dialogRef.close(r.result);
+        this.dialogRef.close(r);
       }
     })
   }
