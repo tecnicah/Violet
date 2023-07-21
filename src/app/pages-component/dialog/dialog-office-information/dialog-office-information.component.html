@@ -224,7 +224,7 @@
           </span>
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard">
+      <mat-grid-tile [style.display]="data.paymentInformationOfficeSuppliers[0].creditCard ? '' : 'none'" [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard">
         <div class="input_final">
           <mat-checkbox class="cuadrado" [(ngModel)]="datacart.cheksupliers">
             <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
@@ -371,6 +371,16 @@
             </mat-checkbox>
           </span>
           <span>
+              <div class="input_central">
+                <mat-form-field appearance="fill">
+                  <mat-label>Office</mat-label>
+                  <mat-select [(ngModel)]="data.paymentInformationOfficePremiers[0].idOffice">
+                    <mat-option *ngFor="let item of ca_offices" [value]="item.id">{{item.office}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+          </span>
+          <span>
             <p class="subtitle" style="font-size: 12px;">
               Fiscal Invoice
             </p>
@@ -379,7 +389,7 @@
           </span>
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard">
+      <mat-grid-tile [style.display]="data.paymentInformationOfficePremiers[0].creditCard ? '' : 'none'" [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard">
         <div class="input_final">
           <mat-checkbox class="cuadrado" [(ngModel)]="datacart.chekpremier">
             <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
