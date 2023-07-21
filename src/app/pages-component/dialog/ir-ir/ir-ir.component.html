@@ -184,31 +184,9 @@
 
 
                             <mat-grid-tile [colspan]="4" [rowspan]="1">
-                                <p class="page__section-name" style="font-size: 14px;"> Attendees </p>
+                                <p class="page__section-name" style="font-size: 14px;"> Attendees</p>
                             </mat-grid-tile>
-                            <!------------------------------------START ATTENDEES INSPEC----------------------------------------------->
 
-                                <!-- <table class="mat-elevation-z8 textarea mat-table">
-                                    <tr class="mat-header-row">
-                                        <th class="mat-header-cell">Title</th>
-                                        <th class="mat-header-cell">Name</th>
-                                        <th class="mat-header-cell">E-mail</th>
-
-                                        <th class="mat-header-cell"></th>
-                                    </tr>
-                                    <tr class="mat-row" *ngFor="let attend of item.attendeeInspecs; let at = index">
-                                        <td class="mat-cell">{{get_attendiees_vales(attend.att)}}</td>
-                                        <td class="mat-cell">{{attend.name}}</td>
-                                        <td class="mat-cell">{{attend.email}}</td>
-
-                                        <td class="mat-cell">
-                                            <img src="assets\icons\pencil.png" style="width: 20px;"
-                                                (click)="editAttendInspec(attend, at)">
-                                        </td>
-                                    </tr>
-                                </table> -->
-                               
-                            <!------------------------------------END ATTENEDES INSPEC--------------------------------------------------->
                         </mat-grid-list>
                         <div class="page__section">
                             <table matTableExporter mat-table [dataSource]="item.attendeeInspecs"

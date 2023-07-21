@@ -206,32 +206,7 @@ export class LegalRenewalComponent implements OnInit {
     }
   };
 
-  change_status_detail() {
-    //////debugger;
-    const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
-      data: {
-        header: "Confirmation",
-        body: "What is the status of the service?",
-        rol: this.user.role.id,
-        category: 22,//lease renewal
-        type: "home_findig"
-      },
-      width: "350px"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-
-      if (result.success) {
-        this.settlingin.statusId = result.id; //penidng to completion 
-        this.get_text_status();
-      }
-      else {
-
-      }
-    });
-  };
-
-
+  
   //DATA TABLE HOUSING//
   getDataHousing() {
     this._services.service_general_get(`HousingList/GetPermanentHousingList?id_sr=${this.data.sr}`).subscribe(data_housing => {
@@ -543,6 +518,65 @@ export class LegalRenewalComponent implements OnInit {
     this.loader.hideLoader();
   }
 
+
+  change_status_detail() {
+
+    const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
+      data: {
+        header: "Confirmation",
+        body: "What is the status of the service?",
+        rol: this.user.role.id,
+        category: 22,
+        type: "lease_renewal",
+        cat_category_id: this.atributos_generales.cat_category_id,
+        type_id: this.atributos_generales.type_id,
+        srId: this.atributos_generales.sr_id,
+        wos_id: this.settlingin.workOrderServicesId,
+      }
+      ,
+      width: "350px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      // //console.log(result);
+      if (result.success) {
+        this.settlingin.statusId = result.id; //penidng to completion 
+        this.get_text_status();
+      }
+      else {
+        //nada 
+      }
+    });
+
+
+  };
+
+ /*  change_status_detail() {
+    //////debugger;
+    const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
+      data: {
+        header: "Confirmation",
+        body: "What is the status of the service?",
+        rol: this.user.role.id,
+        category: 22,//lease renewal
+        type: "home_findig"
+      },
+      width: "350px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result.success) {
+        this.settlingin.statusId = result.id; //penidng to completion 
+        this.get_text_status();
+      }
+      else {
+
+      }
+    });
+  };
+ */
 
 }
 

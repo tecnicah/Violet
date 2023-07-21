@@ -246,33 +246,7 @@ export class IrIrComponent implements OnInit {
 
     return name;
   }
-  //FUNCION EDITAR ATTENDEES DENTRO DE INSPEC//
-  addAttendeesInspec(item) {
-    console.log("entra a abrir modal attendees Inspec");
 
-    const dialog = this._dialog.open(DialogAttendeesInspecComponent, {
-      data: {
-        id: 0,
-        sr: this.data.sr_id,
-        operacion: 'insertar',
-        inspection: item.id
-        , housingListId: this.data.ph_id,
-        idServiceDetail: this.data.servide_detail_id
-      },
-      width: "95%"
-    });
-
-    dialog.beforeClosed().subscribe(result => {
-      ////debugger;
-      console.log("info recibidia del po pup attendis inspection: ", result);
-
-      if (result.success) {
-        // result.propertyReport = this.data_move_in.id;
-        item.attendeeInspecs.push(result);
-        console.log("Data data_inspection despues del push: ", this.data_inspection)
-      }
-    })
-  };
 
   get_attendees_list_all(housingListId) {
     //  this.loader.showLoader();
@@ -295,7 +269,7 @@ export class IrIrComponent implements OnInit {
   insert_repair(obj_repair) {
 
     this._services.service_general_post_with_url("HousingList/PostRepair", obj_repair).subscribe((data => {
-      ////debugger;
+      //////debugger;
       if (data.success) {
         console.log("HousingList/PostRepair - Request: ", data);
         this.data_repairs = data.result;
@@ -381,7 +355,7 @@ export class IrIrComponent implements OnInit {
 
   insert_ispection(obj_inspect) {
     this._services.service_general_post_with_url("HousingList/PostInspection", obj_inspect).subscribe((data => {
-      ////debugger;
+      //////debugger;
       if (data.success) {
         console.log("HousingList/PostInspection - Request: ", data);
         this.data_inspection = data.result;
@@ -451,14 +425,43 @@ export class IrIrComponent implements OnInit {
     })
   };
 
+  //FUNCION EDITAR ATTENDEES DENTRO DE INSPEC//
+  addAttendeesInspec(item) {
+    console.log("entra a abrir modal attendees Inspec");
+
+    const dialog = this._dialog.open(DialogAttendeesInspecComponent, {
+      data: {
+        id: 0,
+        sr: this.data.sr_id,
+        operacion: 'insertar',
+        inspection: item.id
+        , housingListId: this.data.ph_id,
+        idServiceDetail: this.data.servide_detail_id
+      },
+      width: "95%"
+    });
+
+    dialog.beforeClosed().subscribe(result => {
+      //debugger;
+      console.log("info recibidia del po pup attendis inspection: ", result);
+
+      if (result.success) {
+        // result.propertyReport = this.data_move_in.id;
+        item.attendeeInspecs.push(result);
+        console.log("Data data_inspection despues del push: ", item.attendeeInspecs);
+        this.GetInspRepBySection(this.data.ph_id, this.data.servide_detail_id, 3);
+      }
+    })
+  };
+
   addFotosMoveInspec(r) {
     document.getElementById('doc_i' + r).click();
   };
 
   update_ispection(obj_inspect) {
-    ////debugger;
+    //////debugger;
     this._services.service_general_put("HousingList/PutInspection", obj_inspect).subscribe((data => {
-      ////debugger;
+      //////debugger;
       if (data.success) {
         console.log("HousingList/PutInspection: ", data);
         this.getDataHousing();
@@ -491,7 +494,7 @@ export class IrIrComponent implements OnInit {
 
   delete_inspection(obj_inspect) {
     this._services.service_general_put("HousingList/DeleteInspection", obj_inspect.id).subscribe((data => {
-      ////debugger;
+      //////debugger;
       if (data.success) {
         console.log("HousingList/DeleteInspection: ", data);
         this.data_inspection = data.result;
@@ -523,7 +526,7 @@ export class IrIrComponent implements OnInit {
 
   //========== CARGA DE FOTOS INSPEC//
   public droppedFotosInspec(files: NgxFileDropEntry[], r, item) {
-    ////debugger;
+    //////debugger;
     this.files = files;
 
     for (const droppedFile of files) {
@@ -550,7 +553,7 @@ export class IrIrComponent implements OnInit {
 
 
               let ext = droppedFile.relativePath.split(".");
-              ////debugger;
+              //////debugger;
               item.photosInspecs.push({
                 "id": 0,
                 "Inspection": item.id,
@@ -580,12 +583,12 @@ export class IrIrComponent implements OnInit {
 
   //************************************************//
   public fileOver(event) {
-    ////debugger;
+    //////debugger;
     console.log(event);
   }
   //************************************************//
   public fileLeave(event) {
-    ////debugger;
+    //////debugger;
     console.log(event);
   };
 
@@ -721,7 +724,7 @@ export class IrIrComponent implements OnInit {
   //CARGA DE DOCUMENTOS PARA SECCION REPAIRS MOVE IN//
   public files: NgxFileDropEntry[] = [];
   public dropped(files: NgxFileDropEntry[], i) {
-    ////debugger;
+    //////debugger;
     this.files = files;
 
     for (const droppedFile of files) {
@@ -802,7 +805,7 @@ export class IrIrComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
      // this.ngOnInit();
-     debugger;
+     //debugger;
       if (result.success) {
         console.log("po pup de Action cerrado succes true");
        // this.GetInspRepBySection(this.data.ph_id, this.data.servide_detail_id, 3);
