@@ -198,11 +198,11 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
       if(r.success){
         debugger;
         this.caCounty= r.result;
-        for (let i = 0; i < this.data.serviceCountries[0].countries?.length; i++) {
-          const element = this.data.serviceCountries[0].countries[i];
+        for (let i = 0; i < this.data.serviceCountries?.length; i++) {
+          const element = this.data.serviceCountries[i];
           for (let j = 0; j < this.caCounty.length; j++) {
             const elementc = this.caCounty[j];
-            if(element ==  elementc.id){
+            if(element.country ==  elementc.id){
               // this.data.serviceCountries[i].namec = elementc.name;
               valorTabla.push({
                 namec: elementc.name,
@@ -216,6 +216,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
       }
     })
   }
+
   //
   addCountryUpdate() {
     // metodo que agrega nombre y ciudad a la tabla cuando aun no se guarda los countries que se agregaron
@@ -236,6 +237,41 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
     this.serviceCountries = new MatTableDataSource(valorTabla);
   }
 
+  updateCountryUpdate(id) {
+    // metodo que agrega nombre y ciudad a la tabla cuando aun no se guarda los countries que se agregaron
+    debugger;
+    let valorTabla = [];
+    for (let c = 0; c < this.data.serviceCountries.length; c++) {
+      const dataTableCountry = this.data.serviceCountries[c];
+      for (let j = 0; j < this.GetCountry.length; j++) {
+        const elementc = this.GetCountry[j];
+        if(dataTableCountry.country ==  elementc.id){
+          valorTabla.push({
+            namec: elementc.name,
+            scopeDescription: dataTableCountry.scopeDescription,
+            documentServiceCountries: dataTableCountry.documentServiceCountries,
+            id: dataTableCountry.id,
+            service: dataTableCountry.service,
+            country: dataTableCountry.country
+          });
+        }
+      }
+    }
+    debugger;
+    let _table = [];
+    _table = valorTabla; 
+    this.serviceCountries.data.forEach((element, index) => {
+      if(element.country == id){
+        _table.splice(index, 1);
+        //this.data.serviceCountries.splice(index,1);
+      }
+    });
+    this.data.serviceCountries = [];
+    this.data.serviceCountries = _table;
+    this.serviceCountries = new MatTableDataSource(_table);
+
+  }
+
     //////////////////////////////////////////////////////////////////////////////////////
   //office information
   addCountry(data, i) {
@@ -249,7 +285,7 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
       data = {id : 0, action: "edit",  serviceCountries:  this.serviceCountries?.data};
     }
     if (i == 'tabla') {
-      data = {id : 0, action: "tabla",  serviceCountries:  this.serviceCountries?.data};
+      data = {id : data.id, action: "tabla", service: data.service,  serviceCountries:  data.country, documentServiceCountries: data.documentServiceCountries, scopeDescription: data.scopeDescription};
     }
     // opcion cuando es un servicio ya creado y se le quiere agregar un pais nuevo ya no hay multicheck
     // else if (this.data.id != 0 && data == null) {
@@ -272,73 +308,60 @@ export class DialogAddServiceAdminCenterComponent implements OnInit {
       let _country = result.country; 
       result.updatedBy = user.id;
       result.updatedDate= new Date();
-      //  si es un create el campo country se va en 0 ya que
-        if(result.action == "new") {
+      switch(result.action) {
+        case "new":
           result.countries = result.country;
           _country.forEach(element => {
             console.log(element);
-            this.serviceCountryData.push({
+            this.data.serviceCountries.push({
+              id: element.id,
               country: element,
               service: this.data.id,
+              countries: result.country,
+              scopeDescription: result.scopeDescription,
               createdBy: user.id,
               createdDate: new Date(),
               documentServiceCountries: result.documentServiceCountries
             });
-            // result.country = element;
-            // result.service = this.data.id;
-            // result.createdBy= user.id;
-            // result.createdDate= new Date();
-            debugger;
-            console.log(result);
-            delete result['country'];
-            this.data.serviceCountries.push(result);
           });
-          
+          // this.data.serviceCountries.push(result);
           this.getCountryNoSave();
-        }
-      // si es un update de un service y se agrega un nuevo country
-        else if (result.action == 0 && result.id == 0) {
-          // push a la data
+        break;
+        case "edit":
           result.countries = result.country;
           _country.forEach(element => {
-            this.serviceCountryData.push({
+            this.data.serviceCountries.push({
+              id: element.id,
               country: element,
               service: this.data.id,
+              scopeDescription: result.scopeDescription,
               createdBy: user.id,
               createdDate: new Date(),
               documentServiceCountries: result.documentServiceCountries
             });
-            // result.country = element;
-            // result.service = this.data.id;
-            // result.createdBy= user.id;
-            // result.createdDate= new Date();
-            this.data.serviceCountries.push(result);
           });
+          // this.data.serviceCountries.push(result);
           this.addCountryUpdate();
-        }
-        else {
-//           result.countries = [];
-//           result.serviceCountryLeaders = [];
-//           if (result.documentServiceCountries.length == 0) {
-//             result.documentServiceCountries = [];
-//           }
-//           // this.data.serviceCountries.push(result); serviceCountries
-// debugger;
-//           this.data.serviceCountries[result.action] = result;
-//           setTimeout(() => {
-//             this.getCountry();  
-//           }, 200);
-          
-        }
-        // result.countries = [];
-        // result.serviceCountryLeaders = [];
-        //   if (result.documentServiceCountries?.length == 0) {
-        //     result.documentServiceCountries = [];
-        //   }
-        //this.data.serviceCountries = this.serviceCountryData;
-        //this.data.serviceCountries[result.action] = result;
-        this.getCountry();
-       //console.log(this.data.serviceCountries);
+        break;
+        case "tabla":
+          result.countries = result.country;
+          _country.forEach(element => {
+            console.log(element);
+            this.data.serviceCountries.push({
+              id: result.id,
+              country: element,
+              scopeDescription: result.scopeDescription,
+              createdBy: user.id,
+              service: result.service,
+              createdDate: new Date(),
+              documentServiceCountries: result.documentServiceCountries
+            });
+          });
+          this.updateCountryUpdate(result.serviceCountries);
+        break;
+        default:
+          this.getCountry();
+      }
 
      }
 
