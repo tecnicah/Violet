@@ -21,7 +21,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <div class="input_central textarea">
                     <mat-form-field appearance="fill">
-                        <mat-label>Repair Type</mat-label>
+                        <mat-label>Action Type</mat-label>
                         <mat-select [(ngModel)]="repair.repairType">
                             <mat-option *ngFor='let data of ca_repair'
                                 [value]='data.id'>{{data.repairType}}</mat-option>
@@ -44,13 +44,25 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <div class="input_central textarea">
                     <mat-form-field appearance="fill">
-                        <mat-label>Total Days</mat-label>
-                        <input matInput placeholder="Total Days" type="number" min="0" [(ngModel)]="repair.totalDays">
+                        <mat-label>Repair Start Date</mat-label>
+                        <input matInput [matDatepicker]="pickertres_Repair" placeholder="Repair Start Date"
+                            [(ngModel)]="repair.repairStartDate">
+                        <mat-datepicker-toggle matSuffix [for]="pickertres_Repair"></mat-datepicker-toggle>
+                        <mat-datepicker #pickertres_Repair></mat-datepicker>
                     </mat-form-field>
                 </div>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="1" [rowspan]="1">
 
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Repair End Date</mat-label>
+                        <input matInput [matDatepicker]="pickertres_RepairEnd" placeholder="Repair End Date"
+                            [(ngModel)]="repair.repairEndDate">
+                        <mat-datepicker-toggle matSuffix [for]="pickertres_RepairEnd"></mat-datepicker-toggle>
+                        <mat-datepicker #pickertres_RepairEnd></mat-datepicker>
+                    </mat-form-field>
+                </div>
             </mat-grid-tile>
 
 
@@ -61,26 +73,12 @@
                 <mat-grid-tile [colspan]="1" [rowspan]="1">
                     <div class="input_central textarea">
                         <mat-form-field appearance="fill">
-                            <mat-label>Repair Start Date</mat-label>
-                            <input matInput [matDatepicker]="pickertres_Repair" placeholder="Repair Start Date"
-                                [(ngModel)]="repair.repairStartDate">
-                            <mat-datepicker-toggle matSuffix [for]="pickertres_Repair"></mat-datepicker-toggle>
-                            <mat-datepicker #pickertres_Repair></mat-datepicker>
+                            <mat-label>Total Days</mat-label>
+                            <input matInput placeholder="Total Days" type="number" min="0" [(ngModel)]="repair.totalDays">
                         </mat-form-field>
                     </div>
                 </mat-grid-tile>
-
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                    <div class="input_central textarea">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Repair End Date</mat-label>
-                            <input matInput [matDatepicker]="pickertres_RepairEnd" placeholder="Repair End Date"
-                                [(ngModel)]="repair.repairEndDate">
-                            <mat-datepicker-toggle matSuffix [for]="pickertres_RepairEnd"></mat-datepicker-toggle>
-                            <mat-datepicker #pickertres_RepairEnd></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </mat-grid-tile>
+                
                 <mat-grid-tile [colspan]="1" [rowspan]="1">
                     <div class="input_central textarea">
                         <mat-form-field appearance="fill">

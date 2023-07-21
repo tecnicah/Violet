@@ -318,39 +318,25 @@ export class IrRepairDetailComponent implements OnInit {
 
   saveRepairs() {
 
-    // var obj_repair = {
-    //   id: 0,
-    //   housingList: this.permanentHome.id,
-    //   repairType: null,
-    //   supplierPartner: null,
-    //   repairStartDate: null,
-    //   repairEndDate: null,
-    //   totalDays: 0,
-    //   totalCostRepair: 0,
-    //   currency: null,
-    //   comments: null,
-    //   createdBy: this.user.id,
-    //   createdDate: new Date(),
-    //   updateBy: this.user.id,
-    //   updatedDate: new Date(),
-    //   documentRepairs: [],
-    //   idServiceDetail: this.home_finding.id,//this.data.idServiceDetail_current
-    //   groupIrId: this.permanentHome.groupIr[0].id,
-    //   paymentResponsibility: null
-    // }
-    if(this.repair.id > 0){
-      this.update_repair(this.repair);
+    if (this.repair.repairType> 0){
+      if(this.repair.id > 0){
+        this.update_repair(this.repair);
+      }
+      else{
+         this.insert_repair(this.repair);
+      }
     }
     else{
-       this.insert_repair(this.repair);
+      alert('Please select Action Type')
     }
+    
    
   };
 
   insert_repair(obj_repair) {
 
     this._services.service_general_post_with_url("HousingList/PostRepair", obj_repair).subscribe((data => {
-      ////debugger;
+     
       if (data.success) {
         console.log("HousingList/PostRepair - Request: ", data);
         this.data_repairs = data.result;
@@ -362,6 +348,10 @@ export class IrRepairDetailComponent implements OnInit {
           },
           width: "350px"
         });
+
+        //data.success = true;
+        this.loader.hideLoader();
+        this.dialogRef.close(data);
       }
       else {
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -398,6 +388,9 @@ export class IrRepairDetailComponent implements OnInit {
           },
           width: "350px"
         });
+        
+        this.loader.hideLoader();
+        this.dialogRef.close(data);
       }
       else {
         this.loader.hideLoader();

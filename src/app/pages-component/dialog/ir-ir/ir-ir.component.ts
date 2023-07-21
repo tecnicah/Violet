@@ -197,10 +197,6 @@ export class IrIrComponent implements OnInit {
     this.loader.showLoader();
     this._services.service_general_get("HousingList/GetInspRepBySection?key=" + key + "&servide_detail_id=" + servide_detail_id + "&section=" + section).subscribe((cd => {
 
-      //console.log('ONLY Inspections & Repairs : ', cd.result);
-      //console.log('ONLY Inspections & Repairs : ', cd.result.value);
-      //console.log('ONLY Inspections & Repairs : ', cd.result.value.groupIr);
-
       this.permanentHome.groupIr = cd.result.value.groupIr;
       this.data_inspection = this.permanentHome.groupIr[0].inspections;
       this.data_repairs = this.permanentHome.groupIr[0].repairs;
@@ -805,9 +801,14 @@ export class IrIrComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.ngOnInit();
+     // this.ngOnInit();
+     debugger;
       if (result.success) {
         console.log("po pup de Action cerrado succes true");
+       // this.GetInspRepBySection(this.data.ph_id, this.data.servide_detail_id, 3);
+        item.show = true;
+        item.repairs = result.result; // viene desde el pop up de edicion
+
       }
       else {
         console.log("po pup de Action cerrado succes false");
@@ -833,9 +834,11 @@ export class IrIrComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.ngOnInit();
+  
       if (result.success) {
         console.log("po pup de Action cerrado succes true");
+        item.show = true;
+        item.repairs = result.result; // viene desde el pop up de edicion
       }
       else {
         console.log("po pup de Action cerrado succes false");
