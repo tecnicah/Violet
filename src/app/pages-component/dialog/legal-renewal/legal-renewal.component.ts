@@ -864,9 +864,31 @@ irfselect() {
 
   dialogRef.afterClosed().subscribe(result => {
   });
-
-
 }
+
+
+editHousing(data) {
+
+  data.supplierType = 3
+  data.workOrderServicesId = this.settlingin.workOrderServicesId,
+    data.sr = this.atributos_generales.sr_id;
+  data.numberWorkOrder = this.atributos_generales.wo_number;
+  data.serviceID = this.atributos_generales.service_number;
+  data.serviceName = "Lease Renewal";
+  data.idServiceDetail = this.settlingin.id;
+  data.shared = 1;
+  data.cat_service_id = 22;
+  data.catCategoryId = 22;
+  data.serviceTypeId = 2;
+  const dialogRef = this._dialog.open(DialogHomeDetailsComponent, {
+    data: data,
+    width: "95%"
+  });
+  dialogRef.afterClosed().subscribe(result => {
+
+  })
+}
+
   
 }
 

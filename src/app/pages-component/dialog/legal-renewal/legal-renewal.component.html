@@ -129,47 +129,6 @@
     </mat-grid-list>
 
     <mat-grid-list cols="4" rowHeight="70px">
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div>
-          <p class="page__section-name">Property</p>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid">
-          <mat-form-field appearance=" fill">
-            <mat-label for="selectProperty">Select Property</mat-label>
-            <mat-select id="selectProperty" [(ngModel)]="settlingin.property"
-              (selectionChange)="permanent_homet(settlingin.property);">
-              <mat-option *ngFor="let data of dataSourceHousing" [value]="data.id">
-                <span>{{data.address}}</span>
-                <span *ngIf="(data.address == null) || (data.address == '')">
-                  Permanent Home without address captured
-                </span>
-              </mat-option>
-              <mat-option (click)="HomeDetailsnew()" [value]="null">
-                + Add Property
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-
-      </mat-grid-tile>
-
-
-    </mat-grid-list>
-
-
-
-    <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="3" [rowspan]="1">
           <div class="wid">
               <p class="page__section-name">Permanent Home</p>
@@ -188,7 +147,7 @@
   <!---------------------------- INICIO PERMANENT HOME -------------------------------------->
   <!----------------------------------------------------------------------------------------->
   
-  <div style="padding: 20px;" class="mat-elevation-z5" *ngIf="permanentHome .id > 0">
+  <div style="padding: 20px;" class="mat-elevation-z5" *ngIf="permanentHome.id > 0">
       <mat-grid-list cols="5" rowHeight="70px">
           <mat-grid-tile [colspan]="1" [rowspan]="4">
               <div class="page__sectionConsultant page__section-inputs no-padding-tb">
