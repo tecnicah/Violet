@@ -21,7 +21,7 @@ export class LsfContractComponent implements OnInit {
   
   data_contracts: any = {};
   RentCostSavings = 0;
-  ca_lease_signa = [{ id: 1, value: "Assignee" }, { id: 2, value: "Client" }, { id: 3, value: "Assigne and Client" }];
+  ca_lease_signa = [{ id: 1, value: "Assignee" }, { id: 2, value: "Client" }, { id: 3, value: "Assignee and Client" }];
 
   data_group_paymnets: any = { paymentHousings: [] };
   recurrence_static = [{ id: "Monthly" }, { id: "Bimonthly" }, { id: "Quarterly" }, { id: "Annually" }, { id: "Biannually" }];

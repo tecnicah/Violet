@@ -116,16 +116,6 @@
                                 </mat-form-field>
                             </div>
                         </mat-grid-tile>
-        
-                        <mat-grid-tile [colspan]="4" [rowspan]="1"
-                            *ngIf="data_contracts.leasesignatories == 2 || data_contracts.leasesignatories == 3">
-                            <div style="width: 100%;">
-                                <div>
-                                    <p class="page__section-name" style="font-size: 12px;">Lease Signatore Info</p>
-                                </div>
-                            </div>
-                        </mat-grid-tile>
-        
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
@@ -138,8 +128,19 @@
                             </div>
                         </mat-grid-tile>
         
+                        <mat-grid-tile [colspan]="4" [rowspan]="1"
+                            *ngIf="data_contracts.leasesignatories == 2 || data_contracts.leasesignatories == 3">
+                            <div style="width: 100%;">
+                                <div>
+                                    <p class="page__section-name" style="font-size: 12px;">Client Lease Signator Info</p>
+                                </div>
+                            </div>
+                        </mat-grid-tile>
         
-                        <mat-grid-tile [colspan]="1" [rowspan]="1"
+                        
+        
+        
+                        <mat-grid-tile [colspan]="2" [rowspan]="1"
                             *ngIf="data_contracts.leasesignatories == 2 || data_contracts.leasesignatories == 3">
                             <div class="input_final textarea">
                                 <mat-form-field appearance="fill">
@@ -148,7 +149,7 @@
                                 </mat-form-field>
                             </div>
                         </mat-grid-tile>
-                        <mat-grid-tile [colspan]="1" [rowspan]="1"
+                        <mat-grid-tile [colspan]="2" [rowspan]="1"
                             *ngIf="data_contracts.leasesignatories == 2 || data_contracts.leasesignatories == 3">
                             <div class="input_final textarea">
                                 <mat-form-field appearance="fill">

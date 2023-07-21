@@ -12,8 +12,8 @@ export const environment = {
   //API_URL_na: 'https://localhost:44382/', // mi local
   //images_path: "https://localhost:44382/", 
 
-   images_path: "https://my.premierds.net/api-test-premier/",
+    images_path: "https://my.premierds.net/api-test-premier/",
    URL_EXPORT: 'https://my.premierds.net/demo/',
    API_URL: "https://my.premierds.net/api-test-premier/api/", //demo sean
-   API_URL_na: 'https://my.premierds.net/api-test-premier/', //dev
+   API_URL_na: 'https://my.premierds.net/api-test-premier/', //dev 
 }
