@@ -211,7 +211,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header="service_line" class="text-center">Service <br />
             Line</th>
           <td mat-cell *matCellDef="let element" class="text-center">
-    
+
             <span class="cursor-pointer"
               title="{{ element.serviceLine }}" *ngIf="element.serviceLine=='Relocation'">
               R
@@ -293,7 +293,7 @@
                       <div mat-line>
                        <a href="partner_client/{{element.clientId}}" class="browser" target="_blank">
                         {{element.client}}
-                       </a> 
+                       </a>
                       </div>
                       <div mat-line>
                         <span style="font-size: 11px;">
@@ -312,7 +312,7 @@
                           <img src="assets/table-icons/check.png" width="10" height="10" *ngIf="element.urgent" />
                           <img src="assets/table-icons/uncheck.png" width="10" height="10" *ngIf="!element.urgent" />
                         </span>
-                       </div> 
+                       </div>
                        <div mat-line>
                         <span style="font-size: 11px;">
                           Confidential Move
@@ -321,7 +321,7 @@
                           <img src="assets/table-icons/check.png" width="10" height="10" *ngIf="element.confidentialMove" />
                           <img src="assets/table-icons/uncheck.png" width="10" height="10" *ngIf="!element.confidentialMove" />
                         </span>
-                       </div> 
+                       </div>
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -417,7 +417,7 @@
                 {{element.coordinatorImm[0]?.name}}{{element.coordinatorRelo[0]?.name}}
               </span>
             </span>
-    
+
             <span *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length  == 0">
               Not assigned
             </span>
@@ -439,7 +439,7 @@
                 {{element.supplierConsultantImm[0]?.name}}{{element.supplierConsultantRelo[0]?.name}}
               </span>
             </span>
-    
+
             <span *ngIf="element.supplierConsultantImm?.length + element.supplierConsultantRelo?.length  == 0">
               Not assigned
             </span>
@@ -487,7 +487,7 @@
 </mat-menu>
 
     <mat-menu #menu="matMenu" yPosition="above">
-     
+
       <div class="assigned_services">
         <div style="text-align: left;">
           <div mat-subheader class="browser" *ngIf="homeImm.length > 0 || hostImm.length > 0">Immigration</div>
@@ -496,7 +496,7 @@
             <span style="text-transform: capitalize; font-size: 12px">Home - {{homeImm[0].country}}</span>
             <mat-list-item *ngFor="let item of homeImm">
               <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-              <div mat-line style="font-size: 10px;"> 
+              <div mat-line style="font-size: 10px;">
                {{item.numberWorkOrder}},
                {{item.number_server}}
               </div>
@@ -506,7 +506,7 @@
             <span style="text-transform: capitalize; font-size: 12px">Host - {{hostImm[0].country}}</span>
             <mat-list-item *ngFor="let item of hostImm">
               <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-              <div mat-line style="font-size: 10px;"> 
+              <div mat-line style="font-size: 10px;">
                {{item.numberWorkOrder}},
                {{item.number_server}}
               </div>
@@ -518,7 +518,7 @@
             <span style="text-transform: capitalize; font-size: 12px">Home - {{homeRelo[0].country}}</span>
             <mat-list-item *ngFor="let item of homeRelo">
               <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-              <div mat-line style="font-size: 10px;"> 
+              <div mat-line style="font-size: 10px;">
                {{item.numberWorkOrder}},
                {{item.number_server}}
               </div>
@@ -528,7 +528,7 @@
             <span style="text-transform: capitalize; font-size: 12px">Host - {{hostRelo[0].country}}</span>
             <mat-list-item *ngFor="let item of hostRelo">
               <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-              <div mat-line style="font-size: 10px;"> 
+              <div mat-line style="font-size: 10px;">
                {{item.numberWorkOrder}},
                {{item.number_server}}
               </div>
@@ -772,7 +772,7 @@
       <div class="page__section-input page__section-input--x" style="padding-right: 0px !important">
         <mat-form-field class="example-full-width" style="padding-right: 0px !important">
           <mat-label>Special Instructions</mat-label>
-          <input matInput #specialInstruccion maxlength="100" 
+          <input matInput #specialInstruccion maxlength="100"
           placeholder="Schooling Preferences, Specific Educational Programs, Medical Conditions, etc." [(ngModel)]="new_service_record_data.specialIntructions" />
           <mat-hint align="end">{{specialInstruccion.value.length}} / 100</mat-hint>
         </mat-form-field>
@@ -785,11 +785,11 @@
           (click)="showTabSelected('ass', $event)">
           Assignee & Family Info
         </div>
-        <div class="page__section-tab" id="tab_immigration_section" (click)="showTabSelected('imm', $event)"
+<!--         <div class="page__section-tab" id="tab_immigration_section" (click)="showTabSelected('imm', $event)"
         [ngClass]="{'none-visible' : !USERDATA.profileUsers[0].immigration}">
           Immigration
-        </div>
-        <div class="page__section-tab" (click)="showTabSelected('rel', $event)"
+        </div> -->
+        <div class="page__section-tab" id="tab_relocation_section" (click)="showTabSelected('rel', $event)"
         [ngClass]="{'none-visible' : !USERDATA.profileUsers[0].relocation}">
           Relocation
         </div>
@@ -1063,7 +1063,7 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <mat-form-field appearance="fill" class="input_final">
               <mat-label>Final Move Date</mat-label>
-              <input [min]="new_service_record_data.assigneeInformations[0].initialArrival" matInput 
+              <input [min]="new_service_record_data.assigneeInformations[0].initialArrival" matInput
               [disabled]="!new_service_record_data.assigneeInformations[0].initialArrival" [matDatepicker]="ass_ea_date" autocomplete="off"
                 (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_fmov'} );"
                 (dateChange)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_fmov'} );"
@@ -1132,7 +1132,7 @@
                 <mat-option disabled *ngIf="(city_home_catalogue | filterBy: filterHomeCity).length === 0">No matching
                   elements</mat-option>
               </mat-select>
-              
+
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -1197,7 +1197,7 @@
             <mat-form-field appearance="fill" class="input_central">
               <mat-label>Host City</mat-label>
               <mat-select matNativeControl [(ngModel)]="new_service_record_data.assigneeInformations[0].hostCityId"
-                [disabled]="country_catalogue.length >= 1"
+                [disabled]="country_catalogue.length == 0"
                 (selectionChange)="removeErrorLabel( $event.value, {handler: nso_ainfo_fields, field: 'no_chos'} ); Hostcitychange();">
                 <mat-form-field appearance="outline" style="padding: 5px;">
                   <mat-label>Host city</mat-label>
@@ -1349,10 +1349,10 @@
                   <mat-grid-tile [colspan]="1" [rowspan]="1">
                     <mat-form-field appearance="fill" class="input_central_half">
                       <mat-label>Date of Birth</mat-label>
-                      <input matInput autocomplete="off" [matDatepicker]="depen_bd" [max]="getMaxDateTo(0)" 
+                      <input matInput autocomplete="off" [matDatepicker]="depen_bd" [max]="getMaxDateTo(0)"
                             (change)="
                             dependent_item.birth = $event.target.value;
-                            calculateHowOldDina( 'dependent_age_' + index, $event.target.value);" 
+                            calculateHowOldDina( 'dependent_age_' + index, $event.target.value);"
                             (dateChange)="
                             dependent_item.birth = $event.value;
                             calculateHowOldDina( 'dependent_age_' + index, $event.value, false)" />
@@ -1699,37 +1699,8 @@
       </div>
       <!-- Assignee & Family Info Form -------------------------------------------------------- -->
       <!-- Immigration -------------------------------------------------------- -->
-      <div action="" class="page__section-form display-none" id="tab_imm">
+    <!--   <div action="" class="page__section-form display-none" id="tab_imm">
         <div class="page__section page__section--nowrap">
-          <!--div class="page__section page__section-inputs">
-            <div class="page__section-input">
-              <mat-form-field appearance="fill" class="input_central">
-                <mat-label>Authorized By</mat-label>
-                <mat-select matNativeControl required [(ngModel)]="new_service_record_data.authorizedByImmigration"
-                  [disabled]="authorize_catalogue.length == 0">
-                  <mat-form-field appearance="outline" style="padding: 5px;">
-                    <mat-label>Authorized By</mat-label>
-                    <input matInput placeholder="Authorized By" [(ngModel)]="filterImiAutori.name">
-                  </mat-form-field>
-                  <mat-option *ngFor="let item of authorize_catalogue | filterBy: filterImiAutori" [value]="item.id">
-                    {{ item.name }}
-                  </mat-option>
-                  <mat-option disabled *ngIf="(authorize_catalogue | filterBy: filterImiAutori).length === 0">No
-                    matching elements</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="page__section-input padding-top-x">
-              <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.copyOnEmailImmigration">
-                Copy On E-mails
-              </mat-checkbox>
-            </div>
-            <div class="page__section-input page__section-input--10 padding-top-x">
-              <mat-checkbox class="example-margin" [(ngModel)]="new_service_record_data.spocImmigration">
-                SPOC
-              </mat-checkbox>
-            </div>
-          </div-->
         </div>
         <div class="page__title">
           Experience Team
@@ -1742,7 +1713,6 @@
         <div class="page__section page__section--card margin-bottom-min page__section--nowrap">
           <mat-grid-list cols="4" rowHeight="60px">
             <mat-grid-tile [colspan]="1" [rowspan]="1">
-              <!-- coordinator  type-->
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Coordinator Type</mat-label>
                 <mat-select matNativeControl required [(ngModel)]="imm_coordinator_model.coordinatorTypeId"
@@ -1751,7 +1721,6 @@
                     <mat-label>Coordinator Type</mat-label>
                     <input matInput placeholder="Coordinator Type" [(ngModel)]="filterImiCoordina.coordinatorType">
                   </mat-form-field>
-                  <!-- <mat-option selected disabled value="">Coordinator Type</mat-option> -->
                   <mat-option *ngFor="let item of coordinatortype_catalogue | filterBy: filterImiCoordina"
                     [value]="item.id">
                     {{ item.coordinatorType }}
@@ -1764,7 +1733,6 @@
                 </span>
               </mat-form-field>
             </mat-grid-tile>
-            <!-- coordinator -->
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Coordinator</mat-label>
@@ -1774,7 +1742,6 @@
                     <mat-label>Coordinator</mat-label>
                     <input matInput placeholder="Coordinator" [(ngModel)]="filterImiCoordina2.coordinator">
                   </mat-form-field>
-                  <!-- <mat-option selected disabled value="">Coordinator</mat-option> -->
                   <mat-option *ngFor="let item of coordinator_catalogue | filterBy: filterImiCoordina2"
                     [value]="item.id">
                     {{ item.coordinator }}
@@ -1787,7 +1754,6 @@
                 </span>
               </mat-form-field>
             </mat-grid-tile>
-            <!-- assigned date -->
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Assigned Date</mat-label>
@@ -1813,83 +1779,10 @@
             </mat-grid-tile>
           </mat-grid-list>
         </div>
-        <!-- add supplier immigration -->
-        <!-- <div class="page__section">
-          <div class="page__title">
-            Supplier Partners
-          </div>
-        </div>
-        <div class="page__section">
-          <table mat-table mat-sort [dataSource]="table_imm_sup_par" class="main-table">
-
-            <ng-container matColumnDef="campo_0">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Type</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.supplierTypeIdText }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="campo_1">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier Company</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.supplierCompanyIdText }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="campo_2">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Supplier</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.supplierIdText }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="campo_3">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Date</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                {{ filterDate( element.assignedDate ) }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="campo_4">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Assigned Services</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.assignedServicesIdText }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="campo_5">
-              <th mat-header-cell *matHeaderCellDef class="text-center"></th>
-              <td mat-cell *matCellDef="let index = index" class="text-center">
-                <div class="table-row__check">
-                  <img (click)="deleteImmSupPar(index)" class="cursor-pointer" src="/assets/icons/delete.png" />
-                </div>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="colums_sup_table"></tr>
-            <tr mat-row *matRowDef="let row; columns: colums_sup_table;"></tr>
-          </table>
-        </div>
-        <div class="page__section display-none">
-          <mat-paginator  [pageSizeOptions]="getPageSizeOptionsImmi()" showFirstLastButtons></mat-paginator>
-
-        </div> -->
-
-
-        <!-- <div class="page__section no-padding-tb margin-tb-min">
-          <div class="page__section-name"></div>
-          <div class="page__section-button">
-            <button *ngIf="!show_supplier_section" class="button-icon button-icon--adder"
-              (click)="showSupplierSection()">
-              Add Supplier
-            </button>
-          </div>
-        </div> -->
         <div class="page__section page__section--card margin-bottom-min" *ngIf="show_supplier_section">
           <button (click)="showSupplierSection()" class="page__section--card-closeButton">
           </button>
           <mat-grid-list cols="4" rowHeight="80px">
-            <!-- supplier type -->
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Supplier Country</mat-label>
@@ -1903,7 +1796,6 @@
                   <mat-option *ngIf="(new_service_record_data.assigneeInformations[0].homeCountryId != undefined)"
                     [value]="new_service_record_data.assigneeInformations[0].homeCountryId"
                     (click)="__supplier__(new_service_record_data.assigneeInformations[0].homeCountryId, new_service_record_data.assigneeInformations[0].homeCityId, 1)">
-                    <!-- {{ getNameCountry(new_service_record_data.assigneeInformations[0].homeCountryId )}} -->
                     {{homeCountry}}
                   </mat-option>
                   <mat-option *ngIf="(new_service_record_data.assigneeInformations[0].hostCountry != undefined)"
@@ -1915,18 +1807,13 @@
                     *ngIf="(new_service_record_data.assigneeInformations[0].homeCountryId == undefined) &&(new_service_record_data.assigneeInformations[0].hostCountry == undefined)">
                     No matching
                     elements</mat-option>
-                  <!-- <mat-option *ngFor="let item of sp_catalog | filterBy: filterImiSupplier" [value]="item.id">
-                    {{ item.type }}
-                  </mat-option>
-                  <mat-option disabled *ngIf="(sp_catalog | filterBy: filterImiSupplier).length === 0">No matching
-                    elements</mat-option> -->
+
                 </mat-select>
                 <span class="label-error" *ngIf="imm_sup_form.no_styp">
                   Field is required
                 </span>
               </mat-form-field>
             </mat-grid-tile>
-            <!-- supplier -->
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Supplier</mat-label>
@@ -1939,7 +1826,6 @@
                     <mat-label>Supplier</mat-label>
                     <input matInput placeholder="Supplier" [(ngModel)]="filterImiSupplier2.name">
                   </mat-form-field>
-                  <!-- <mat-option selected disabled value="">Supplier</mat-option> -->
                   <mat-option *ngFor="let item of supplier_catalogue | filterBy: filterImiSupplier2" [value]="item.id">
                     {{ item.name }}
                   </mat-option>
@@ -1975,7 +1861,6 @@
             </mat-grid-tile>
           </mat-grid-list>
           <mat-grid-list cols="4" rowHeight="80px" style="display: none;">
-            <!-- assigned service -->
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Assigned Services</mat-label>
@@ -1987,7 +1872,6 @@
                     <input matInput placeholder="Assigned Services"
                       [(ngModel)]="filterImiAssignedService.assignedService">
                   </mat-form-field>
-                  <!-- <mat-option selected disabled value="">Assigned Services</mat-option> -->
                   <mat-option *ngFor="let item of assigment_catalogue  | filterBy: filterImiAssignedService"
                     [value]="item.id">
                     {{ item.assignedService }}
@@ -2010,7 +1894,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- Immigration -------------------------------------------------------- -->
       <!-- Relocation -------------------------------------------------------- -->
       <div class="page__section-form display-none" id="tab_rel">

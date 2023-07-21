@@ -9,7 +9,9 @@ import {
   ViewChild,
   HostListener,
   Directive,
-  AfterViewInit
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { MenuItems } from '../../shared/menu-items/menu-items';
 import { MenuItemsSide } from '../../shared/menu-items/menu-items';
@@ -20,7 +22,7 @@ import { LoaderComponent } from 'app/shared/loader';
 import { DialogGeneralMessageComponent } from 'app/pages-component/dialog/general-message/general-message.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardComponent } from 'app/pages-component/dashboard/dashboard.component';
-import {  } from '../../../environments/environment'
+import { } from '../../../environments/environment'
 
 /** @title Responsive sidenav */
 @Component({
@@ -58,7 +60,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     //   this.get_Chats();
     //   this.get_Notification();
     // });
-
+    this.suscribirEventos();
   }
   id: number = 0;
   profileUser;
@@ -80,7 +82,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   viewMessage(id) {
     console.log(id);
     //localStorage.setItem("conversationId", id);
-    this._router.navigateByUrl('/messenger-center/'+id);
+    this._router.navigateByUrl('/messenger-center/' + id);
   }
   redirecMessage() {
     // console.log(id);
@@ -134,23 +136,27 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     }
   }
   // acceder al perfil desde notificaciones
-  profilePageNotification(idUser: number, role: number){
+  profilePageNotification(idUser: number, role: number) {
     // let user = JSON.parse(localStorage.getItem('userData'));
     console.log('id user', idUser);
     console.log('role', role);
 
     // role id 19 es igual a "Super Admin"
     // if (role == 1 || role == 19) {
-    if(role != 2 && role != 3){
-      this._router.navigateByUrl('profilemanager/'+idUser);
-    }else if(role == 2){
-      this._router.navigateByUrl('profilecoordinator/'+idUser);
-    }else if(role == 3){
-      this._router.navigateByUrl('profileconsultant/'+idUser);
+    if (role != 2 && role != 3) {
+      this._router.navigateByUrl('profilemanager/' + idUser);
+    } else if (role == 2) {
+      this._router.navigateByUrl('profilecoordinator/' + idUser);
+    } else if (role == 3) {
+      this._router.navigateByUrl('profileconsultant/' + idUser);
     }
   }
 
   ngAfterViewInit() {
+    /*     this._ngZone.runOutsideAngular(() => {
+          console.log('hola');
+
+        }) */
     this.get_Notification();
     this.get_Chats();
     let user = JSON.parse(localStorage.getItem('userData'));
@@ -182,14 +188,20 @@ export class FullComponent implements OnDestroy, AfterViewInit {
       }, 1500);
     }
   }
-
+  suscribirEventos() {
+    this._services.avisoAdmin.subscribe(data => {
+      this._ngZone.run(() => {
+        this.get_Chats();
+      })
+    })
+  }
   get_Chats() {
     this.menu.service_general_get('Chat/GetChatNotification/' + this.userData.id).subscribe(n => {
       if (n.success) {
         this.table_contacts = n.result.value;
         console.log(this.table_contacts);
       }
-    })
+    });
   }
 
   //*************************************************************//
@@ -206,7 +218,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
         // });
         var notificaciones = data.result.value.today;
         // var notificaciones = data.result.value.previous.concat(data.result.value.today)
-      //  notificaciones = data.result.value;
+        //  notificaciones = data.result.value;
         let uux_notificaciones = []
         for (let i = 0; i < notificaciones.length; i++) {
           if ((notificaciones[i].archive == false && notificaciones[i].view == false)) {
@@ -222,7 +234,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     }));
   }
 
-  leerNotificaciones(){
+  leerNotificaciones() {
     this.menu.service_general_put('Notification/PutViewAll/?userId=' + this.userData.id, '').subscribe((data => {
       // this.menu.service_general_put(`Notification/PutViewed/${data.id}/true`).subscribe((data => {
       if (data.success) {
@@ -290,10 +302,21 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  goto(url_){
-    //alert(url);
-    let url = this._router.createUrlTree([url_]);
+  goto(url_) {
+    let url: string;
+    if (window.location.href.startsWith('http://localhost')) {
+      url = this._router.createUrlTree([url_]).toString();
+    }
+    else {
+      let urlCom = 'demo/'+url_
+      console.log(urlCom);
+      url = this._router.createUrlTree([urlCom]).toString()
+  }
+
+  console.log(url);
     window.open(url.toString(), '_blank');
+    /*  let url = this._router.createUrlTree([url_]);
+       window.open(url.toString(), '_blank'); */
   }
 
   //ACEPTAMOS NOTIFICACION//
@@ -319,7 +342,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this.menu.service_general_putnoapi(status, '').subscribe((data => {
       console.log(data);
       if (data.success) {
-        
+
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
@@ -330,9 +353,9 @@ export class FullComponent implements OnDestroy, AfterViewInit {
         let event = { 'checked': false };
         this.archivar(data_, event);
       }
-     // let event = { 'checked': false };
-     // this.archivar(data_, event);
-     //  this.marcarLeida(data_);
+      // let event = { 'checked': false };
+      // this.archivar(data_, event);
+      //  this.marcarLeida(data_);
     }))
   }
 }

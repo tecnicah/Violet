@@ -332,7 +332,7 @@ export class NewServiceRecordComponent implements OnInit {
       });
     }
   }
-  
+
   public info_country: any = {};
   viewCity(data) {
         this.info_country.hostCountry = data.country;
@@ -570,7 +570,7 @@ export class NewServiceRecordComponent implements OnInit {
             .subscribe((response: any) => {
               if (response.success) {
                 element.status = response.result.item2;
-                element.statusId = response.result.item1; 
+                element.statusId = response.result.item1;
               }
 
             }, (error: any) => {
@@ -579,8 +579,8 @@ export class NewServiceRecordComponent implements OnInit {
 
             });
           });
-          setTimeout(() => { 
-            
+          setTimeout(() => {
+
             this.p.total = response.map.value.length;
             this.service_records_table_data = new MatTableDataSource(response.map.value);
             this.service_records_table_data.paginator = this.paginator;
@@ -740,7 +740,7 @@ export class NewServiceRecordComponent implements OnInit {
     // this.rel_coordinator_model.coordinatorId = '';
     // this.rel_coordinator_model.assigned = null;
     // this.rel_coordinator_model.coordinatorId ="0";
-    
+
 
 
     // this.imm_coordinator_model.coordinatorTypeId = 0;
@@ -1133,25 +1133,25 @@ export class NewServiceRecordComponent implements OnInit {
     let result: boolean = true;
 
     const validations: any = {
-      imm_form: this.getImmigrationValidation(),
+     // imm_form: this.getImmigrationValidation(),
       rel_form: this.getRelocationValidation()
     };
 
-    if (!validations.imm_form && !validations.rel_form) {
+    if (!validations.rel_form) { //!validations.imm_form &&
 
       this.one_coordinator_selected = false;
       result = false;
-      this.showDialogMessage('You must fill at leats one coordinator: Immigration or Relocations');
+      this.showDialogMessage('You must fill at leats one coordinator: Relocations'); //Immigration or
 
     } else {
 
       this.one_coordinator_selected = true;
 
-      if (validations.imm_form) {
+/*       if (validations.imm_form) {
 
         this.new_service_record_data.immigrationCoodinators.push(this.imm_coordinator_model);
 
-      }
+      } */
 
       if (validations.rel_form) {
 
@@ -2058,6 +2058,7 @@ export class NewServiceRecordComponent implements OnInit {
   }
 
   public showTabSelected(which_tab: string, event_data: any): void {
+    console.log(which_tab);
     if (which_tab == "imm") {
       this.type_company_relocation = "";
     }
@@ -2081,7 +2082,8 @@ export class NewServiceRecordComponent implements OnInit {
     if (this.rel_coordinator_model.assigned == null) {
       this.rel_coordinator_model.assigned = new Date();
     }
-  }
+
+}
 
   public showModal(sr_data: any = null): void {
     //debugger;
@@ -2267,7 +2269,7 @@ export class NewServiceRecordComponent implements OnInit {
     this._services.service_general_get("ServiceRecord/GetHomeCountryById?id="+this.new_service_record_data.assigneeInformations[0].homeCountryId).subscribe(result => {
       this.homeCountry = result;
     });
-    
+
     !this.show_supplier_section ?
       this.show_supplier_section = true :
       this.show_supplier_section = false;
@@ -2644,7 +2646,7 @@ export class NewServiceRecordComponent implements OnInit {
 
   public changePageToSection(sections: any): void {
 
-    const tis_as_button: any = document.getElementById('tab_immigration_section'),
+    const tis_as_button: any = document.getElementById('tab_relocation_section'),
       tas_as_button: any = document.getElementById('tab_assign_section');
 
     if (!sections.general_form) {
@@ -2818,19 +2820,19 @@ export class NewServiceRecordComponent implements OnInit {
 
     console.log("hostImm:", this.hostImm,"hostRelo:", this.hostRelo,"homeImm:",this.homeImm,"homeRelo:",this.homeRelo);
     // this.services_consult.push({
-    //   hostImm: hostImm, 
+    //   hostImm: hostImm,
     //   hostRelo: hostRelo,
     //   homeImm: homeImm,
     //   homeRelo: homeRelo
     // });
     this.services_consult.filter()
     console.log("Entra a consultar las WO immigration: ", this.services_consult);
-    
+
     //await this.initPageSettings(data_.id);
     // this.services_consult = [];
     // this._services.service_general_get("ServiceRecord/GetServices/" + data_.id + "?type=" + data_.serviceline).subscribe((data => {
-    //   console.log("Entra a consultar las WO immigration: ", data.map.value);    
-    
+    //   console.log("Entra a consultar las WO immigration: ", data.map.value);
+
     //   var host    = []
     //   var hostTemp = []
     //   var home    = []
@@ -2846,7 +2848,7 @@ export class NewServiceRecordComponent implements OnInit {
     //       }else{
     //         host.push(
     //             {
-    //               "country" : data.map.value.host[i]["country"] , 
+    //               "country" : data.map.value.host[i]["country"] ,
     //               "service" : [{
     //                 service_name: data.map.value.host[i]["service_name"],
     //                 numberWorkOrder: data.map.value.host[i]["numberWorkOrder"],
@@ -2866,7 +2868,7 @@ export class NewServiceRecordComponent implements OnInit {
     //     }else{
     //       home.push(
     //           {
-    //             "country" : data.map.value.home[i]["country"] , 
+    //             "country" : data.map.value.home[i]["country"] ,
     //             "service" : [{
     //               service_name: data.map.value.home[i]["service_name"],
     //               numberWorkOrder: data.map.value.home[i]["numberWorkOrder"],
@@ -2875,12 +2877,12 @@ export class NewServiceRecordComponent implements OnInit {
     //           })
     //     }
     // }
-    
+
     //   console.log({
     //     home: home,
     //     host: host
     //   })
-    
+
     //   this.services_consult.push({
     //     home: home,
     //     host: host

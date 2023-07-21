@@ -16,7 +16,7 @@ import { DialogGeneralMessageComponent } from './../general-message/general-mess
 }) export class DialogEditServices implements OnInit {
   public USERDATA: any;
   servicios_sr:any;
-  
+
     constructor(
         public dialogRef: MatDialogRef<DialogEditServices>,
         public _services: ServiceGeneralService,
@@ -58,6 +58,7 @@ import { DialogGeneralMessageComponent } from './../general-message/general-mess
                         this.so_gotted = response.result.value;
 
                         if( this.so_gotted == null ) this.so_gotted = [];
+                      console.log(this.so_gotted);
 
                         this.dataSource = new MatTableDataSource( this.so_gotted );
                         this.dataSource.paginator = this.paginator;
@@ -83,7 +84,7 @@ import { DialogGeneralMessageComponent } from './../general-message/general-mess
 
     }
 
-    public displayedColumns: string[] = ['cam_0', 'cam_1', 'cam_2', 'cam_3', 'cam_4','cam_5','cam_6'];
+    public displayedColumns: string[] = ['cam_0', 'cam_1', 'cam_2', 'cam_3', 'cam_4','cam_6'];//cam_5
     public dataSource;
     public hideModal(): void {
 

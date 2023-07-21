@@ -24,7 +24,7 @@
 
         <div class="recients" [style.height]="_innerHeight">
           <table style="border-collapse: collapse;">
-            <tr *ngFor="let element of table_contacts | orderBy: 'lastMessageTime' | filterBy: contact" 
+            <tr *ngFor="let element of table_contacts | orderBy: 'lastMessageTime' | filterBy: contact"
             [ngClass]="{'active_convertation': (element.conversationId == actual_user.conversationId)}">
               <td style="width:50px; padding: 10px 0; cursor: pointer;"
                 (click)="getConversation(element.conversationId,element.unreadMessages); actual_user = element;">
@@ -40,7 +40,7 @@
               <td   class="user_chats" matRipple matRippleColor="rgba(158, 53, 149, 0.5)" (click)="getConversation(element.conversationId, element.unreadMessages); actual_user = element;" style="height: 70px; cursor: pointer;">
                 <div style="display: flex; align-items: center; width: 100%;">
                   <span *ngIf="element.groups == true"  style="margin-left: 19px;"> {{element.groupName == null ? 'Group chat' : element.groupName}} </span>
-                  
+
                   <span *ngIf="element.groups == false"  style="font-size: 14px;">{{element.name}}
                     {{element.lastname}} <br> <span style="font-size: 12px;">{{element.profile}}</span></span><br>
                 </div>
@@ -233,7 +233,7 @@
  -->
 
 <div fxLayout="row" fxLayoutAlign="start start">
-  <div fxFlex="25" style="z-index:99;" 
+  <div fxFlex="25" style="z-index:99;"
   class="mat-elevation-z5">
     <div id="divHeaderName" [style.height]="_headerName">
       <div fxLayoutAlign="space-between center" style="padding:15px">
@@ -254,23 +254,23 @@
         font-size: 14px;
         background-color: white;
         background-image: url('/assets/icons/searchicon.png');
-        background-position: 10px 10px; 
+        background-position: 10px 10px;
         background-repeat: no-repeat;
         padding: 12px 20px 12px 40px;">
       </div>
-      
+
     </div>
 
     <mat-list id="divUsers" [style.height]="_innerHeight" style="overflow-y: auto; overflow-x: hidden;">
-      <mat-list-item *ngFor="let element of table_contacts | filterBy: contact" style="cursor:pointer;" 
-      [ngClass]="{'active_convertation': element.conversationId == conversationId}" 
-      (click)="getConversation(element.conversationId,element.unreadMessages, element.userReciver); 
+      <mat-list-item *ngFor="let element of table_contacts | filterBy: contact" style="cursor:pointer;"
+      [ngClass]="{'active_convertation': element.conversationId == conversationId}"
+      (click)="getConversation(element.conversationId,element.unreadMessages, element.userReciver);
       getAvatar(element);" style="margin: 15px 0;">
         <img matListAvatar [src]="_services.url_images+element?.photo"  alt="" *ngIf="element?.photo != null && !element.groups">
         <img matListAvatar src="./assets/585e4d1ccb11b227491c339b.png" alt="" *ngIf="element?.photo != null && element.groups">
         <img matListAvatar src="./assets/avatar.png" alt="" *ngIf="element?.photo == null">
-        <span matLine> 
-          <b *ngIf="element.groups == true" style="font-size:14px;"> 
+        <span matLine>
+          <b *ngIf="element.groups == true" style="font-size:14px;">
             {{element.groupName == null ? 'Group chat' : element.groupName}}
           </b>
           <b *ngIf="element.groups == false" style="font-size:14px;">
@@ -278,7 +278,7 @@
           </b>
         </span>
         <p matLine>
-          <span style="font-size:12px;"> 
+          <span style="font-size:12px;">
             {{element.lastMessage}}
           </span>
         </p>
@@ -308,12 +308,12 @@
     <mat-card>
       <div id="divHeader" [style.height]="_header" fxLayout="row" fxLayoutAlign="start center" >
         <div fxFlex="80">
-          <mat-list>  
+          <mat-list>
             <mat-list-item>
               <img matListAvatar [src]="_services.url_images+header.photo" *ngIf="header.groupName == null && header.photo != null">
               <img matListAvatar src="./assets/avatar.png" *ngIf="header.groupName == null && header.photo == null">
               <img matListAvatar src="./assets/585e4d1ccb11b227491c339b.png" *ngIf="header.groupName != null">
-              
+
               <p matLine>
                 <span *ngIf="header.groupName == null">
                   {{header.name}}
@@ -324,7 +324,7 @@
                     {{element.participant}}<span>&nbsp;</span>
                   </span>
                 </span>
-              </p>                
+              </p>
             </mat-list-item>
           </mat-list>
         </div>
@@ -337,15 +337,18 @@
         <div class="msg-body" *ngFor="let item of chat">
           <ul>
             <li [ngClass]="{'sender': item.userId != userData.id, 'repaly': item.userId == userData.id}">
-              <p style="white-space: initial;"> 
-                {{item.message1}}    
+              <p style="white-space: initial;">
+                <span style="color: #476bd4;
+                font-weight: bold;
+                font-size: smaller;">{{item.user}}</span><br>
+                {{item.message1}}
                 <span *ngFor="let doc of item.documentMessages">
                   <a href="{{this._services.url_images+doc.filePath}}"
                     target="_black">
                     <img [src]="pat(doc.filePath)" style="width: 60px;">
                   </a>
-                </span> 
-               
+                </span>
+
                 <br>
                 <span class="time" align="end">{{item.time | date: 'dd MMM yyy hh:mm'}}
                   <mat-icon *ngIf="item.userId == userData.id && item.unreadMessages == 1" style="color: #9d3292;
@@ -429,14 +432,14 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
   <div fxFlex="75" fxLayoutAlign="center center" *ngIf="conversationId == 0" id="divNoConversation" [style.height]="_noConversation">
     <span style="font-size: 18px; color: #909497; text-align: center;">
       Send and receive messages, select or create a conversation to start<br>
       <button class="page__path--closeButton" routerLink="/serviceRecord" style="cursor:pointer;">Back to Service Record</button>
-    </span> 
+    </span>
   </div>
 </div>
 <ngx-file-drop class="file-drop" style="display: none;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
