@@ -181,6 +181,9 @@
               <mat-hint align="end">{{message_url.value.length}} / 250</mat-hint>
             </mat-form-field>
           </div>
+          <a href="{{message_url.value}}" target="_blank"><img *ngIf="message_url.value.length > 9" 
+          src="data:image/png;base64,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"
+           alt="" style="position: absolute; right: 20px; cursor:pointer"></a>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -276,7 +279,7 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div>
             <mat-form-field appearance="fill">
-              <mat-label>Additional Comments</mat-label>
+              <mat-label>Internal Comments</mat-label>
               <input matInput required placeholder="Any comment to add?" #message_comments maxlength="256"
                 [(ngModel)]="data.additionalComments">
               <mat-hint align="end">{{message_comments.value.length}} / 500</mat-hint>
