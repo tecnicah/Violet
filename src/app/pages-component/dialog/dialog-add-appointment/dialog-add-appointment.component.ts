@@ -96,7 +96,8 @@ export class DialogAddAppointmentComponent implements OnInit {
     let data_final = [];
 
     if (this.data.appointmentId != 0) {
-      this._services.service_general_get('Appointment/GetAppointmentById?id=' + Number(this.data.appointmentId)).subscribe((data => {
+      this._services.service_general_get('Appointment/GetAppointmentById?id=' + Number(this.data.appointmentId))
+      .subscribe((data => {
         console.log("appointment by id; ", data);
         for (let i = 0; i < data.result.value.length; i++) {
           data.result.value[i].ended = this.data.ended;
@@ -1358,6 +1359,7 @@ export class DialogAddAppointmentComponent implements OnInit {
 
   validate_starttime(i, item) {
     debugger;
+    console.log(item.startTime);
     let tod = new Date();
     let igual = false;
 
@@ -1373,7 +1375,7 @@ export class DialogAddAppointmentComponent implements OnInit {
         }
       }
 
-      let sss = tod.getHours();
+      // let sss = tod.getHours();
 
       if (igual) {
         if (tod.getHours() < hora_start) {
