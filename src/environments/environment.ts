@@ -7,10 +7,10 @@
 export const environment = {
   production: false,
 
-    /*URL_EXPORT: 'http://localhost:4200/',// mi local 
-    API_URL: 'https://localhost:44382/api/', // mi local 
-   API_URL_na: 'https://localhost:44382/', // mi local
-   images_path: "https://localhost:44382/" */
+  //  URL_EXPORT: 'http://localhost:4200/',// mi local 
+   //API_URL: 'https://localhost:44382/api/', // mi local 
+  //API_URL_na: 'https://localhost:44382/', // mi local
+  //images_path: "https://localhost:44382/", 
 
     images_path: "https://my.premierds.net/api-test-premier/",
    URL_EXPORT: 'https://my.premierds.net/demo/',
