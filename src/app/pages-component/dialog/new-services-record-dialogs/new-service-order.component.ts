@@ -576,7 +576,7 @@ export class NewServiceOrderDialog implements OnInit {
       }
     }
     if (validations.main && validations.bundles && validations.one_service && this.show_bform_errors) {
-      console.log(this.work_order);
+      console.log(JSON.stringify(this.work_order));
 
       this._services.service_general_post_with_url('ServiceOrder/CreateOrder', this.work_order)
         .subscribe((response: any) => {
@@ -647,6 +647,7 @@ export class NewServiceOrderDialog implements OnInit {
       }
     }
     if (validations.main && validations.bundles && validations.one_service && this.show_bform_errors) {
+      console.log(JSON.stringify(this.work_order));
       this._services.service_general_put('ServiceOrder/UpdateOrder', this.work_order)
         .subscribe((response: any) => {
           if (response.success) {

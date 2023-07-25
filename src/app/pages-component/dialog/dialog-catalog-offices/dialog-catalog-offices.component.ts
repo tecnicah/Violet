@@ -203,7 +203,7 @@ export class DialogCatalogOfficesComponent implements OnInit {
     if(!this.data.image) this.data.image = '';
     if(!this.data.imageExtension) this.data.imageExtension = '';
 
-    console.log("DATA A GUARDAR: ", this.data);
+    //console.log("DATA A GUARDAR: ", this.data);
     if (this.data.id == 0) {
       this.__loader__.showLoader();
       this.data.createdBy = userData.id;
@@ -216,6 +216,7 @@ export class DialogCatalogOfficesComponent implements OnInit {
       })
     } else {
       this.__loader__.showLoader();
+      console.log(JSON.stringify(this.data), this.data);
       this._services.service_general_put('Catalog/UpdateOffice', this.data).subscribe(r => {
         console.log('respuesta de update', r);
         this.__loader__.hideLoader();
