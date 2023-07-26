@@ -95,11 +95,6 @@
         </div>
         <div class="page__section-input page__section-input--25">
           <span class="documents__index documents__index--task">
-            Document Type
-          </span>
-        </div>
-        <div class="page__section-input page__section-input--25">
-          <span class="documents__index documents__index--task">
             Uploaded Date
           </span>
         </div>
@@ -123,14 +118,15 @@
           (click)="openRepairsFileOnWindow(item.filePath, item.id)">
           {{ item.name}}
         </div>
-        <div class="page__section-input page__section-input--25 documents__ascard--task">
+        <!-- <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{ getDocumentName(item.documentType)}} {{item.documentTypeNavigation?.privacyNavigation}}
-        </div>
+        </div> -->
         <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{item.updatedDate| date:'dd MMM yyy'}}
         </div>
         <div class="page__section-input page__section-input--25 documents__ascard--task">
-          {{statusName(item.status)}} {{item.statusNavigation?.status}}
+          <!-- {{statusName(item.status)}} {{item.statusNavigation?.status}} -->
+          Approved
         </div>
         <!-- <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{privacyName(item.privacy)}} {{item.privacyNavigation?.privacy}}

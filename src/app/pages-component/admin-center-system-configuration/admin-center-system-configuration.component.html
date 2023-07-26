@@ -103,7 +103,10 @@
       <!-- Country -->
       <ng-container matColumnDef="Country">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="country"> Country </th>
-        <td mat-cell *matCellDef="let office"> {{office.country}} </td>
+        <td mat-cell *matCellDef="let office"> 
+          <span *ngIf="office.country == 'USA'">{{office.country | uppercase}}</span>
+          <span *ngIf="office.country != 'USA'">{{office.country | titlecase}}</span>
+        </td>
       </ng-container>
       <!-- City  -->
       <ng-container matColumnDef="City">
@@ -141,7 +144,7 @@
       <ng-container matColumnDef="Country">
         <th mat-sort-header="country" mat-header-cell *matHeaderCellDef>Country</th>
         <td mat-cell *matCellDef="let element">
-          {{element.country}}
+          {{element.country | titlecase}}
         </td>
       </ng-container>
       <!-- currency -->

@@ -101,9 +101,9 @@ caPrivacy: any[] = [];
 
 
 
-    if(this.temporalDocument.description == undefined || this.temporalDocument.description == ''){
-      this.active_description = true;
-    }
+    // if(this.temporalDocument.description == undefined || this.temporalDocument.description == ''){
+    //   this.active_description = true;
+    // }
     if(this.temporalDocument.idDocumentType == undefined || this.temporalDocument.idDocumentType.length == 0){
       this.active_idDocumentType = true;
     }
@@ -134,9 +134,9 @@ caPrivacy: any[] = [];
 
   validationForm()
   {
-    if(this.temporalDocument.description == undefined){
-      return false
-    }
+    // if(this.temporalDocument.description == undefined){
+    //   return false
+    // }
 
     if(this.temporalDocument.idDocumentTypeName == undefined){
       return false

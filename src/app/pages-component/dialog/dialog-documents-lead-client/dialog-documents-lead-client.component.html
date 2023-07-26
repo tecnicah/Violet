@@ -94,11 +94,8 @@
 
       <mat-grid-tile [colspan]="2" [rowspan]="1">
         <mat-form-field appearance="fill">
-          <mat-label [ngClass]="{valid: active_description}" >Description</mat-label>
-          <input matInput placeholder="Description"  #message maxlength="500"  (focus)="active_description = false" required  [(ngModel)]="temporalDocument.description">
-          <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-          <mat-error>Field is required</mat-error>
-          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_description">Field is required</mat-hint>
+          <mat-label>Description</mat-label>
+          <input matInput placeholder="Description"  #message maxlength="500"  (focus)="active_description = false"  [(ngModel)]="temporalDocument.description">
         </mat-form-field>
       </mat-grid-tile>
 

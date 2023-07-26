@@ -72,7 +72,7 @@
           </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.status">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="!data.status">
         <div class="textarea input_central">
           <mat-form-field appearance="fill">
             <mat-label>Privacy</mat-label>
@@ -86,7 +86,7 @@
 
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <mat-form-field appearance="fill" class="input_final" >
+        <mat-form-field appearance="fill">
           <mat-label>Document Name</mat-label>
           <input matInput required placeholder="Document Name"  #messagedos maxlength="200" [(ngModel)]="temporalDocument.name">
           <mat-hint align="end">{{messagedos.value.length}} / 200</mat-hint>

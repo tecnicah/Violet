@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
+import { LoaderComponent } from 'app/shared/loader';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 })
 export class DialogContactsComponent implements OnInit {
 
+  loader: LoaderComponent = new LoaderComponent();
   constructor(public dialogRef: MatDialogRef<DialogContactsComponent>,
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -104,11 +106,13 @@ export class DialogContactsComponent implements OnInit {
   //*********************************************//
   // filtro de city dependiendo el country que se agrego en office
   getcity() {
+    this.loader.showLoader();
     this.caCity = [];
     this._services.service_general_get("Catalogue/Generic/Cities/" + this.data.idState).subscribe((data => {
       if (data.success) {
         this.caCity = data.result;
         console.log('city', this.caCity);
+        this.loader.hideLoader();
       }
     }))
     // this._services.service_general_get("Catalogue/GetState?country=" + this.data.idCountry).subscribe((data => {
@@ -130,7 +134,7 @@ export class DialogContactsComponent implements OnInit {
       }
     })
 
-    this._services.service_general_get("AdminCenter/GetContactType").subscribe((data => {
+    this._services.service_general_get("AdminCenter/GetContactType?id=2").subscribe((data => {
       if (data.success) {
         this.caTypeOffice = data.result;
         console.log('ContactType', this.caTypeOffice);
@@ -145,12 +149,14 @@ export class DialogContactsComponent implements OnInit {
     // this.caCity = await this._services.getCatalogueFrom('GetCity');
   }
   getState(data) {
+    this.loader.showLoader();
     this.ca_state = [];
     this.caCity = [];
     this._services.service_general_get("Catalogue/Generic/States/" + data).subscribe((data => {
       if (data.success) {
         this.ca_state = data.result;
         console.warn(this.ca_state)
+        this.loader.hideLoader();
       }
     }))
   }
