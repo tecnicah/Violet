@@ -8,13 +8,7 @@
       Update Office
     </h2>
   </div>
-  <div
-    fxFlex.gt-lg="10"
-    fxFlex.gt-md="10"
-    fxFlex.gt-xs="100"
-    fxFlex="100"
-    align="end"
-  >
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
     <mat-icon [mat-dialog-close]="true" style="cursor: pointer">close</mat-icon>
   </div>
 </div>
@@ -24,64 +18,43 @@
     <mat-grid-tile [colspan]="1" [rowspan]="3">
       <div class="flex-img">
         <div>
-          <img
-            src="./../../../../assets/images/users/avatar.png"
-            id="lead_client_avatar"
-            class="avatar"
-          />
+          <img src="./../../../../assets/images/users/avatar.png" id="lead_client_avatar" class="avatar" />
         </div>
         <div style="height: 10px">&nbsp;</div>
-        <input
-          class="btnr btnr--pencil"
-          hidden
-          type="file"
-          id="file"
-          accept="image/*"
-          (change)="img($event)"
-        />
-        <button
-          onclick="document.getElementById('file').click()"
-          class="btnr btnr--pencil"
-          matRipple
-          matRippleColor="rgba(157, 50, 146, 0.5)"
-        >
+        <input class="btnr btnr--pencil" hidden type="file" id="file" accept="image/*" (change)="img($event)" />
+        <button onclick="document.getElementById('file').click()" class="btnr btnr--pencil" matRipple
+          matRippleColor="rgba(157, 50, 146, 0.5)">
           Edit Photo
         </button>
       </div>
+    </mat-grid-tile>
+    <!-- Legacy Entity -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Legacy Entity</mat-label>
+        <input matInput placeholder="Legacy Entity" [(ngModel)]="data.legalEntity" />
+      </mat-form-field>
     </mat-grid-tile>
     <!-- inputs -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Office Name</mat-label>
-        <input
-          matInput
-          required
-          placeholder="Office Name"
-          [(ngModel)]="data.office"
-        />
+        <input matInput required placeholder="Office Name" [(ngModel)]="data.office" />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_office"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_office">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
     <!-- country -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Country</mat-label>
-        <mat-select
-          required
-          [(ngModel)]="data.country"
-          (selectionChange)="selectCity()"
-        >
+        <mat-select required [(ngModel)]="data.country" (selectionChange)="selectCity()">
           <mat-option *ngFor="let item of dataCountry" [value]="item.id">
             {{ item.name }}
           </mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_country"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_country">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
     <!-- city -->
@@ -94,44 +67,36 @@
           </mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_city"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_city">Field is required</mat-hint>
+      </mat-form-field>
+    </mat-grid-tile>
+    <!-- Tax ID -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Tax ID</mat-label>
+        <input matInput required placeholder="Tax ID" [(ngModel)]="data.taxId" />
       </mat-form-field>
     </mat-grid-tile>
     <!-- direccion -->
     <mat-grid-tile [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Address</mat-label>
-        <input
-          matInput
-          required
-          placeholder="Av. #5"
-          [(ngModel)]="data.address"
-        />
+        <input matInput required placeholder="Av. #5" [(ngModel)]="data.address" />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_address"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_address">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
     <!-- currency -->
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Currency</mat-label>
-        <mat-select
-          required
-          [(ngModel)]="data.currency"
-          (selectionChange)="selectCity()"
-        >
+        <mat-select required [(ngModel)]="data.currency" (selectionChange)="selectCity()">
           <mat-option *ngFor="let item of dataCurrency" [value]="item.id">
             {{ item.currency }}
           </mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_country"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_country">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
     <!-- zip -->
@@ -140,9 +105,7 @@
         <mat-label>Zip Code</mat-label>
         <input matInput required placeholder="2215" [(ngModel)]="data.zip" />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_zip"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_zip">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
     <!-- phone -->
@@ -152,66 +115,262 @@
         <mat-select matNativeControl [(ngModel)]="prefix">
           <mat-form-field appearance="outline" style="padding: 5px">
             <mat-label>Prefix</mat-label>
-            <input
-              matInput
-              placeholder="prefix"
-              [(ngModel)]="typePrefix.countriesName"
-            />
+            <input matInput placeholder="prefix" [(ngModel)]="typePrefix.countriesName" />
           </mat-form-field>
-          <mat-option
-            *ngFor="let item of prefixCatalog | filterBy : typePrefix"
-            [value]="item.countriesIsdCode"
-          >
+          <mat-option *ngFor="let item of prefixCatalog | filterBy : typePrefix" [value]="item.countriesIsdCode">
             {{ item.countriesIsdCode }} / {{ item.countriesName }}
           </mat-option>
         </mat-select>
+
       </mat-form-field>
       <mat-form-field style="margin-left: 0.5rem" style="width: 55% !important">
         <mat-label>Phone Number</mat-label>
-        <input
-          mask="(000) 000-0000"
-          type="tel"
-          matInput
-          required
-          placeholder="Phone Number"
-          [(ngModel)]="data.phone"
-        />
+        <input mask="(000) 000-0000" type="tel" matInput required placeholder="Phone Number" [(ngModel)]="data.phone" />
         <mat-error>Field is required</mat-error>
-        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_phone"
-          >Field is required</mat-hint
-        >
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_phone">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
     <!-- email -->
     <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>E-mail</mat-label>
-        <input
-          matInput
-          required
-          placeholder="email@email.com"
-          [(ngModel)]="data.email"
-          (change)="
+        <input matInput required placeholder="email@email.com" [(ngModel)]="data.email" (change)="
             removeErrorLabel($event.target.value, {
               handler: nso_ainfo_fields,
-              field: 'no_emai'
+              field: 'no_email'
             });
             validEmailAssignee($event.target.value);
             validateEmailServerAvailability($event.target.value)
-          "
-        />
-        <span class="label-error" *ngIf="nso_ainfo_fields.no_emai">
+          " />
+        <span class="label-error" *ngIf="nso_ainfo_fields.no_email">
           Field is required
         </span>
-        <span
-          class="label-error"
-          *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai"
-        >
+        <span class="label-error" *ngIf="nso_ainfo_fields.no_emai_val">
+          E-mail format not valid
+        </span>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- Operations email -->
+    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Operations email</mat-label>
+        <input matInput placeholder="email@email.com" [(ngModel)]="data.operationsEmail"
+          (change)="validEmailOperations($event.target.value);" />
+        <span class="label-error" *ngIf="nso_ainfo_fields.no_operations_val">
+          E-mail format not valid
+        </span>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- Finance email -->
+    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Finance email</mat-label>
+        <input matInput placeholder="email@email.com" [(ngModel)]="data.financeEmail"
+          (change)="validEmailFinance($event.target.value);" />
+        <span class="label-error" *ngIf="nso_ainfo_fields.no_finance_val">
+          E-mail format not valid
+        </span>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- Other  -->
+    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Other </mat-label>
+        <input matInput placeholder="email@email.com" [(ngModel)]="data.other"
+          (change)="validEmailOther($event.target.value);" />
+        <span class="label-error" *ngIf="nso_ainfo_fields.no_other_val">
           E-mail format not valid
         </span>
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
+  <!--Inicio Banking Details-->
+  <div>
+    <p class="page__section-name" style="font-size: 14px;">Banking Details List</p>
+  </div>
+  <!--Inicio de Tabla Banking Details-->
+  <mat-dialog-content class="mat-typography" *ngIf="data?.officeBankingDetailLists != undefined"
+    style="max-height: fit-content;">
+    <div class="mat-elevation-z5" style="padding-top: 10px;"
+      *ngFor="let data_land of data?.officeBankingDetailLists; let i = index">
+      <mat-grid-list cols="4" rowHeight="70px">
+        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>Account Type</mat-label>
+              <mat-select disabled [(ngModel)]='data_land.accountType'>
+                <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>Account Holders Name</mat-label>
+              <input disabled matInput required placeholder="Account Holders Name" type="text" #message_holdername
+                maxlength="100" [(ngModel)]='data_land.accountHoldersName'>
+              <mat-hint align="end">{{message_holdername.value.length}} / 100</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>Bank Name</mat-label>
+              <input disabled matInput required placeholder="Bank Name" type="text" #message_bankname maxlength="100"
+                [(ngModel)]='data_land.bankName'>
+              <mat-hint align="end">{{message_bankname.value.length}} / 100</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>Account Number</mat-label>
+              <input disabled matInput required placeholder="Account Number" [(ngModel)]='data_land.accountNumber'>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>CLABE</mat-label>
+              <input disabled matInput placeholder="CLABE" [(ngModel)]='data_land.clabe'>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>Routing Number (ABA)</mat-label>
+              <input disabled matInput placeholder="Routing Number (ABA)" [(ngModel)]='data_land.routingNumber'>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
+              <input disabled matInput placeholder="SWIFT / BIC Code ( If Applies)"
+                [(ngModel)]='data_land.swiftBicCode'>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <div class="input_final">
+            <mat-form-field appearance="fill">
+              <mat-label>IBAN</mat-label>
+              <input disabled matInput placeholder="IBAN" type="text" #message_bankcomment maxlength="150"
+                [(ngModel)]='data_land.iban'>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <div class="input_final textarea">
+            <mat-form-field appearance="fill">
+              <mat-label>Comments</mat-label>
+              <input disabled matInput required placeholder="Account Comments" type="text" #message_pcomment
+                [(ngModel)]='data_land.comments'>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          Account # {{i+1}}
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <img src="assets/icons/pencil.png" style="width: 20px; margin-left: 20px;" (click)="editBank(data_land)">
+          &nbsp;&nbsp;
+          <img src="assets/icons/delete.png" style="width: 20px; margin-left: 20px;" (click)="deletebank(data_land)">
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-dialog-content>
+  <!--Fin de Tabla Banking Details-->
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big">
+          <button class="button-icon button-icon--more" (click)="addBank(data.id)">
+            Account details
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!--Fin Banking Details-->
+
+  <!--Inicio Documments-->
+  <div>
+    <p class="page__section-name" style="font-size: 14px;">Documents</p>
+  </div>
+
+  <!--Inicio de Tabla Document-->
+  <mat-grid-list cols="1" *ngIf="data?.documentOffices != undefined">
+    <div class="page__section margin-top-min">
+      <div class="page__section">
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Document Name
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Status
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--25">
+          <span class="documents__index documents__index--task">
+            Privacy
+          </span>
+        </div>
+      </div>
+      <div class="page__section documents__ascard" *ngFor="let item of data.documentOffices; let i = index">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deleteDocument(item)">
+        <img src="assets/icons/eye-view.svg" (click)="viewDocument(item.image,item.imageExtension)"
+          class="page__section--card-closeButton delete eye"
+          style="background: transparent!important; margin-right: 25px;">
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.documentName}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.date | date: 'dd MMM yyyy'}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{getDocumentStatus(item.status)}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{getNamePrivacy(item.idPrivacy)}}
+        </div>
+      </div>
+    </div>
+  </mat-grid-list>
+  <!--Fin de Tabla Document-->
+
+  <mat-grid-list cols="4" rowHeight="70px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="addPropperty">
+        <div class="page__section-button page__section-button--big">
+          <button class="button-icon button-icon--more" (click)="addDocument(data.id)">
+            Add New Document
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!--Fin Documments-->
+
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <div class="page__section-buttong">

@@ -8,6 +8,7 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 import { LoaderComponent } from 'app/shared/loader';
 import { DialogGeneralConfirmation } from '../dialog-general-confirmation/dialog-general-confirmation.component';
 import { DialogConfirmServiceComponent } from '../dialog-confirm-service/dialog-confirm-service.component'
+import { DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-dialog-base-prueba',
@@ -61,10 +62,19 @@ export class NewServiceOrderDialog implements OnInit {
   ngOnInit() {
     console.log(this.data);
     this.work_order.serviceLineId = 2;
+    this.getCurrency()
     this.getCatalogues();
     this.catalogos();
     this.user = JSON.parse(localStorage.getItem("userData"));
     console.log("user =========================0" , this.user)
+  }
+  getCurrency(){
+  this._services.service_general_get('Catalog/GetAllCurrency').subscribe(data => {
+    console.log(data);
+    this.currencySelect = data.result
+    console.log("Currency",this.currencySelect);
+  })
+
   }
   public validatingMainFields(): void {
 
@@ -263,7 +273,7 @@ export class NewServiceOrderDialog implements OnInit {
   public deliverin_catalogue: any = [];
   public city_catalogue: any = [];
   public deliverin = [];
-
+  public  currencySelect : any =[]
   public async catalogos(){
     this.serviceline_catalogue = await this._services.getCatalogueFrom('GetServiceLine');
     this.deliverin_catalogue = await this._services.getCatalogueFrom('GetDelivired');
@@ -702,7 +712,8 @@ export class NewServiceOrderDialog implements OnInit {
       case 'alone':
         // validacion de campos standalone
         if (this.standAloneFormValidator()) {
-          this.standalone_work.serviceTypeId = 1;
+
+           this.standalone_work.serviceTypeId = 1;
           // asignar el statusId como pending to accept
           this.standalone_work.statusId = 1;
           // standalone
@@ -712,10 +723,8 @@ export class NewServiceOrderDialog implements OnInit {
               this.standalone_work.categoryId = element.categoryId
             }
           }
-          //if( this.is_new_sr ) {
           this.standalone_work.createdBy = this.data.id_user;
           this.standalone_work.createdDate = new Date();
-          //}
           this.standalone_work.updateBy = this.data.id_user;
 
           this.work_order.standaloneServiceWorkOrders.push(this.standalone_work);
@@ -726,10 +735,6 @@ export class NewServiceOrderDialog implements OnInit {
           this.createWOTableContent();
           this.initSummaryTable();
           this.workingTableData();
-          /*
-          this.service_order.serviceOrderServices.push( this.service_stanalone );
-          this.service_stanalone = new SOrderServicesModel();
-          */
          this.disable = true;
         }
         break;
@@ -750,7 +755,7 @@ export class NewServiceOrderDialog implements OnInit {
         }
         break;
     }
-    this.createSOTableContent();
+   this.createSOTableContent();
   }
 
   public addNewBundle(): void {
@@ -1126,6 +1131,8 @@ export class NewServiceOrderDialog implements OnInit {
 
       if (bundle.totalTime == '') result = false;
       if (bundle.projectedFee == '') result = false;
+      if (bundle.idCurrency == null) result = false;
+
 
     });
 
@@ -1141,7 +1148,8 @@ export class NewServiceOrderDialog implements OnInit {
     no_prof: false,
     no_auto: false,
     no_loca: false,
-    no_acceptance:false
+    no_acceptance:false,
+    no_currency:false
 
   }
   public standAloneFormValidator(): boolean {
@@ -1164,6 +1172,9 @@ export class NewServiceOrderDialog implements OnInit {
 
     this.standalone_work.location == '' ?
       this.salon_form_valdator.no_loca = true : this.salon_form_valdator.no_loca = false;
+
+      this.standalone_work.idCurrency == null ?
+      this.salon_form_valdator.no_currency = true : this.salon_form_valdator.no_currency = false;
 
     for (let field in this.salon_form_valdator) {
       if (this.salon_form_valdator[field]) result = false;
@@ -1487,7 +1498,7 @@ class WorkOrder {
   bundledServicesWorkOrders: BundledServicesWorkOrders[] = [];
 }
 
-class StandaloneServiceWorkOrders {
+class     StandaloneServiceWorkOrders {
   id: number = 0;
   serviceNumber: string = '';
   workOrderId: number = 0;
@@ -1506,6 +1517,7 @@ class StandaloneServiceWorkOrders {
   createdBy: number = 0;
   createdDate: Date = null;
   updateBy: string = '';
+  idCurrency:number ;
   updatedDate: Date = new Date();
   workOrderServiceId: number = 0;
   workOrderService: any = { id: 0 }
@@ -1521,6 +1533,7 @@ class BundledServicesWorkOrders {
   createdBy: number = 0;
   createdDate: Date = null;
   updateBy: number = 0;
+  idCurrency:number ;
   updatedDate: Date = null;
   bundledServices: BundledServices[] = [];
 }

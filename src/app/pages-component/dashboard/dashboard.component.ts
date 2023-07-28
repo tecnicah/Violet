@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -23,6 +23,8 @@ import { FullComponent } from 'app/layouts/full/full.component';
 import { environment } from 'environments/environment';
 import { DialogAcceptedComponent } from '../dialog/dialog-accepted/dialog-accepted.component';
 import { DialogDasboardServiceComponent } from '../dialog/dialog-dasboard-service/dialog-dasboard-service.component';
+import { switchMap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -59,7 +61,8 @@ export class DashboardComponent implements OnInit {
     public _router: Router,
     public _dialog: MatDialog,
     private _permissions: NgxPermissionsService,
-    public fullC: FullComponent
+    public fullC: FullComponent,
+    private change: ChangeDetectorRef
   ) { }
 
   public __todaydate__: Date = new Date();
@@ -115,12 +118,12 @@ export class DashboardComponent implements OnInit {
       this.requestDashboarData();
       this.removeColumn();
     }, 500);
-    
+
   }
 
 
   removeColumn() {
-    //debugger;
+    //
     switch (this._user_rol) {
       case 2:
         if (this.service_records_colums.length) {
@@ -151,7 +154,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public async initPageSettings() {
-    debugger;
+
     this.userData = JSON.parse(localStorage.getItem('userData'));
 
     const user_rol: string[] = [this.__userlog__.role.id];
@@ -164,7 +167,7 @@ export class DashboardComponent implements OnInit {
 
   openAcceptantConsultorConsultor(element, tipo) {
     console.log(element);
-    debugger;
+
     if (element.total_services == 0) {
       const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
@@ -175,25 +178,30 @@ export class DashboardComponent implements OnInit {
       });
     }
     else {
-      this._services.service_general_get('MyDashboard/GetDashboardAdminSupplier/' + element.id+ '/'+ this.userData.id).subscribe(data => {
+      this._services.service_general_get('MyDashboard/GetDashboardAdminSupplier/' + element.id + '/' + this.userData.id).subscribe(data => {
         if (data.success) {
-          
+
           console.log('GetDashboardAdminSupplier', data);
           const dialogRef = this._dialog.open(DialogAcceptedComponent, {
             width: '400px',
             data: { datos: data.map.value[0], tipo: tipo },
           });
-  
+
           dialogRef.afterClosed().subscribe(result => {
-            debugger;
             console.log('The dialog was closed');
+            if (result == undefined) return;
+            console.log('hola');
+            this.service_records_table_data = []
+
+              this.requestDashboarData();
+              console.log("333", this.service_records_table_data);
+              this.change.detectChanges()
+              this.change.markForCheck()
             //this.animal = result;
-            if (result != undefined) {
-              this.service_records_table_data = [];
-              setTimeout(() => {
-                this.requestDashboarData();
-              }, 800);
-            }
+            /*             if (result != undefined) {
+                          this.service_records_table_data = [];
+
+                        } */
           });
         }
       });
@@ -226,8 +234,8 @@ export class DashboardComponent implements OnInit {
   }
 
   viewConsultant(elementImm, elementRelo) {
-    
-    console.log("Imm",elementImm, "Relo", elementRelo)
+
+    console.log("Imm", elementImm, "Relo", elementRelo)
     this._viewSupplierImm = [];
     this._viewSupplierRelo = [];
     if (elementImm.length > 0) {
@@ -253,58 +261,101 @@ export class DashboardComponent implements OnInit {
     //console.log(serv_line);
     //console.log(url_params);
     this.__loader__.showLoader();
-    
 
-    debugger;
-    this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}` + url_params)
+    const urlDash = `MyDashboard/GetDashboard/${user_id}` + url_params
+
+    this._services.service_general_get(urlDash).pipe(switchMap((response: any) => {
+      if (response.success) {
+        console.log("DASHBOARD RESPONSE: ", response);
+
+        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
+        this.service_records_table_data.paginator = this.paginator;
+        this.service_records_table_data.sort = this.sort;
+
+        const urlGetReminders = `MyDashboard/GetReminders/${user_id}`
+        const urlGetCoordinators = `MyDashboard/GetCoordinators/${this.__userlog__.id + ''}`
+        this.change.detectChanges()
+        this.change.markForCheck()
+        // this.__loader__.hideLoader();
+
+
+        return forkJoin([this._services.service_general_get(urlGetReminders),
+        this._services.service_general_get(urlGetCoordinators)])
+      }
+    })
+    ).subscribe(([urlGetReminders,urlGetCoordinators]) => {
+      this.__loader__.hideLoader();
+      console.log(urlGetReminders);
+      if (urlGetReminders.success) {
+        this.counts.reminders = urlGetReminders.map.value.length;
+      }
+      console.log('Res => ', urlGetCoordinators);
+      if (urlGetCoordinators.success) {
+        this.counts.coordinators = urlGetCoordinators.map.value.length;
+      }
+    }, (error: any) => {
+console.log('hi');
+
+      console.error('Error => ', error);
+
+      this.__loader__.hideLoader();
+
+    });
+
+/*     this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}` + url_params)
       .subscribe((response: any) => {
-        debugger;
+
         if (response.success) {
+          console.log("111111", this.service_records_table_data);
 
           console.log("DASHBOARD RESPONSE: ", response);
-            // this.dash_data = new DashDataModel;
+          // this.dash_data = new DashDataModel;
 
-            // this.dash_data = response.map.value;
-            // this.dash_data.pendngAcceptance = this.dash_data.board.filter(x => x.status == "Pending Acceptance").length;            
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards( response.map.value.board));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            // this.View_All = this.service_records_table_data.filteredData.length;
-            //this.counts = response.map.value.counts;
-            this.__loader__.hideLoader();
-         
-          
+          // this.dash_data = response.map.value;
+          // this.dash_data.pendngAcceptance = this.dash_data.board.filter(x => x.status == "Pending Acceptance").length;
+          this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
+          this.service_records_table_data.paginator = this.paginator;
+          this.service_records_table_data.sort = this.sort;
+          // this.View_All = this.service_records_table_data.filteredData.length;
+          //this.counts = response.map.value.counts;
+          console.log("22222", this.service_records_table_data);
+
+          this.change.detectChanges()
+          this.change.markForCheck()
+          this.__loader__.hideLoader();
+
+
           // this.dash_data.active = 0;
           // this.dash_data.active = this.dash_data.board.filter(x => x.status == "Active");
           //this.dash_data.active = 111;
           this.counts = response.map.value.counts;
 
           this._services.service_general_get(`MyDashboard/GetReminders/${user_id}`)
-          .subscribe(res =>{
-            console.log(res);
-            if(res.success){
-              this.counts.reminders = res.map.value.length;
-            }
-          });
+            .subscribe(res => {
+              console.log(res);
+              if (res.success) {
+                this.counts.reminders = res.map.value.length;
+              }
+            });
 
-          this._services.service_general_get(`MyDashboard/GetCoordinators/${ this.__userlog__.id + '' }`)
-          .subscribe( (response:any) => {
-            console.log('Res => ', response);
-            if( response.success ) {
-              this.counts.coordinators = response.map.value.length;
-            }
-           
-          }, (error:any) => {
-              
-          });
+          this._services.service_general_get(`MyDashboard/GetCoordinators/${this.__userlog__.id + ''}`)
+            .subscribe((response: any) => {
+              console.log('Res => ', response);
+              if (response.success) {
+                this.counts.coordinators = response.map.value.length;
+              }
+
+            }, (error: any) => {
+
+            });
           //console.log('this.dash_data ==> ', this.dash_data);
 
           //console.log("DATA PARA TABLA: ", this.dash_data);
-          
-          
+
+
         }
 
-       
+
 
       }, (error: any) => {
 
@@ -312,19 +363,19 @@ export class DashboardComponent implements OnInit {
 
         this.__loader__.hideLoader();
 
-      });
+      }); */
 
   }
 
-  checkCheckBoxvalue(event){
+  checkCheckBoxvalue(event) {
     let _service_records_table_data = this.service_records_table_data.filteredData;
-    if(event.checked){
+    if (event.checked) {
       console.log(this.service_records_table_data);
       this.service_records_table_data = new MatTableDataSource(_service_records_table_data.filter(x => x.vip));
       this.service_records_table_data.paginator = this.paginator;
       this.service_records_table_data.sort = this.sort;
     }
-    else{
+    else {
       this.requestDashboarData('')
     }
   }
@@ -334,24 +385,24 @@ export class DashboardComponent implements OnInit {
     let role;
     console.log(id);
     if (id != 0) {
-      this._services.service_general_get(`Catalog/GetUser/${id}`).subscribe( r => {
+      this._services.service_general_get(`Catalog/GetUser/${id}`).subscribe(r => {
         if (r.success) {
           role = r.result.value.role;
           // role id 19 es igual a "Super Admin"
           // if (role == 1 || role == 4  || role == 11 || role == 13 || role == 14 ||  role == 19  || role == 20 || role == 21 || role == 22 ) {
-            if(role != 2 && role != 3){
-              if(role != 4)
-            this._router.navigateByUrl(`profilemanager/${id}`);
-            }else if(role == 2){
-              this._router.navigateByUrl(`profilecoordinator/${id}`);
-            }else if(role == 3){
-              this._router.navigateByUrl(`profileconsultant/${id}`);
-            }
+          if (role != 2 && role != 3) {
+            if (role != 4)
+              this._router.navigateByUrl(`profilemanager/${id}`);
+          } else if (role == 2) {
+            this._router.navigateByUrl(`profilecoordinator/${id}`);
+          } else if (role == 3) {
+            this._router.navigateByUrl(`profileconsultant/${id}`);
+          }
         }
       });
     }
   }
-  
+
   public serchFilter(event: Event) {
 
     const filterValue = (event.target as HTMLInputElement).value;
@@ -397,7 +448,7 @@ export class DashboardComponent implements OnInit {
   public dash_table_params: string = '';
   public updateDashboardData(): void {
     //console.log("ENTRA A FILTRAR INFORMACION");
-    debugger;
+
     this.dash_table_params = '';
     for (let field in this.filter_data) {
       // if (field != 'serviceLine') {
@@ -447,7 +498,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public dataDashboardFilterByCards(table_rows: any): any[] {
-debugger;
+
     const rows_in: any[] = table_rows;
 
     let rows_selected: any[] = [];
@@ -528,19 +579,19 @@ debugger;
 
   public filter_cards_selected: string[] = [];
   public filterTableByCard(card_selector: string): void {
-debugger;
+
     //this.dash_table_params = '';
     const is_filter_active: boolean = (this.filter_cards_selected.indexOf(card_selector) > -1),
       card_container: any = document.getElementById(`${card_selector}_filter_card`),
       params_used: string = this.dash_table_params == '' ? '' : `?${this.dash_table_params.substring(1)}`;
     debugger
     // console.log(card_container);
-    // let cards: any[] = ['inp_filter_card','pen_filter_card']; 
+    // let cards: any[] = ['inp_filter_card','pen_filter_card'];
     // switch(card_selector) {
     //   case 'act':
     //     card_container.classList.add('filterCard__card--active');
     //     cards.forEach(element => {
-    //       element.classList.remove('filterCard__card--active');     
+    //       element.classList.remove('filterCard__card--active');
     //     });
     //     //this.filter_cards_selected.push(card_selector);
     //     //console.log(this.filter_cards_selected.indexOf(card_selector));
@@ -555,7 +606,7 @@ debugger;
     //       {
     //         card_container.classList.remove('filterCard__card--active');
     //         this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
-    //       }          
+    //       }
     //     });
     //     break;
     //   case 'onh':
@@ -567,7 +618,7 @@ debugger;
     //       {
     //         card_container.classList.remove('filterCard__card--active');
     //         this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
-    //       }          
+    //       }
     //     });
     //     break;
     //   case 'vip':
@@ -579,7 +630,7 @@ debugger;
     //       {
     //         card_container.classList.remove('filterCard__card--active');
     //         this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
-    //       }          
+    //       }
     //     });
     //     break;
     //   case 'pen':
@@ -591,7 +642,7 @@ debugger;
     //     //   {
     //     //     card_container.classList.remove('filterCard__card--active');
     //     //     this.filter_cards_selected.splice(this.filter_cards_selected.indexOf(card_selector), 1);
-    //     //   }          
+    //     //   }
     //     // });
     //     break;
     //   default:
@@ -628,105 +679,100 @@ debugger;
   }
 
   public filterTableByCardSelect(card_selector: string): void {
-    debugger;
-        //this.dash_table_params = '';
-        debugger;
-        const is_filter_active: boolean = (this.filter_cards_selected.indexOf(card_selector) > -1),
-          card_container: any = document.getElementById(`${card_selector}_filter_card`),
-          params_used: string = this.dash_table_params == '' ? '' : `?${this.dash_table_params.substring(1)}`;
-        debugger
-        //card_container.classList.remove('filterCard__card--active');
-        //card_container.classList.add('filterCard__card--active');
-        // this.card_selector = card_selector;
-        // card_container.classList.add('filterCard__card--active');
-        //this.filterTableByCard(card_selector);
-        let cards: any[] = ['act_filter_card','inp_filter_card','vip_filter_card','onh_filter_card','pen_filter_card']; 
-        switch(card_selector) {
-          case 'act':
-            card_container.classList.add('filterCard__card--active');
-            cards.forEach(element => {
-              if(element != 'act_filter_card')
-              {
-                let _card_container: any = document.getElementById(element)
-                _card_container.classList.remove('filterCard__card--active');
-                this.filter_cards_selected = [];
-                this.filter_cards_selected.push('act');
-              }          
-            });
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Active")));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            this.View_All = this.service_records_table_data.filteredData.length;
-            break;
-          case 'inp':
-            card_container.classList.add('filterCard__card--active');
-            cards.forEach(element => {
-              if(element != 'inp_filter_card')
-              {
-                let _card_container: any = document.getElementById(element)
-                _card_container.classList.remove('filterCard__card--active');
-                this.filter_cards_selected = [];
-                this.filter_cards_selected.push('inp');
-              }          
-            });
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "In Progress")));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            this.View_All = this.service_records_table_data.filteredData.length;
-            break;
-          case 'vip':
-            card_container.classList.add('filterCard__card--active');
-            cards.forEach(element => {
-              if(element != 'vip_filter_card')
-              {
-                let _card_container: any = document.getElementById(element)
-                _card_container.classList.remove('filterCard__card--active');
-                this.filter_cards_selected = [];
-                this.filter_cards_selected.push('vip');
-              }          
-            });
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.vip == true)));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            this.View_All = this.service_records_table_data.filteredData.lengt   
-                // code block
-            break;
-          case 'onh':
-            card_container.classList.add('filterCard__card--active');
-            cards.forEach(element => {
-              if(element != 'onh_filter_card')
-              {
-                let _card_container: any = document.getElementById(element)
-                _card_container.classList.remove('filterCard__card--active');
-                this.filter_cards_selected = [];
-                this.filter_cards_selected.push('onh');
-              }          
-            });
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Pending Assignment")));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            this.View_All = this.service_records_table_data.filteredData.lengt
-            break;
-          case 'pen':
-            card_container.classList.add('filterCard__card--active');
-            cards.forEach(element => {
-              if(element != 'pen_filter_card')
-              {
-                let _card_container: any = document.getElementById(element)
-                _card_container.classList.remove('filterCard__card--active');
-                this.filter_cards_selected = [];
-                this.filter_cards_selected.push('pen');
-              }          
-            });
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Pending Acceptance")));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            this.View_All = this.service_records_table_data.filteredData.lengt
-            break;
-          default:
-            // code block
-        }
-    
+
+    //this.dash_table_params = '';
+
+    const is_filter_active: boolean = (this.filter_cards_selected.indexOf(card_selector) > -1),
+      card_container: any = document.getElementById(`${card_selector}_filter_card`),
+      params_used: string = this.dash_table_params == '' ? '' : `?${this.dash_table_params.substring(1)}`;
+    debugger
+    //card_container.classList.remove('filterCard__card--active');
+    //card_container.classList.add('filterCard__card--active');
+    // this.card_selector = card_selector;
+    // card_container.classList.add('filterCard__card--active');
+    //this.filterTableByCard(card_selector);
+    let cards: any[] = ['act_filter_card', 'inp_filter_card', 'vip_filter_card', 'onh_filter_card', 'pen_filter_card'];
+    switch (card_selector) {
+      case 'act':
+        card_container.classList.add('filterCard__card--active');
+        cards.forEach(element => {
+          if (element != 'act_filter_card') {
+            let _card_container: any = document.getElementById(element)
+            _card_container.classList.remove('filterCard__card--active');
+            this.filter_cards_selected = [];
+            this.filter_cards_selected.push('act');
+          }
+        });
+        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Active")));
+        this.service_records_table_data.paginator = this.paginator;
+        this.service_records_table_data.sort = this.sort;
+        this.View_All = this.service_records_table_data.filteredData.length;
+        break;
+      case 'inp':
+        card_container.classList.add('filterCard__card--active');
+        cards.forEach(element => {
+          if (element != 'inp_filter_card') {
+            let _card_container: any = document.getElementById(element)
+            _card_container.classList.remove('filterCard__card--active');
+            this.filter_cards_selected = [];
+            this.filter_cards_selected.push('inp');
+          }
+        });
+        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "In Progress")));
+        this.service_records_table_data.paginator = this.paginator;
+        this.service_records_table_data.sort = this.sort;
+        this.View_All = this.service_records_table_data.filteredData.length;
+        break;
+      case 'vip':
+        card_container.classList.add('filterCard__card--active');
+        cards.forEach(element => {
+          if (element != 'vip_filter_card') {
+            let _card_container: any = document.getElementById(element)
+            _card_container.classList.remove('filterCard__card--active');
+            this.filter_cards_selected = [];
+            this.filter_cards_selected.push('vip');
+          }
+        });
+        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.vip == true)));
+        this.service_records_table_data.paginator = this.paginator;
+        this.service_records_table_data.sort = this.sort;
+        this.View_All = this.service_records_table_data.filteredData.lengt
+        // code block
+        break;
+      case 'onh':
+        card_container.classList.add('filterCard__card--active');
+        cards.forEach(element => {
+          if (element != 'onh_filter_card') {
+            let _card_container: any = document.getElementById(element)
+            _card_container.classList.remove('filterCard__card--active');
+            this.filter_cards_selected = [];
+            this.filter_cards_selected.push('onh');
+          }
+        });
+        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Pending Assignment")));
+        this.service_records_table_data.paginator = this.paginator;
+        this.service_records_table_data.sort = this.sort;
+        this.View_All = this.service_records_table_data.filteredData.lengt
+        break;
+      case 'pen':
+        card_container.classList.add('filterCard__card--active');
+        cards.forEach(element => {
+          if (element != 'pen_filter_card') {
+            let _card_container: any = document.getElementById(element)
+            _card_container.classList.remove('filterCard__card--active');
+            this.filter_cards_selected = [];
+            this.filter_cards_selected.push('pen');
+          }
+        });
+        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(this.dash_data.board.filter(x => x.status == "Pending Acceptance")));
+        this.service_records_table_data.paginator = this.paginator;
+        this.service_records_table_data.sort = this.sort;
+        this.View_All = this.service_records_table_data.filteredData.lengt
+        break;
+      default:
+      // code block
+    }
+
   }
 
   public openDialogCoordinadors(): void {
@@ -1094,7 +1140,7 @@ debugger;
 
   public info_partner: any = {};
   viewPartner(data) {
-    debugger;
+
     this.info_partner.partner = data.name;
     this.info_partner.client = data.client;
     this.info_partner.clientAvatar = data.clientAvatar;
@@ -1110,9 +1156,9 @@ debugger;
     this.homeImm = [];
     this.homeRelo = [];
 
-    this._services.service_general_get('MyDashboard/GetDashboardAdminSupplier/' + element.id + '/'+ this.userData.id).subscribe(data => {
+    this._services.service_general_get('MyDashboard/GetDashboardAdminSupplier/' + element.id + '/' + this.userData.id).subscribe(data => {
       if (data.success) {
-        
+
         console.log(data);
         data.map.value[0].supplierImm[0]?.standalone.forEach(item => {
           this.homeImm.push({
@@ -1166,10 +1212,10 @@ debugger;
     this.homeImm = [];
     this.homeRelo = [];
 
-    this._services.service_general_get('MyDashboard/GetDashboardAdmin/' + element.id + '?userId='+this.userData.id).subscribe(data => {
+    this._services.service_general_get('MyDashboard/GetDashboardAdmin/' + element.id + '?userId=' + this.userData.id).subscribe(data => {
       if (data.success) {
-        
-        console.log("GetDashboardAdmin",data);
+
+        console.log("GetDashboardAdmin", data);
         data.map.value[0].standalone.forEach(item => {
           if (item.country.toLowerCase() == element.homeCountry.toLowerCase()) {
             if (item.serviceLine == 1) {
@@ -1270,29 +1316,32 @@ debugger;
             }
           }
         });
-       
+
         setTimeout(() => {
           const dialogRef = this._dialog.open(DialogAcceptedComponent, {
-            data: { 
+            data: {
               hostImm: this.hostImm,
               hostRelo: this.hostRelo,
               homeImm: this.homeImm,
-              homeRelo: this.homeRelo, 
-              tipo: this._user_rol, 
+              homeRelo: this.homeRelo,
+              tipo: this._user_rol,
               serviceRecordId: element.id,
               statusCoordinator: data.map.value[0].statusCoordinator
 
             },
             width: "400px"
           });
-          dialogRef.afterClosed().subscribe(result => { })
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+
+          })
         }, 300);
       }
     })
 
     console.log("hostImm:", this.hostImm, "hostRelo:", this.hostRelo, "homeImm:", this.homeImm, "homeRelo:", this.homeRelo);
     // this.services_consult.push({
-    //   hostImm: hostImm, 
+    //   hostImm: hostImm,
     //   hostRelo: hostRelo,
     //   homeImm: homeImm,
     //   homeRelo: homeRelo
@@ -1303,7 +1352,7 @@ debugger;
     //await this.initPageSettings(data_.id);
     // this.services_consult = [];
     // this._services.service_general_get("ServiceRecord/GetServices/" + data_.id + "?type=" + data_.serviceline).subscribe((data => {
-    //   console.log("Entra a consultar las WO immigration: ", data.map.value);    
+    //   console.log("Entra a consultar las WO immigration: ", data.map.value);
 
     //   var host    = []
     //   var hostTemp = []
@@ -1320,7 +1369,7 @@ debugger;
     //       }else{
     //         host.push(
     //             {
-    //               "country" : data.map.value.host[i]["country"] , 
+    //               "country" : data.map.value.host[i]["country"] ,
     //               "service" : [{
     //                 service_name: data.map.value.host[i]["service_name"],
     //                 numberWorkOrder: data.map.value.host[i]["numberWorkOrder"],
@@ -1340,7 +1389,7 @@ debugger;
     //     }else{
     //       home.push(
     //           {
-    //             "country" : data.map.value.home[i]["country"] , 
+    //             "country" : data.map.value.home[i]["country"] ,
     //             "service" : [{
     //               service_name: data.map.value.home[i]["service_name"],
     //               numberWorkOrder: data.map.value.home[i]["numberWorkOrder"],
@@ -1364,7 +1413,7 @@ debugger;
     // }));
   }
 
-  cleanFilter(){
+  cleanFilter() {
     this.filter_data = new FilterDataModel();
     this.filteruno = true;
     setTimeout(() => {

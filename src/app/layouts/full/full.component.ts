@@ -192,6 +192,8 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this._services.avisoAdmin.subscribe(data => {
       this._ngZone.run(() => {
         this.get_Chats();
+        this.get_Notification();
+
       })
     })
   }

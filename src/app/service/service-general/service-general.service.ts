@@ -12,10 +12,10 @@ import { DashboardComponent } from 'app/pages-component/dashboard/dashboard.comp
 })
 export class ServiceGeneralService {
 
-  private hubConnection: signalR.HubConnection; 
+  private hubConnection: signalR.HubConnection;
   public respuestaRecibirPedido= new EventEmitter<string>();
   public avisoAdmin = new EventEmitter<string>();
-  
+
   // private url_chat: any = new signalR.HubConnectionBuilder()
   //   .withUrl(`${environment.images_path}` + 'chatsocket')   // mapping to the chathub as in startup.cs
   //   .withAutomaticReconnect()
@@ -201,5 +201,6 @@ private suscribirOnListeners() {
     //this.permissionsService.loadPermissions( roles );
     return roles;
   }
+
 
 }

@@ -365,7 +365,9 @@ import { DialogAddReminderDetailComponent } from './dialog/dialog-add-reminder-d
 import { DialogAddCommentrDetailComponent } from './dialog/dialog-add-commentr-detail/dialog-add-commentr-detail.component';
 import { HousinglistComponent } from './dialog/housinglist/housinglist.component';
 import { CardServiceDetaillComponent } from './home-finding-full/card-service-detaill/card-service-detaill.component';
-import { DialogPaymentProcessComponent } from './dialog/dialog-payment-process/dialog-payment-process.component'
+import { DialogPaymentProcessComponent } from './dialog/dialog-payment-process/dialog-payment-process.component';
+import { BankingDetailsComponent } from './dialog/dialog-catalog-offices/banking-details/banking-details.component';
+import { DocumentComponent } from './dialog/dialog-catalog-offices/document/document.component'
 
 @NgModule({
   imports: [
@@ -770,7 +772,9 @@ import { DialogPaymentProcessComponent } from './dialog/dialog-payment-process/d
     DialogAddCommentrDetailComponent,
     HousinglistComponent,
     CardServiceDetaillComponent,
-    DialogPaymentProcessComponent
+    DialogPaymentProcessComponent,
+    BankingDetailsComponent,
+    DocumentComponent
   ]
 })
 export class MaterialComponentsModule {}
