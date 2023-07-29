@@ -179,7 +179,10 @@ export class DialogBundleComponent implements OnInit {
      if(item.categoryId != 21){ // home finding
       const dialogRef = this._dialog.open(dialog, {
         data: item,
-        width: "95%"
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        height: '90%',
+        width: '95%',
       });
   
       dialogRef.afterClosed().subscribe(result => {

@@ -383,8 +383,8 @@
         <div mat-subheader>Child Information</div>
         <mat-divider></mat-divider>
         <mat-list-item style="height: auto !important; padding-top: 10px;">
-          <img *ngIf="data.photo.split('api-test-premier/')[1] != ''" src="{{data.photo}}" matListAvatar alt="">
-          <img *ngIf="data.photo.split('api-test-premier/')[1] == ''" src="assets/images/users/avatar.png" matListAvatar alt="">
+          <img *ngIf="data?.photo?.split('api-test-premier/')[1] != ''" src="{{data.photo}}" matListAvatar alt="">
+          <img *ngIf="data?.photo?.split('api-test-premier/')[1] == ''" src="assets/images/users/avatar.png" matListAvatar alt="">
           <div mat-line>
             <div fxLayout="row" fxLayoutAlign="space-between center" >
               <div fxFlex="30">
@@ -448,14 +448,14 @@
         </mat-list-item>
       </mat-list>
       <!--  -->
-      <mat-card *ngIf="data.schoolSelected != 'School not selected'">
+      <mat-card>
 
         <!--START CARD CHILD 1 CHOSEN-->
         <mat-grid-list cols="4" rowHeight="70px">
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="wid">
               <p class="page__section-name" style="width: 100%; font-size: 14px;">
-                Chosen School/Child {{i + 1}}  <!--Child {{data.numberChild}} / Chosen School -->
+                Chosen School/Child {{i + 1}}  {{data.schoolSelected}} <!--Child {{data.numberChild}} / Chosen School -->
               </p>
             </div>
           </mat-grid-tile>
