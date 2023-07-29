@@ -34,7 +34,7 @@ export class NewPartnerClientComponent implements OnInit {
   public countriesImm = [];
   public countriesRel = [];
   constructor(private rutaActiva: ActivatedRoute,
-    private _services: ServiceGeneralService,
+    public _services: ServiceGeneralService,
     public dialog: MatDialog,
     public router: Router) {}
   partnert: boolean = false;
@@ -79,7 +79,8 @@ export class NewPartnerClientComponent implements OnInit {
   public filterPricingPartner: any = { currency: '' };
 
   public dataContacts: any;
-
+  public _url = this.rutaActiva.snapshot.params.id; 
+  public _imageLocal = "";
 
 
   loader: LoaderComponent = new LoaderComponent();
@@ -150,6 +151,7 @@ export class NewPartnerClientComponent implements OnInit {
  
       //  localStorage.removeItem('belongsId');
 
+      this.lead_client.photo = "";
       this.lead_client.partnerClientSince = new Date();
       this.lead_client.id = 0;
       this.lead_client.generalContractPricingInfos = [];
@@ -180,6 +182,7 @@ export class NewPartnerClientComponent implements OnInit {
               console.log('this.lead_client',this.lead_client)
             }
           }
+          this._imageLocal = this._services.url_images + this.lead_client.photo;
           this.lead_client.clientPartnerProfileExperienceTeams = [];
           this.lead_client.documentClientPartnerProfiles = [];
           this.lead_client.serviceLocations = [];
@@ -225,15 +228,11 @@ export class NewPartnerClientComponent implements OnInit {
           this.contacts = new MatTableDataSource(this.lead_client.contacts);
           this.contacts.sort = this.sort;
           console.log("2");
-          //if (this.lead_client.experience_team.length > 0) {
             this.relo = this.lead_client.experience_team_relo;
             this.immi = this.lead_client.experience_team_imm;
-          //}
-          console.log("3");
-          if(this.lead_client.photo != "" && this.lead_client.photo != null){
-            document.getElementById('lead_client_avatar').setAttribute('src', this._services.url_images + this.lead_client.photo);
-          }
 
+
+          console.log(this._services.url_images);
           console.log(this.lead_client);
           this.loader.hideLoader();
         }
@@ -324,7 +323,7 @@ export class NewPartnerClientComponent implements OnInit {
     console.log(this.caParicingType );
 
     this.catalogService = await this._services.getCatalogueFrom(`GetCataegoryByServiceLineId?serviceLineId=1`);
-    this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
+    this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id=2');
 
     this.caserviceline = await this._services.getCatalogueFrom('GetServiceLine');
     // this.caExperienceTeamCatalog = await this._services.getCatalogueFrom('GetExperienceTeamCatalog/1');
@@ -512,6 +511,7 @@ export class NewPartnerClientComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      
       if (result.success) {
         result.idClientPartnerProfile = this.lead_client.id;
         if (result.action == "new") {
@@ -530,14 +530,18 @@ export class NewPartnerClientComponent implements OnInit {
                   },
                   width: "350px"
                 });
+                this.ngAfterViewInit();
+                console.log(this.lead_client.generalContractPricingInfos);
+                this.generalContractPricingInfos = new MatTableDataSource(this.lead_client.generalContractPricingInfos);
               }
-              this.ngAfterViewInit();
-            })
+              // this.ngAfterViewInit();
+            });
           }
         }
         else {
           if (this.lead_client == 0) {
             this.lead_client.generalContractPricingInfos[result.action] = result;
+            this.ngAfterViewInit();
           }
           else {
             this.loader.showLoader();
@@ -552,13 +556,18 @@ export class NewPartnerClientComponent implements OnInit {
                   width: "350px"
                 });
                 this.ngAfterViewInit();
+                console.log(this.lead_client.generalContractPricingInfos);
+                this.generalContractPricingInfos = new MatTableDataSource(this.lead_client.generalContractPricingInfos);
                 this.loader.hideLoader();
               }
             })
           }
         }
-        console.log(this.lead_client.generalContractPricingInfos);
-        this.generalContractPricingInfos = new MatTableDataSource(this.lead_client.generalContractPricingInfos);
+
+      }
+      else
+      {
+        this.ngAfterViewInit();
       }
     });
   }
@@ -780,7 +789,7 @@ export class NewPartnerClientComponent implements OnInit {
     const dialogRef = this.dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
-        body: "Are you sure to delete document?"
+        body: "Do you want to delete this document?"
       },
       width: "350px"
     });
@@ -1289,7 +1298,7 @@ export class NewPartnerClientComponent implements OnInit {
     const dialogRef = this.dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
-        body: "Are you sure to delete client?"
+        body: "Do you want to delete this client?"
       },
       width: "350px"
     });
@@ -1318,24 +1327,6 @@ export class NewPartnerClientComponent implements OnInit {
 
   //////////////////////////////////////////////////////////////////////////////////////
   //image
-  img(event) {
-    console.log(event);
-    const file = event.target.files[0];
-    const ext = event.target.files[0].type.split('/');
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      console.log(reader);
-      let encoded = reader.result.toString().replace(/^data:(.*;base64,)?/, '');
-      if ((encoded.length % 4) > 0) {
-        encoded += '='.repeat(4 - (encoded.length % 4));
-      }
-      this.lead_client.photo = encoded;
-      this.lead_client.photoExtension = ext[1];
-      document.getElementById('lead_client_avatar').setAttribute('src', '' + reader.result);
-    };
-  }
 
   public previewSelectedPhoto(event: any, field_to_display: string, fill_model: string = ''): void {
 
@@ -1346,15 +1337,11 @@ export class NewPartnerClientComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result != undefined) {
-        const field_photo: any = document.getElementById(field_to_display),
-          //event_data = result,
-          photo_index: any = field_to_display.split('_')[3],
-          root: any = this;
-        const base64: any = result;//e.target.result;
+        const base64: any = result;
 
-        field_photo.setAttribute('src', base64);
+        this._imageLocal = base64;
         this.lead_client.photo = base64.split(',')[1];
         this.lead_client.photoExtension = 'png';
        
@@ -1368,7 +1355,7 @@ export class NewPartnerClientComponent implements OnInit {
     const dialogRef = this.dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
-        body: "Are you sure to delete user experience team?"
+        body: "Do you want to delete this user experience team?"
       },
       width: "350px"
     });

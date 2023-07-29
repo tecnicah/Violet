@@ -243,8 +243,23 @@ export class DialogAddServiceComponent implements OnInit {
           result.idServiceLocation = this.data.id;
           result.createdBy = user.id;
           result.createdDate = new Date();
-          this.data.servicelocationcountries.push(result);
-          this.addCountryUpdate();
+          result.countries.forEach(element => {
+            this.data.servicelocationcountries.push({
+              id: result.id,
+              idCountry: element,
+              scopeDescription: result.scopeDescription,
+              idServiceLocation: result.idServiceLocation,
+              documentLocationCountries: result.documentLocationCountries,
+              standarScopeDocuments: result.standarScopeDocuments
+            });
+          });
+          // this.data.servicelocationcountries.push(result);
+          // this.addCountryUpdate();
+          debugger;
+          setTimeout(() => {
+            this.addCountryUpdate();
+          }, 100);
+
         }
         else {
           // this.data.servicelocationcountries[result.action] = result;
@@ -297,6 +312,7 @@ export class DialogAddServiceComponent implements OnInit {
   addCountryUpdate() {
     // metodo que agrega nombre y ciudad a la tabla cuando aun no se guarda los countries que se agregaron
     let valorTabla = [];
+    debugger;
     for (let c = 0; c < this.data.servicelocationcountries.length; c++) {
       const dataTableCountry = this.data.servicelocationcountries[c];
       for (let j = 0; j < this.GetCountry.length; j++) {
@@ -314,10 +330,23 @@ export class DialogAddServiceComponent implements OnInit {
         }
       }
     }
-    // this.serviceLocationCountries = new MatTableDataSource(valorTabla);
-    this.serviceLocationCountries.data.push(valorTabla[0]);
+    valorTabla.forEach(element => {
+      this.data.serviceLocationCountries.push({
+        id: element.id,
+        idCountry: element.idCountry,
+        name: element.name,
+        scopeDescription: element.scopeDescription,
+        idServiceLocation: element.idServiceLocation,
+        documentLocationCountries: element.documentLocationCountries,
+        standarScopeDocuments: element.standarScopeDocuments
+      });
+    });
+   
+    this.serviceLocationCountries = new MatTableDataSource(this.data.serviceLocationCountries);
+     //this.serviceLocationCountries = new MatTableDataSource(valorTabla);
+    //this.serviceLocationCountries.data.push(valorTabla);
     // se manda a llamar ngonit para que se pinte el registro
-    this.ngOnInit();
+    //this.ngOnInit();
 
   }
 

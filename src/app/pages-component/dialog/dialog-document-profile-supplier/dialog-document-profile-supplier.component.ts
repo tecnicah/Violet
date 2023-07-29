@@ -48,7 +48,7 @@ export class DialogDocumentProfileSupplierComponent implements OnInit {
   async catalogos(){
     this.privacy   = await this._services.getCatalogueFrom('GetPrivacy');
     //this.documentType   = await this._services.getCatalogueFrom('GetDocumentType');
-    this._services.service_general_get('Catalogue/GetDocumentType/'+this.data.supplier_type).subscribe((data => {
+    this._services.service_general_get('Catalogue/GetDocumentType/29').subscribe((data => {
       if (data.success) {
         this.documentType = data.result; 
         console.log(this.documentType);

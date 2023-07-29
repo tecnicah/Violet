@@ -4,6 +4,7 @@ import { ServiceGeneralService } from 'app/service/service-general/service-gener
 import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-client/dialog-documents-lead-client.component';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 import { DialogConfirmHistoryContractComponent } from '../dialog-confirm-history-contract/dialog-confirm-history-contract.component';
+import { LoaderComponent } from 'app/shared/loader';
 
 @Component({
   selector: 'app-dialog-contract-pricing-info',
@@ -27,7 +28,8 @@ export class DialogContractPricingInfoComponent implements OnInit {
   caPrecingSchedule: any[] = [];
   caDocumentType: any[] = [];
   disabled: boolean = false;
-
+  loader: LoaderComponent = new LoaderComponent();
+  
   //*********************************************//
   public permission_read: boolean = false;
   public permission_write: boolean = false;
@@ -60,6 +62,32 @@ export class DialogContractPricingInfoComponent implements OnInit {
     this.catalogos();
   }
 
+  deleteDocument(id)
+  {
+    console.log(id);
+    this.loader.hideLoader();
+    this._services.service_general_delete_noapi('DeleteDocumentGeneralContractPricingInfo?id='+id).subscribe((r) => {
+      console.log(r);
+      if (r.success) {
+        this.data.documentGeneralContractPricingInfos = [];        
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Delete data"
+          },
+          width: "350px"
+        });
+
+        r.result.value.forEach(element => {
+          this.data.documentGeneralContractPricingInfos.push(element);
+        });
+        
+        console.log("this.data.documentGeneralContractPricingInfos",this.data.documentGeneralContractPricingInfos);
+        this.loader.hideLoader();
+      }
+    });
+  }
+
   compareDates() {
     var f1 = new Date(); //31 de diciembre de 2015
     var f2 = new Date(this.data.contractExpirationDate);
@@ -72,7 +100,7 @@ export class DialogContractPricingInfoComponent implements OnInit {
     }
   }
 
-  caServiceLine: Array<any> = [];
+  caServiceLine: any[] = [];
   caReferralPaymentType: Array<any> = [];
   caServicePaymentRecurrence: Array<any> = [];
   caThirdPartyPaymentRecurrence: Array<any> = [];
@@ -87,12 +115,12 @@ export class DialogContractPricingInfoComponent implements OnInit {
       console.log("Catalogo", r);
       if (r.success) {
         this.caServiceLine = r.result;
-
+debugger;
         if (this.data.relContractPricingInfoServiceLines.length > 0) {
           this.data.idServiceLine = [];
           for (const iterator of this.data.relContractPricingInfoServiceLines) {
             this.data.idServiceLine.push(
-              iterator.id
+              iterator.idServiceLine
             );
           }
         }
@@ -250,9 +278,9 @@ export class DialogContractPricingInfoComponent implements OnInit {
       this.active_IdThirdPartyPaymentRecurrence = true;
     }
 
-    if (this.data.description == undefined || this.data.description.length == 0) {
-      this.active_description = true;
-    }
+    // if (this.data.description == undefined || this.data.description.length == 0) {
+    //   this.active_description = true;
+    // }
 
     if (this.data.referralFee == undefined || this.data.referralFee.length == 0) {
       this.active_referralFee = true;
@@ -325,9 +353,9 @@ export class DialogContractPricingInfoComponent implements OnInit {
     if (this.data.idPaymentRecurrence == undefined || this.data.idPaymentRecurrence == null) {
       return false
     }
-    if (this.data.description == undefined || this.data.description == '') {
-      return false
-    }
+    // if (this.data.description == undefined || this.data.description == '') {
+    //   return false
+    // }
 
     return true;
   }

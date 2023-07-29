@@ -52,7 +52,7 @@ export class AreaOrientationComponent implements OnInit {
   //CATALOGOS_GET//
   ca_estatus: any[] = [];
   ca_requestType: any[] = [];
-  area_orientation: any;
+  area_orientation: any = {};
   nacionality: any;
   ca_document: any;
   cr: string = "Reply";

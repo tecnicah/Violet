@@ -47,7 +47,7 @@ export class SupplierPartnersComponent implements OnInit {
   public filterCity: any = { city: '' };
   public filterStatus: any = { status: '' };
   public cat: any = { id: 1, category: 'Consultant supplier compan', type: 1 };
-  public cat1: any = { id: 2, category: 'Service provider', type: 2 };
+  public cat1: any = { id: 2, category: 'Service Provider Profile', type: 2 };
   public cat2: any = { id: 3, category: 'Premier Consultant', type: 3 };
   public cat4: any = { id: 0, category: 'All Categories', type: 0 };
   public cat3: any = { id: 4, category:'Consultant of a company', type: 4 };
@@ -220,13 +220,13 @@ export class SupplierPartnersComponent implements OnInit {
   //*************************************************************//
   viewSupplier(data) {
     console.log("viewSupplier: ", data);
-    if(data.supplierCategory == 'Consultant supplier company'){
+    if(data.supplierCategory == 'Service Provider Profile'){
       this.router.navigateByUrl('supplierConsultant/' + data.id);
     }
-    if(data.supplierCategory == 'Service supplier company'){
+    if(data.supplierCategory == 'Service Provider Profile'){
       this.router.navigateByUrl('supplierServices/' + data.id);
     }
-    if(data.supplierCategory != 'Consultant supplier company' && data.supplierCategory != 'Service supplier company'){
+    if(data.supplierCategory != 'Consultant supplier company' && data.supplierCategory != 'Service Provider Profile'){
       this.router.navigateByUrl('profileconsultant/' + data.id);
     }
   }

@@ -300,7 +300,7 @@
   <mat-grid-list cols="4" rowHeight="100px">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
       <mat-form-field>
-        <mat-label [ngClass]="{ valid: active_description }"
+        <mat-label
           >Description</mat-label
         >
         <textarea
@@ -311,16 +311,10 @@
           placeholder="Description"
           type="text"
           (focus)="active_description = false"
-          required
           [(ngModel)]="data.description"
         ></textarea>
         <mat-hint align="end">{{ input.value?.length || 0 }}/500</mat-hint>
-        <mat-error>Field is required</mat-error>
-        <mat-hint
-          style="color: #e91e63; font-size: 12px"
-          *ngIf="active_description"
-          >Field is required</mat-hint
-        >
+       
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
@@ -353,18 +347,17 @@
 
       <div
         class="page__section documents__ascard"
-        *ngFor="let item of data.documentGeneralContractPricingInfos"
-      >
+        *ngFor="let item of data.documentGeneralContractPricingInfos">
         <img
           src="assets/icons/quit.svg"
           class="page__section--card-closeButton delete"
           style="background: transparent !important"
-          *ngIf="permission_delete"
-        />
+          *ngIf="permission_delete" (click)="deleteDocument(item.id);"/>
         <div
-          class="page__section-input page__section-input--25 documents__ascard--task"
-        >
-          {{ getDocument(item.idDocumentType) }}
+          class="page__section-input page__section-input--25 documents__ascard--task">
+          <a href="{{_services.url_images}}{{item.fileRequest}}" target="_blank">
+            {{ getDocument(item.idDocumentType) }}
+          </a>          
         </div>
         <div
           class="page__section-input page__section-input--25 documents__ascard--task"

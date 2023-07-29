@@ -124,7 +124,7 @@
       <div class="page__section">
         <div class="page__section-input page__section-input--25">
           <span class="documents__index documents__index--task">
-            Document Type
+            Document Name
           </span>
         </div>
         <div class="page__section-input page__section-input--25">
@@ -145,10 +145,10 @@
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries">
           <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;">
+            style="background: transparent!important;" (click)="deleteDocument(item.id)">
           <div class="page__section-input page__section-input--25 documents__ascard--task browser">
           <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
-            {{ item.fileName}}
+            {{ item.documentType}}
           </a> 
           <!-- idDocumentTypeName -->
           </div>

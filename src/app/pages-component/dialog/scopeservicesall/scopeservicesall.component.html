@@ -38,7 +38,7 @@
     </mat-grid-list>
     <mat-grid-list cols="4" rowHeight="300px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="tempScopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
+        <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="tempScopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
       </mat-grid-tile>
     </mat-grid-list>
   
@@ -64,11 +64,11 @@
               Status
             </span>
           </div>
-          <div class="page__section-input page__section-input--25">
+          <!-- <div class="page__section-input page__section-input--25">
             <span class="documents__index documents__index--task">
               Privacy
             </span>
-          </div>
+          </div> -->
         </div>
         <div class="page__section documents__ascard" *ngFor="let item of tempScopeDocument">
             <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
@@ -98,15 +98,12 @@
               {{item.status}}
               <!-- statusName -->
             </div>
-            <div *ngIf="item.id==0" class="page__section-input page__section-input--25 documents__ascard--task">
-              <!--{{item.privacyName}}-->
+            <!-- <div *ngIf="item.id==0" class="page__section-input page__section-input--25 documents__ascard--task">
               {{privacyName(item.privacy)}}
-              <!-- privacyName, -->
-            </div>
-            <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
+            </div> -->
+            <!-- <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
               {{item.privacy}}
-              <!-- privacyName, -->
-            </div>
+            </div> -->
           </div>
       </div>
     </mat-grid-list>

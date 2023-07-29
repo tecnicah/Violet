@@ -650,7 +650,7 @@ const msg = (user, contact, message) => ({
 
     this._services.service_general_get(`ServiceRecord/GetServiceRecordById?id=${this.SO_ID}&user=${this.USERDATA.id}`)
       .subscribe((response: any) => {
-
+debugger;
         if (response.success) {
           console.log("DataServiceRecordById",response);
           console.log("SRDATA", response.result);

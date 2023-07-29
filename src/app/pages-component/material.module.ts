@@ -367,6 +367,7 @@ import { HousinglistComponent } from './dialog/housinglist/housinglist.component
 import { CardServiceDetaillComponent } from './home-finding-full/card-service-detaill/card-service-detaill.component';
 import { DialogPaymentProcessComponent } from './dialog/dialog-payment-process/dialog-payment-process.component';
 import { DialogConfirmHistoryContractComponent } from './dialog/dialog-confirm-history-contract/dialog-confirm-history-contract.component';
+import { ImgFallbackModule } from 'ngx-img-fallback';
 
 @NgModule({
   imports: [
@@ -402,6 +403,7 @@ import { DialogConfirmHistoryContractComponent } from './dialog/dialog-confirm-h
     MatTableExporterModule,
     OrderModule,
     ImageCropperModule,
+    ImgFallbackModule,
     QuillModule.forRoot()
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'en-US'},],

@@ -99,16 +99,17 @@
         <mat-form-field appearance="fill">
           <mat-label>Color</mat-label>
           <mat-select [(ngModel)]="data_vehiculo.color"  (focus)="activeVehicleColor = false">
+            <mat-option value="Black">Black</mat-option>
+            <mat-option value="Blue">Blue</mat-option>
+            <mat-option value="Brown">Brown</mat-option>
+            <mat-option value="Gray">Gray</mat-option>
+            <mat-option value="Green">Green</mat-option>
+            <mat-option value="Orange">Orange</mat-option>
+            <mat-option value="Purple">Purple</mat-option>
+            <mat-option value="Red">Red</mat-option>
+            <mat-option value="Silver">Silver</mat-option>
             <mat-option value="White">White</mat-option>
             <mat-option value="Yellow">Yellow</mat-option>
-            <mat-option value="Pink">Pink</mat-option>
-            <mat-option value="Purple">Purple</mat-option>
-            <mat-option value="Blue">Blue</mat-option>
-            <mat-option value="Orage">Orage</mat-option>
-            <mat-option value="Green">Green</mat-option>
-            <mat-option value="Gray">Gray</mat-option>
-            <mat-option value="Red">Red</mat-option>
-            <mat-option value="Black">Black</mat-option>
           </mat-select>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleColor">Field is required</mat-hint>
         </mat-form-field>
@@ -127,6 +128,11 @@
             <mat-option [value]=5>5</mat-option>
             <mat-option [value]=6>6</mat-option>
             <mat-option [value]=7>7</mat-option>
+            <mat-option [value]=8>8</mat-option>
+            <mat-option [value]=9>9</mat-option>
+            <mat-option [value]=10>10</mat-option>
+            <mat-option [value]=11>11</mat-option>
+            <mat-option [value]=12>12</mat-option>
           </mat-select>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleCapacity">Field is required</mat-hint>
         </mat-form-field>
@@ -145,6 +151,11 @@
             <mat-option [value]=5>5</mat-option>
             <mat-option [value]=6>6</mat-option>
             <mat-option [value]=7>7</mat-option>
+            <mat-option [value]=8>8</mat-option>
+            <mat-option [value]=9>9</mat-option>
+            <mat-option [value]=10>10</mat-option>
+            <mat-option [value]=11>11</mat-option>
+            <mat-option [value]=12>12</mat-option>
           </mat-select>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeVehicleDoors">Field is required</mat-hint>
         </mat-form-field>

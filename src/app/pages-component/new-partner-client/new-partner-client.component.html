@@ -70,15 +70,32 @@
             Edit Photo
           </button>
         </div> -->
-        <mat-card>
-          
-          <img mat-card-image class="main-image" id="lead_client_avatar"
-          src="assets/images/users/avatar.png" style="background-size: cover !important; max-width: 200px;" alt="Avatar">
-         
+        <!-- <mat-card>
           <mat-card-actions align="center">
             <span (click)="previewSelectedPhoto( $event, 'lead_client_avatar', 'profile')">Edit Photo</span>
           </mat-card-actions>
-        </mat-card>
+        </mat-card> -->
+        <div class="input__image">
+          <label for="ass_prof_photo_input" class="input__image-label">
+            <div class="input__image-label--cardConsultant">
+              <!-- <img [class.display-none]="no_main_photo"
+              src="{{_services.url_images}}{{data.photo}}"
+              id='ass_prof_photo' />
+              <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" /> -->
+              <img *ngIf="_url == 'new'"
+                id="lead_client_avatar"
+                src="./../../../assets/avatar.png"
+              />
+              <img id="lead_client_avatar" *ngIf="_url != 'new'"
+                src="{{_imageLocal}}" src-fallback="./assets/avatar.png"
+              />
+            </div>
+           
+          </label>
+        </div>
+        <span style="top: 80%;
+        position: absolute;
+        left: 30%; cursor: pointer;" (click)="previewSelectedPhoto( $event, 'lead_client_avatar', 'profile')">Edit Photo</span>
         <!-- <div class="page__section page__section-inputs no-padding-tb">
           <div class="page__section page__section-inputs no-padding-tb">
             <div class="page__section page__section-input--x no-padding-tb">
@@ -381,9 +398,9 @@
       </ng-container>
 
       <ng-container matColumnDef="seis">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="paymentRecurrence">Referral Payment Recurrence </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="paymentRecurrence">Service Payment Recurrence </th>
         <td mat-cell *matCellDef="let element">
-          {{element.paymentRecurrence1}}
+          {{element.idServicePaymentRecurrence}}
         </td>
       </ng-container>
 
@@ -542,12 +559,12 @@
       <!-- Symbol Column -->
       <ng-container matColumnDef="cuatro">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="commercialName"> Commercial Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.commercialName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.commercialName | titlecase}} </td>
       </ng-container>
 
       <ng-container matColumnDef="cinco">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="legalName"> Legal Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.legalName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.legalName | titlecase}} </td>
       </ng-container>
 
       <ng-container matColumnDef="seis">
@@ -568,7 +585,7 @@
       </button>
     </div>
 
-    <p class="title margin_table" style="font-size: 14px;">Contacts</p>
+    <p class="title margin_table" style="font-size: 16px;">Contacts</p>
 
     <!-- <mat-grid-list cols="4" rowHeight="60px">
       <mat-grid-tile [colspan]="2" [rowspan]="1">

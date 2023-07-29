@@ -65,10 +65,13 @@
                     src="{{_services.url_images}}{{data.photo}}"
                     id='ass_prof_photo' />
                     <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" /> -->
-                    <img 
-                      id="lead_client_avatar"
-                      src="./../../../assets/avatar.png"
-                    />
+                    <img *ngIf="id_serivice_ == 'nuevo'"
+                    id="lead_client_avatar"
+                    src="./../../../assets/avatar.png"
+                  />
+                  <img id="lead_client_avatar" *ngIf="id_serivice_ != 'nuevo'"
+                    src="{{_imageLocal}}" src-fallback="./assets/avatar.png"
+                  />
                   </div>
                  
                 </label>
@@ -232,7 +235,7 @@
     </div>
     
     <div fxLayout="row" fxLayoutAlign="start start">
-      <quill-editor style="width: 100%; !important" placeholder="About" [(ngModel)]="data.about" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
+      <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="data.about" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </div>
     <!--TRANPORTATION-->
     <mat-grid-list cols="5" rowHeight="70px" [hidden]="permisosConsultant == true" *ngIf="data.supplierType == 10">

@@ -4,6 +4,8 @@ import { ServiceGeneralService } from 'app/service/service-general/service-gener
 import { DialogDocumentsLeadClientComponent } from '../dialog-documents-lead-client/dialog-documents-lead-client.component';
 import { environment } from 'environments/environment';
 import { MatOption } from '@angular/material/core';
+import { LoaderComponent } from 'app/shared/loader';
+import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 
 @Component({
   selector: 'app-dialog-add-cuntry',
@@ -25,7 +27,7 @@ export class DialogAddCuntryComponent implements OnInit {
     ]
   };
   htmlContent: any;
-
+  loader: LoaderComponent = new LoaderComponent();
   constructor(public dialogRef: MatDialogRef<DialogAddCuntryComponent>,
     public _services: ServiceGeneralService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -259,7 +261,32 @@ export class DialogAddCuntryComponent implements OnInit {
    }
 
 
-
+   deleteDocument(id)
+   {
+     console.log(id);
+     this.loader.hideLoader();
+     this._services.service_general_delete_noapi('DeleteDocumentLocationCountry?id='+id).subscribe((r) => {
+       console.log(r);
+       if (r.success) {
+         this.data.documentLocationCountries = [];        
+         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+           data: {
+             header: "Success",
+             body: "Delete data"
+           },
+           width: "350px"
+         });
+ 
+         r.result.value.forEach(element => {
+           this.data.documentLocationCountries.push(element);
+         });
+         
+         console.log("this.data.documentGeneralContractPricingInfos",this.data.documentLocationCountries);
+         this.loader.hideLoader();
+       }
+     });
+   }
+   
   save() {
     if(this.data.id == 0){
       if (this.allSelected.selected) {

@@ -32,6 +32,7 @@ export class SupplierServicesComponent implements OnInit {
     ]
   };
 
+  public _imageLocal = "";
   public no_main_photo: boolean = false;
   id_serivice_: any;
   paymentSwitch: false;
@@ -112,29 +113,10 @@ export class SupplierServicesComponent implements OnInit {
       this.fleetSize.push(i);
     }
     this.user = JSON.parse(localStorage.getItem('userData'));
-    /*
-    this._services.service_general_get('Catalogue/GetSupplierTypeCatalogue?id=5&id=10&id=6&id=7&id=8&id=13&id=11&id=12').subscribe((data => {
-      if (data.success) {
-        this.ca_supplierType = data.result;
-      }
-    }));
-    */
+
     this.catalogos();
 
     this.verificaNodos();
-    
-    if (this.data.photo != null && this.data.photo != '') {
-      // document.getElementById('lead_client_avatar').setAttribute('src',this._services.url_images+this.data_coordinator.photo);
-      const image = new Image();
-      image.src = this._services.url_images + this.data.photo;
-      image.onload = function () {
-        document.getElementById('lead_client_avatar').setAttribute('src', image.src);
-      };
-
-      image.onerror = function () {
-        document.getElementById('lead_client_avatar').setAttribute('src', './../../../assets/avatar.png');
-      };
-    }
 
     this.data.serviceLine = 2;
 
@@ -236,14 +218,7 @@ export class SupplierServicesComponent implements OnInit {
           }
         }));
 
-        let photo_assing: string = this.data.photo;
-
-          //console.log(photo_assing);
-          if (photo_assing == undefined || photo_assing == null || photo_assing == '') {
-
-            this.no_main_photo = true;
-
-          }
+        this._imageLocal = this._services.url_images + this.data.photo;
           
         this.consultantPermisos();
         this.data.supplierPartnerDetails[0].vehiculo = [];
@@ -423,13 +398,8 @@ export class SupplierServicesComponent implements OnInit {
         if(result != undefined){
           this.no_main_photo = false;
 
-          const field_photo: any = document.getElementById(field_to_display),
-            //event_data: any = event.target.files[0],
-            dependent_index: string = field_to_display.split('_')[3],
-            root: any = this;
-
             const base64: any = result
-            ////console.log(base64.split('.')[1]);
+            this._imageLocal = base64;
             this.data.photo =  base64.split(',')[1];
             this.data.photoExtension = "png";
           

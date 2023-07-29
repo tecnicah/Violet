@@ -218,7 +218,7 @@
 
       <!-- mat-sort-header="company" -->
       <ng-container matColumnDef="Assignment">
-        <th mat-header-cell *matHeaderCellDef>Assigned to</th>
+        <th mat-header-cell *matHeaderCellDef>Assigned To</th>
         <td mat-cell *matCellDef="let element">{{ element?.assigned }}</td>
       </ng-container>
 
@@ -305,7 +305,7 @@
           Partner Client Since
         </th>
         <td mat-cell *matCellDef="let element">
-          {{ element.dateFirst | date : "dd MMM yyy" }}
+          {{ element.partnerClientSince | date : "dd MMM yyy" }}
         </td>
       </ng-container>
 

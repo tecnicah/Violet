@@ -141,7 +141,7 @@ export class DialogOfficeInformationComponent implements OnInit {
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
     this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
     this.ca_account = await this._services.getCatalogueFrom('GetBankAccountType');
-    this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
+    this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id=2');
     this._services.service_general_get('Catalog/GetAllOffice').subscribe((r)=>{
       if(r.success){
         this.ca_offices = r.result;

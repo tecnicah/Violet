@@ -136,6 +136,10 @@ private suscribirOnListeners() {
     return this.http.delete(this.url_api + url, { headers: this.headers });
   }
 
+  public service_general_delete_noapi(url:string):Observable<any> {
+    return this.http.delete(this.url_noapi + url, { headers: this.headers });
+  }
+
   public service_general_deleteparam(url, parametros): Observable<any> { this.headers = this.headers.set('Content-Type', 'application/json; charset=utf-8')
     return this.http.delete(this.url_api + url, { headers: this.headers, params: parametros });
   }
