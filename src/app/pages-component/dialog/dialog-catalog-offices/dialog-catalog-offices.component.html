@@ -338,9 +338,11 @@
       <div class="page__section documents__ascard" *ngFor="let item of data.documentOffices; let i = index">
         <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
           style="background: transparent!important;" (click)="deleteDocument(item)">
-        <img src="assets/icons/eye-view.svg" (click)="viewDocument(item.image,item.imageExtension)"
+        <a href="{{_services.url_images}}{{item.image}}" target="_blank">
+          <img src="assets/icons/eye-view.svg" 
           class="page__section--card-closeButton delete eye"
           style="background: transparent!important; margin-right: 25px;">
+        </a> 
         <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{item.documentName}}
         </div>
