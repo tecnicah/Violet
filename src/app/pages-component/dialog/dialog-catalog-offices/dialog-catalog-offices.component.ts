@@ -229,7 +229,7 @@ export class DialogCatalogOfficesComponent implements OnInit {
   active_zip: boolean = false;
   active_phone: boolean = false;
   active_email: boolean = false;
-
+  active_legalEntity: boolean = false
   //Inicio agregar Banking Details List
   addBank(id) {
     console.log("entra a abrir modal bank para inserccion");
@@ -323,12 +323,16 @@ export class DialogCatalogOfficesComponent implements OnInit {
   //Fin agregar Document
 
   //inicio view Document
-  viewDocument(b64, ext) {
+  viewDocument(id, image, extencion) {
+    if (id != 0) {
+      const url_images = this._services.url_images + '' + image
+      window.open(url_images)
+    } else {
+      let base64String = image;
 
-    let base64String = b64;
-    this.downloadPdf(base64String, "archivo", ext);
+      this.downloadPdf(base64String, "archivo", extencion);
+    }
   }
-
   downloadPdf(base64String, fileName, ext) {
     const source = 'data:application/' + ext + ';base64,' + base64String;
     const link = document.createElement("a");
@@ -372,7 +376,7 @@ export class DialogCatalogOfficesComponent implements OnInit {
       this.nso_ainfo_fields.no_email = false
       console.log('3');
     }
-    const dataForm = ['office', 'country', 'city', 'address', 'zip', 'phone', 'email'];
+    const dataForm = ['legalEntity','office', 'country', 'city', 'address', 'zip', 'phone', 'email'];
     let validacion_Correc = false;
     for (const property of dataForm) {
       if (this.data[property] === undefined || this.data[property] === '') {

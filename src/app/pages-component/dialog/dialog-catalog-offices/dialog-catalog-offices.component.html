@@ -13,9 +13,9 @@
   </div>
 </div>
 <mat-dialog-content class="mat-typography">
-  <mat-grid-list cols="2" rowHeight="70px">
-    <!-- foto -->
-    <mat-grid-tile [colspan]="1" [rowspan]="3">
+  <mat-grid-list cols="3" rowHeight="70px">
+    <!--FOto-->
+    <mat-grid-tile [rowspan]="3" [colspan]="1">
       <div class="flex-img">
         <div>
           <img src="./../../../../assets/images/users/avatar.png" id="lead_client_avatar" class="avatar" />
@@ -29,14 +29,16 @@
       </div>
     </mat-grid-tile>
     <!-- Legacy Entity -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Legacy Entity</mat-label>
         <input matInput placeholder="Legacy Entity" [(ngModel)]="data.legalEntity" />
+        <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_legalEntity">Field is required</mat-hint>
       </mat-form-field>
+
     </mat-grid-tile>
-    <!-- inputs -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!-- Office Name -->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Office Name</mat-label>
         <input matInput required placeholder="Office Name" [(ngModel)]="data.office" />
@@ -45,7 +47,7 @@
       </mat-form-field>
     </mat-grid-tile>
     <!-- country -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1" style="margin-left: -0.5rem;">
       <mat-form-field appearance="fill">
         <mat-label>Country</mat-label>
         <mat-select required [(ngModel)]="data.country" (selectionChange)="selectCity()">
@@ -70,8 +72,10 @@
         <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="active_city">Field is required</mat-hint>
       </mat-form-field>
     </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="2" rowHeight="70px">
     <!-- Tax ID -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Tax ID</mat-label>
         <input matInput required placeholder="Tax ID" [(ngModel)]="data.taxId" />
@@ -135,13 +139,13 @@
       <mat-form-field appearance="fill">
         <mat-label>E-mail</mat-label>
         <input matInput required placeholder="email@email.com" [(ngModel)]="data.email" (change)="
-            removeErrorLabel($event.target.value, {
-              handler: nso_ainfo_fields,
-              field: 'no_email'
-            });
-            validEmailAssignee($event.target.value);
-            validateEmailServerAvailability($event.target.value)
-          " />
+              removeErrorLabel($event.target.value, {
+                handler: nso_ainfo_fields,
+                field: 'no_email'
+              });
+              validEmailAssignee($event.target.value);
+              validateEmailServerAvailability($event.target.value)
+            " />
         <span class="label-error" *ngIf="nso_ainfo_fields.no_email">
           Field is required
         </span>
@@ -152,7 +156,7 @@
     </mat-grid-tile>
 
     <!-- Operations email -->
-    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
+    <mat-grid-tile style="margin-left: -0.5rem" [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Operations email</mat-label>
         <input matInput placeholder="email@email.com" [(ngModel)]="data.operationsEmail"
@@ -164,7 +168,7 @@
     </mat-grid-tile>
 
     <!-- Finance email -->
-    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
+    <mat-grid-tile  [colspan]="1" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Finance email</mat-label>
         <input matInput placeholder="email@email.com" [(ngModel)]="data.financeEmail"
@@ -176,7 +180,7 @@
     </mat-grid-tile>
 
     <!-- Other  -->
-    <mat-grid-tile style="margin-left: 0.5rem" [colspan]="1" [rowspan]="1">
+    <mat-grid-tile  [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Other </mat-label>
         <input matInput placeholder="email@email.com" [(ngModel)]="data.other"
@@ -187,13 +191,16 @@
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
+
+
   <!--Inicio Banking Details-->
   <div>
     <p class="page__section-name" style="font-size: 14px;">Banking Details List</p>
   </div>
   <!--Inicio de Tabla Banking Details-->
-  <mat-dialog-content class="mat-typography" *ngIf="data?.officeBankingDetailLists != undefined"
-    style="max-height: fit-content;">
+  <!--class="mat-typography"-->
+  <mat-dialog-content class="conten-detail"
+    *ngIf="data?.officeBankingDetailLists != undefined && data?.officeBankingDetailLists.length >=1">
     <div class="mat-elevation-z5" style="padding-top: 10px;"
       *ngFor="let data_land of data?.officeBankingDetailLists; let i = index">
       <mat-grid-list cols="4" rowHeight="70px">
@@ -338,11 +345,10 @@
       <div class="page__section documents__ascard" *ngFor="let item of data.documentOffices; let i = index">
         <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
           style="background: transparent!important;" (click)="deleteDocument(item)">
-        <a href="{{_services.url_images}}{{item.image}}" target="_blank">
-          <img src="assets/icons/eye-view.svg" 
-          class="page__section--card-closeButton delete eye"
-          style="background: transparent!important; margin-right: 25px;">
-        </a> 
+        <a (click)="viewDocument(item.id,item.image,item.imageExtension)" target="_blank">
+          <img src="assets/icons/eye-view.svg" class="page__section--card-closeButton delete eye"
+            style="background: transparent!important; margin-right: 25px;">
+        </a>
         <div class="page__section-input page__section-input--25 documents__ascard--task">
           {{item.documentName}}
         </div>

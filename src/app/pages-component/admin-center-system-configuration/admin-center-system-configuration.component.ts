@@ -277,7 +277,7 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
     console.log('abrir modal office');
     const dialogRef = this._dialog.open(DialogCatalogOfficesComponent, {
       data: {id: id},
-      width: "40%",
+      width: "70%",
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -557,7 +557,7 @@ export class AdminCenterSystemConfigurationComponent implements OnInit {
   }
 
   getCities(obj){
-    
+
     this.cities_Data_view = obj;
     console.log(this.cities_Data_view);
   }
