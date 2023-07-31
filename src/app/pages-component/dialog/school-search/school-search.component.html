@@ -290,8 +290,8 @@
 
         <div *ngIf="dataSourceSchool.length > 0" class="page__section-button page__section-button--big"
           style="left: 9px;">
-          <button class="button-icon button-icon--send" (click)="sent_schooling_list()">
-            Send Schools
+          <button class="button-icon button-icon--send" (click)="sent_schooling_list()" *ngIf="sl_to_send.length > 0">
+            ({{sl_to_send.length}}) Send Schools
           </button>
         </div>
        
@@ -316,8 +316,9 @@
 
     <ng-container matColumnDef="Send">
       <th mat-header-cell *matHeaderCellDef>Send</th>
-      <td mat-cell *matCellDef="let element">
-        <mat-checkbox [(ngModel)]="element.sendSchool" (change)="setSchool($event.checked, element, i)" [disabled]="element.sendSchool" >
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <mat-checkbox [(ngModel)]="element.sendSchool"
+        (change)="setSchool($event.checked, element, i)" [disabled]="element.sendSchoolActive" >
         </mat-checkbox>    
       </td>
     </ng-container>
@@ -448,14 +449,14 @@
         </mat-list-item>
       </mat-list>
       <!--  -->
-      <mat-card>
-
+      <mat-card *ngIf="data.schoolSelected != 'School not selected'">
+        <!--  -->
         <!--START CARD CHILD 1 CHOSEN-->
         <mat-grid-list cols="4" rowHeight="70px">
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="wid">
               <p class="page__section-name" style="width: 100%; font-size: 14px;">
-                Chosen School/Child {{i + 1}}  {{data.schoolSelected}} <!--Child {{data.numberChild}} / Chosen School -->
+                Chosen School/Child {{i + 1}}  <!--Child {{data.numberChild}} / Chosen School -->
               </p>
             </div>
           </mat-grid-tile>
@@ -468,19 +469,20 @@
             </button>
           </div>
           <br>
-          <table mat-table [dataSource]="dataSourcePayment[i]?.paymentSchoolingInformations" class="mat-elevation-z8 textarea">
+       
+          <table mat-table [dataSource]="data?.paymentSchoolingInformations" class="mat-elevation-z8 textarea">
 
             <ng-container matColumnDef="Payment">
               <th mat-header-cell *matHeaderCellDef>School Expenses Payment</th>
               <td mat-cell *matCellDef="let element; let i = index;" class="browser" (click)="editPayment(element)"> 
-               {{element.schoolExpensesPaymentNavigation?.schoolExpensesPayment}}  
+               {{element.schoolExpensesPaymentName}}  
               </td>
              
             </ng-container>
         
             <ng-container matColumnDef="Responsible">
               <th mat-header-cell *matHeaderCellDef>Responsible</th>
-              <td mat-cell *matCellDef="let element"> {{element.responsibleNavigation?.responsable}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.responsibleName}} </td>
             </ng-container>
         
         
@@ -493,12 +495,12 @@
         
             <ng-container matColumnDef="Currency">
               <th mat-header-cell *matHeaderCellDef> Currency </th>
-              <td mat-cell *matCellDef="let element"> {{element.currencyNavigation?.currency}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.currencyName}} </td>
             </ng-container>
         
             <ng-container matColumnDef="Recurrence">
               <th mat-header-cell *matHeaderCellDef> Recurrence </th>
-              <td mat-cell *matCellDef="let element"> {{element.recurrenceNavigation?.name}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.recurrenceName}} </td>
             </ng-container>
   
             <ng-container matColumnDef="Detail">
@@ -512,16 +514,8 @@
                 <div>
                   <img src="assets/icons/delete.png" style="width: 20px;" (click)="deletePayment(element)">
                 </div>
-                <!-- <mat-icon *ngIf="element.status == 'Pending'" (click)="deleteSchoollist(element.id)">delete_forever</mat-icon>   -->
               </td>
-            </ng-container>
-        
-        
-            <!-- <ng-container matColumnDef="Currency">
-              <th mat-header-cell *matHeaderCellDef> Currency </th>
-              <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
-            </ng-container> -->
-        
+            </ng-container>        
         
             <ng-container matColumnDef="Schooling Status">
               <th mat-header-cell *matHeaderCellDef> Schooling Status </th>
@@ -535,13 +529,7 @@
               </td>
             </ng-container>
         
-        
-            <!-- <ng-container matColumnDef="Actions">
-              <th mat-header-cell *matHeaderCellDef> </th>
-              <td mat-cell *matCellDef="let element">
-                <img src="assets/icons/pencil.png" style="width: 20px;" (click)="editSchool(element)">
-              </td>
-            </ng-container> -->
+  
         
             <tr mat-header-row *matHeaderRowDef="displayedColumnsPayment"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnsPayment;"></tr>

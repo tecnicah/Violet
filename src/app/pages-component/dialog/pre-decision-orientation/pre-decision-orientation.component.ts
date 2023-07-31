@@ -406,7 +406,31 @@ export class PreDecisionOrientationComponent implements OnInit {
         console.log("data_schooling_list", data_schooling_list);
         this.area_orientation.schooling = data_schooling_list.message; 
      
-        this.dataSourceSchool = data_schooling_list.message;
+        data_schooling_list.message.forEach(element => {
+          this.dataSourceSchool.push({
+            additionalComments: element.additionalComments,
+            address: element.address,
+            admision: element.admision,
+            currency: element.currency,
+            dependent: element.dependent,
+            grade: element.grade,
+            id: element.id,
+            name: element.name,
+            perMonth: element.perMonth,
+            relAppointmentSchoolingLists: element.relAppointmentSchoolingLists,
+            schoolName: element.schoolName,
+            schoolNo: element.schoolNo,
+            schoolingSearchId: element.schoolingSearchId,
+            schoolingStatus: element.schoolingStatus,
+            sendSchool: element.sendSchool,
+            sendSchoolActive: element.sendSchool,
+            status: element.status,
+            supplierId: element.supplierId,
+            visitDate: element.visitDate,
+            visitDateTime: element.visitDateTime
+          });
+        });
+        // this.dataSourceSchool = data_schooling_list.message;
       }
     }));
   }
@@ -667,14 +691,19 @@ export class PreDecisionOrientationComponent implements OnInit {
     })
   }
   //Send School
-  setSchool(event, obj, index){
+  setSchool(event, obj, indextable){
     if(event){
       
       this.sl_to_send.push(obj.id);
     }
     else
     {
-      this.sl_to_send.slice(index, 1)
+      debugger;
+      this.sl_to_send.forEach((element, index) => {
+        if(element == obj.id){
+          this.sl_to_send.splice(index, 1)
+        }
+      });      
     }
   }
 

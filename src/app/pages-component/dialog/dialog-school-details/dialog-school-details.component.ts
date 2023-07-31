@@ -83,6 +83,12 @@ export class DialogSchoolDetailsComponent implements OnInit {
     }
   }
 
+  sendLink(url){
+    console.log(url);
+    //window.location.href = url;
+    window.open(url)
+  }
+
   supplierPartner() {
     console.log(" datos a enviar GetSupplierPartnerServiceByServices ============", this.data.workOrderServicesId, this.data)
     this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.data.workOrderServicesId).subscribe((data => {

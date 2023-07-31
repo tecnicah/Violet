@@ -251,14 +251,23 @@ export class SchoolSearchComponent implements OnInit {
   }
 
   setSchool(event, obj, index){
+    console.log(event);
+    console.log(this.sl_to_send);
     if(event){
       
       this.sl_to_send.push(obj.id);
     }
     else
     {
-      this.sl_to_send.slice(index, 1)
+      debugger;
+      this.sl_to_send.forEach((element, index) => {
+        if(element == obj.id){
+          this.sl_to_send.splice(index, 1)
+        }
+      }); 
     }
+
+    console.log(this.sl_to_send);
   }
 
   //Delete Schools
@@ -372,7 +381,7 @@ export class SchoolSearchComponent implements OnInit {
           if (res.success) {
             console.log("CHILD", res.applicant.value)
             this.school_search.schoolingInformations = [];
-              res.applicant.value.forEach(element => {
+              res.applicant.value.forEach((element, index) => {
                 console.log("Element", element);
                 this.school_search.schoolingInformations.push({
                   id: element.id,
@@ -390,7 +399,8 @@ export class SchoolSearchComponent implements OnInit {
                   sex: element.sex,
                   schoolsLists: element.schoolsLists,
                   languageDependentInformations: element.languageDependentInformations, 
-                  schoolSelected: element.schoolSelected
+                  schoolSelected: element.schoolSelected,
+                  paymentSchoolingInformations: element.paymentSchoolingInformations
                 });
               });
           }
@@ -399,7 +409,7 @@ export class SchoolSearchComponent implements OnInit {
         });
 
         console.log("this.school_search.schoolingInformations", this.school_search.schoolingInformations);
-        this.paymentSchooling = this.school_search.paymentSchoolings;
+        // this.paymentSchooling = this.school_search.paymentSchoolings;
         // this.delete_no_permanent();
         this.setup_permissions_settings();
         this.get_text_status();
@@ -407,7 +417,7 @@ export class SchoolSearchComponent implements OnInit {
         //
         //console.log('DATA CONSULTA SCHOOL SEARCH_2: ', data);
         this.dataSourcePayment = this.school_search.schoolingInformations;
-        this.dataSource = this.school_search.extensionSchoolingSearches;
+        // this.dataSource = this.school_search.extensionSchoolingSearches;
         // if (this.school_search.commentSchoolingSearches.length == 0) {
         //   this.addReply();
         // }
@@ -415,7 +425,7 @@ export class SchoolSearchComponent implements OnInit {
         //this.get_payment();
         this.getDataSchool();
         //this.getServiceScope();
-        this.get_child();
+        // this.get_child();
         // this.GetSchoolinginformation();
         this.__loader__.hideLoader();
 
@@ -860,8 +870,32 @@ export class SchoolSearchComponent implements OnInit {
       //  //console.log('DATA CONSULTA SCHOOLING LIST: ', data_schooling_list);
       if (data_schooling_list.success) {
         console.log('DATA CONSULTA SCHOOLING LIST: ',data_schooling_list);
-        this.dataSourceSchool = data_schooling_list.message;
-
+        this.dataSourceSchool = [];
+        data_schooling_list.message.forEach(element => {
+          this.dataSourceSchool.push({
+            additionalComments: element.additionalComments,
+            address: element.address,
+            admision: element.admision,
+            currency: element.currency,
+            dependent: element.dependent,
+            grade: element.grade,
+            id: element.id,
+            name: element.name,
+            perMonth: element.perMonth,
+            relAppointmentSchoolingLists: element.relAppointmentSchoolingLists,
+            schoolName: element.schoolName,
+            schoolNo: element.schoolNo,
+            schoolingSearchId: element.schoolingSearchId,
+            schoolingStatus: element.schoolingStatus,
+            sendSchool: element.sendSchool,
+            sendSchoolActive: element.sendSchool,
+            status: element.status,
+            supplierId: element.supplierId,
+            visitDate: element.visitDate,
+            visitDateTime: element.visitDateTime
+          });
+        });
+        console.log('DATA CONSULTA SCHOOLING LIST: ',this.dataSourceSchool);
         
         //BRING DATA TABLE PAYMENTS/
         this.getDependent();
@@ -890,7 +924,7 @@ export class SchoolSearchComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.getDataSchool();
-      this.load_service();
+      //this.load_service();
     })
   }
   
