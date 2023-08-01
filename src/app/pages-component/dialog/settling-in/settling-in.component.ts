@@ -226,7 +226,7 @@ export class SettlingInComponent implements OnInit {
     switch (type) {
       case 'bank':
         if (!event.checked) {
-          if (this.settlingin.bankCompleted != null || this.settlingin.bankCompleted != '') {
+          if (this.settlingin.bankCompleted == null || this.settlingin.bankCompleted == '') {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Bank Account",
@@ -240,6 +240,20 @@ export class SettlingInComponent implements OnInit {
               if (!result) {
                 this.settlingin.bankAccount = true;
               }
+            });
+          }
+          else{
+            const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Bank Account",
+                body: "The subservice cannot be deleted because it has already been completed"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              this.settlingin.carPurchaseLease = true;
             });
           }
         }
@@ -280,7 +294,7 @@ export class SettlingInComponent implements OnInit {
         break;
       case 'child':
         if (!event.checked) {
-          if (this.settlingin.childCareCompleted != null || this.settlingin.childCareCompleted != '') {
+          if (this.settlingin.childCareCompleted == null || this.settlingin.childCareCompleted == '') {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Child Care",
@@ -294,6 +308,20 @@ export class SettlingInComponent implements OnInit {
               if (!result) {
                 this.settlingin.childCare = true;
               }
+            });
+          }
+          else{
+            const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Child Care",
+                body: "The subservice cannot be deleted because it has already been completed"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              this.settlingin.carPurchaseLease = true;
             });
           }
         }
