@@ -749,7 +749,7 @@ export class SchoolSearchComponent implements OnInit {
   sent_schooling_list() {
     //
     this.__loader__.showLoader();
-    let list_obj = { list: this.sl_to_send, id_sr: this.data.data.serviceRecordId }
+    let list_obj = { list: this.sl_to_send, id_sr: this.data.data.serviceRecordId, sender: this.user.id }
 
     console.log("DATA A enviar la servicio : ", list_obj);
     this._services.service_general_post_with_url("SchoolsList/SendSchoolList", list_obj).subscribe((data => {
@@ -759,7 +759,7 @@ export class SchoolSearchComponent implements OnInit {
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Success",
-          body: "Schools Sent"
+          body: "This action will change the status of the schools to 'Sent' and send an email notifying the assignee"
         },
         width: "350px"
       });

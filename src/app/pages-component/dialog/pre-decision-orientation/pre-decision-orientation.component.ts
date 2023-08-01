@@ -720,7 +720,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Success",
-          body: "Schools Sent"
+          body: "This action will change the status of the schools to 'Sent' and send an email notifying the assignee"
         },
         width: "350px"
       });
@@ -1238,7 +1238,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
   call_service_send_propertys() {
     this.loader.showLoader();
-    let list_obj = { list: this.hl_to_send, id_sr: this.data.data.serviceRecordId }
+    let list_obj = { list: this.hl_to_send, id_sr: this.data.data.serviceRecordId, sender: this.user.id }
 
     console.log("DATA A enviar la servicio : ", list_obj);
     this._services.service_general_post_with_url("HousingList/SendPropertys", list_obj).subscribe((data => {
