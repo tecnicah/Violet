@@ -61,6 +61,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     //   this.get_Notification();
     // });
     this.suscribirEventos();
+    this.suscribirNotificaciones()
   }
   id: number = 0;
   profileUser;
@@ -192,10 +193,19 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this._services.avisoAdmin.subscribe(data => {
       this._ngZone.run(() => {
         this.get_Chats();
-        this.get_Notification();
 
       })
     })
+
+  }
+  suscribirNotificaciones(){
+    this._services.notification.subscribe(data => {
+      this._ngZone.run(() => {
+        this.get_Notification();
+        console.log('entra');
+
+        })
+      })
   }
   get_Chats() {
     this.menu.service_general_get('Chat/GetChatNotification/' + this.userData.id).subscribe(n => {

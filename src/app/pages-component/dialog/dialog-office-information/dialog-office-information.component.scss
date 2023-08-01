@@ -9,7 +9,7 @@
     height: 25px;
     padding: 5px 40px 5px 11px;
     cursor: pointer;
-  
+
     &--pencil {
       background: url('/assets/icons/pencil.png');
       background-repeat: no-repeat;
@@ -17,7 +17,7 @@
       background-position-x: calc(100% - 10px);
       background-position-y: center;
     }
-  
+
     &--add {
       background: url('/assets/icons/more.png');
       background-repeat: no-repeat;
@@ -38,4 +38,12 @@
   .valid{
     color:#e91e63;
     font-size: 12px;
+  }
+  .input_final{
+    padding: 0 0 0 16px;
+  }
+  .conten-detail {
+    padding-top: 4px;
+    height: fit-content;
+    padding-bottom: 4px;
   }
