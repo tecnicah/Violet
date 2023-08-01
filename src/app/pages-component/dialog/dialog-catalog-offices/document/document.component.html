@@ -1,0 +1,99 @@
+<!------------------------------------OPEN HEADER------------------------------------------>
+<div fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Document</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<!----------------------------------OPEN CONTENT------------------------------------------>
+<mat-dialog-content class="mat-typography">
+
+  <mat-grid-list cols="4" rowHeight="160px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <div style="display: flex; justify-content: space-between;">
+          <p class="subtitle">Upload Documents</p>
+          <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyy' }}</b></p>
+        </div>
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="cargaDocumento">Field is required
+        </mat-hint>
+      </div>
+
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="upload-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="upload-name-style">
+        <tr>
+          <td class="subtitle">{{ temporalDocument.fileName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--TERMINA PLUGIN NGX FILE-->
+  <!--------------------------------------------------------------------------------------------------------->
+  <mat-grid-list cols="3" rowHeight="100px">
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Document Name</mat-label>
+          <input [(ngModel)]="data_document.documentName" (focus)="activeDocument = false;" matInput required
+            placeholder="Document Name">
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeDocument">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Privacy</mat-label>
+          <mat-select [(ngModel)]="data_document.idPrivacy" (focus)="activePrivacy = false;">
+            <mat-option *ngFor='let item of ca_privacy' [value]='item.id'>{{item.privacy}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activePrivacy">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="input_central textarea">
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="data_document.status" (focus)="activeStatus = false;">
+            <mat-option *ngFor='let item of ca_statusDoc' [value]='item.id'>{{item.status}}</mat-option>
+          </mat-select>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeStatus">Field is required
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+  <!--ENDS UPLOAD DOCUMENTS-->
+  <!----------------------------------------------------------------------------------------->
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save_data();">Save</button>
+  </div>
+</mat-dialog-actions>
