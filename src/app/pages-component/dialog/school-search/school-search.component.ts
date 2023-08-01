@@ -925,6 +925,7 @@ export class SchoolSearchComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.getDataSchool();
       //this.load_service();
+      this.get_catalogos()
     })
   }
   

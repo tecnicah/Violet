@@ -447,17 +447,17 @@
         <!------------------------------------------------------------------------------------------------>
         <!-- Schooling List -->
 
-        <div *ngIf="dataSourceSchool[0]?.length > 0">
+        <div *ngIf="dataSourceSchool?.length > 0">
           <br />
           <div class="subtitledos" style="padding-bottom: 5px;">
             School List
           </div>
           <br />
-          <table mat-table [dataSource]="dataSourceSchool[0]" class="mat-elevation-z8 textarea">
+          <table mat-table [dataSource]="dataSourceSchool" class="mat-elevation-z8 textarea">
 
             <ng-container matColumnDef="School Name">
               <th mat-header-cell *matHeaderCellDef>School Name</th>
-              <td mat-cell *matCellDef="let element" class="browser" (click)="editSchool(element)">
+              <td mat-cell *matCellDef="let element" (click)="editSchool(element)">
                 {{element.schoolName}}
               </td>
             </ng-container>
@@ -495,7 +495,7 @@
 
          <!------------------------------------------------------------------------------------------------>
         <!-- Housing List -->
-        <div *ngIf="dataSourceHousing[i]?.length > 0">
+        <div *ngIf="dataSourceHousing?.length > 0">
           <br />
           <div class="subtitledos" style="padding-bottom: 5px;">
             Houses to visit
@@ -504,7 +504,7 @@
 
           <!---------------------------------------------------------------------- TABLA CASAS  ------------------------------------------>
 
-          <table mat-table [dataSource]="dataSourceHousing[i]" class="mat-elevation-z8 textarea">
+          <table mat-table [dataSource]="dataSourceHousing" class="mat-elevation-z8 textarea">
             <ng-container matColumnDef="Property Type">
               <th mat-header-cell *matHeaderCellDef> Property Type </th>
               <td mat-cell *matCellDef="let element"> {{element.propertyType}} </td>

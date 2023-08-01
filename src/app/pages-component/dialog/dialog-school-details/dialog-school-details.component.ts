@@ -54,13 +54,15 @@ export class DialogSchoolDetailsComponent implements OnInit {
             this.SchoolDetails.supplierPartner = this.data.supplierId;
             this.SchoolDetails.additionalComments = this.data.additionalComments;
             this.SchoolDetails.dependent = this.data.dependent;
-            if(this.data.visitDate != null){
-              debugger;
-              this.SchoolDetails.visitDate = this.data.visitDate;
-              let d = new Date(this.data.visitDateTime);
-              var dateString = d.getHours() + ":" + d.getMinutes();
-              this.SchoolDetails.visitDateTime = dateString.toString();   
-            }
+            this.SchoolDetails.visitDate = this.data.visitDate;
+            this.SchoolDetails.visitDateTime = this.data.visitDateTime;
+            // if(this.data.visitDate != null){
+            //   debugger;
+            //   this.SchoolDetails.visitDate = this.data.visitDate;
+            //   let d = new Date(this.data.visitDateTime);
+            //   var dateString = d.getHours() + ":" + d.getMinutes();
+            //   this.SchoolDetails.visitDateTime =  dateString.toString();   
+            // }
             
         }
       }));
