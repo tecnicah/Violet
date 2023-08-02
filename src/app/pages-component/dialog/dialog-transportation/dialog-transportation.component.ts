@@ -283,7 +283,7 @@ change_button(){
           console.log('DATA CONSULTA FINAL: ', this.transportation);
           this.dataSourceP = this.transportation.paymentTransportations;
           this.get_payment();
-          if (this.transportation.commentTransportations.length == 0) {
+          if (this.transportation?.commentTransportations?.length == 0) {
             this.addReply();
           }
 
