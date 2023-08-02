@@ -10,7 +10,6 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 import { DialogDocumentsView } from './../dialog-documents-view/dialog-documents-view.component';
 import { LoaderComponent } from 'app/shared/loader';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
-import { ModalBankingDetailsComponent } from './modal-banking-details/modal-banking-details.component';
 
 @Component({
   selector: 'app-dialog-office-information',
@@ -81,9 +80,12 @@ export class DialogOfficeInformationComponent implements OnInit {
     })
   }
   //*********************************************//
+  data_PaymentInformationPartner: any
+  data_PaymentInformationPremier: any
   ngOnInit(): void {
     this.consultaPermisos();
     console.log(this.data);
+
     if (this.data.officeContacts) {
       console.log('office contact', this.data.officeContacts);
       this.officeContacts = new MatTableDataSource(this.data.officeContacts);
@@ -166,6 +168,8 @@ export class DialogOfficeInformationComponent implements OnInit {
     })
     // this.ca_city = await this._services.getCatalogueFrom('GetCity');
     if (this.data.paymentInformationOfficeSuppliers != undefined && this.data.paymentInformationOfficeSuppliers.length > 0) {
+      this.data_PaymentInformationPartner = [...this.data.paymentInformationOfficeSuppliers]
+      console.log('dublicar : ', this.data_PaymentInformationPartner);
       this.paymentMetod = true;
       if (this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.length > 0) {
         this.wt = true;
@@ -188,15 +192,20 @@ export class DialogOfficeInformationComponent implements OnInit {
         updatedDate: new Date(),
         id: 0
       }]
+      this.data_PaymentInformationPartner = [...this.data.paymentInformationOfficeSuppliers]
       this.paymentMetod = false;
     }
 
     if (this.data.paymentInformationOfficePremiers != undefined && this.data.paymentInformationOfficePremiers.length > 0) {
+      this.data_PaymentInformationPremier = [...this.data.paymentInformationOfficePremiers]
+      console.log('dublicar : ', this.data_PaymentInformationPremier);
+
       this.paymentMetodPremier = true;
       if (this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers.length > 0) {
         this.wtp = true;
       }
     } else {
+      this.data.paymentInformationOfficePremiers = []
       this.data.paymentInformationOfficePremiers = [{
         creditCardPaymentInformationOfficePremiers: [],
         creditCard: false,
@@ -214,6 +223,8 @@ export class DialogOfficeInformationComponent implements OnInit {
         updatedDate: new Date(),
         id: 0
       }]
+      this.data_PaymentInformationPremier = [...this.data.paymentInformationOfficePremiers]
+
       this.paymentMetodPremier = false;
     }
 
@@ -496,7 +507,18 @@ export class DialogOfficeInformationComponent implements OnInit {
   active_code: boolean = false;
   active_contact: boolean = false;
 
-
+  PaymentInformationPartner(event: any) {
+    if (event.checked) {
+      this.data.paymentInformationOfficeSuppliers = this.data_PaymentInformationPartner
+      console.log('valor a obtener : ', this.data_PaymentInformationPartner)
+    }
+  }
+  PaymentInformationPremier(event: any) {
+    if (event.checked) {
+      this.data.paymentInformationOfficePremiers = this.data_PaymentInformationPremier
+      console.log('valor a obtener : ', this.data_PaymentInformationPremier)
+    }
+  }
 
   valida_form() {
     if (this.data.idTypeOffice == undefined) {
@@ -553,37 +575,78 @@ export class DialogOfficeInformationComponent implements OnInit {
         }
       });
     }
-    this.data.paymentInformationOfficeSuppliers[0].createdBy = this.userData.id;
-    this.data.paymentInformationOfficeSuppliers[0].updatedBy = this.userData.id;
-    this.data.paymentInformationOfficeSuppliers[0].createdDate = new Date();
-    this.data.paymentInformationOfficeSuppliers[0].updateDate = new Date();
-
-    this.data.paymentInformationOfficePremiers[0].createdBy = this.userData.id;
-    this.data.paymentInformationOfficePremiers[0].updatedBy = this.userData.id;
-    this.data.paymentInformationOfficePremiers[0].createdDate = new Date();
-    this.data.paymentInformationOfficePremiers[0].updateDate = new Date();
-
-    this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
-    this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers = [];
-    for (const cc of this.ca_creditCard) {
-
-      if (cc.cheksupliers) {
-        this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
-          creditCard: cc.id,
-          paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
-        })
-      }
-
-      if (cc.chekpremier) {
-        this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
-          creditCard: cc.id,
-          paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
-        })
-      }
-
+    if (this.paymentMetod == false) {
+      this.data.paymentInformationOfficeSuppliers = []
     }
+    else {
+      this.data.paymentInformationOfficeSuppliers[0].createdBy = this.userData.id;
+      this.data.paymentInformationOfficeSuppliers[0].updatedBy = this.userData.id;
+      this.data.paymentInformationOfficeSuppliers[0].createdDate = new Date();
+      this.data.paymentInformationOfficeSuppliers[0].updateDate = new Date();
+
+      this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
+
+      for (const cc of this.ca_creditCard) {
+        if (cc.cheksupliers) {
+          this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
+            creditCard: cc.id,
+            paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
+          })
+        }
+      }
+    }
+    if (this.paymentMetodPremier == false) {
+      this.data.paymentInformationOfficePremiers = []
+    }
+    else {
+      this.data.paymentInformationOfficePremiers[0].createdBy = this.userData.id;
+      this.data.paymentInformationOfficePremiers[0].updatedBy = this.userData.id;
+      this.data.paymentInformationOfficePremiers[0].createdDate = new Date();
+      this.data.paymentInformationOfficePremiers[0].updateDate = new Date();
+
+      this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers = [];
+
+      for (const cc of this.ca_creditCard) {
+        if (cc.chekpremier) {
+          this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
+            creditCard: cc.id,
+            paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
+          })
+        }
+      }
+    }
+    /*    this.data.paymentInformationOfficeSuppliers[0].createdBy = this.userData.id;
+        this.data.paymentInformationOfficeSuppliers[0].updatedBy = this.userData.id;
+        this.data.paymentInformationOfficeSuppliers[0].createdDate = new Date();
+        this.data.paymentInformationOfficeSuppliers[0].updateDate = new Date();
+
+        this.data.paymentInformationOfficePremiers[0].createdBy = this.userData.id;
+        this.data.paymentInformationOfficePremiers[0].updatedBy = this.userData.id;
+        this.data.paymentInformationOfficePremiers[0].createdDate = new Date();
+        this.data.paymentInformationOfficePremiers[0].updateDate = new Date();
+
+        this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
+        this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers = [];
+        for (const cc of this.ca_creditCard) {
+
+          if (cc.cheksupliers) {
+            this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
+              creditCard: cc.id,
+              paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
+            })
+          }
+
+          if (cc.chekpremier) {
+            this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
+              creditCard: cc.id,
+              paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
+            })
+          }
+
+        }*/
     this.data.success = true;
     console.log('data office', this.data);
+
     this.dialogRef.close(this.data);
   }
 
@@ -620,12 +683,5 @@ export class DialogOfficeInformationComponent implements OnInit {
     });
 
   }
-  viewDetailds(data) {
-    console.log(data);
 
-     const dialog = this._dialog.open(ModalBankingDetailsComponent, {
-      data: data,
-      width: "95%"
-    });
-  }
 }
