@@ -72,13 +72,13 @@ export class DialogTransportationComponent implements OnInit {
     partner_id: 0
   };
 
-  isVisible : boolean =false;
+  isVisible: boolean = false;
 
 
   constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
   async ngOnInit() {
-    //debugger;
+
     this.loader.showLoader();
     //console.log("DATA DE LA TABLA: ", this.data);
     this.location = this.data.data.location;
@@ -97,121 +97,151 @@ export class DialogTransportationComponent implements OnInit {
 
   }
 
-//////////////////////manage estatus 
+  //////////////////////manage estatus
 
-disabled_by_permissions: boolean = false;
-hide_by_permissions: boolean = false;
-hide_complete: boolean = false;
-show_completed: boolean = false;
-show_progress: boolean = false;
-wo_ : boolean = false;
-sr_: boolean = false;
+  disabled_by_permissions: boolean = false;
+  hide_by_permissions: boolean = false;
+  hide_complete: boolean = false;
+  show_completed: boolean = false;
+  show_progress: boolean = false;
+  wo_: boolean = false;
+  sr_: boolean = false;
 
-setup_permissions_settings(){
-  //debugger;
-  if (!this.data.data.numberWorkOrder){
-     this.wo_ = this.data.workOrderId;
-  }
-  else{
-    this.wo_ = this.data.data.numberWorkOrder
-  }
+  setup_permissions_settings() {
 
-  if(!this.data.data.number_server){
-    this.sr_ = this.data.data.serviceNumber
-  }
-  else{
-    this.sr_ = this.data.data.number_server
-  }
-
-  if(this.user.role.id == 3){
-     this.disabled_by_permissions = true 
-  }
-  else{
-    this.hide_by_permissions = true;
-  }
-  if(this.transportation.statusId != 39 && this.transportation.statusId != 2 ){ //active , in progress
-    this.hide_complete= true;
-  }
-  else{
-    if(this.transportation.statusId == 39){
-      this.show_progress = true;
+    if (!this.data.data.numberWorkOrder) {
+      this.wo_ = this.data.workOrderId;
     }
-    else{
-      this.show_completed = true;
+    else {
+      this.wo_ = this.data.data.numberWorkOrder
+    }
+
+    if (!this.data.data.number_server) {
+      this.sr_ = this.data.data.serviceNumber
+    }
+    else {
+      this.sr_ = this.data.data.number_server
+    }
+
+    if (this.user.role.id == 3) {
+      this.disabled_by_permissions = true
+    }
+    else {
+      this.hide_by_permissions = true;
+    }
+    if (this.transportation.statusId != 39 && this.transportation.statusId != 2) { //active , in progress
+      this.hide_complete = true;
+    }
+    else {
+      if (this.transportation.statusId == 39) {
+        this.show_progress = true;
+      }
+      else {
+        this.show_completed = true;
+      }
     }
   }
-}
 
-AddTransportService(){
-  this.transportation.transportPickups.push({
-    "id": 0,
-    "transportationId": 0,
-    "tpAuthoDate": new Date,
-    "tpAuthoAcceptanceDate": new Date,
-    "tpAtatusId": 39,
-    "tpTransportType": 0,
-    "tpServiceDate": "",
-    "tpTimeServicesHour": 0,
-    "tpTimeServicesMinute": 0,
-    "tpServiceCompletionDate": "",
-    "tpProjectFee": "",
-    "tpPickUpLocation": "",
-    "tpDropOffLocation": "",
-    "tpPet": false,
-    "tpSupplierPartner": "",
-    "tpDriverName": "",
-    "tpDriverContact": "",
-    "tpVehicle": "",
-    "tpPlateNumber": "",
-    "tpVehicleColor": ""
-  });
-}
+  AddTransportService() {
+    this.transportation.transportPickups.push({
+      "id": 0,
+      "transportationId": 0,
+      "tpAuthoDate": new Date,
+      "tpAuthoAcceptanceDate": new Date,
+      "tpAtatusId": 39,
+      "tpTransportType": 0,
+      "tpServiceDate": "",
+      "tpTimeServicesHour": 0,
+      "tpTimeServicesMinute": 0,
+      "tpServiceCompletionDate": "",
+      "tpProjectFee": "",
+      "tpPickUpLocation": "",
+      "tpDropOffLocation": "",
+      "tpPet": false,
+      "tpSupplierPartner": "",
+      "tpDriverName": "",
+      "tpDriverContact": "",
+      "tpVehicle": "",
+      "tpPlateNumber": "",
+      "tpVehicleColor": "",
+      "tpResponsiblePaymentId": null,
+      "tpArmored": false,
+    });
+  }
+  DeleteTransport(listairportTransport) {
+    if (listairportTransport.id == 0) {
+      const index = this.transportation.transportPickups.findIndex((item) => JSON.stringify(item) === JSON.stringify(listairportTransport));
+      if (index !== -1) {
+        this.transportation.transportPickups.splice(index, 1);
+      }
+      this.viewMensajeComponente('delete', 'Transport Service List was deleted successfully')
+    } else {
+      this._services.service_general_delete(`RelocationServices/DeleteTransportPickup?id=${listairportTransport.id}`)
+        .subscribe(eliminar => {
+          this.viewMensajeComponente('delete', 'it was deleted correctly')
+          this.ngOnInit();
+        })
 
-change_button(){
-  //debugger;
-  if(this.show_completed){
-    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+    }
+    console.log("Después de eliminar:", this.transportation.airportTransportPickup);
+
+  }
+  viewMensajeComponente(header: string, msg: string) {
+    window.scrollTo(0, 0);
+    const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
       data: {
-        header: "Confirmation",
-        body: "Are you sure the service is complete?"
+        header: header,
+        body: msg
       },
       width: "350px"
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // //console.log(result);
-       if (result) {
-        this.transportation.statusId = 37; //penidng to completion 
-        this.save();
-       }
-     });
   }
 
-  if(this.show_progress){
-    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
-      data: {
-        header: "Confirmation",
-        body: "Do you want start the service?"
-      },
-      width: "350px"
-    });
+  change_button() {
 
-    dialogRef.afterClosed().subscribe(result => {
-      // //console.log(result);
-       if (result) {
-        this.transportation.statusId = 2; //penidng to completion 
-        this.save();
-       }
-     });
+    if (this.show_completed) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Are you sure the service is complete?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // //console.log(result);
+        if (result) {
+          this.transportation.statusId = 37; //penidng to completion
+          this.save();
+        }
+      });
+    }
+
+    if (this.show_progress) {
+      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+        data: {
+          header: "Confirmation",
+          body: "Do you want start the service?"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // //console.log(result);
+        if (result) {
+          this.transportation.statusId = 2; //penidng to completion
+          this.save();
+        }
+      });
+    }
   }
-}
 
-//////////////////////manage estatus
+  //////////////////////manage estatus
 
   // get service scope
   getServiceScope() {
     this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.transportation.workOrderServicesId}&client=${this.data.data.partnerId}`).subscribe(resp => {
-      //debugger;
+
       if (resp.success) {
         //console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
@@ -227,6 +257,7 @@ change_button(){
   //**********************************************************************************//
   //CATALOGOS//
   ca_privacy = [];
+  ca_paymentRes = []
   async get_catalogos() {
     //this.ca_estatus = await this._services.getCatalogueFrom('GetStatus');
     this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=19").subscribe((data => {
@@ -239,6 +270,9 @@ change_button(){
     this.ca_requestType = await this._services.getCatalogueFrom('GetRequestType');
     this.nacionality = await this._services.getCatalogueFrom('GetCountry');
     this.ca_statustp = await this._services.getCatalogueFrom('GetCatStatusTransportPickup');
+    this.ca_paymentRes = await this._services.getCatalogueFrom('GetResponsablePayment');
+    console.log("GetResponsablePayment : ", this.ca_paymentRes);
+
     //this.ca_document = await this._services.getCatalogueFrom('GetDocumentType');
     this._services.service_general_get("Catalogue/GetDocumentType/1").subscribe((data => {
       //console.log(data);
@@ -252,9 +286,9 @@ change_button(){
 
     //this._services.service_general_get('RelocationServices/GetTransportationById?applicatId='+this.data.data.deliveredToId+'&service_order_id='+this.data.data.workOrderId+'&type_service='+this.data.data.home_host).subscribe((data => {
     this._services.service_general_get('RelocationServices/GetSingleTransportationByIdS?service_id=' + this.data.data.service[0].id + '&country_id=' + this.data.data.home_host).subscribe(data => {
-      //debugger;
+
       if (data.success) {
-        
+
 
         console.log("Transport", data.result);
 
@@ -266,7 +300,7 @@ change_button(){
           this.transportation = data.result.value[0];
           this.datos.workOrderServicesId = this.transportation.workOrderServicesId;
           this.datos.partner_id = this.data.data.partnerId;
-          this.isVisible =true;
+          this.isVisible = true;
 
           this.setup_permissions_settings();
           this.getServiceScope();
@@ -275,7 +309,7 @@ change_button(){
             this.transportation.transportPickups[i].family = [];
             if (this.transportation.transportPickups[i]?.familyMemberTransportations?.length > 0) {
               for (let j = 0; j < this.transportation.transportPickups[i].familyMemberTransportations.length; j++) {
-                debugger;
+
                 this.transportation.transportPickups[i].family.push(this.transportation.transportPickups[i].familyMemberTransportations[j].familyMember);
               }
             }
@@ -307,22 +341,22 @@ change_button(){
           });
           this.dialogRef.close();
         }
-        
+
       }
       this.loader.hideLoader();
 
     }, error => {
-       console.error('[CP455] ServiceRecord/GetServices ==> ', error);
-       this.loader.hideLoader();
+      console.error('[CP455] ServiceRecord/GetServices ==> ', error);
+      this.loader.hideLoader();
 
-       const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
-         data: {
-           header: "An error has occurred",
-           body: "The service could not be oppened. contact support"
-         },
-         width: "350px"
-       });
-       this.dialogRef.close();
+      const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "An error has occurred",
+          body: "The service could not be oppened. contact support"
+        },
+        width: "350px"
+      });
+      this.dialogRef.close();
     });
   }
 
@@ -330,7 +364,7 @@ change_button(){
   //********************************************************************** ***********//
   //CONSULTA DEL SUPPLIER//
   get_SupplierType() {
-    //debugger;
+
     this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.transportation.workOrderServicesId).subscribe(r => {
       //this._services.service_general_get('SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=' + this.transportation.transportService[0].workOrderServicesId+'&supplierType='+10+'&serviceLine=2').subscribe(r => {
       if (r.success) {
@@ -344,7 +378,7 @@ change_button(){
   _texto_status = "";
 
   get_text_status() {
-    debugger;
+
     for (var v = 0; v < this.ca_estatus.length; v++) {
       if (this.ca_estatus[v].id == this.transportation.statusId) {
         this._texto_status = this.ca_estatus[v].status;
@@ -352,27 +386,30 @@ change_button(){
     }
   }
 
-  change_status_detail(){
+  change_status_detail() {
     const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
       data: {
         header: "Confirmation",
         body: "What is the status of the service?",
         rol: this.user.role.id,
         category: 19,
-        type: "home_findig"
+        type: "home_findig",
+        type_id: 24,
+        srId: this.data.sr,
+        wos_id: this.transportation.workOrderServicesId,
       },
       width: "350px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //debugger;
+
       // //console.log(result);
       if (result.success) {
-        this.transportation.statusId = result.id; //penidng to completion 
+        this.transportation.statusId = result.id; //penidng to completion
         this.get_text_status();
       }
       else {
-        //nada 
+        //nada
       }
     });
   }
@@ -658,24 +695,24 @@ change_button(){
       : "";
 
     this.loader.showLoader();
-    debugger;
+
     //this.transportation.statusId = 39;
-    
+
     console.log(JSON.stringify(this.transportation));
 
-     for (var i = 0; i < this.transportation.transportPickups.length; i++) {
+    for (var i = 0; i < this.transportation.transportPickups.length; i++) {
       this.transportation.transportPickups[i].familyMemberTransportations = [];
-        let _family = this.transportation.transportPickups[i].family.length == undefined ? 0 : this.transportation.transportPickups[i].family.length; 
-            for(var j = 0; j < _family; j++){
-              
-              this.transportation.transportPickups[i].familyMemberTransportations.push({
-                "transportService": this.transportation.transportPickups[i].id,
-                "familyMember": this.transportation.transportPickups[i].family[j]
-              });
-            }
-      }
+      let _family = this.transportation.transportPickups[i].family == undefined ? 0 : this.transportation.transportPickups[i].family.length;
+      for (var j = 0; j < _family; j++) {
 
-    debugger;
+        this.transportation.transportPickups[i].familyMemberTransportations.push({
+          "transportService": this.transportation.transportPickups[i].id,
+          "familyMember": this.transportation.transportPickups[i].family[j]
+        });
+      }
+    }
+
+
     this._services.service_general_put("RelocationServices/PutTransportation", this.transportation).subscribe((data => {
       if (data.success) {
         //console.log(data);
@@ -688,7 +725,7 @@ change_button(){
         });
         this.dialogRef.close();
         this.temporalDocument = [];
-        
+
         this.ngOnInit();
       }
       this.loader.hideLoader();
@@ -703,7 +740,7 @@ change_button(){
       });
       console.log("error en PutTransportation : ", err);
     });
-   // this.loader.hideLoader();
+    // this.loader.hideLoader();
   }
   //FUNCION PARA VER DOCUMENTO//
   public showDocumentDialogDetails(document: any, service_line: number = undefined): void {

@@ -3,7 +3,7 @@
   <!--OPEN HEADER-->
   <div fxLayout="row" fxLayoutGap="10px" fxLayoutGap="10px">
     <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
-       <h2 mat-dialog-title class="primary_title">{{data.data.service_name || data.serviceName }}</h2>
+      <h2 mat-dialog-title class="primary_title">{{data.data.service_name || data.serviceName }}</h2>
     </div>
     <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
       <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
@@ -14,127 +14,7 @@
   <mat-dialog-content class="mat-typography">
 
     <mat-grid-list cols="5" rowHeight="70px">
-
-      <mat-grid-tile [colspan]="3" [rowspan]="1">
-        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div>
-            <span class="text-mini gray_05">Service ID</span><br />
-            {{transportation.serviceNumber}}
-          </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final wid">
-          <mat-form-field color="accent" appearance="fill">
-            <mat-label>Completion</mat-label>
-            <input matInput disabled [matDatepicker]="picker3" [(ngModel)]="this.transportation.serviceCompletionDate">
-            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-            <mat-datepicker #picker3 color="primary"></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final wid">
-          <div>
-            <span class="text-mini gray_05">Status</span><br />
-            <span style="background: none;
-                        border: none;
-                        color: blue;
-                        text-decoration: underline; cursor: pointer;" (click)="change_status_detail()">
-                              {{_texto_status}}</span>
-          </div>
-          <!-- <mat-form-field appearance="fill">
-            <mat-label>Status</mat-label>
-            <mat-select [(ngModel)]="transportation.tpStatusId" [disabled]="disabled_by_permissions">
-              <mat-option *ngFor="let data of ca_estatus" [value]="data.id">{{data.status}}</mat-option>
-            </mat-select>
-          </mat-form-field> -->
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div>
-            <span class="text-mini gray_05">Deliver To</span><br />
-            {{transportation.relationship}}/{{transportation.name}}
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div>
-            <span class="text-mini gray_05">Name</span><br />
-            {{transportation.name}}
-          </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div *ngIf="this.data.data.country">
-            <span class="text-mini gray_05">Country</span><br />
-            {{country_text}}
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-          <div *ngIf="this.data.data.location">
-            <span class="text-mini gray_05">City</span><br />
-            {{location}}
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="wid" style="height: 40%;" *ngIf="transportation.coordination">
-          <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
-          <mat-checkbox disabled class="example-margin" [(ngModel)]="transportation.coordination">
-          </mat-checkbox>
-        </div>
-      </mat-grid-tile>
-      
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid">
-          <mat-form-field color="accent" appearance="fill">
-            <mat-label>Budget</mat-label>
-            <input matInput required placeholder="Budget" type="number" min="0"
-              [(ngModel)]="transportation.budget">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid">
-          <mat-form-field appearance="fill">
-            <mat-label>Time Allotted</mat-label>
-            <mat-select [(ngModel)]="transportation.totalTimeAllowed">
-              <mat-option *ngFor="let item of Numbers" [value]="item">{{item}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> 
-
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid">
-          <mat-form-field appearance="fill" class="formFild">
-            <mat-label></mat-label>
-            <mat-label>Period</mat-label>
-            <mat-select [(ngModel)]="transportation.totalTimeAllowedId">
-              <mat-option *ngFor="let item of ca_duracion" [value]="item.id">{{item.duration}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-    
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
-
-      </mat-grid-tile>
+      <!--Autho-->
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data wid font-size-12 comments input_central" style="display: flex;">
           <div>
@@ -148,7 +28,8 @@
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!--Autho Date-->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
         <div class=" widpage__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
             <span class="text-mini gray_05">Autho Acceptance</span><br />
@@ -160,6 +41,146 @@
           </div>
         </div>
       </mat-grid-tile>
+
+      <!--Satus-->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_final wid">
+          <div style="text-align: center;">
+            <span class="text-mini gray_05">Status</span><br />
+            <span style="background: none;
+                        border: none;
+                        color: blue;
+                        text-decoration: underline; cursor: pointer;" (click)="change_status_detail()">
+              {{_texto_status}}</span>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--Falta poner el Work order-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Work Order</span><br />
+            {{transportation.numberWorkOrder}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--Service ID-->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Service ID</span><br />
+            {{transportation.serviceNumber}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--Completion-->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_final wid">
+          <div style="text-align: center;">
+            <mat-form-field color="accent" appearance="fill">
+              <mat-label>Completion</mat-label>
+              <input matInput disabled [matDatepicker]="picker3"
+                [(ngModel)]="this.transportation.serviceCompletionDate">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3 color="primary"></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--Deliver To-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Deliver To</span><br />
+            {{transportation.relationship}}/{{transportation.name}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--Name-->
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Name</span><br />
+            {{transportation.name}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <!--Country-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div *ngIf="this.data.data.country">
+            <span class="text-mini gray_05">Country</span><br />
+            {{country_text}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--City-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
+          <div *ngIf="this.data.data.location">
+            <span class="text-mini gray_05">City</span><br />
+            {{location}}
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!--Coordination-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="wid" style="height: 40%;" *ngIf="transportation.coordination">
+          <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
+          <mat-checkbox disabled class="example-margin" [(ngModel)]="transportation.coordination">
+          </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
+      <!--Budget-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field color="accent" appearance="fill">
+            <mat-label>Budget</mat-label>
+            <input matInput required placeholder="Budget" type="number" min="0" [(ngModel)]="transportation.budget">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!--Time Allotted-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill">
+            <mat-label>Time Allotted</mat-label>
+            <mat-select [(ngModel)]="transportation.totalTimeAllowed">
+              <mat-option *ngFor="let item of Numbers" [value]="item">{{item}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!--Period-->
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_central wid">
+          <mat-form-field appearance="fill" class="formFild">
+            <mat-label></mat-label>
+            <mat-label>Period</mat-label>
+            <mat-select [(ngModel)]="transportation.totalTimeAllowedId">
+              <mat-option *ngFor="let item of ca_duracion" [value]="item.id">{{item.duration}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
+
     </mat-grid-list>
 
     <div class="page__section-name">
@@ -169,17 +190,18 @@
       <div class="mat-elevation-z5" style="padding: 15px;">
 
         <mat-grid-list cols="4" rowHeight="70px">
-  
+          <mat-grid-tile class="btnclose" [colspan]="4" [rowspan]="1">
+            <div fxFlex.gt-lg="100" fxFlex.gt-md="100" align="end">
+              <mat-icon style="cursor:pointer" (click)="DeleteTransport(service)">close</mat-icon>
+            </div>
+          </mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             #{{i+1}}
           </mat-grid-tile>
-          
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
+
+          <mat-grid-tile [colspan]="2" [rowspan]="1">
           </mat-grid-tile>
-  
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
-          </mat-grid-tile>
-          
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_final wid">
               <mat-form-field appearance="fill">
@@ -190,18 +212,42 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
+          <!--Armored vihicle-->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="wid" style="height: 40%;margin-top: -14px">
+              <p class="subtitle" style="font-size: 8px; margin: 0;">Armored vihicle</p>
+              <mat-checkbox [(ngModel)]="service.tpArmored" [checked]="service.tpArmored" class="example-margin"></mat-checkbox>
+            </div>
+          </mat-grid-tile>
+
+          <!--Payment Resposibility-->
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <div class="input_central wid">
+              <mat-form-field appearance="fill">
+                <mat-label>Payment Responsibility</mat-label>
+                <mat-select [(ngModel)]="service.tpResponsiblePaymentId">
+                  <mat-option *ngFor="let data of ca_paymentRes" [value]="data.id">{{data.responsable}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field appearance="fill">
                 <mat-label>Transport Type</mat-label>
                 <mat-select [(ngModel)]="service.tpTransportType">
-                  <mat-option *ngFor="let data of ca_transportType" [value]="data.id">{{data.transportType}}</mat-option>
+                  <mat-option *ngFor="let data of ca_transportType"
+                    [value]="data.id">{{data.transportType}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -220,7 +266,7 @@
                   <mat-option *ngFor="let item of caNumbers" [value]="item">{{item}}</mat-option>
                 </mat-select>
               </mat-form-field>
-  
+
               <mat-form-field appearance="fill" class="formFild" style="width: 40% !important;">
                 <mat-label>Minutes</mat-label>
                 <mat-select [(ngModel)]="service.tpTimeServicesMinute">
@@ -229,7 +275,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_final wid">
               <mat-form-field color="accent" appearance="fill">
@@ -240,16 +286,16 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
-             <div class="input_central wid">
+            <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
                 <mat-label>Projected Fee</mat-label>
                 <input matInput type="number" min="0" [(ngModel)]="service.tpProjectFee">
               </mat-form-field>
-            </div> 
+            </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -258,7 +304,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -267,10 +313,10 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central textarea wid">
               <mat-form-field appearance="fill">
@@ -281,20 +327,20 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="wid" style="height: 40%;">
               <p class="subtitle" style="font-size: 8px; margin: 0;">Pets Travelling</p>
               <mat-checkbox class="example-margin" [(ngModel)]="service.tpPet" [checked]="service.pet"></mat-checkbox>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
           </mat-grid-tile>
-          
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field appearance="fill">
@@ -307,8 +353,8 @@
             <img style="cursor:pointer;" src="/assets/icons/perfil.svg" *ngIf="service.supplierPartner != null" alt=""
               style="position: absolute; right: 20px; cursor:pointer;" [matMenuTriggerFor]="supplier">
           </mat-grid-tile>
-  
-  
+
+
           <mat-menu #supplier="matMenu" xPosition="before">
             <div class="bg"></div>
             <div class="assigned_services wid">
@@ -317,7 +363,7 @@
                 <div class="title">
                   VIP
                   <br>
-                  <mat-checkbox disabled  class="example-margin" [checked]="info.luxuryVip">
+                  <mat-checkbox disabled class="example-margin" [checked]="info.luxuryVip">
                   </mat-checkbox>
                 </div>
               </div>
@@ -329,7 +375,7 @@
                   <p class="subtitle" style="font-size: 8px; margin: 0;">Relocation </p>
                 </mat-checkbox>
                 <br>
-  
+
                 <span class="title">Comercial Name</span>
                 <p>{{info.comercialName}}</p>
                 <span class="title">Legal Name</span>
@@ -342,8 +388,8 @@
               </div>
             </div>
           </mat-menu>
-  
-  
+
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -352,7 +398,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -361,10 +407,10 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -373,7 +419,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -382,7 +428,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="input_central wid">
               <mat-form-field color="accent" appearance="fill">
@@ -391,19 +437,18 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-  
+
           <mat-grid-tile [colspan]="1" [rowspan]="1">
           </mat-grid-tile>
         </mat-grid-list>
-  
+
       </div>
     </div>
-    
+
     <mat-grid-list cols="4" rowHeight="70px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="addPropperty">
-          <div class="page__section-button page__section-button--big"
-            style="flex: 0 1 180px !important;">
+          <div class="page__section-button page__section-button--big" style="flex: 0 1 180px !important;">
             <button class="button-icon button-icon--more" (click)="AddTransportService()">
               Transport Service
             </button>
@@ -417,7 +462,7 @@
 
     <app-card-service-detaill *ngIf="this.isVisible" [datos]="datos"></app-card-service-detaill>
 
-    
+
     <br><br>
   </mat-dialog-content>
 

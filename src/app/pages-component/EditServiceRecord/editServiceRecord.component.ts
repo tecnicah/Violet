@@ -164,7 +164,7 @@ const msg = (user, contact, message) => ({
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
     { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' }
   ];
-  
+
   public loaderr:boolean =false;
   public immigration_supplier_partners_table: string[] = ['campo_1', 'campo_2', 'campo_3', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
   public example_table_data_supplier_partners = [
@@ -650,7 +650,7 @@ const msg = (user, contact, message) => ({
 
     this._services.service_general_get(`ServiceRecord/GetServiceRecordById?id=${this.SO_ID}&user=${this.USERDATA.id}`)
       .subscribe((response: any) => {
-debugger;
+
         if (response.success) {
           console.log("DataServiceRecordById",response);
           console.log("SRDATA", response.result);
@@ -1081,7 +1081,7 @@ debugger;
 
   public relocation_suppliers: any[] = [];
   public getRelocationSuppliers(): void {
-    //debugger
+    //
     let _country = '';
     if(this.relocation_supplier_data.supplierTypeId != undefined){
       _country = '&countryId='+ this.relocation_supplier_data.supplierTypeId;
@@ -1924,7 +1924,7 @@ debugger;
         data: {
           sr: this.SO_ID,
           data: type,
-        }, 
+        },
         maxWidth: '95vw',
         maxHeight: '90vh',
         height: '90%',
@@ -2171,7 +2171,7 @@ debugger;
     }
 
     function followRequest(): void {
-      ////////debugger
+      ////////
       root._services.service_general_post_with_url('Follow/CreateFollow', params)
         .subscribe((response: any) => {
 
@@ -2585,7 +2585,7 @@ debugger;
 
   public show_immigration_errors: boolean = false;
   public initImmigrationProcess(): void {
-      ////////debugger
+      ////////
       ////console.log(this.immgration_profile.highestLevelEducationalId);
       this.immgration_profile.educationalBackgrounds = this.immgration_education;
       this.immgration_profile.lenguageProficiencies = this.immgration_languages;
@@ -2665,7 +2665,7 @@ debugger;
 
     // this.show_immigration_errors = true;
 
-    // ////////debugger
+    // ////////
     // if (
     //   main_validations.val_coordinator &&
     //   main_validations.val_passport &&
@@ -2719,7 +2719,7 @@ debugger;
   public immigrationFormComplete(): boolean {
 
     let result: boolean = true;
-////////debugger
+////////
     const imm_coor_prof: any = this.edit_sr_model.immigrationCoodinators[0];
 
     imm_coor_prof.coordinatorTypeId == 0 || imm_coor_prof.coordinatorTypeId == null ?
@@ -3297,7 +3297,7 @@ debugger;
   }
 
   public getNationalityData(): void {
-////debugger
+////
     let nationality_selected: any[] = this.edit_sr_model.assigneeInformations[0].nationalityAssigneeInformations,
       hold_nationality: NationalitiesModel[] = [];
 
@@ -3553,7 +3553,7 @@ debugger;
   homeRel:any;
   hostRel:any;
   public async showTabSelected(which_tab: string, event_data: any) {
-//////debugger
+//////
     //console.log('Tab selected ===> ', which_tab);
     //comprobar si es un consultat y solo podra abrir imi o relo dependiendo su perfil
     // immi
@@ -3713,7 +3713,7 @@ debugger;
       this._services.service_general_get("ServiceRecord/GetServices/" + this.SO_ID + "?type=" + tipo+"&userId="+this.USERDATA.id).subscribe((data => {
         // //console.log("Entra a consultar las WO: ", data);
         if (data.success) {
-          //////debugger
+          //////
           //console.log('data WO', data);
           // si no hay work order no acceder a la pestaña immi o relo
             this.homeImm =  data.map.value.home.length;
@@ -4203,7 +4203,7 @@ debugger;
   searchDataReport() {
     let service_record_params_selected: string = '';;
     let params = '';
-    //////debugger
+    //////
     this._services.service_general_get('ReportDay/GetTotalesActivityReports?sr=' + Number(this.SO_ID)).subscribe((res => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       //console.log(res);
@@ -5668,7 +5668,7 @@ debugger;
   }
 
   public communicationViewEscalation(escalation: any): void {
-    ////////debugger
+    ////////
     const add_call_dialog = this._dialog.open(DialogViewEscalation, {
       data: {
         id_so: this.edit_sr_model.id,
@@ -6193,7 +6193,7 @@ debugger;
   DetectaServiceLine(){
     this.SR_Immigration = this.edit_sr_model.immigrationCoodinators.length;
     this.SR_Relocation = this.edit_sr_model.relocationCoordinators.length;
-    //////debugger
+    //////
   }
 
   public Team_ImmigrationCoordinators:any;
@@ -6284,7 +6284,7 @@ debugger;
   }
 
   deleteCoordinator(data, sl, k) {
-    ////debugger
+    ////
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Delete confirmation",
@@ -6293,7 +6293,7 @@ debugger;
       width: "350px"
     });
     dialogRef.afterClosed().subscribe(result => {
-      ////debugger
+      ////
       if (result) {
         if (sl == 1) {
           //console.log("IMMIGRATION");
@@ -6342,7 +6342,7 @@ debugger;
   }
 
   deleteSupplier(data, sl) {
-    ////////debugger
+    ////////
     if(data.total > 0){
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
@@ -6544,7 +6544,7 @@ debugger;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      ////debugger
+      ////
       this.__loader__.showLoader();
       this.relocation_suppliers = null;
       this.getRelocationSuppliers();
@@ -6566,7 +6566,7 @@ debugger;
   };
 
   public addordeleteservicesRelocation(event, id, id_siplier, service) {
-    ////debugger
+    ////
     let datos = [{
       "relocationSupplierPartnerId": id_siplier,
       "serviceOrderServicesId": id,
