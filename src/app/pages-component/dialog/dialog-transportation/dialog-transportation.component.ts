@@ -17,6 +17,7 @@ import { json } from '@angular-devkit/core';
 import { stringify } from 'querystring';
 import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
 import { WorkPartnerI } from 'app/interfaces/dtoWork.interface';
+import { DialogGeneralConfirmation } from '../dialog-general-confirmation/dialog-general-confirmation.component';
 
 
 
@@ -169,16 +170,28 @@ export class DialogTransportationComponent implements OnInit {
     });
   }
   DeleteTransport(listairportTransport) {
+    const dialogRef = this._dialog.open(DialogGeneralConfirmation, {
+      data: {
+        header: 'Delete Standalone',
+        body: 'Are you sure to delete this standalone?'
+      },
+      width: '420px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.can_delete) {
+        this.deleteThisService(listairportTransport)
+      }
+    })
+  }
+  deleteThisService(listairportTransport) {
     if (listairportTransport.id == 0) {
       const index = this.transportation.transportPickups.findIndex((item) => JSON.stringify(item) === JSON.stringify(listairportTransport));
       if (index !== -1) {
         this.transportation.transportPickups.splice(index, 1);
       }
-      this.viewMensajeComponente('delete', 'Transport Service List was deleted successfully')
     } else {
       this._services.service_general_delete(`RelocationServices/DeleteTransportPickup?id=${listairportTransport.id}`)
         .subscribe(eliminar => {
-          this.viewMensajeComponente('delete', 'it was deleted correctly')
           this.ngOnInit();
         })
 
@@ -186,17 +199,6 @@ export class DialogTransportationComponent implements OnInit {
     console.log("Después de eliminar:", this.transportation.airportTransportPickup);
 
   }
-  viewMensajeComponente(header: string, msg: string) {
-    window.scrollTo(0, 0);
-    const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
-      data: {
-        header: header,
-        body: msg
-      },
-      width: "350px"
-    });
-  }
-
   change_button() {
 
     if (this.show_completed) {

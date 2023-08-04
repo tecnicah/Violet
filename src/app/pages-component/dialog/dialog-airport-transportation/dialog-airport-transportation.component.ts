@@ -15,6 +15,7 @@ import { DialogRequestPaymentNewComponent } from '../dialog-request-payment-new/
 import { DialogDocumentsRelocationComponent } from '../dialog-documents-relocation/dialog-documents-relocation.component';
 import { DialogStatusDetailComponent } from '../dialog-status-detail/dialog-status-detail.component';
 import { WorkPartnerI } from 'app/interfaces/dtoWork.interface';
+import { DialogGeneralConfirmation } from '../dialog-general-confirmation/dialog-general-confirmation.component';
 
 @Component({
   selector: 'app-dialog-airport-transportation',
@@ -28,7 +29,7 @@ export class DialogAirportTransportationComponent implements OnInit {
   info: any[] = [];
   toppings = new FormControl();
   temporalDocument: any[] = [];
-  transportation: any  ;
+  transportation: any = {};
   table_payments: any;
   user: any;
   supplier_get: any[] = [];
@@ -166,33 +167,31 @@ export class DialogAirportTransportationComponent implements OnInit {
     });
   }
   DeleteTransportService(listairportTransport) {
-
+    const dialogRef = this._dialog.open(DialogGeneralConfirmation, {
+      data: {
+        header: 'Delete Standalone',
+        body: 'Are you sure to delete this standalone?'
+      },
+      width: '420px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.can_delete) {
+        this.deleteThisService(listairportTransport)
+      }
+    })
+  }
+  deleteThisService(listairportTransport) {
     if (listairportTransport.id == 0) {
       const index = this.transportation.airportTransportPickup.findIndex((item) => JSON.stringify(item) === JSON.stringify(listairportTransport));
       if (index !== -1) {
         this.transportation.airportTransportPickup.splice(index, 1);
       }
-      this.viewMensajeComponente('delete', 'Transport Service List was deleted successfully')
     } else {
       this._services.service_general_delete(`RelocationServices/DeleteAirportTransportPickup?id=${listairportTransport.id}`)
         .subscribe(eliminar => {
-          this.viewMensajeComponente('delete', 'it was deleted correctly')
-        this.ngOnInit();
-
+          this.ngOnInit();
         })
     }
-    console.log("Después de eliminar:", this.transportation.airportTransportPickup);
-  }
-
-  viewMensajeComponente(header: string, msg: string) {
-    window.scrollTo(0, 0);
-    const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
-      data: {
-        header: header,
-        body: msg
-      },
-      width: "350px"
-    });
   }
   change_button() {
     //

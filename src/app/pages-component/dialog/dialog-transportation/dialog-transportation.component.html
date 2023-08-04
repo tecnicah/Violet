@@ -76,9 +76,21 @@
         </div>
       </mat-grid-tile>
 
+      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
       <!--Completion-->
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <div class="input_final wid">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class=" widpage__section-data font-size-12 comments input_central" style="display: flex;">
+          <div>
+            <span class="text-mini gray_05">Completion</span><br />
+            {{ transportation?.serviceCompletionDate | date:'dd MMM yyy'}}
+          </div>
+
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">calendar_today</mat-icon>
+          </div>
+        </div>
+       <!--  <div class="input_final wid">
           <div style="text-align: center;">
             <mat-form-field color="accent" appearance="fill">
               <mat-label>Completion</mat-label>
@@ -88,7 +100,7 @@
               <mat-datepicker #picker3 color="primary"></mat-datepicker>
             </mat-form-field>
           </div>
-        </div>
+        </div> -->
       </mat-grid-tile>
 
       <!--Deliver To-->
