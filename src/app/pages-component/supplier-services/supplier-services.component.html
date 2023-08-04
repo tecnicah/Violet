@@ -758,7 +758,8 @@
         </mat-grid-tile-->
         <!--  -->
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field appearance="fill" class="input_central_half" *ngIf="data.supplierType != 13 && data.supplierType != 11 && data.supplierType != 34">
+          <mat-form-field appearance="fill" class="input_central_half" *ngIf="data.supplierType != 13 && data.supplierType != 11 
+          && data.supplierType != 34 && data.supplierType != 5 && data.supplierType != 22 && data.supplierType != 15">
             <mat-label>Additional Cities</mat-label>
             <mat-select multiple [(ngModel)]="element.additional" (focus)="element.additionalValid = false">
               <!--mat-option *ngFor="let item of  ca_city[i]" [value]="item.id">{{item.city}}

@@ -117,7 +117,7 @@ debugger;
         console.log(this.ca_documentType);
       }
     })) 
-    this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id=1');
+    this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id='+this.data.contact_type);
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
   }
