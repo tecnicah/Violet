@@ -100,9 +100,9 @@
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>location</mat-label>
-          <input matInput required placeholder="location" type="text" [(ngModel)]="data.location" (focus)="activeLocation = false;">
-          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeLocation">Field is required
-          </mat-hint>
+          <input matInput placeholder="location" type="text" [(ngModel)]="data.location">
+          <!-- <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeLocation">Field is required
+          </mat-hint> -->
         </mat-form-field>
       </div>
     </mat-grid-tile>
