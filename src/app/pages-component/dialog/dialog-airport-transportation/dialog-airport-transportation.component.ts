@@ -169,8 +169,8 @@ export class DialogAirportTransportationComponent implements OnInit {
   DeleteTransportService(listairportTransport) {
     const dialogRef = this._dialog.open(DialogGeneralConfirmation, {
       data: {
-        header: 'Delete Standalone',
-        body: 'Are you sure to delete this standalone?'
+        header: 'Delete Transport Service',
+        body: 'Are you sure to delete this transport service?'
       },
       width: '420px'
     });
@@ -688,7 +688,7 @@ export class DialogAirportTransportationComponent implements OnInit {
     //console.log("SAVE INFORMATION: ", this.transportation);
 
     this.transportation.serviceCompletionDate = this.transportation.statusId == "4"
-      ? this.transportation.serviceCompletionDate.length > 0 ? this.transportation.serviceCompletionDate : Date.now().toString()
+      ? this.transportation.serviceCompletionDate?.length > 0 ? this.transportation.serviceCompletionDate : Date.now().toString()
       : "";
 
     this.loader.showLoader();

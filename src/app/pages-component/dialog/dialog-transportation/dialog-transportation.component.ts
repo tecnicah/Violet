@@ -172,15 +172,16 @@ export class DialogTransportationComponent implements OnInit {
   DeleteTransport(listairportTransport) {
     const dialogRef = this._dialog.open(DialogGeneralConfirmation, {
       data: {
-        header: 'Delete Standalone',
-        body: 'Are you sure to delete this standalone?'
+        header: 'Delete Transport Service',
+        body: 'Are you sure to delete this transport service?'
       },
       width: '420px'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result.can_delete) {
-        this.deleteThisService(listairportTransport)
-      }
+      console.log(result);
+
+      if (result == undefined || result == true) return;
+      this.deleteThisService(listairportTransport)
     })
   }
   deleteThisService(listairportTransport) {
