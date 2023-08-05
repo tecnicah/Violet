@@ -109,9 +109,10 @@ export class SupplierServicesComponent implements OnInit {
   ngOnInit(): void {
     this.consultaPermisos();
     this.date = new Date();
-    for (let i = 1; i <= 10; i++) {
-      this.fleetSize.push(i);
-    }
+    // for (let i = 1; i <= 10; i++) {
+    //   this.fleetSize.push(i);
+    // }
+    this.fleetSize = ["1- 10", "10-20", "20-40", "40-60", "60+"];
     this.user = JSON.parse(localStorage.getItem('userData'));
 
     this.catalogos();
@@ -206,6 +207,48 @@ export class SupplierServicesComponent implements OnInit {
             break;
           case 13:
             this.type_document = 28;
+            break;
+          case 5:
+            this.type_document = 30;
+            break;
+          case 9:
+            this.type_document = 30;
+            break;
+          case 22:
+            this.type_document = 30;
+            break;
+          case 15:
+            this.type_document = 30;
+            break;
+          case 17:
+            this.type_document = 30;
+            break;
+          case 21:
+            this.type_document = 30;
+            break;
+          case 18:
+            this.type_document = 30;
+            break;
+          case 26:
+            this.type_document = 30;
+            break;
+          case 17:
+            this.type_document = 30;
+            break;
+          case 21:
+            this.type_document = 30;
+            break;
+          case 18:
+            this.type_document = 30;
+            break;
+          case 26:
+            this.type_document = 30;
+            break;
+          case 12:
+            this.type_document = 31;
+            break;
+          case 10:
+            this.type_document = 30;
             break;
           default:
             // code block
@@ -351,6 +394,7 @@ export class SupplierServicesComponent implements OnInit {
   display_default_fields:boolean = true;
 
   set_display_default_fields(){
+    console.log("this.data.supplierType", this.data.supplierType);
     switch(this.data.supplierType) {
       case 34:
         this.type_document = 27;
@@ -360,6 +404,24 @@ export class SupplierServicesComponent implements OnInit {
         break;
       case 13:
         this.type_document = 28;
+        break;
+      case 5:
+        this.type_document = 30;
+        break;
+      case 9:
+        this.type_document = 30;
+        break;
+      case 22:
+        this.type_document = 30;
+        break;
+      case 15:
+        this.type_document = 30;
+        break;  
+      case 12:
+        this.type_document = 31;
+        break;
+      case 10:
+        this.type_document = 30;
         break;
       default:
         // code block
@@ -545,6 +607,46 @@ export class SupplierServicesComponent implements OnInit {
   }
   //*************************************************************//
   newContact(type, i) {
+
+    let _contact_type = 0;
+    switch(this.data.supplierType) {
+      case 34:
+        _contact_type = 1;
+        break;
+      case 5:
+        _contact_type = 3;
+        break;
+      case 9:
+        _contact_type = 3;
+        break;
+      case 22:
+        _contact_type = 3;
+        break;
+      case 15:
+        _contact_type = 3;
+        break; 
+      case 17:
+        _contact_type = 3;
+        break; 
+      case 21:
+        _contact_type = 3;
+        break; 
+      case 18:
+        _contact_type = 3;
+        break; 
+      case 26:
+        _contact_type = 3;
+        break;  
+      case 12:
+        _contact_type = 3;
+        break;  
+      case 10:
+        _contact_type = 3;
+        break;  
+      default:
+        // code block
+    }
+
     if (this.data.areasCoverageServices[i].country == null ||
       this.data.areasCoverageServices[i].country == undefined ||
       this.data.areasCoverageServices[i].country == ''
@@ -569,7 +671,8 @@ export class SupplierServicesComponent implements OnInit {
       width: "90%",
       data: {
         country: this.data.areasCoverageServices[i].country,
-        supplier_type: this.type_document
+        supplier_type: this.type_document,
+        contact_type: _contact_type
       }
     });
 

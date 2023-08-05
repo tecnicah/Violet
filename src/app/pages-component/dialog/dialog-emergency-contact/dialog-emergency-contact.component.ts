@@ -116,7 +116,7 @@ export class DialogEmergencyContactComponent implements OnInit {
   activeNumber: boolean = false;
   active_Prefix: boolean = false;
   active_Numberp: boolean = false;
-  activeLocation: boolean = false;
+  // activeLocation: boolean = false;
   contador = 0;
  valida_form(){
    if(this.data.contactName == undefined || this.data.contactName == null || this.data.contactName == ''){
@@ -143,10 +143,10 @@ export class DialogEmergencyContactComponent implements OnInit {
     this.active_Numberp = true;
     this.contador++;
   }
-  if(this.data.location == undefined || this.data.location == null || this.data.location == ''){
-    this.activeLocation = true;
-    this.contador++;
-  }
+  // if(this.data.location == undefined || this.data.location == null || this.data.location == ''){
+  //   this.activeLocation = true;
+  //   this.contador++;
+  // }
 
   if(this.contador == 0){
      this.save();
