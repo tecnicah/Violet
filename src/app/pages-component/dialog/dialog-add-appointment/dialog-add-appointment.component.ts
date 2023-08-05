@@ -109,14 +109,15 @@ export class DialogAddAppointmentComponent implements OnInit {
           if (data.result.value[0].services[i].homeFindingId != 0) {
             this.trae_casas_a_visitar(data.result.value[0].services[i].workOrderServiceId, data.result.value[0].date, i);
           }
-        }
-
-
-        for (let i = 0; i < data.result.value[0].services.length; i++) {
           if (data.result.value[0].services[i].schoollingId != 0) {
             this.getDataSchoolList(data.result.value[0].services[i].workOrder, data.result.value[0].services[i].schoollingId, data.result.value[0].date);
           }
+          if (data.result.value[0].services[i].predecisionId != 0) {
+            this.getDataSchoolList(data.result.value[0].services[i].workOrder, data.result.value[0].services[i].predecisionId, data.result.value[0].date);
+            this.trae_casas_a_visitar(data.result.value[0].services[i].workOrderServiceId, data.result.value[0].date, i);
+          }
         }
+
 
         this.appointment = data.result.value;
         this._services.service_general_get('Catalogue/GetServiceByServiceLineReports?sr=' + this.sr + '&sl=' + this.appointment[0].service_line + '&idUser=' + this.appointment[0].to).subscribe(r => {
@@ -172,9 +173,9 @@ export class DialogAddAppointmentComponent implements OnInit {
   getDataHousingList(home_finding_id, i) {
     this._services.service_general_get(`HousingList/GetHomeFindingHousingList?id_service_detail=${home_finding_id}`).subscribe(data_housing => {
       // debugger;
-      if (data_housing.success) {
-        console.log('DATA CONSULTA HOUSING LIST =========================== NUEVOOOOOOOOOOOOOO: ', data_housing);
-        this.dataSourceHousing[i] = data_housing.message;
+      if (data_housing.success) {       
+        this.dataSourceHousing = data_housing.message;
+        console.log('DATA CONSULTA HOUSING LIST =========================== NUEVOOOOOOOOOOOOOO: ', this.dataSourceHousing);
       }
     });
   }
@@ -193,8 +194,8 @@ export class DialogAddAppointmentComponent implements OnInit {
       //  //console.log('DATA CONSULTA SCHOOLING LIST: ', data_schooling_list);
       if (data_schooling_list.success) {
 
-        this.dataSourceSchool[0] = data_schooling_list.message;
-        console.log('DATA CONSULTA SCHOOLING LIST: ', this.dataSourceSchool[0]);
+        this.dataSourceSchool = data_schooling_list.message;
+        console.log('DATA CONSULTA SCHOOLING LIST: ', this.dataSourceSchool);
       }
     });
   }
@@ -536,7 +537,7 @@ export class DialogAddAppointmentComponent implements OnInit {
       // debugger;
       if (data_housing.success) {
 
-        this.dataSourceHousing[i] = data_housing.custom.value;
+        this.dataSourceHousing = data_housing.custom.value;
 
         console.log('DATA CONSULTA HOUSING LIST this.dataSourceHousing ===========================  : ', this.dataSourceHousing[i], data_housing);
       }

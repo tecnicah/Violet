@@ -54,16 +54,19 @@ export class DialogSchoolDetailsComponent implements OnInit {
             this.SchoolDetails.supplierPartner = this.data.supplierId;
             this.SchoolDetails.additionalComments = this.data.additionalComments;
             this.SchoolDetails.dependent = this.data.dependent;
-            if(this.data.visitDate != null){
-              this.SchoolDetails.visitDate = this.data.visitDate;
-              let d = new Date(this.data.visitDateTime);
-              var dateString = d.getHours() + ":" + d.getMinutes();
-              this.SchoolDetails.visitDateTime = dateString.toString();   
-            }
+            this.SchoolDetails.visitDate = this.data.visitDate;
+            this.SchoolDetails.visitDateTime = this.data.visitDateTime;
+            // if(this.data.visitDate != null){
+            //   debugger;
+            //   this.SchoolDetails.visitDate = this.data.visitDate;
+            //   let d = new Date(this.data.visitDateTime);
+            //   var dateString = d.getHours() + ":" + d.getMinutes();
+            //   this.SchoolDetails.visitDateTime =  dateString.toString();   
+            // }
             
         }
       }));
-      this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.data.workOrderServicesId).subscribe((data => {
+      this._services.service_general_get("SupplierPartnerProfile/GetSuppPartner_Prof_Servide_Group?workOrderService=" + this.data.workOrderServicesId+'&cat_group_id=2').subscribe((data => {
         // this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
         if (data.success) {
           debugger;
@@ -91,7 +94,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
 
   supplierPartner() {
     console.log(" datos a enviar GetSupplierPartnerServiceByServices ============", this.data.workOrderServicesId, this.data)
-    this._services.service_general_get("SupplierPartnerProfile/GetServiceProviderByServiceId?workOrderService=" + this.data.workOrderServicesId).subscribe((data => {
+    this._services.service_general_get("SupplierPartnerProfile/GetSuppPartner_Prof_Servide_Group?workOrderService=" + this.data.workOrderServicesId+'&cat_group_id=2').subscribe((data => {
     //this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
       if (data.success) {
         console.log('DATA CONSULTA SUPPLIER PARTNER: ', data.result.value);
@@ -228,6 +231,8 @@ export class DialogSchoolDetailsComponent implements OnInit {
     this.SchoolDetails.grade = 1;
     this.SchoolDetails.languages = 1;
     this.SchoolDetails.supplierId = this.SchoolDetails.supplierPartner;
+    this.SchoolDetails.updateBy = this.user.id;
+    this.SchoolDetails.updatedDate = new Date();
     this._services.service_general_put("SchoolsList/PutSchools", this.SchoolDetails).subscribe((data => {
       console.log("guardar db: ", data);
       if (data.success) {

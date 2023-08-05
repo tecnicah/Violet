@@ -368,6 +368,8 @@ import { CardServiceDetaillComponent } from './home-finding-full/card-service-de
 import { DialogPaymentProcessComponent } from './dialog/dialog-payment-process/dialog-payment-process.component';
 import { DialogConfirmHistoryContractComponent } from './dialog/dialog-confirm-history-contract/dialog-confirm-history-contract.component';
 import { ImgFallbackModule } from 'ngx-img-fallback';
+import { BankingDetailsComponent } from './dialog/dialog-catalog-offices/banking-details/banking-details.component';
+import { DocumentComponent } from './dialog/dialog-catalog-offices/document/document.component';
 
 @NgModule({
   imports: [
@@ -391,7 +393,7 @@ import { ImgFallbackModule } from 'ngx-img-fallback';
     FormsModule,
     MatSnackBarModule,
     NgxPaginationModule,
-    
+
     GooglePlaceModule,
     MatTimepickerModule,
     NgxIconCalendarModule,
@@ -774,7 +776,9 @@ import { ImgFallbackModule } from 'ngx-img-fallback';
     HousinglistComponent,
     CardServiceDetaillComponent,
     DialogPaymentProcessComponent,
-    DialogConfirmHistoryContractComponent
+    DialogConfirmHistoryContractComponent,
+    BankingDetailsComponent,
+    DocumentComponent,
   ]
 })
 export class MaterialComponentsModule {}

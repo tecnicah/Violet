@@ -80,9 +80,12 @@ export class DialogOfficeInformationComponent implements OnInit {
     })
   }
   //*********************************************//
+  data_PaymentInformationPartner: any
+  data_PaymentInformationPremier: any
   ngOnInit(): void {
     this.consultaPermisos();
     console.log(this.data);
+
     if (this.data.officeContacts) {
       console.log('office contact', this.data.officeContacts);
       this.officeContacts = new MatTableDataSource(this.data.officeContacts);
@@ -115,8 +118,24 @@ export class DialogOfficeInformationComponent implements OnInit {
       this.getcity(this.data);
     }
     console.log('data push', this.data);
-    debugger
+
     this.catalogos();
+    this.getSelectOption();
+    this.SeleccionarOffice(this.data.paymentInformationOfficePremiers[0].idOffice)
+  }
+
+  list_ca_accountType = [];
+  async getSelectOption() {
+    this.list_ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
+  }
+  tablaDetaild: any = []
+  SeleccionarOffice(idOffice) {
+    console.log(idOffice);
+    this._services.getService(`GetOfficeBankingDetail/${idOffice}`).subscribe(data => {
+      this.tablaDetaild = data.result.value
+      console.log(this.tablaDetaild);
+    })
+
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -142,18 +161,20 @@ export class DialogOfficeInformationComponent implements OnInit {
     this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
     this.ca_account = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id=2');
-    this._services.service_general_get('Catalog/GetAllOffice').subscribe((r)=>{
-      if(r.success){
+    this._services.service_general_get('Catalog/GetAllOffice').subscribe((r) => {
+      if (r.success) {
         this.ca_offices = r.result;
       }
     })
     // this.ca_city = await this._services.getCatalogueFrom('GetCity');
     if (this.data.paymentInformationOfficeSuppliers != undefined && this.data.paymentInformationOfficeSuppliers.length > 0) {
+      this.data_PaymentInformationPartner = [...this.data.paymentInformationOfficeSuppliers]
+      console.log('dublicar : ', this.data_PaymentInformationPartner);
       this.paymentMetod = true;
-      if(this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.length > 0){
+      if (this.data.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.length > 0) {
         this.wt = true;
       }
-    }else {
+    } else {
       this.data.paymentInformationOfficeSuppliers = [{
         creditCardPaymentInformationOfficeSuppliers: [],
         creditCard: false,
@@ -169,17 +190,22 @@ export class DialogOfficeInformationComponent implements OnInit {
         idOfficeInformation: this.data.id,
         updatedBy: this.userData.id,
         updatedDate: new Date(),
-        id:0
+        id: 0
       }]
+      this.data_PaymentInformationPartner = [...this.data.paymentInformationOfficeSuppliers]
       this.paymentMetod = false;
     }
 
     if (this.data.paymentInformationOfficePremiers != undefined && this.data.paymentInformationOfficePremiers.length > 0) {
+      this.data_PaymentInformationPremier = [...this.data.paymentInformationOfficePremiers]
+      console.log('dublicar : ', this.data_PaymentInformationPremier);
+
       this.paymentMetodPremier = true;
-      if(this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers.length > 0){
+      if (this.data.paymentInformationOfficePremiers[0].wireTransferPaymentInformationOfficePremiers.length > 0) {
         this.wtp = true;
       }
-    }else {
+    } else {
+      this.data.paymentInformationOfficePremiers = []
       this.data.paymentInformationOfficePremiers = [{
         creditCardPaymentInformationOfficePremiers: [],
         creditCard: false,
@@ -195,8 +221,10 @@ export class DialogOfficeInformationComponent implements OnInit {
         idOfficeInformation: this.data.id,
         updatedBy: this.userData.id,
         updatedDate: new Date(),
-        id:0
+        id: 0
       }]
+      this.data_PaymentInformationPremier = [...this.data.paymentInformationOfficePremiers]
+
       this.paymentMetodPremier = false;
     }
 
@@ -204,13 +232,13 @@ export class DialogOfficeInformationComponent implements OnInit {
       cc.cheksupliers = false;
       cc.chekpremier = false;
       if (this.data.paymentInformationOfficeSuppliers != undefined && this.data.paymentInformationOfficeSuppliers.length > 0) {
-        
+
         for (const iterator of this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers) {
           if (cc.id == iterator.creditCard) {
             cc.cheksupliers = true;
           }
         }
-      } 
+      }
 
       if (this.data.paymentInformationOfficePremiers != undefined && this.data.paymentInformationOfficePremiers.length > 0) {
         for (const iterator of this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers) {
@@ -218,7 +246,7 @@ export class DialogOfficeInformationComponent implements OnInit {
             cc.chekpremier = true;
           }
         }
-      } 
+      }
     }
 
     console.log(this.ca_creditCard);
@@ -462,7 +490,7 @@ export class DialogOfficeInformationComponent implements OnInit {
             })
           }
         }
-        debugger
+
       }
     })
   }
@@ -479,7 +507,18 @@ export class DialogOfficeInformationComponent implements OnInit {
   active_code: boolean = false;
   active_contact: boolean = false;
 
-
+  PaymentInformationPartner(event: any) {
+    if (event.checked) {
+      this.data.paymentInformationOfficeSuppliers = this.data_PaymentInformationPartner
+      console.log('valor a obtener : ', this.data_PaymentInformationPartner)
+    }
+  }
+  PaymentInformationPremier(event: any) {
+    if (event.checked) {
+      this.data.paymentInformationOfficePremiers = this.data_PaymentInformationPremier
+      console.log('valor a obtener : ', this.data_PaymentInformationPremier)
+    }
+  }
 
   valida_form() {
     if (this.data.idTypeOffice == undefined) {
@@ -536,37 +575,78 @@ export class DialogOfficeInformationComponent implements OnInit {
         }
       });
     }
-    this.data.paymentInformationOfficeSuppliers[0].createdBy = this.userData.id;
-    this.data.paymentInformationOfficeSuppliers[0].updatedBy = this.userData.id;
-    this.data.paymentInformationOfficeSuppliers[0].createdDate = new Date();
-    this.data.paymentInformationOfficeSuppliers[0].updateDate = new Date();
-
-    this.data.paymentInformationOfficePremiers[0].createdBy = this.userData.id;
-    this.data.paymentInformationOfficePremiers[0].updatedBy = this.userData.id;
-    this.data.paymentInformationOfficePremiers[0].createdDate = new Date();
-    this.data.paymentInformationOfficePremiers[0].updateDate = new Date();
-
-    this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
-    this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers = [];
-    for (const cc of this.ca_creditCard) {
-
-      if (cc.cheksupliers) {
-        this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
-          creditCard: cc.id,
-          paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
-        })
-      }
-
-      if (cc.chekpremier) {
-        this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
-          creditCard: cc.id,
-          paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
-        })
-      }
-
+    if (this.paymentMetod == false) {
+      this.data.paymentInformationOfficeSuppliers = []
     }
+    else {
+      this.data.paymentInformationOfficeSuppliers[0].createdBy = this.userData.id;
+      this.data.paymentInformationOfficeSuppliers[0].updatedBy = this.userData.id;
+      this.data.paymentInformationOfficeSuppliers[0].createdDate = new Date();
+      this.data.paymentInformationOfficeSuppliers[0].updateDate = new Date();
+
+      this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
+
+      for (const cc of this.ca_creditCard) {
+        if (cc.cheksupliers) {
+          this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
+            creditCard: cc.id,
+            paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
+          })
+        }
+      }
+    }
+    if (this.paymentMetodPremier == false) {
+      this.data.paymentInformationOfficePremiers = []
+    }
+    else {
+      this.data.paymentInformationOfficePremiers[0].createdBy = this.userData.id;
+      this.data.paymentInformationOfficePremiers[0].updatedBy = this.userData.id;
+      this.data.paymentInformationOfficePremiers[0].createdDate = new Date();
+      this.data.paymentInformationOfficePremiers[0].updateDate = new Date();
+
+      this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers = [];
+
+      for (const cc of this.ca_creditCard) {
+        if (cc.chekpremier) {
+          this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
+            creditCard: cc.id,
+            paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
+          })
+        }
+      }
+    }
+    /*    this.data.paymentInformationOfficeSuppliers[0].createdBy = this.userData.id;
+        this.data.paymentInformationOfficeSuppliers[0].updatedBy = this.userData.id;
+        this.data.paymentInformationOfficeSuppliers[0].createdDate = new Date();
+        this.data.paymentInformationOfficeSuppliers[0].updateDate = new Date();
+
+        this.data.paymentInformationOfficePremiers[0].createdBy = this.userData.id;
+        this.data.paymentInformationOfficePremiers[0].updatedBy = this.userData.id;
+        this.data.paymentInformationOfficePremiers[0].createdDate = new Date();
+        this.data.paymentInformationOfficePremiers[0].updateDate = new Date();
+
+        this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers = [];
+        this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers = [];
+        for (const cc of this.ca_creditCard) {
+
+          if (cc.cheksupliers) {
+            this.data.paymentInformationOfficeSuppliers[0].creditCardPaymentInformationOfficeSuppliers.push({
+              creditCard: cc.id,
+              paymentInformationOfficeSupplier: this.data.paymentInformationOfficeSuppliers[0].id
+            })
+          }
+
+          if (cc.chekpremier) {
+            this.data.paymentInformationOfficePremiers[0].creditCardPaymentInformationOfficePremiers.push({
+              creditCard: cc.id,
+              paymentInformationOfficePremier: this.data.paymentInformationOfficePremiers[0].id
+            })
+          }
+
+        }*/
     this.data.success = true;
     console.log('data office', this.data);
+
     this.dialogRef.close(this.data);
   }
 
@@ -603,4 +683,5 @@ export class DialogOfficeInformationComponent implements OnInit {
     });
 
   }
+
 }

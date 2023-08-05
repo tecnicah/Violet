@@ -226,11 +226,11 @@ export class SettlingInComponent implements OnInit {
     switch (type) {
       case 'bank':
         if (!event.checked) {
-          if (this.settlingin.bankCompleted != null || this.settlingin.bankCompleted != '') {
+          if (this.settlingin.bankCompleted == null || this.settlingin.bankCompleted == '') {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Bank Account",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -242,15 +242,29 @@ export class SettlingInComponent implements OnInit {
               }
             });
           }
+          else{
+            const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Bank Account",
+                body: "The subservice cannot be deleted because it has already been completed"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              this.settlingin.carPurchaseLease = true;
+            });
+          }
         }
         break;
       case 'car':
         if (!event.checked) {
-          if (this.settlingin.carCompleted != null || this.settlingin.carCompleted != '') {
+          if (this.settlingin.carCompleted == null || this.settlingin.carCompleted == '') {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Car Assistance",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -262,15 +276,29 @@ export class SettlingInComponent implements OnInit {
               }
             });
           }
+          else{
+            const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Car Assistance",
+                body: "The subservice cannot be deleted because it has already been completed"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              this.settlingin.carPurchaseLease = true;
+            });
+          }
         }
         break;
       case 'child':
         if (!event.checked) {
-          if (this.settlingin.childCareCompleted != null || this.settlingin.childCareCompleted != '') {
+          if (this.settlingin.childCareCompleted == null || this.settlingin.childCareCompleted == '') {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Child Care",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -282,6 +310,20 @@ export class SettlingInComponent implements OnInit {
               }
             });
           }
+          else{
+            const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+              data: {
+                header: "Child Care",
+                body: "The subservice cannot be deleted because it has already been completed"
+              },
+              width: "350px"
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              this.settlingin.carPurchaseLease = true;
+            });
+          }
         }
         break;
       case 'clean':
@@ -290,7 +332,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Cleaning Services",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -310,7 +352,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Drivers License",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -330,7 +372,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Health Care",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -350,7 +392,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Leisure & Club Memberships",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -370,7 +412,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Local Registration",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -390,7 +432,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Recreational Clubs",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });
@@ -410,7 +452,7 @@ export class SettlingInComponent implements OnInit {
             const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
               data: {
                 header: "Spousal Assistance",
-                body: "The subservice has already been completed, be sure to remove it?"
+                body: "Are you sure you want to remove this subservice?"
               },
               width: "350px"
             });

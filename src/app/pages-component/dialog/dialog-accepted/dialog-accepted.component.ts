@@ -17,7 +17,7 @@ export class DialogAcceptedComponent implements OnInit {
   services: any = {
     service_name: '',
     numberWorkOrder: '',
-    number_server: '' 
+    number_server: ''
   };
 
   services_consult: any = {
@@ -30,13 +30,13 @@ export class DialogAcceptedComponent implements OnInit {
   coordinator: any = [];
   url_image: any;
   userData: any;
-
+viewButtonaLL:boolean
   constructor(public dialogRef: MatDialogRef<DialogAcceptedComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any = {},
     public _services: ServiceGeneralService,
     private _snackBar: MatSnackBar) { }
     public __loader__: LoaderComponent = new LoaderComponent();
-    
+
   ngOnInit(): void {
     console.log(this.data);
     this.url_image = environment.images_path;
@@ -44,7 +44,7 @@ export class DialogAcceptedComponent implements OnInit {
 
     //servicios supplier
     if(this.data.tipo == 3){
-      debugger
+
         if(this.data.datos.supplierImm?.length > 0)
           this._serviceLine = 1;
         if(this.data.datos.supplierRelo?.length > 0)
@@ -53,7 +53,7 @@ export class DialogAcceptedComponent implements OnInit {
 
         this.data.datos.supplierImm.forEach(element => {
           element.bundled.forEach(item => {
-            this.services_consult.push(item);  
+            this.services_consult.push(item);
           });
         });
 
@@ -89,7 +89,11 @@ export class DialogAcceptedComponent implements OnInit {
       });
 
     }
-   
+    const encontradoActivoEnArray1 = this.standAlone?.some(elemento => elemento?.status !== 'Active');
+    const encontradoActivoEnArray2 = this.bundle?.some(elemento => elemento?.status !== 'Active');
+    this.viewButtonaLL = encontradoActivoEnArray1 || encontradoActivoEnArray2;
+    console.log(this.viewButtonaLL);
+
     console.log("standAlone",this.standAlone);
     console.log("bundle",this.bundle);
   }
@@ -97,8 +101,7 @@ export class DialogAcceptedComponent implements OnInit {
   accept_coorninator(respuesta: boolean) {
     //console.log(this.data.datos.serviceline);
     console.log(this.data);
-    this.__loader__.showLoader()
-debugger;
+     this.__loader__.showLoader();
     if(this.data.tipo == 2){
       if(this._serviceLine == 1){
         //Servide line 1 - Imm
@@ -110,6 +113,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 1');
             this.__loader__.hideLoader()
           }
           if (_data_.success && !respuesta) {
@@ -119,6 +123,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 2');
             this.__loader__.hideLoader()
           }
         }));
@@ -132,6 +137,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 3');
             this.__loader__.hideLoader()
           }
           if (_data_.success && !respuesta) {
@@ -141,6 +147,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 4');
             this.__loader__.hideLoader()
           }
         }));
@@ -158,6 +165,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 5');
             this.__loader__.hideLoader()
           }
           if (_data_.success && !respuesta) {
@@ -167,6 +175,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 6');
             this.__loader__.hideLoader()
           }
         }));
@@ -180,6 +189,7 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 7');
             this.__loader__.hideLoader()
           }
           if (_data_.success && !respuesta) {
@@ -189,9 +199,10 @@ debugger;
               verticalPosition: "top",
               panelClass: ['my-snack-bar']
             });
+            console.log('entro 8');
             this.__loader__.hideLoader()
           }
-          
+
         }));
       }
     }
@@ -199,7 +210,7 @@ debugger;
 
   accept_coorninatorIndividual(respuesta: boolean, workOrderServiceId: number, index: number, type: string)
   {
-    debugger;
+    ;
     console.log(workOrderServiceId);
     this.__loader__.showLoader();
     // this.standAlone = [];
@@ -207,9 +218,11 @@ debugger;
     if(respuesta){
       if(type == 'standalone'){
         this.standAlone[index].status = "Active";
+        console.log('aaaaaaaa');
       }
       else
       {
+        console.log('bbbbbbbb');
         this.bundle[index].status = "Active";
       }
     }
@@ -217,13 +230,15 @@ debugger;
     {
       if(type == 'standalone'){
         this.standAlone[index].status = "Cancelled";
+        console.log('cccccc');
       }
       else
       {
         this.bundle[index].status = "Cancelled";
-      }      
+        console.log('dddddd');
+      }
     }
-     
+
     // this.services_consult = [];
     if(this._serviceLine == 1){
       this._services.service_general_put('ServiceRecord/AccpetImmigrationSupplierPartnerIndividual/' + this.userData.id + '/' + respuesta+ '/'+ workOrderServiceId + '?sr='+this.data.datos.id, '').subscribe((_data_ => {
@@ -235,6 +250,7 @@ debugger;
             verticalPosition: "top",
             panelClass: ['my-snack-bar']
           });
+        console.log('eeeeeee');
           this.__loader__.hideLoader();
         }
         if (_data_.success && !respuesta) {
@@ -245,6 +261,7 @@ debugger;
             verticalPosition: "top",
             panelClass: ['my-snack-bar']
           });
+        console.log('ffffff');
           this.__loader__.hideLoader();
         }
         this.__loader__.hideLoader();
@@ -260,6 +277,7 @@ debugger;
             verticalPosition: "top",
             panelClass: ['my-snack-bar']
           });
+          console.log('ggggggg');
           this.__loader__.hideLoader();
         }
         if (_data_.success && !respuesta) {
@@ -270,8 +288,17 @@ debugger;
             verticalPosition: "top",
             panelClass: ['my-snack-bar']
           });
+          console.log('hhhhhh');
+          this.viewButtonaLL = true
           this.__loader__.hideLoader();
         }
+        console.log("standAlone",this.standAlone);
+        console.log("bundle",this.bundle);
+        const encontradoActivoEnArray1 = this.standAlone?.some(elemento => elemento?.status !== 'Active');
+        const encontradoActivoEnArray2 = this.bundle?.some(elemento => elemento?.status !== 'Active');
+        this.viewButtonaLL = encontradoActivoEnArray1 || encontradoActivoEnArray2;
+        console.log(this.viewButtonaLL);
+
         this.__loader__.hideLoader();
       }));
     }

@@ -12,10 +12,11 @@ import { DashboardComponent } from 'app/pages-component/dashboard/dashboard.comp
 })
 export class ServiceGeneralService {
 
-  private hubConnection: signalR.HubConnection; 
-  public respuestaRecibirPedido= new EventEmitter<string>();
+  private hubConnection: signalR.HubConnection;
+  public respuestaRecibirPedido = new EventEmitter<string>();
   public avisoAdmin = new EventEmitter<string>();
-  
+  public notification = new EventEmitter<string>();
+
   // private url_chat: any = new signalR.HubConnectionBuilder()
   //   .withUrl(`${environment.images_path}` + 'chatsocket')   // mapping to the chathub as in startup.cs
   //   .withAutomaticReconnect()
@@ -26,14 +27,14 @@ export class ServiceGeneralService {
   url_images = `${environment.images_path}`;
   headers = new HttpHeaders();
 
-  public chat_test:any;
-​
+  public chat_test: any;
+
   menu: boolean = true;
   small: boolean = false;
-  big:   boolean = true;
-  private receivedMessageObject:any = '';
+  big: boolean = true;
+  private receivedMessageObject: any = '';
   private sharedObj = new Subject<any>();
-​
+
   constructor(private http: HttpClient, public permissionsService: NgxPermissionsService) {
     // this.url_chat.onclose(async () => {
     //   await this.start();
@@ -44,33 +45,36 @@ export class ServiceGeneralService {
     this.suscribirOnListeners();
     this.iniciarConexion();
   }
-​
-private crearConexion() {
 
-  this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(this.url_images + "chatsocket", { transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling })
-    .withAutomaticReconnect()
-    .build();
-}
+  private crearConexion() {
 
-private iniciarConexion() {
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl(this.url_images + "chatsocket", { transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling })
+      .withAutomaticReconnect()
+      .build();
+  }
 
-  this.hubConnection
-    .start()
-    .then(() => console.log('Connection started'))
-    .catch(err => console.log('Error while starting connection: ' + err));
+  private iniciarConexion() {
 
-}
+    this.hubConnection
+      .start()
+      .then(() => console.log('Connection started'))
+      .catch(err => console.log('Error while starting connection: ' + err));
 
-private suscribirOnListeners() {
-  this.hubConnection.on("CambiarEstadoMesa", (data) => {
-    this.respuestaRecibirPedido.emit(data);
-  });
+  }
 
-  this.hubConnection.on("ReceiveOne", (data) => {
-    this.avisoAdmin.emit(data);
-  });
-}
+  private suscribirOnListeners() {
+    this.hubConnection.on("CambiarEstadoMesa", (data) => {
+      this.respuestaRecibirPedido.emit(data);
+    });
+
+    this.hubConnection.on("ReceiveOne", (data) => {
+      this.avisoAdmin.emit(data);
+    });
+    this.hubConnection.on("ReceiveOne", (data) => {
+      this.notification.emit(data);
+    });
+  }
   // Strart the connection
   // public async start() {
   //   try {
@@ -81,7 +85,7 @@ private suscribirOnListeners() {
   //     setTimeout(() => this.start(), 5000);
   //   }
   // }
-​
+
   /*private mapReceivedMessage(user: string, message: string): void {
     this.receivedMessageObject.user = user;
     this.receivedMessageObject.msgText = message;
@@ -103,8 +107,8 @@ private suscribirOnListeners() {
     return this.http.post(this.url_api + url, parametros, { headers: this.headers });
   }
 
-  public service_general_get_with_url(ur){
-    return this.http.put(this.url_api+ur, { headers: this.headers });
+  public service_general_get_with_url(ur) {
+    return this.http.put(this.url_api + ur, { headers: this.headers });
   }
 
 
@@ -124,7 +128,11 @@ private suscribirOnListeners() {
     return this.http.get(this.url_api + url, { headers: this.headers });
   }
 
-  public service_get_string(ur){
+  public getService(url): Observable<any> {
+    return this.http.get(this.url_noapi + url, { headers: this.headers });
+  }
+
+  public service_get_string(ur) {
     return this.http.get(this.url_api, { headers: this.headers });
   }
 
@@ -132,19 +140,20 @@ private suscribirOnListeners() {
     return this.http.get(this.url_noapi + url, { headers: this.headers });
   }
 
-  public service_general_delete(url:string):Observable<any> {
+  public service_general_delete(url: string): Observable<any> {
     return this.http.delete(this.url_api + url, { headers: this.headers });
   }
 
-  public service_general_delete_noapi(url:string):Observable<any> {
+  public service_general_delete_noapi(url: string): Observable<any> {
     return this.http.delete(this.url_noapi + url, { headers: this.headers });
   }
 
-  public service_general_deleteparam(url, parametros): Observable<any> { this.headers = this.headers.set('Content-Type', 'application/json; charset=utf-8')
+  public service_general_deleteparam(url, parametros): Observable<any> {
+    this.headers = this.headers.set('Content-Type', 'application/json; charset=utf-8')
     return this.http.delete(this.url_api + url, { headers: this.headers, params: parametros });
   }
 
-  public service_general_deleteno_api(url:string):Observable<any> {
+  public service_general_deleteno_api(url: string): Observable<any> {
     return this.http.delete(this.url_images + url, { headers: this.headers });
   }
 
@@ -169,35 +178,35 @@ private suscribirOnListeners() {
     });
   }
 
-    /* SetStatusServiceRecord */
-    public getSetStatusServiceRecord_(url): Observable<any> {
-      return this.http.get(this.url_api + url, { headers: this.headers });
-    }
+  /* SetStatusServiceRecord */
+  public getSetStatusServiceRecord_(url): Observable<any> {
+    return this.http.get(this.url_api + url, { headers: this.headers });
+  }
 
-    public getSetStatusServiceRecord(url, params: string = ''): any {
-      const query = this.http.get(this.url_api + 'ServiceRecord/' + url + params, { headers: this.headers }),
-        query_on = new Promise((resolve) => {
-          query.subscribe((response) => {
-            debugger;
-            resolve(response);
-          }, (error) => {
-            resolve(error);
-          });
+  public getSetStatusServiceRecord(url, params: string = ''): any {
+    const query = this.http.get(this.url_api + 'ServiceRecord/' + url + params, { headers: this.headers }),
+      query_on = new Promise((resolve) => {
+        query.subscribe((response) => {
+          debugger;
+          resolve(response);
+        }, (error) => {
+          resolve(error);
         });
-      return query_on.then((result: any) => {
-        debugger;
-        if (result.success) {
-          console.log(result.result);
-          return result.result;
-        }
-        else return 'Error al pedir el catalogo.';
       });
-    }
+    return query_on.then((result: any) => {
+      debugger;
+      if (result.success) {
+        console.log(result.result);
+        return result.result;
+      }
+      else return 'Error al pedir el catalogo.';
+    });
+  }
 
-  private user_data:any = JSON.parse(localStorage.getItem("userData") );
-  public getrol():string[] {
+  private user_data: any = JSON.parse(localStorage.getItem("userData"));
+  public getrol(): string[] {
     //let rol: any[] = [localStorage.getItem("rol")];
-    const roles:string[] = [this.user_data.role.role];
+    const roles: string[] = [this.user_data.role.role];
     //console.log('Rol desde el Sercixio ==> ', this.user_data.role.role);
     //console.log('User ==> ', this.user_data);
     //const roles:string[] = ['Supplier']; // Supplier Coordinator Manager
@@ -205,5 +214,6 @@ private suscribirOnListeners() {
     //this.permissionsService.loadPermissions( roles );
     return roles;
   }
+
 
 }

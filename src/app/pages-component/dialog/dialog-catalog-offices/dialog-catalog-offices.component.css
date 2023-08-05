@@ -3,6 +3,7 @@
   height: 140px;
   border-radius: 100%;
 }
+
 .btnr {
   border-radius: 20px;
   font-size: 12px;
@@ -15,6 +16,7 @@
   padding: 5px 40px 5px 11px;
   cursor: pointer;
 }
+
 .btnr--pencil {
   background: url("/assets/icons/pencil.png");
   background-repeat: no-repeat;
@@ -22,6 +24,7 @@
   background-position-x: calc(100% - 10px);
   background-position-y: center;
 }
+
 .btnr--add {
   background: url("/assets/icons/more.png");
   background-repeat: no-repeat;
@@ -29,13 +32,27 @@
   background-position-x: calc(100% - 10px);
   background-position-y: center;
 }
+
 .flex-img {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 89%;
 }
+
 .flex-img div {
   text-align: center;
+}
+
+.input_final {
+  padding: 0 0 0 13px;
+}
+
+.conten-detail {
+  padding-top: 4px;
+  height: fit-content;
+  padding-bottom: 4px;
+
 }

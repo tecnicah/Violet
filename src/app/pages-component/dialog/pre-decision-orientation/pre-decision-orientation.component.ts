@@ -94,7 +94,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   get_predesicion(){
     this._services.service_general_get('RelocationServices/GetPredecisionOrientationById?id=' + this.data.data.service[0].id).subscribe((data => {
       if (data.success) {
-        
+        debugger;
         this.area_orientation = data.result;
         this.isHousing = data.result.housing;
         this.isSchool = data.result.schooling;
@@ -335,6 +335,8 @@ export class PreDecisionOrientationComponent implements OnInit {
         this.area_orientation.housing = data_housing.message;
        
         console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
+        this.isHousing = data_housing.message.length > 0 ? true : false;
+        
         this.dataSourceHousing = data_housing.message; 
       }
     });
@@ -406,6 +408,7 @@ export class PreDecisionOrientationComponent implements OnInit {
         console.log("data_schooling_list", data_schooling_list);
         this.area_orientation.schooling = data_schooling_list.message; 
      
+        this.isSchool = data_schooling_list.message.length > 0 ? true : false;
         data_schooling_list.message.forEach(element => {
           this.dataSourceSchool.push({
             additionalComments: element.additionalComments,
@@ -720,7 +723,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Success",
-          body: "Schools Sent"
+          body: "This action will change the status of the schools to 'Sent' and send an email notifying the assignee"
         },
         width: "350px"
       });
@@ -1238,7 +1241,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
   call_service_send_propertys() {
     this.loader.showLoader();
-    let list_obj = { list: this.hl_to_send, id_sr: this.data.data.serviceRecordId }
+    let list_obj = { list: this.hl_to_send, id_sr: this.data.data.serviceRecordId, sender: this.user.id }
 
     console.log("DATA A enviar la servicio : ", list_obj);
     this._services.service_general_post_with_url("HousingList/SendPropertys", list_obj).subscribe((data => {

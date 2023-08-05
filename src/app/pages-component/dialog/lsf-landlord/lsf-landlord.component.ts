@@ -38,7 +38,7 @@ export class LsfLandlordComponent implements OnInit {
   dataData_land_list = new MatTableDataSource(null);
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////// VARIABLES 
+  //////////////////////// VARIABLES
 
 
   constructor( public _dialog: MatDialog, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any, public _services: ServiceGeneralService) { }
@@ -52,7 +52,7 @@ export class LsfLandlordComponent implements OnInit {
 
   async catalogos() {
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
-      //LandLord 
+      //LandLord
       this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
       this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
     this.GetLSFBySection(this.data.ph_id, this.data.servide_detail_id, 6, this.data.cat_category_id);
@@ -108,7 +108,7 @@ export class LsfLandlordComponent implements OnInit {
 
 
     console.log("DATA A GUARDAR LAND LORD (ACTUALIZACION): ", this.data_land);
-    
+
     this._services.service_general_put("HousingList/LandlordHeaderDetailsHome", this.data_land).subscribe((data => {
       if (data.success) {
         console.log(data);
@@ -137,6 +137,7 @@ export class LsfLandlordComponent implements OnInit {
     data_b.idServiceDetail = this.data_land.idServiceDetail
     data_b.headerId = this.data_land.id
 
+    console.log(data_b);
     const dialog = this._dialog.open(DialoglLandlordBankDetailComponent, {
 
       data: data_b,
@@ -164,14 +165,14 @@ export class LsfLandlordComponent implements OnInit {
 
     dialog.beforeClosed().subscribe(result => {
       if (result.success) {
-        
+
         data_ = result;
       }
     });
   }
 
   deletebank(_data_) {
-    
+
     this.loader.showLoader();
     this._services.service_general_put("HousingList/DeleteBankingDetails", _data_.idLandlord).subscribe((response_bd => {
       this.loader.hideLoader();
@@ -199,7 +200,7 @@ export class LsfLandlordComponent implements OnInit {
   }
 
   do_delete_banking(_data_) {
-    
+
     var i_e = this.data_land_list.indexOf(_data_);
     var removed = this.data_land_list.splice(i_e, 1);
   }

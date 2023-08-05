@@ -40,7 +40,7 @@ export class DialogProfileDocumentComponent implements OnInit {
   //********************************************************************************//
 
   public files: NgxFileDropEntry[] = [];
-  
+
   public dropped(files: NgxFileDropEntry[]) {
     this.files = files;
     for (const droppedFile of files) {
@@ -83,8 +83,8 @@ export class DialogProfileDocumentComponent implements OnInit {
                 "updatedBy":this.user.id,
                 "updatedDate": new Date(),
                 "type":file.type
-              }   
-              
+              }
+              console.log(this.temporalDocument);
               if(this.temporalDocument.fileName != undefined || this.temporalDocument.fileName != null || this.temporalDocument.fileName != ''){
                 this.cargaDocumento = false;
               }
@@ -128,8 +128,8 @@ export class DialogProfileDocumentComponent implements OnInit {
         "updatedDate": this.temporalDocument.updatedDate,
         "type": this.temporalDocument.type,
         "success": true
-      } 
-    
+      }
+
     this.dialogRef.close(this.temporalDocument);
   }
 
@@ -152,13 +152,13 @@ export class DialogProfileDocumentComponent implements OnInit {
     this.activeDocument = true;
     this.contador++;
   }
-  
+
 
   if(this.data_document.privacy == undefined || this.data_document.privacy == null || this.data_document.privacy == ''){
     this.activePrivacy = true;
     this.contador++;
   }
-  
+
   if(this.data_document.status == undefined || this.data_document.status == null || this.data_document.status == ''){
     this.activeStatus = true;
     this.contador++;
@@ -185,7 +185,7 @@ export class DialogProfileDocumentComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-    
+
     })
     this.contador = 0;
     return;
