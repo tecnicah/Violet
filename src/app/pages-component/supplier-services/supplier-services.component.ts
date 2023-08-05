@@ -109,9 +109,10 @@ export class SupplierServicesComponent implements OnInit {
   ngOnInit(): void {
     this.consultaPermisos();
     this.date = new Date();
-    for (let i = 1; i <= 10; i++) {
-      this.fleetSize.push(i);
-    }
+    // for (let i = 1; i <= 10; i++) {
+    //   this.fleetSize.push(i);
+    // }
+    this.fleetSize = ["1- 10", "10-20", "20-40", "40-60", "60+"];
     this.user = JSON.parse(localStorage.getItem('userData'));
 
     this.catalogos();
@@ -219,7 +220,36 @@ export class SupplierServicesComponent implements OnInit {
           case 15:
             this.type_document = 30;
             break;
-          
+          case 17:
+            this.type_document = 30;
+            break;
+          case 21:
+            this.type_document = 30;
+            break;
+          case 18:
+            this.type_document = 30;
+            break;
+          case 26:
+            this.type_document = 30;
+            break;
+          case 17:
+            this.type_document = 30;
+            break;
+          case 21:
+            this.type_document = 30;
+            break;
+          case 18:
+            this.type_document = 30;
+            break;
+          case 26:
+            this.type_document = 30;
+            break;
+          case 12:
+            this.type_document = 31;
+            break;
+          case 10:
+            this.type_document = 30;
+            break;
           default:
             // code block
         }
@@ -387,6 +417,12 @@ export class SupplierServicesComponent implements OnInit {
       case 15:
         this.type_document = 30;
         break;  
+      case 12:
+        this.type_document = 31;
+        break;
+      case 10:
+        this.type_document = 30;
+        break;
       default:
         // code block
     }
@@ -587,6 +623,24 @@ export class SupplierServicesComponent implements OnInit {
         _contact_type = 3;
         break;
       case 15:
+        _contact_type = 3;
+        break; 
+      case 17:
+        _contact_type = 3;
+        break; 
+      case 21:
+        _contact_type = 3;
+        break; 
+      case 18:
+        _contact_type = 3;
+        break; 
+      case 26:
+        _contact_type = 3;
+        break;  
+      case 12:
+        _contact_type = 3;
+        break;  
+      case 10:
         _contact_type = 3;
         break;  
       default:
