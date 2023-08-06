@@ -395,31 +395,75 @@ debugger;
     }
   } 
 
+  padToTwoDigits(num) {
+    return num.toString().padStart(2, '0')
+  }
+  
+  convertMsToHHMMSS(ms){
+    let seconds = Math.floor(ms / 1000)
+    let minutes = Math.floor(seconds / 60)
+    let hours = Math.floor(minutes / 60)
+  
+    seconds = seconds % 60
+    minutes = minutes % 60
+    // hours = hours % 24
+  
+    seconds = this.padToTwoDigits(seconds)
+    minutes = this.padToTwoDigits(minutes)
+    hours = this.padToTwoDigits(hours)
+  
+    return `${hours}:${minutes}:${seconds}`
+  }
+
   timeRemainingOriginal: any;
-  _timelocal: any = 0;
+  _timelocal: Date = new Date();
   restaTime(index, service, timeOriginal, timeWorked, tipo){
     debugger;
     console.log(timeOriginal);
     console.log(service);
     console.log("Reminder", parseInt(timeOriginal)-parseInt(timeWorked==null?0:timeWorked));
-
+    const create_date_one:Date = new Date(),
+          create_date_two:Date = new Date(); 
     this._services.service_general_get('ReportDay/GetTimeRemaindingPublic?service='+service).subscribe(r => {
       
       if(r.success){
         if(tipo == "standalone"){
           this.timeRemainingOriginal = r.result;
           this.data.serviceReportDays[index].timeReminder = r.result;
+          this.active_time = true;
+          console.log(this.active_time);
+          this._cd.markForCheck();
+
           setTimeout(() => {
-            this.data.serviceReportDays[index].timeReminder = parseFloat(r.result)-parseFloat(timeWorked==null?0:timeWorked);
+            let _hour = r.result;
+            let _timeWorked = timeWorked == null ? 0 : timeWorked.toString();
+            // _timeWorked.toISOString().split(":");
+            create_date_one.setHours(parseInt(_hour.split(':')[0]), r.result.split(':')[1] != undefined ? parseInt(r.result.split(':')[1]) : 0, 0);
+            create_date_two.setHours(parseInt(_timeWorked.split(':')[0]), _timeWorked.split(':')[1] != undefined ? parseInt(_timeWorked.split(':')[1]) : 0, 0);
+
+            let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
+            let _diff = this.convertMsToHHMMSS(get_difference);
+            this.data.serviceReportDays[index].timeReminder = _diff.split(':')[0] + ":" + _diff.split(':')[1];
             this._cd.markForCheck();
           }, 200);
         }
         if(tipo == "bundle"){
+          let _hour = r.result;
+          let _timeWorked = timeWorked == null ? "0" : timeWorked.toString();
+         
+          create_date_one.setHours(parseInt(_hour.split(':')[0]), r.result.split(':')[1] != undefined ? parseInt(r.result.split(':')[1]) : 0, 0);
+          create_date_two.setHours(parseInt(_timeWorked.split(':')[0]), _timeWorked.split(':')[1] != undefined ? parseInt(_timeWorked.split(':')[1]) : 0, 0);
+          
+
           this.timeRemainingOriginal = r.result;
-          this._timelocal += parseFloat(timeWorked==null?0:timeWorked);
-          this.data.serviceReportDaysBundle[0].timeReminder = r.result;
+          // this._timelocal += create_date_two.getTime();
+          this.data.serviceReportDaysBundle[0].timeReminder = r.result;              
+          
+
           setTimeout(() => {
-            this.data.serviceReportDaysBundle[0].timeReminder = parseFloat(r.result)-parseFloat(this._timelocal);
+            let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
+            let _diff = this.convertMsToHHMMSS(get_difference);
+            this.data.serviceReportDaysBundle[0].timeReminder = _diff.split(':')[0] + ":" + _diff.split(':')[1];
             this._cd.markForCheck();
           }, 200);
         }
@@ -707,25 +751,30 @@ removeValid(){
 
   }
 
-  public get_total_hours:number = 0;
+  // public get_total_hours:number = 0;
   public getHoursDifference() {
     console.log(this.data.service);
     const create_date_one:Date = new Date(),
-      create_date_two:Date = new Date();
+          create_date_two:Date = new Date(),
+          create_date_total:Date = new Date(),
+          create_date_authoTime: Date = new Date();
     debugger;
     if( this.data.startTime != undefined && this.data.endTime != undefined && this.data.service != undefined) {
 
       create_date_one.setHours(this.data.startTime.split(':')[0], this.data.startTime.split(':')[1]);
       create_date_two.setHours(this.data.endTime.split(':')[0], this.data.endTime.split(':')[1]);
 
-      let get_difference:any = ( create_date_two.getTime() - create_date_one.getTime() ) / 1000;
+      let get_difference:any = ( create_date_two.getTime() - create_date_one.getTime() );
 
-      get_difference /= (60 * 60);
+      // get_difference /= (60 * 60);
+      let _diff =  new Date(get_difference).toISOString().slice(11, 19)
+      
 
-      this.get_total_hours = Math.abs(get_difference);
-      this.data.totalTime = this.get_total_hours;
-
-      if(this.get_total_hours > this.totalTime){
+      // this.get_total_hours = Math.abs(get_difference);
+      this.data.totalTime = _diff.split(':')[0] + ":" + _diff.split(':')[1] + " hrs";
+      create_date_total.setHours(parseInt(_diff.split(':')[0]), parseInt(_diff.split(':')[1]), 0);
+      create_date_authoTime.setHours(this.totalTime, 0, 0);
+      if(create_date_total > create_date_authoTime){
         this.active_time = true;
         console.log(this.active_time);
         this._cd.markForCheck();
@@ -733,7 +782,7 @@ removeValid(){
       }
       else{
         this.active_time = false;
-        if(this.get_total_hours < this.totalTime){
+        if(create_date_total < create_date_authoTime){
           this.active_time = false
           console.log(this.active_time);
           this._cd.markForCheck();

@@ -128,14 +128,14 @@
         <div class="input_central" *ngIf="data.id == 0">
           <mat-form-field appearance="fill">
             <mat-label [ngClass]="{valid: active_startTime}">Start Time</mat-label>
-            <input
+            <input type="time" step="900"
               (focus)="active_startTime = false" required
               matInput
               required
               placeholder="Start Time"
               (change)="getHoursDifference(); enableEndDate( data.startTime )"
               [(ngModel)]="data.startTime"
-              type="time-24" step="900" [disabled]="data.service == undefined || data.service == ''"/>
+              [disabled]="data.service == undefined || data.service == ''"/>
               <mat-error>Field is required</mat-error>
               <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_startTime">Field is required</mat-hint>
           </mat-form-field>
@@ -176,14 +176,14 @@
         <div class="input_central">
           <mat-form-field appearance="fill">
             <mat-label>Total Time</mat-label>
-            <input
+            <input type="time"
               matInput
               required
               placeholder="Total Time"
               type="text"
               disabled
               [(ngModel)]="data.totalTime"
-              [value]="get_total_hours" />
+               />
           </mat-form-field>
         </div>
       </mat-grid-tile>
