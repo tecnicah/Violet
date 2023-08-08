@@ -9,6 +9,7 @@ import { LoaderComponent } from 'app/shared/loader';
 import { DialogGeneralConfirmation } from '../dialog-general-confirmation/dialog-general-confirmation.component';
 import { DialogConfirmServiceComponent } from '../dialog-confirm-service/dialog-confirm-service.component'
 import { DataSource } from '@angular/cdk/collections';
+import { elementAt } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dialog-base-prueba',
@@ -763,16 +764,24 @@ export class NewServiceOrderDialog implements OnInit {
           this.standalone_work.createdBy = this.data.id_user;
           this.standalone_work.createdDate = new Date();
           this.standalone_work.updateBy = this.data.id_user;
+          this.currencySelect.forEach(ele => {
+            if (ele.id == this.standalone_work.idCurrency) {
+              return this.standalone_work.currency = ele.currency
+            }
+          })
 
           this.work_order.standaloneServiceWorkOrders.push(this.standalone_work);
-
+          console.log(this.work_order.standaloneServiceWorkOrders);
+          console.log(this.standalone_work);
           this.standalone_work = new StandaloneServiceWorkOrders();
-          this.showStandAlone();
-          this.setDeliverToFixed();
-          this.createWOTableContent();
-          this.initSummaryTable();
-          this.workingTableData();
-          this.disable = true;
+          console.log(this.standalone_work);
+
+            this.showStandAlone();
+           this.setDeliverToFixed();
+           this.createWOTableContent();
+           this.initSummaryTable();
+           this.workingTableData();
+           this.disable = true;
         }
         break;
       case 'pack':
@@ -1555,6 +1564,7 @@ class StandaloneServiceWorkOrders {
   createdDate: Date = null;
   updateBy: string = '';
   idCurrency: number;
+  currency: string = '';
   updatedDate: Date = new Date();
   workOrderServiceId: number = 0;
   workOrderService: any = { id: 0 }
