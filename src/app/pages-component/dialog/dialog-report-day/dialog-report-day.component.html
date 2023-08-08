@@ -244,16 +244,21 @@
                 </td>
                 <td style="max-width: 80px;">
                   <div>
-                    <mat-form-field>
+                    <fieldset>
+                      <legend>HH:MM</legend>
+                      <div>
+                        <input [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
+                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                      </div>
+                   </fieldset>  
+                    <!-- <mat-form-field>
                       <mat-label>Time Used</mat-label>
-                      <input required  matInput required placeholder="Time" autocomplete="off" type="number" min="0" max="{{timeRemainingOriginal}}" [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time, 'standalone');">
+                      <input type="time" required  matInput required placeholder="Time" autocomplete="off" min='01:00' max= '03:00' [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time, 'standalone');">
                       <mat-error>Field is required</mat-error>
                       <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
-                      <!-- <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > itemreport.timeReminder">The time entered is greater than the total time recorded</mat-hint>
-                      <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time < data.totalTime">The time entered is less than the total time recorded</mat-hint> -->
-                      <!--<mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="validtime">{{messageValidTime}}</mat-hint> -->
+                     
                       <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
 
                   <!-- <div *ngIf="data.id != 0">
@@ -318,20 +323,23 @@
                       {{itemreport.serviceName}}
                     </span>
                 </td>
-                <td style="text-align: center; max-width: 80px;">
+                <td style="text-align: center; max-width: 20px;">
                   <div>
-                    <mat-form-field>
+                    <!-- <mat-form-field>
                       <mat-label>Time Used</mat-label>
-                      <input required  matInput required placeholder="Time"  type="number" min="0" [(ngModel)]="itemreport.time" (ngModelChange)="removeValid(); restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.time, 'bundle');">
+                      <input required  matInput required placeholder="Time"  type="time" min='01:00' max= '03:00' (ngModelChange)="removeValid(); restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.time, 'bundle');">
                       <mat-error>Field is required</mat-error>
-                      <!-- <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > totalTime && !validtime">The time entered is greater than the time registered in the service</mat-hint> -->
                       <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="validtime">{{messageValidTime}}</mat-hint>
                       <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
-                    </mat-form-field>
+                    </mat-form-field> -->
+                    <fieldset>
+                      <legend>HH:MM</legend>
+                      <div>
+                        <input [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.time, 'bundle');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
+                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time + ':' + itemreport.timem, 'bundle');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                      </div>
+                   </fieldset>  
                   </div>
-                  <!-- <div *ngIf="data.id != 0">
-                    {{itemreport.time}}
-                  </div> -->
                 </td>
             </tr>
         </tbody>
