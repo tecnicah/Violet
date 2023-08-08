@@ -31,8 +31,8 @@ export class NewServiceOrderDialog implements OnInit {
   }
   public at: boolean = true;
   public gt: boolean = false;
-  public standalone_table_columns: string[] = ['cam_1', 'cam_2', 'cam_3', 'cam_4', 'cam_5', 'cam_6', 'cam_7', 'cam_8', 'cam_9', 'cam_10'];
-  public package_services: string[] = ['campo_0', 'campo_1', 'campo_2',  'campo_3', 'campo_3a', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
+  public standalone_table_columns: string[] = ['cam_1', 'cam_2', 'cam_3', 'cam_4', 'cam_5', 'cam_6', 'cam_7', 'cam_8', 'cam_9', 'cam_10', 'cam_11'];
+  public package_services: string[] = ['campo_0', 'campo_1', 'campo_2', 'campo_3', 'campo_3a', 'campo_4', 'campo_5', 'campo_6', 'campo_7'];
   public loader: LoaderComponent = new LoaderComponent();
   minDate: Date = new Date();
 
@@ -65,17 +65,26 @@ export class NewServiceOrderDialog implements OnInit {
     this.getCurrency()
     this.getCatalogues();
     this.catalogos();
+    this.home_CityList()
     this.user = JSON.parse(localStorage.getItem("userData"));
-    console.log("user =========================0" , this.user)
+    console.log("user =========================0", this.user)
   }
-  getCurrency(){
-  this._services.service_general_get('Catalog/GetAllCurrency').subscribe(data => {
-    console.log(data);
-    this.currencySelect = data.result
-    console.log("Currency",this.currencySelect);
-  })
+  mostrarLocation: any
+  home_CityList() {
+    this._services.service_general_get("ServiceRecord/GetHomeCityById?id=" + this.data.home_city).subscribe(homeci => {
+      console.log("GetHomeCityById", homeci);
+      this.mostrarLocation = homeci
+    })
+  }
+  getCurrency() {
+    this._services.service_general_get('Catalog/GetAllCurrency').subscribe(data => {
+      console.log(data);
+      this.currencySelect = data.result
+      console.log("Currency", this.currencySelect);
+    })
 
   }
+
   public validatingMainFields(): void {
 
     this.work_order.createdDate != '' && this.work_order.serviceLineId != '' ?
@@ -152,8 +161,8 @@ export class NewServiceOrderDialog implements OnInit {
   public service_bundle: BundledServices = new BundledServices();
   public showPackagesServices(index: number = null): void {
 
-    if(this.work_order.serviceLineId == 1){  this.service_bundle.coordination = true; }
-    if(this.work_order.serviceLineId == 2){ this.setDeliverToFixed();}
+    if (this.work_order.serviceLineId == 1) { this.service_bundle.coordination = true; }
+    if (this.work_order.serviceLineId == 2) { this.setDeliverToFixed(); }
 
     this.service_bundle.statusId = 1;
     const bundle_container_b: any = document.getElementsByClassName('bundle_container_b'),
@@ -189,7 +198,7 @@ export class NewServiceOrderDialog implements OnInit {
 
   }
 
-  disblableFuntion(){
+  disblableFuntion() {
     return true
     /* if (this.show_standalone ||
         this.work_order.standaloneServiceWorkOrders.length > 0 ||
@@ -217,27 +226,26 @@ export class NewServiceOrderDialog implements OnInit {
 
   public hideModal(): void {
     console.log(this.data.new_sr);
-    if(this.data.isnew){
+    if (this.data.isnew) {
 
       const dialogRef = this._dialog.open(DialogConfirmServiceComponent, {
         data: {
           id_sr: this.data.id_sr,
           new_sr: this.data.new_sr
-         },
+        },
         width: '420px'
       });
 
       dialogRef.afterClosed().subscribe(result => {
 
         console.log(result);
-        if(result){
+        if (result) {
           this.dialogRef.close();
         }
 
       });
     }
-    else
-    {
+    else {
       this.dialogRef.close();
     }
 
@@ -273,8 +281,8 @@ export class NewServiceOrderDialog implements OnInit {
   public deliverin_catalogue: any = [];
   public city_catalogue: any = [];
   public deliverin = [];
-  public  currencySelect : any =[]
-  public async catalogos(){
+  public currencySelect: any = []
+  public async catalogos() {
     this.serviceline_catalogue = await this._services.getCatalogueFrom('GetServiceLine');
     this.deliverin_catalogue = await this._services.getCatalogueFrom('GetDelivired');
     this.city_catalogue = await this._services.getCatalogueFrom('GetCity');
@@ -298,14 +306,14 @@ export class NewServiceOrderDialog implements OnInit {
 
             this.deliverto_catalogue = response.applicant.value;
 
-            if(this.user.role.id == 19 || this.user.role.id == 1 || this.user.role.id == 2){
+            if (this.user.role.id == 19 || this.user.role.id == 1 || this.user.role.id == 2) {
               this.can_see_fee = true;
             }
-            else{
+            else {
               this.can_see_fee = false;
             }
 
-            console.log("data recibida ====================",this.data);
+            console.log("data recibida ====================", this.data);
             this.validatingMainFields();
             const today: Date = new Date();
             this.yesterday_today = today;
@@ -335,8 +343,7 @@ export class NewServiceOrderDialog implements OnInit {
                     console.error('Error (ServiceOrder/GetOrderById)', error);
                   });
             }
-            else
-            {
+            else {
               this.setDeliverToFixed();
 
             }
@@ -394,9 +401,9 @@ export class NewServiceOrderDialog implements OnInit {
   public getLocation() {
     this.location_city = [];
     let selected = 0;
-    if(this.service_bundle.deliveringIn == this.data.home_country){
+    if (this.service_bundle.deliveringIn == this.data.home_country) {
       selected = this.data.home_city;
-    }else if(this.service_bundle.deliveringIn == this.data.host_country){
+    } else if (this.service_bundle.deliveringIn == this.data.host_country) {
       selected = this.data.host_city;
     }
     this._services.service_general_get('Catalogue/GetState?country=' + this.service_bundle.deliveringIn)
@@ -404,7 +411,7 @@ export class NewServiceOrderDialog implements OnInit {
         this.location_city = response.result;
         for (let i = 0; i < this.location_city.length; i++) {
           const element = this.location_city[i];
-          if(element.id == selected){
+          if (element.id == selected) {
             this.service_bundle.location = element.city;
             return;
           }
@@ -415,20 +422,40 @@ export class NewServiceOrderDialog implements OnInit {
   public getLocationWork() {
     this.location_cityWork = [];
     let selected = 0;
-    if(this.standalone_work.deliveringIn == this.data.home_country){
+    console.log(this.standalone_work.deliveringIn);
+    console.log(this.data.home_country);
+    console.log(this.data.host_country);
+
+    if (this.standalone_work.deliveringIn == this.data.home_country) {
       selected = this.data.home_city;
-    }else if(this.standalone_work.deliveringIn == this.data.host_country){
+      console.log("22222", selected);
+
+    } else if (this.standalone_work.deliveringIn == this.data.host_country) {
       selected = this.data.host_city;
+      console.log("33333", selected);
     }
     this._services.service_general_get('Catalogue/GetState?country=' + this.standalone_work.deliveringIn)
       .subscribe((response: any) => {
+        console.log("service country", response);
+
         this.location_cityWork = response.result;
         for (let i = 0; i < this.location_cityWork.length; i++) {
           const element = this.location_cityWork[i];
-          if(element.id == selected){
+          console.log("44444", element.id);
+          console.log("55555", selected);
+          if (element.id == selected) {
             this.standalone_work.location = element.city;
+            console.log("66666", this.standalone_work.location);
+            console.log("66666", element.city);
+
             this.salon_form_valdator.no_loca = false;
             return;
+          } else {
+            console.log(this.mostrarLocation);
+            console.log(this.standalone_work.location);
+            this.standalone_work.location = this.mostrarLocation;
+            this.salon_form_valdator.no_loca = false;
+
           }
         }
         console.log(this.location_cityWork, this.standalone_work.location);
@@ -447,10 +474,19 @@ export class NewServiceOrderDialog implements OnInit {
     this._services.service_general_get(`Catalogue/GetService?country=${this.standalone_work.deliveringIn}&client=${this.data.clientID}&serviceLine=${this.work_order.serviceLineId}`)
       .subscribe((response: any) => {
         console.log(response);
-        this.catalogService = response.result.value;
-        this.validDeliverTo();
+        if (response.result.value.length >= 1) {
+          this.catalogService = response.result.value;
+          console.log("11111", this.catalogService);
+          this.validDeliverTo();
+        } else {
+          this.showGeneralMessageDialog('Service and City', 'There are no services available in the selected country and city');
+
+        }
       })
   }
+
+
+
   public catalogServiceBundle = [];
 
   public getServiceBundle() {
@@ -578,8 +614,8 @@ export class NewServiceOrderDialog implements OnInit {
     }
 
     this.work_order.createdBy = this.user.id;
-    if(this.show_standalone){
-      if(this.standAloneFormValidator()){}else{
+    if (this.show_standalone) {
+      if (this.standAloneFormValidator()) { } else {
         this.disabledEditService = false;
         this.loader.hideLoader();
         return
@@ -603,7 +639,7 @@ export class NewServiceOrderDialog implements OnInit {
           this.loader.hideLoader();
         });
 
-    }else{
+    } else {
       this.disabledNewService = false;
       this.loader.hideLoader();
     }
@@ -623,7 +659,7 @@ export class NewServiceOrderDialog implements OnInit {
     this.work_order.standaloneServiceWorkOrders.forEach(E => {
       E.projectedFee = E.projectedFee.toString();
     });
-//
+    //
     let currency;
     this.work_order.standaloneServiceWorkOrders.forEach(E => {
       currency = E.projectedFee.split('$');
@@ -633,10 +669,10 @@ export class NewServiceOrderDialog implements OnInit {
         E.projectedFee = currency[1];
       }
       E.projectedFee = E.projectedFee.toString();
-    //
+      //
     });
     //
-     console.log("this.work_order.standaloneServiceWorkOrders ===========================",this.work_order.standaloneServiceWorkOrders);
+    console.log("this.work_order.standaloneServiceWorkOrders ===========================", this.work_order.standaloneServiceWorkOrders);
     // this.work_order.bundledServicesWorkOrders.forEach(E => {
     //   currency = E.projectedFee.split('$');
     //   if (currency.length == 1) {
@@ -649,8 +685,8 @@ export class NewServiceOrderDialog implements OnInit {
 
     console.log('Data Work order sent ====> ', this.work_order);
 
-    if(this.show_standalone){
-      if(this.standAloneFormValidator()){}else{
+    if (this.show_standalone) {
+      if (this.standAloneFormValidator()) { } else {
         this.disabledEditService = false;
         this.loader.hideLoader();
         return
@@ -674,7 +710,7 @@ export class NewServiceOrderDialog implements OnInit {
 
         });
 
-    }else{
+    } else {
       this.disabledEditService = false;
       this.loader.hideLoader();
     }
@@ -714,7 +750,7 @@ export class NewServiceOrderDialog implements OnInit {
         // validacion de campos standalone
         if (this.standAloneFormValidator()) {
 
-           this.standalone_work.serviceTypeId = 1;
+          this.standalone_work.serviceTypeId = 1;
           // asignar el statusId como pending to accept
           this.standalone_work.statusId = 1;
           // standalone
@@ -736,7 +772,7 @@ export class NewServiceOrderDialog implements OnInit {
           this.createWOTableContent();
           this.initSummaryTable();
           this.workingTableData();
-         this.disable = true;
+          this.disable = true;
         }
         break;
       case 'pack':
@@ -756,7 +792,7 @@ export class NewServiceOrderDialog implements OnInit {
         }
         break;
     }
-   this.createSOTableContent();
+    this.createSOTableContent();
   }
 
   public addNewBundle(): void {
@@ -767,8 +803,8 @@ export class NewServiceOrderDialog implements OnInit {
 
   }
 
-  deleteBundle(i){
-    this.work_order.bundledServicesWorkOrders.splice(i,1);
+  deleteBundle(i) {
+    this.work_order.bundledServicesWorkOrders.splice(i, 1);
     this.show_bform_errors = true;
     this.createTablesForBundles();
   }
@@ -1149,8 +1185,8 @@ export class NewServiceOrderDialog implements OnInit {
     no_prof: false,
     no_auto: false,
     no_loca: false,
-    no_acceptance:false,
-    no_currency:false
+    no_acceptance: false,
+    no_currency: false
 
   }
   public standAloneFormValidator(): boolean {
@@ -1168,13 +1204,13 @@ export class NewServiceOrderDialog implements OnInit {
     this.standalone_work.autho == '' ?
       this.salon_form_valdator.no_auto = true : this.salon_form_valdator.no_auto = false;
 
-      this.standalone_work.acceptance == '' ?
+    this.standalone_work.acceptance == '' ?
       this.salon_form_valdator.no_acceptance = true : this.salon_form_valdator.no_acceptance = false;
 
     this.standalone_work.location == '' ?
       this.salon_form_valdator.no_loca = true : this.salon_form_valdator.no_loca = false;
 
-      this.standalone_work.idCurrency == null ?
+    this.standalone_work.idCurrency == null ?
       this.salon_form_valdator.no_currency = true : this.salon_form_valdator.no_currency = false;
 
     for (let field in this.salon_form_valdator) {
@@ -1231,21 +1267,21 @@ export class NewServiceOrderDialog implements OnInit {
 
   }
 
-  public coordinationBundle(){
-    if(this.service_bundle.serviceId == "24" || this.service_bundle.serviceId == "25"){
+  public coordinationBundle() {
+    if (this.service_bundle.serviceId == "24" || this.service_bundle.serviceId == "25") {
       this.service_bundle.coordination = true;
     }
-    else{
+    else {
       this.service_bundle.coordination = false;
     }
   }
 
-  public coordonatioTransport(){
+  public coordonatioTransport() {
     console.log(this.standalone_work.serviceId);
-    if(this.standalone_work.serviceId == "24" || this.standalone_work.serviceId == "25"){
+    if (this.standalone_work.serviceId == "24" || this.standalone_work.serviceId == "25") {
       this.standalone_work.coordination = true;
     }
-    else{
+    else {
       this.standalone_work.coordination = false;
     }
   }
@@ -1499,7 +1535,7 @@ class WorkOrder {
   bundledServicesWorkOrders: BundledServicesWorkOrders[] = [];
 }
 
-class     StandaloneServiceWorkOrders {
+class StandaloneServiceWorkOrders {
   id: number = 0;
   serviceNumber: string = '';
   workOrderId: number = 0;
@@ -1518,7 +1554,7 @@ class     StandaloneServiceWorkOrders {
   createdBy: number = 0;
   createdDate: Date = null;
   updateBy: string = '';
-  idCurrency:number ;
+  idCurrency: number;
   updatedDate: Date = new Date();
   workOrderServiceId: number = 0;
   workOrderService: any = { id: 0 }
@@ -1534,7 +1570,7 @@ class BundledServicesWorkOrders {
   createdBy: number = 0;
   createdDate: Date = null;
   updateBy: number = 0;
-  idCurrency:number ;
+  idCurrency: number;
   updatedDate: Date = null;
   bundledServices: BundledServices[] = [];
 }

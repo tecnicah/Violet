@@ -50,7 +50,7 @@
                 <input matInput required placeholder="Start Time" type="time" [(ngModel)]="item.startTime"
                   (change)="validate_starttime(i, item)">
                 <span class="label-error" *ngIf="!object_valid[i].valid_stat">
-                  Time is invalid
+                  Time is invalidaa
                 </span>
               </mat-form-field>
             </div>
@@ -63,7 +63,7 @@
                 <input matInput required placeholder="End Time" type="time" min="item.startTime"
                   [(ngModel)]="item.endTime" min="item.startTime" (change)="validate_endtime(i, item)">
                 <span class="label-error" *ngIf="!object_valid[i].valid_end">
-                  Time is invalid
+                  Time is invalidxx
                 </span>
               </mat-form-field>
             </div>
