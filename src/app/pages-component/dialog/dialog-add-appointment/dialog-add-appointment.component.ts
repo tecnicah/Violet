@@ -79,11 +79,11 @@ export class DialogAddAppointmentComponent implements OnInit {
     this._minValue = minValue;
     const maxValue = new Date();
     this._maxValue = maxValue;
-    
+
     this.user = JSON.parse(localStorage.getItem('userData'));
-   // console.log("DATAUSER: ", this.user)
+    // console.log("DATAUSER: ", this.user)
     this.getCatalogo();
-   // console.log("DATA RECIBIDA EN MODAL APPOINTMENT: ", this.data);
+    // console.log("DATA RECIBIDA EN MODAL APPOINTMENT: ", this.data);
     this.sr = Number(this.data.sr);
 
     if (this.user.role.id == 3) {
@@ -97,49 +97,49 @@ export class DialogAddAppointmentComponent implements OnInit {
 
     if (this.data.appointmentId != 0) {
       this._services.service_general_get('Appointment/GetAppointmentById?id=' + Number(this.data.appointmentId))
-      .subscribe((data => {
-        console.log("appointment by id; ", data);
-        for (let i = 0; i < data.result.value.length; i++) {
-          data.result.value[i].ended = this.data.ended;
-          data.result.value[i].start = this.data.start;
-          data.result.value[i].report = this.data.report;
-        }
-        debugger;
-        for (let i = 0; i < data.result.value[0].services.length; i++) {
-          if (data.result.value[0].services[i].homeFindingId != 0) {
-            this.trae_casas_a_visitar(data.result.value[0].services[i].workOrderServiceId, data.result.value[0].date, i);
+        .subscribe((data => {
+          console.log("appointment by id; ", data);
+          for (let i = 0; i < data.result.value.length; i++) {
+            data.result.value[i].ended = this.data.ended;
+            data.result.value[i].start = this.data.start;
+            data.result.value[i].report = this.data.report;
           }
-          if (data.result.value[0].services[i].schoollingId != 0) {
-            this.getDataSchoolList(data.result.value[0].services[i].workOrder, data.result.value[0].services[i].schoollingId, data.result.value[0].date);
+
+          for (let i = 0; i < data.result.value[0].services.length; i++) {
+            if (data.result.value[0].services[i].homeFindingId != 0) {
+              this.trae_casas_a_visitar(data.result.value[0].services[i].workOrderServiceId, data.result.value[0].date, i);
+            }
+            if (data.result.value[0].services[i].schoollingId != 0) {
+              this.getDataSchoolList(data.result.value[0].services[i].workOrder, data.result.value[0].services[i].schoollingId, data.result.value[0].date);
+            }
+            if (data.result.value[0].services[i].predecisionId != 0) {
+              this.getDataSchoolList(data.result.value[0].services[i].workOrder, data.result.value[0].services[i].predecisionId, data.result.value[0].date);
+              this.trae_casas_a_visitar(data.result.value[0].services[i].workOrderServiceId, data.result.value[0].date, i);
+            }
           }
-          if (data.result.value[0].services[i].predecisionId != 0) {
-            this.getDataSchoolList(data.result.value[0].services[i].workOrder, data.result.value[0].services[i].predecisionId, data.result.value[0].date);
-            this.trae_casas_a_visitar(data.result.value[0].services[i].workOrderServiceId, data.result.value[0].date, i);
-          }
-        }
 
 
-        this.appointment = data.result.value;
-        this._services.service_general_get('Catalogue/GetServiceByServiceLineReports?sr=' + this.sr + '&sl=' + this.appointment[0].service_line + '&idUser=' + this.appointment[0].to).subscribe(r => {
-          if (r.success) {
-            this.caService = r.result.value;
-            const service_selected: any[] = this.appointment[0].appointmentWorkOrderServices;
+          this.appointment = data.result.value;
+          this._services.service_general_get('Catalogue/GetServiceByServiceLineReports?sr=' + this.sr + '&sl=' + this.appointment[0].service_line + '&idUser=' + this.appointment[0].to).subscribe(r => {
+            if (r.success) {
+              this.caService = r.result.value;
+              const service_selected: any[] = this.appointment[0].appointmentWorkOrderServices;
 
-            let service_pre_selected: number[] = [];
+              let service_pre_selected: number[] = [];
 
-            service_selected.forEach((service: any) => {
-              service_pre_selected.push(service.workOrderServiceId);
-            });
+              service_selected.forEach((service: any) => {
+                service_pre_selected.push(service.workOrderServiceId);
+              });
 
-            this.appointment[0].services = [];
-            this.appointment[0].services = service_pre_selected;
-          }
-          else {
-            this.loader.hideLoader();
-          }
-        });
+              this.appointment[0].services = [];
+              this.appointment[0].services = service_pre_selected;
+            }
+            else {
+              this.loader.hideLoader();
+            }
+          });
 
-      }))
+        }))
     } else {
       this._services.service_general_get('Catalogue/GetworkOrderBySR?service_record_Id=' + Number(this.data.sr) + '&service_line_id=' + 1).subscribe((dataIm => {
         if (dataIm.success) {
@@ -172,8 +172,8 @@ export class DialogAddAppointmentComponent implements OnInit {
 
   getDataHousingList(home_finding_id, i) {
     this._services.service_general_get(`HousingList/GetHomeFindingHousingList?id_service_detail=${home_finding_id}`).subscribe(data_housing => {
-      // debugger;
-      if (data_housing.success) {       
+      //
+      if (data_housing.success) {
         this.dataSourceHousing = data_housing.message;
         console.log('DATA CONSULTA HOUSING LIST =========================== NUEVOOOOOOOOOOOOOO: ', this.dataSourceHousing);
       }
@@ -181,7 +181,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   }
 
   getDataSchoolList(workOrder_id, school_id, dateVisit) {
-    debugger;
+
     console.log(this.data);
     let _dateVisit;
     let date = new Date(dateVisit.toString());
@@ -233,7 +233,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   addHouse(event, idHousing) {
     console.log(event.checked);
     this._services.service_general_post_with_url("Appointment/AddAppointmentHousing?appointmentId=" + Number(this.data.appointmentId) + "&housingId=" + idHousing + "&action=" + event.checked, "").subscribe((data => {
-      debugger;
+
       if (data.success) {
         //console.log('DATA CONSULTA HOUSING LIST =========================== NUEVOOOOOOOOOOOOOO: ', data_housing);
         //this.dataSourceHousing = data_housing.message;
@@ -244,7 +244,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   addSchool(event, idSchool, idAppointment) {
     console.log(event.checked);
     this._services.service_general_post_with_url("Appointment/AddAppointmentSchooling?appointmentId=" + Number(idAppointment) + "&schoolingId=" + idSchool + "&action=" + event, "").subscribe((data => {
-      debugger;
+
       if (data.success) {
         //console.log('DATA CONSULTA HOUSING LIST =========================== NUEVOOOOOOOOOOOOOO: ', data_housing);
         //this.dataSourceHousing = data_housing.message;
@@ -277,11 +277,11 @@ export class DialogAddAppointmentComponent implements OnInit {
     this.appointment[i].services = [];
 
     this.get_sl_from_supp(i); // setea la SL
-    this.getWorkOrders(i); // trae los servicios 
+    this.getWorkOrders(i); // trae los servicios
   }
 
   get_sl_from_supp(i) {
-    debugger;
+
     var id_sup = this.appointment[i].to;
     var supp_selected: any[] = this.ca_supplier.filter(s => s.userId == id_sup);
     this.app_sl = supp_selected[0].serviceLine;
@@ -319,7 +319,7 @@ export class DialogAddAppointmentComponent implements OnInit {
           }
         }
         */
-        debugger;
+
         if (this.user.role.id == 3) {
           // for (let i = 0; i < supplier.length; i++) {
           //   const element = supplier[i];
@@ -356,7 +356,7 @@ export class DialogAddAppointmentComponent implements OnInit {
 
   //******************************************************************************************************************//
   toggleAllSelection(i) {
-    debugger;
+
     if (this.allSelected.selected) {
       console.log(this.caService);
       this.serviceSelect
@@ -388,13 +388,13 @@ export class DialogAddAppointmentComponent implements OnInit {
     this.caService.forEach(element => {
 
       if (element.service == data.id) { // encuentra al servicio chequeado
-        if (element.category == 15) // es escuela 
+        if (element.category == 15) // es escuela
         {
           school_id = element.school_id;
           workOrder_id = element.workOrderId;
           es_escuela = true
         }
-        if (element.category == 21) // es homef 
+        if (element.category == 21) // es homef
         {
           workOrder_home_id = element.workOrderServiceId;
         }
@@ -446,7 +446,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   }
 
   pushCheckboxUpdate(i, j, thisSelected, data) {
-    debugger;
+
 
     let school_id = 0;
     let workOrder_id = 0;
@@ -456,13 +456,13 @@ export class DialogAddAppointmentComponent implements OnInit {
     this.caService.forEach(element => {
 
       if (element.service == data.service) { // encuentra al servicio chequeado
-        if (element.category == 15) // es escuela 
+        if (element.category == 15) // es escuela
         {
           school_id = element.school_id;
           workOrder_id = element.workOrderId;
           es_escuela = true
         }
-        if (element.category == 21) // es homef 
+        if (element.category == 21) // es homef
         {
           workOrder_home_id = element.workOrderServiceId;
         }
@@ -534,7 +534,7 @@ export class DialogAddAppointmentComponent implements OnInit {
 
   trae_casas_a_visitar(workOrder_id, _dateVisit, i) {
     this._services.service_general_get('HousingList/GetHomestovist?wosid=' + workOrder_id + "&dateViste=" + _dateVisit).subscribe(data_housing => {
-      // debugger;
+      //
       if (data_housing.success) {
 
         this.dataSourceHousing = data_housing.custom.value;
@@ -546,7 +546,7 @@ export class DialogAddAppointmentComponent implements OnInit {
 
   validar_si_hay_escuelas(i) {
 
-    debugger;
+
     let school_id = 0;
     let workOrder_id = 0;
     let es_escuela = false;
@@ -797,7 +797,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   public valida_servicios_e = true;
 
   validate_fields(i): boolean {
-    //debugger;
+    //
     console.log(this.appointment);
     let _valid = true;
 
@@ -832,7 +832,7 @@ export class DialogAddAppointmentComponent implements OnInit {
       this.object_valid[i].valid_stat = true;
 
     if ((this.appointment[i].endTime == "") || (this.appointment[i].endTime == null)) {
-      debugger;
+
       this.object_valid[i].valid_end = false;
       _valid = false;
     }
@@ -853,7 +853,7 @@ export class DialogAddAppointmentComponent implements OnInit {
     else
       this.object_valid[i].valid_date = true;
 
-    debugger;
+
     if ((this.appointment[i].startTime != "") &&
       (this.appointment[i].startTime != null) &&
       (this.appointment[i].endTime != "") &&
@@ -892,12 +892,12 @@ export class DialogAddAppointmentComponent implements OnInit {
     else
       this.valid_end = true
 
-      if (this.appointment[0].appointmentWorkOrderServices.length == 0) {
-        this.valida_servicios_e = false;
-        _valid = false;
-      }
-      else
-        this.valida_servicios_e = true;
+    if (this.appointment[0].appointmentWorkOrderServices.length == 0) {
+      this.valida_servicios_e = false;
+      _valid = false;
+    }
+    else
+      this.valida_servicios_e = true;
 
     if ((this.appointment[0].startTime != "") &&
       (this.appointment[0].startTime != null) &&
@@ -952,7 +952,7 @@ export class DialogAddAppointmentComponent implements OnInit {
     let valid_form = true;
 
     this.appointment.forEach((element, index) => {
-      debugger;
+
       valid_form = this.validate_fields(index);
       if (element.startTime != null) {
         this.appointment[index].startTimeMeridian = this.timeMeridian(element.startTime);
@@ -980,7 +980,7 @@ export class DialogAddAppointmentComponent implements OnInit {
       }
 
     });
-    debugger;
+
     if (valid_form) {
       this._services.service_general_post_with_url("Appointment/CreateAppointment", this.appointment).subscribe((data => {
         if (data.success) {
@@ -996,7 +996,7 @@ export class DialogAddAppointmentComponent implements OnInit {
           dialogRefA.afterClosed().subscribe(result => {
 
             this.dialogRef.close();
-            // debugger;
+            //
             // this._setSchoolByAddSchool.forEach(element => {
             //   this.addSchool(true, element, data.result[0].id)
             // });
@@ -1030,7 +1030,7 @@ export class DialogAddAppointmentComponent implements OnInit {
       for (let i = 0; i < this.appointment.length; i++) {
         this.appointment[i].documentAppointments = data_doc;
       }
-      debugger;
+
       this.appointment.forEach((element, index) => {
         if (element.startTime != null) {
           this.appointment[index].startTimeMeridian = this.timeMeridian(element.startTime);
@@ -1203,7 +1203,7 @@ export class DialogAddAppointmentComponent implements OnInit {
     this._services.service_general_get('Appointment/GetAppointmentByServiceRecordId?id=' + this.data.sr)
       .subscribe((response: any) => {
         if (response.success) {
-          //debugger;
+          //
           console.log("APPOINT: ", response);
           this._appointment_ = response.result.value;
           for (let i = 0; i < this._appointment_.length; i++) {
@@ -1266,7 +1266,7 @@ export class DialogAddAppointmentComponent implements OnInit {
 
       // console.log("(NUEVO) this.appointment ================================= : ", this.appointment);
       if (r.success) {
-        debugger;
+
         this.caService = r.result.value;
         console.log("(NUEVO) this.caService ================================= : ", r.result.value);
         //this.data_check = r.result.value;
@@ -1276,7 +1276,7 @@ export class DialogAddAppointmentComponent implements OnInit {
           var obj_s = { "id": r.result.value[s].service, "serviceNumber": r.result.value[s].serviceNumber };
           this.data_check.push(obj_s)
         }
-        debugger;
+
         console.log(this.appointment[i].services);
         //this.data_check = r.result.value;
         this.appointment[i].services = this.data_check;
@@ -1328,7 +1328,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   };
 
   validate_endtime(i, item) {
-    debugger;
+
 
     if (this.appointment[i].date) {
 
@@ -1340,17 +1340,30 @@ export class DialogAddAppointmentComponent implements OnInit {
       var min_end = Number(arrtime_end[1]);
 
       if (hora_end < hora_start) {
+        console.log('hola1');
         this.object_valid[i].valid_stat = false
       }
       else if (hora_end == hora_start) {
-        if (min_end >= min_start)
-          this.object_valid[i].valid_end = true
-        else
-          this.object_valid[i].valid_end = false
+        if (min_end > min_start) {
+          console.log('hola2');
+          this.object_valid[i].valid_stat = true
+        }
+        else if (min_end < min_start) {
+        console.log('hola3');
+          this.object_valid[i].valid_stat = false
+        }
+        else {
+        console.log('hola4');
+          this.object_valid[i].valid_stat = true
+        }
 
       }
       else if (hora_end > hora_start) {
-        this.object_valid[i].valid_end = true
+        this.object_valid[i].valid_stat = true
+        console.log('hola5');
+      }
+      else {
+        console.log('hola6');
       }
     }
 
@@ -1359,7 +1372,7 @@ export class DialogAddAppointmentComponent implements OnInit {
   }
 
   validate_starttime(i, item) {
-    debugger;
+
     console.log(item.startTime);
     let tod = new Date();
     let igual = false;
@@ -1380,21 +1393,27 @@ export class DialogAddAppointmentComponent implements OnInit {
 
       if (igual) {
         if (tod.getHours() < hora_start) {
+          console.log('hhhhh1');
+
           this.object_valid[i].valid_stat = true
         }
         else if (tod.getHours() == hora_start) {
           if (tod.getMinutes() > min_start) {
+          console.log('hhhhh2');
             this.object_valid[i].valid_stat = false
           }
           else {
+          console.log('hhhhh3');
             this.object_valid[i].valid_stat = true
           }
         }
         else {
+          console.log('hhhhh4');
           this.object_valid[i].valid_stat = false
         }
       }
       else {
+        console.log('hhhhh5');
         this.object_valid[i].valid_stat = true
       }
 

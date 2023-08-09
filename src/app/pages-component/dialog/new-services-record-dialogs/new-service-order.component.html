@@ -138,8 +138,16 @@
           </td>
         </ng-container>
 
-        <!-- Position Column -->
+        <!-- Currency -->
         <ng-container matColumnDef="cam_7">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Currency</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{element.currency}}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cam_8">
           <th mat-header-cell *matHeaderCellDef class="text-center">Coordination</th>
           <td mat-cell *matCellDef="let element" class="text-center">
             <div class="table-row__check">
@@ -152,7 +160,7 @@
         </ng-container>
 
         <!-- Position Column -->
-        <ng-container matColumnDef="cam_8">
+        <ng-container matColumnDef="cam_9">
           <th mat-header-cell *matHeaderCellDef class="text-center">Autho Time</th>
           <td mat-cell *matCellDef="let element" class="text-center">
             <span *ngIf="!is_editing">{{ element.authoTime }}</span>
@@ -163,7 +171,7 @@
         </ng-container>
 
         <!-- Position Column -->
-        <ng-container matColumnDef="cam_9">
+        <ng-container matColumnDef="cam_10">
           <th mat-header-cell *matHeaderCellDef class="text-center">
             <span *ngIf="can_see_fee">
               Projected Fee
@@ -180,7 +188,7 @@
         </ng-container>
 
         <!-- Position Column -->
-        <ng-container matColumnDef="cam_10">
+        <ng-container matColumnDef="cam_11">
           <th mat-header-cell *matHeaderCellDef class="text-center"></th>
           <td mat-cell *matCellDef="let element" class="text-center">
             <div class="table-row__check">
@@ -273,7 +281,7 @@
               <mat-label>Location</mat-label>
               <mat-select [(ngModel)]="standalone_work.location"
                 (change)="removeErrorLabel( $event.target.value, {handler: salon_form_valdator, field: 'no_loca'} );"
-                [disabled]='location_cityWork.length == 0'>
+                disabled>
                 <mat-option *ngFor="let data of location_cityWork" [value]="data.city">{{data.city}}</mat-option>
               </mat-select>
               <span class="label-error" *ngIf="salon_form_valdator.no_loca">
@@ -612,7 +620,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field class="input_central_half" appearance="fill">
                 <mat-label>Location</mat-label>
-                <mat-select [(ngModel)]="service_bundle.location" [disabled]='location_city.length == 0'>
+                <mat-select  [(ngModel)]="service_bundle.location" [disabled]='location_city.length == 0'>
                   <mat-option *ngFor="let data of location_city" [value]="data.city">{{data.city}}</mat-option>
                 </mat-select>
                 <span class="label-error"
