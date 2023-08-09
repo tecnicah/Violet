@@ -444,6 +444,7 @@ debugger;
             let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
             let _diff = this.convertMsToHHMMSS(get_difference);
             this.data.serviceReportDays[index].timeReminder = _diff.split(':')[0] + ":" + _diff.split(':')[1];
+            this.data.serviceReportDays[index].time = _timeWorked;
             this._cd.markForCheck();
           }, 200);
         }
@@ -668,7 +669,6 @@ removeValid(){
       const create_date_start:Date = new Date(),
       create_date_end:Date = new Date(),
       create_date_total:Date = new Date(),
-      create_date_timeUsed:Date = new Date(),
       create_date_remaining:Date = new Date(); 
 
       create_date_start.setHours(parseInt(this.data.startTime.split(':')[0]), this.data.startTime.split(':')[1] != undefined ? parseInt(this.data.startTime.split(':')[1]) : 0, 0);
@@ -688,24 +688,18 @@ removeValid(){
       let trm = 0;
       let trt = 0
       let totalReminder = 0;
-      // this.data.serviceReportDays = [];
       if(this.data.serviceReportDaysBundle.length > 0){
         this.data.serviceReportDaysBundle.forEach(element => {
           timebundleH = timebundleH + element.time;    
           timebundleM = timebundleM + element.timem == undefined ? 0 : element.timem;
-          //create_date_remaining.setHours(parseInt(element.time.toString().split(':')[0]), element.time.toString().split(':')[1] != undefined ? parseInt(element.time.split(':')[1]) : 0, 0);
           debugger;
         });
         msh = timebundleH * 3600000 / 1;
         msm = timebundleM * 60000 / 1;
         mst = msh + msm;
 
-        // let _diff = this.convertMsToHHMMSS(mst);
-        // create_date_remaining.setHours(parseInt(_diff.split(':')[0]), _diff.split(':')[1] != undefined ? parseInt(_diff.split(':')[1]) : 0, 0);
-        // let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
-
         debugger;
-        this.data.serviceReportDaysBundle.forEach(element => {
+        this.data.serviceReportDaysBundle.forEach((element, index) => {
           debugger;
           console.log( element.timeReminder );
           trh = parseInt(element.timeReminder.toString().split(':')[0]) * 3600000 / 1;
@@ -715,17 +709,15 @@ removeValid(){
           trt = trh + trm;
           totalReminder = trt - mst;
           let _diff = this.convertMsToHHMMSS(totalReminder);
-          create_date_remaining.setHours(parseInt(_diff.split(':')[0]), _diff.split(':')[1] != undefined ? parseInt(_diff.split(':')[1]) : 0, 0);
-          let _time = create_date_timeUsed.setHours(parseInt(element.time.toString().split(':')[0]), element.timem != undefined ? parseInt(element.timem.toString().split(':')[0]) : 0, 0)
-
+          
           this.data.serviceReportDays.push({
             id: element.id,
             reportDayId: element.reportDayId,
             service: element.service,
             serviceName: element.serviceName,
             authotime: element.authotime,
-            time: _time,
-            timeReminder: create_date_remaining,
+            time: element.time + ":" + element.timem == undefined ? "00" : element.timem,
+            timeReminder: _diff,
             createdBy: element.createdBy,
             createdDate: element.createdDate,
             updateBy: element.updateBy,

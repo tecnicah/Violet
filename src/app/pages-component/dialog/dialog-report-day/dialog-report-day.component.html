@@ -247,8 +247,8 @@
                     <fieldset>
                       <legend>HH:MM</legend>
                       <div>
-                        <input [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
-                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                        <input [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
+                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
                       </div>
                    </fieldset>  
                     <!-- <mat-form-field>
@@ -298,7 +298,7 @@
 
   <div *ngIf="data.serviceReportDaysBundle?.length > 0">
     <div>
-      <span>Bundle - Total time: {{data.serviceReportDaysBundle[0].authotime}} - Total Remaining: {{data.serviceReportDaysBundle[0].timeReminder}}</span>
+      <span>Bundle - Total time: {{data.serviceReportDaysBundle[0].authotime}} hrs - Total Remaining: {{data.serviceReportDaysBundle[0].timeReminder}} hrs</span>
     </div>
     <div class="contenedor">
       <table>
