@@ -709,7 +709,9 @@
                         <img [class.display-none]="no_main_photo"
                           src="{{_services.url_images}}{{edit_sr_model.assigneeInformations[0].photo}}"
                           id='ass_prof_photo' />
-                        <img [class.display-none]="!no_main_photo" src="assets/images/users/avatar.png" />
+                        <img [class.display-none]="!no_main_photo" src="./assets/avatar.png"
+                        src-fallback="./assets/avatar.png"/>
+
                       </div>
                       <span class="input__image-label--cardSpan"
                         (click)="previewSelectedPhoto( $event, 'ass_prof_photo', 'profile')">Edit Photo</span>
@@ -1137,7 +1139,8 @@
                             <!-- <img id="ass_dep_photo_{{ index }}"
                             [src]="departament.photo != 'http://34.237.214.147/back/api_premier_qa/Files/Dependent/83aee44a-bad4-45ce-96ce-c890c3ad9f47.' ? departament.photo : '/assets/images/users/avatar.png'" /> -->
                             <img id="ass_dep_photo_{{ index }}"
-                              [src]="departament.photo == '' ? 'assets/images/users/avatar.png': departament.photo" />
+                              [src]="departament.photo == '' ? './assets/avatar.png': departament.photo"
+                              src-fallback="./assets/avatar.png"/>
 
                             <!-- <img src="assets/images/users/avatar.png"
                             [src]="(pet.photo == '' || pet.photo == 'http://34.237.214.147/back/api_premier_qa/' ) ? '/assets/images/users/avatar.png' : pet.photo"
@@ -1391,8 +1394,8 @@
                           <div class="input__image-label--card">
                             <!-- <img id="ass_pet}_photo_{{ i }" src="assets/images/users/avatar.png" /> -->
 
-                            <img [src]="pet.photo == '' ? 'Files/assets/avatar.png': pet.photo"
-                              id="ass_pet_photo_{{ i }}" />
+                            <img [src]="pet.photo == '' ? './assets/avatar.png': pet.photo"
+                            src-fallback="./assets/avatar.png"  id="ass_pet_photo_{{ i }}" /><!--Files/assets/avatar.png-->
                           </div>
                           <span class="input__image-label--cardSpan"
                             (click)="previewSelectedPhoto( $event, 'ass_pet_photo_' + i, 'pet')">Edit Photo</span>

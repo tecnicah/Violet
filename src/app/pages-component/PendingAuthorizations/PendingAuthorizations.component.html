@@ -5,12 +5,7 @@
       Pending Authorizations
     </div>
     <!-- Filters ----------------------------------- -->
-    <!-- Filters ----------------------------------- -->
-    <!-- Filters ----------------------------------- -->
-    <!-- Filters ----------------------------------- -->
-    <!-- Filters ----------------------------------- -->
-    <!-- Filters ----------------------------------- -->
-    <!-- Filters ----------------------------------- -->
+
     <mat-grid-list cols="5" rowHeight="60px" *ngIf="pending_autho_obj">
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-data font-size-12" [ngClass]="{'activeFilter': pendingAssignments}"
@@ -92,7 +87,8 @@
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" class="position-relative">
+      <!--service_line-->
+<!--       <mat-grid-tile [colspan]="1" [rowspan]="1" class="position-relative">
         <div style="width: 100%; display: flex;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label>Service Line</mat-label>
@@ -104,7 +100,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
+      <!--fin service_line-->
+
       <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label>Service Record</mat-label>
@@ -139,7 +137,7 @@
           <td mat-cell *matCellDef="let element" class="text-center" (click)="goToSR(element)">
             <span class="text-center browser cursor-pointer">
               {{ element.numberServiceRecord }}
-            </span> 
+            </span>
           </td>
         </ng-container>
         <ng-container matColumnDef="c2">
@@ -260,7 +258,7 @@
                   <span style="text-transform: capitalize; font-size: 12px">Home - {{homeImm[0].country}}</span>
                   <mat-list-item *ngFor="let item of homeImm">
                     <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-                    <div mat-line style="font-size: 10px;"> 
+                    <div mat-line style="font-size: 10px;">
                      {{item.numberWorkOrder}},
                      {{item.number_server}}
                     </div>
@@ -270,7 +268,7 @@
                   <span style="text-transform: capitalize; font-size: 12px">Host - {{hostImm[0].country}}</span>
                   <mat-list-item *ngFor="let item of hostImm">
                     <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-                    <div mat-line style="font-size: 10px;"> 
+                    <div mat-line style="font-size: 10px;">
                      {{item.numberWorkOrder}},
                      {{item.number_server}}
                     </div>
@@ -282,7 +280,7 @@
                   <span style="text-transform: capitalize; font-size: 12px">Home - {{homeRelo[0].country}}</span>
                   <mat-list-item *ngFor="let item of homeRelo">
                     <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-                    <div mat-line style="font-size: 10px;"> 
+                    <div mat-line style="font-size: 10px;">
                      {{item.numberWorkOrder}},
                      {{item.number_server}}
                     </div>
@@ -292,7 +290,7 @@
                   <span style="text-transform: capitalize; font-size: 12px">Host - {{hostRelo[0].country}}</span>
                   <mat-list-item *ngFor="let item of hostRelo">
                     <div mat-line style="font-size: 12px !important;"><b>{{item.service_name}}</b></div>
-                    <div mat-line style="font-size: 10px;"> 
+                    <div mat-line style="font-size: 10px;">
                      {{item.numberWorkOrder}},
                      {{item.number_server}}
                     </div>
@@ -321,7 +319,7 @@
                   {{element.coordinatorImm[0]?.name}}{{element.coordinatorRelo[0]?.name}}
                 </span>
               </span>
-      
+
               <span *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length  == 0">
                 Not assigned
               </span>
@@ -345,7 +343,7 @@
                   {{element.supplierConsultantImm[0]?.name}}{{element.supplierConsultantRelo[0]?.name}}
                 </span>
               </span>
-      
+
               <span *ngIf="element.supplierConsultantImm?.length + element.supplierConsultantRelo?.length  == 0">
                 Not assigned
               </span>
@@ -376,7 +374,7 @@
       </div>
     </div>
     <div class="page__section">
-    
+
     <div class="page__section text-center paginator">
       <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
 
