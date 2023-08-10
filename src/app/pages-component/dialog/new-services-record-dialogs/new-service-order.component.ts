@@ -147,7 +147,7 @@ export class NewServiceOrderDialog implements OnInit {
   // valida que no se agregue otro servicio igual para el deliver to
   validDeliverToBundle() {
     // this.catalogService = [];
-    for (let i = 0; i < this.tables_for_bundles.data.length; i++) {
+    for (let i = 0; i < this.tables_for_bundles.data?.length; i++) {
       const element = this.tables_for_bundles.data[i];
       for (let c = 0; c < this.catalogServiceBundle.length; c++) {
         const category = this.catalogServiceBundle[c];
@@ -415,6 +415,9 @@ export class NewServiceOrderDialog implements OnInit {
           if (element.id == selected) {
             this.service_bundle.location = element.city;
             return;
+          } else {
+            this.service_bundle.location = this.mostrarLocation;
+
           }
         }
         console.log(this.location_city);
@@ -498,9 +501,13 @@ export class NewServiceOrderDialog implements OnInit {
     // let partnerID = localStorage.getItem('partnerID');
     this._services.service_general_get(`Catalogue/GetService?country=${this.service_bundle.deliveringIn}&client=${this.data.clientID}&serviceLine=${this.work_order.serviceLineId}`)
       .subscribe((response: any) => {
-        console.log(response);
-        this.catalogServiceBundle = response.result.value;
-        this.validDeliverToBundle();
+        if (response.result.value.length >= 1) {
+          console.log(response);
+          this.catalogServiceBundle = response.result.value;
+          this.validDeliverToBundle();
+        } else {
+          this.showGeneralMessageDialog('Service and City', 'There are no services available in the selected country and city');
+        }
       })
   }
   // Catalogue/GetService?country=1&client=98&serviceLine=1
@@ -776,12 +783,12 @@ export class NewServiceOrderDialog implements OnInit {
           this.standalone_work = new StandaloneServiceWorkOrders();
           console.log(this.standalone_work);
 
-            this.showStandAlone();
-           this.setDeliverToFixed();
-           this.createWOTableContent();
-           this.initSummaryTable();
-           this.workingTableData();
-           this.disable = true;
+          this.showStandAlone();
+          this.setDeliverToFixed();
+          this.createWOTableContent();
+          this.initSummaryTable();
+          this.workingTableData();
+          this.disable = true;
         }
         break;
       case 'pack':
