@@ -119,9 +119,9 @@
                       <div class="inputAvatar__image" style="margin-right: 10px;">
                         <div class="inputAvatar__image-label--card cursor-pointer"
                           style="top: -15px !important; left: 62.5% !important; ">
-                          <img [src]="_services.url_images+data.fromAvatar" *ngIf="data.fromAvatar !== ''" style="margin-right: 5px;">
-                          <img src="./assets/avatar.png" src-fallback="./assets/avatar.png" *ngIf="data.fromAvatar === ''" style="margin-right: 5px;">
-
+                          <img [src]="_services.url_images+data.fromAvatar"   src-fallback="./assets/avatar.png" style="margin-right: 5px;"><!--*ngIf="data.fromAvatar !== ''"-->
+<!--                           <img src="./assets/avatar.png" src-fallback="./assets/avatar.png" *ngIf="data.fromAvatar === ''" style="margin-right: 5px;">
+ -->
 <!--                           <div class="avatar" style="background: rgba(0, 0, 0, 0.2);" *ngIf="data.fromAvatar !== ''">
                          </div> -->
                         </div>

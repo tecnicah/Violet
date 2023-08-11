@@ -103,17 +103,33 @@ export class PendingAuthorizationsComponent implements OnInit {
       .subscribe((response: any) => {
         console.log('Response ===> ', response);
         if (response.success) {
-          data_final = {
-            pendingAcceptance: response.result.result.value.pendingAcceptance,
-            pendingAssignments: response.result.result.value.pendingAssignments,
-            pendingAuthorizations: response.result.result.value.pendingAuthorizations
+          data_final = {}
+          if (this.pendingAssigOrAccept == 1) {
+            data_final = {
+              pendingAssignments: response.result.result.value
+            }
+          } else {
+            data_final = {
+              pendingAcceptance: response.result.result.value
+
+            }
           }
+          /*           data_final = {
+                      pendingAssignments: response.result.result.value,
+                      pendingAcceptance: response.result.result.value
+                      // pendingAssignments: response.result.result.value.pendingAssignments,
+                      //pendingAcceptance: response.result.result.value.pendingAcceptance
+                      // pendingAuthorizations: response.result.result.value.pendingAuthorizations
+                    } */
           this.pending_autho_obj = data_final;
+
           if (pendingAssignments) {
-            this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations.assigment);
+            this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAssignments);
+            //this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations.assigment);
           }
           if (pendingAcceptance) {
-            this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations.acceptance);
+            this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAcceptance);
+            //this.pending_table_data = new MatTableDataSource(this.pending_autho_obj.pendingAuthorizations.acceptance);
           }
           this.pending_table_data.paginator = this.pagpending;
           this.pending_table_data.sort = this.sortpending;
@@ -344,7 +360,7 @@ export class PendingAuthorizationsComponent implements OnInit {
   }
 
   filterByPendingAcceptance() {
-    this.pendingAssigOrAccept = 2
+    this.pendingAssigOrAccept = 18
 
     let url_params: string = '';
 

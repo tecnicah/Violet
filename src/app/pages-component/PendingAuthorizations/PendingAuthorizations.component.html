@@ -12,7 +12,7 @@
           style="cursor: pointer;" (click)="filterByPendingAssingments();">
           <span class="text-mini gray_05">Pending Assignments</span><br />
           <span class="text-bold font-18 font-purple-dark">
-            {{ pending_autho_obj.pendingAssignments }}
+            {{ pending_autho_obj.pendingAssignments?.length }}
           </span>
         </div>
       </mat-grid-tile>
@@ -21,8 +21,8 @@
           style="cursor: pointer;" (click)="filterByPendingAcceptance();">
           <span class="text-mini gray_05">Pending Acceptance</span><br />
           <span class="text-bold font-18 font-purple-dark">
-            {{ pending_autho_obj.pendingAcceptance }}
           </span>
+          {{ pending_autho_obj.pendingAcceptance?.length}}
         </div>
       </mat-grid-tile>
     </mat-grid-list>
