@@ -5808,7 +5808,7 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
           <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
 
-          <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
             <div class="input_central cdiv">
               <mat-form-field appearance="fill">
                 <mat-label>Enter a date range</mat-label>
@@ -5871,7 +5871,7 @@
           <mat-grid-tile [colspan]="1" [rowspan]="1">
             <div class="page__section-butuon" style=" width: 70%; height: 100%; text-align: center;">
               <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: 1px;"
-                matTooltip="Clear filter" (click)="getReport()">
+                matTooltip="Clear filter" (click)="_getReport_('')">
                 <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
               </button>
             </div>

@@ -3662,7 +3662,7 @@ const msg = (user, contact, message) => ({
 
     if (which_tab == 'rep') {
       this.get_catalogos();
-      this.getReport();
+      this._getReport_("");
       this.getSupplier();
     }
 
@@ -4203,15 +4203,6 @@ const msg = (user, contact, message) => ({
   searchDataReport() {
     let service_record_params_selected: string = '';;
     let params = '';
-    //////
-    this._services.service_general_get('ReportDay/GetTotalesActivityReports?sr=' + Number(this.SO_ID)).subscribe((res => {
-      //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
-      //console.log(res);
-      if (res.success) {
-        this.data_directory.totalTimeAuthorized = res.view.value.totalTime;
-        this.data_directory.timeRemaining = res.view.value.timeRemaining;
-      }
-    }));
 
     //console.log(this.data_directory.initialReportDate);
     if(this.data_directory.serviceLine != null){
@@ -4224,14 +4215,7 @@ const msg = (user, contact, message) => ({
     if(this.data_directory.finalReportDate != null){
       params += '&finalReportDate='+ this.filterDate(this.data_directory.finalReportDate);
     }
-    // if(this.data_directory.totalTimeAuthorized != null){
-    //   params += '&totalTimeAuthorized='+ this.data_directory.totalTimeAuthorized;
-    // }
-    // if(this.data_directory.timeRemaining != null){
-    //   params += '&timeRemaining='+ this.data_directory.timeRemaining
-    // }
 
-    //console.log("PARAMETROS DE BUSQUEDA: ", params)
     this._getReport_(params);
   }
 
@@ -4243,6 +4227,7 @@ const msg = (user, contact, message) => ({
 
   _getReport_(params) {
     //console.log("SO ID: ", this.SO_ID);
+    this.__loader__.showLoader();
     this._services.service_general_get('ReportDay/GetActivityReports?sr=' + Number(this.SO_ID) + '&' + params).subscribe((data => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       if (data.success) {
@@ -4259,6 +4244,7 @@ const msg = (user, contact, message) => ({
         console.log("this.dataSourceReport",this.dataSourceReport);
         this.dataSourceReport.paginator = this.ActivityReports;
         //this.dataSourceReport.sort = this.sort;
+        this.__loader__.hideLoader();
       }
     }));
   }
@@ -4275,7 +4261,7 @@ const msg = (user, contact, message) => ({
         console.log('DATA CONSULTA: REPORTES ', data);
         this.data_directory.serviceLine = 2
         // this._getReport_(params += '&serviceLine=2')
-        this.searchDataReport();
+        //this.searchDataReport();
         // this.dataSourceReport = new MatTableDataSource(data.view);
         // //console.log(this.dataSourceReport);
         // this.dataSourceReport.paginator = this.ActivityReports;

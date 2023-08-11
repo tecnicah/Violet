@@ -517,7 +517,7 @@ debugger;
   active_activity: boolean = false;
   active_conclusion: boolean = false;
 
-  // active_serviceTime :boolean = false;
+  active_serviceTime :boolean = false;
 
 
   validtime: boolean = false;
@@ -572,11 +572,17 @@ debugger;
     && (this.data.serviceReportDays.length != 0 || this.data.serviceReportDaysBundle.length != 0) && this.data.activity  != undefined && this.data.conclusion != undefined) {
       // validar horas
       console.log('total hour', this.data.totalTime);
-
+debugger;
       if(this.data.serviceReportDays.length != 0){
         for (let t = 0; t < this.data.serviceReportDays.length; t++) {
           const horas = this.data.serviceReportDays[t];
           this.horasServicio = this.horasServicio + horas.time;
+          if(this.data.serviceReportDays[t].time == 0){
+            //document.getElementById("myTextField"+t).focus();
+            this.data.serviceReportDays[t].timeh == 0;
+            this.active_serviceTime = true;
+            break;
+          }
         }  
       }
       
@@ -584,6 +590,7 @@ debugger;
         for (let t = 0; t < this.data.serviceReportDaysBundle.length; t++) {
           const horas = this.data.serviceReportDaysBundle[t];
           this.horasServicio = this.horasServicio + horas.time;
+          return false;
         }  
       }
 
