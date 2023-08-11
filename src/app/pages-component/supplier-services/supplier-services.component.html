@@ -327,6 +327,27 @@
     </mat-grid-list>
     <!-------------->
 
+     <!--REAL STATE AGENT-->
+     <mat-grid-list cols="5" rowHeight="70px" [hidden]="permisosConsultant == true" *ngIf="data.supplierType == 5">
+      <mat-grid-tile [colspan]="5" [rowspan]="1">
+        <div class="textarea">
+          <p class="page__section-name">Supplier Partner Details</p>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="3" [rowspan]="1">
+        <div class="textarea" style="height: 60%;">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Web site</mat-label>
+            <input matInput placeholder="Web site" [(ngModel)]="data.supplierPartnerDetails[0].webSite">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <!-------------->
+
     <!--MOVE MANAGEMENT-->
     <mat-grid-list cols="5" rowHeight="70px" [hidden]="permisosConsultant == true" *ngIf="data.supplierType == 6">
       <mat-grid-tile [colspan]="5" [rowspan]="1">
