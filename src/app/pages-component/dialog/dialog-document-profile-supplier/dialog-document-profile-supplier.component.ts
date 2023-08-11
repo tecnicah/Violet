@@ -128,7 +128,7 @@ export class DialogDocumentProfileSupplierComponent implements OnInit {
   }
   //*********************************************//
   activeStatus: boolean = false;
-  activeExpiration: boolean = false;
+  // activeExpiration: boolean = false;
   activeLocation: boolean = false;
   activePrivacy: boolean = false;
   activeDocument: boolean = false;
@@ -151,10 +151,10 @@ export class DialogDocumentProfileSupplierComponent implements OnInit {
     this.contador++;
   }
  
-  if(this.tempData.expirationDate == undefined || this.tempData.expirationDate == null || this.tempData.expirationDate == ''){
-    this.activeExpiration = true;
-    this.contador++;
-  }
+  // if(this.tempData.expirationDate == undefined || this.tempData.expirationDate == null || this.tempData.expirationDate == ''){
+  //   this.activeExpiration = true;
+  //   this.contador++;
+  // }
  
 
   if(this.contador == 0){
