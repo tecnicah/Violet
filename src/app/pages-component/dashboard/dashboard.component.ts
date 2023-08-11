@@ -264,43 +264,55 @@ export class DashboardComponent implements OnInit {
 
     const urlDash = `MyDashboard/GetDashboard/${user_id}` + url_params
 
-    this._services.service_general_get(urlDash).pipe(switchMap((response: any) => {
-      if (response.success) {
-        console.log("DASHBOARD RESPONSE: ", response);
-
-        this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
-        this.service_records_table_data.paginator = this.paginator;
-        this.service_records_table_data.sort = this.sort;
-
-        const urlGetReminders = `MyDashboard/GetReminders/${user_id}`
-        const urlGetCoordinators = `MyDashboard/GetCoordinators/${this.__userlog__.id + ''}`
-        this.change.detectChanges()
-        this.change.markForCheck()
-        // this.__loader__.hideLoader();
-
-
-        return forkJoin([this._services.service_general_get(urlGetReminders),
-        this._services.service_general_get(urlGetCoordinators)])
-      }
-    })
-    ).subscribe(([urlGetReminders,urlGetCoordinators]) => {
+    this._services.service_general_get(urlDash).subscribe(response => {
+      this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
+      this.service_records_table_data.paginator = this.paginator;
+      this.service_records_table_data.sort = this.sort;
       this.__loader__.hideLoader();
-      console.log(urlGetReminders);
-      if (urlGetReminders.success) {
-        this.counts.reminders = urlGetReminders.map.value.length;
-      }
-      console.log('Res => ', urlGetCoordinators);
-      if (urlGetCoordinators.success) {
-        this.counts.coordinators = urlGetCoordinators.map.value.length;
-      }
     }, (error: any) => {
-console.log('hi');
 
       console.error('Error => ', error);
-
+  
       this.__loader__.hideLoader();
-
+  
     });
+//     this._services.service_general_get(urlDash).pipe(switchMap((response: any) => {
+//       if (response.success) {
+//         console.log("DASHBOARD RESPONSE: ", response);
+
+//         this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
+//         this.service_records_table_data.paginator = this.paginator;
+//         this.service_records_table_data.sort = this.sort;
+
+//         const urlGetReminders = `MyDashboard/GetReminders/${user_id}`
+//         const urlGetCoordinators = `MyDashboard/GetCoordinators/${this.__userlog__.id + ''}`
+//         this.change.detectChanges()
+//         this.change.markForCheck()
+//         // this.__loader__.hideLoader();
+
+
+//         return forkJoin([this._services.service_general_get(urlGetReminders),
+//         this._services.service_general_get(urlGetCoordinators)])
+//       }
+//     })
+//     ).subscribe(([urlGetReminders,urlGetCoordinators]) => {
+//       this.__loader__.hideLoader();
+//       console.log(urlGetReminders);
+//       if (urlGetReminders.success) {
+//         this.counts.reminders = urlGetReminders.map.value.length;
+//       }
+//       console.log('Res => ', urlGetCoordinators);
+//       if (urlGetCoordinators.success) {
+//         this.counts.coordinators = urlGetCoordinators.map.value.length;
+//       }
+//     }, (error: any) => {
+// console.log('hi');
+
+//       console.error('Error => ', error);
+
+//       this.__loader__.hideLoader();
+
+//     });
 
 /*     this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}` + url_params)
       .subscribe((response: any) => {

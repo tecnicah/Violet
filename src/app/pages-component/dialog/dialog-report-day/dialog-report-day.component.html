@@ -189,7 +189,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="active_time && data.serviceLine == 2">
-        <mat-hint style="color:#e91e63; font-size: 12px;">The added time is greater than the sum total of remaining time on the selected services</mat-hint>
+        <!-- <mat-hint style="color:#e91e63; font-size: 12px;">The added time is greater than the sum total of remaining time on the selected services</mat-hint> -->
       </mat-grid-tile>
     </div>
 
@@ -249,6 +249,10 @@
                       <div>
                         <input [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
                         <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                        <mat-error>Field is required</mat-error>
+                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
+                       
+                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
                       </div>
                    </fieldset>  
                     <!-- <mat-form-field>

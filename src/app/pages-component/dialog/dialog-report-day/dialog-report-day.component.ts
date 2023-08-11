@@ -695,29 +695,29 @@ removeValid(){
           debugger;
         });
         msh = timebundleH * 3600000 / 1;
-        msm = timebundleM * 60000 / 1;
+        msm = timebundleM == undefined ? 0 : timebundleM * (60000 / 1);
         mst = msh + msm;
 
         debugger;
         this.data.serviceReportDaysBundle.forEach((element, index) => {
           debugger;
-          console.log( element.timeReminder );
-          trh = parseInt(element.timeReminder.toString().split(':')[0]) * 3600000 / 1;
-          trm = element.timeReminder.toString().split(':')[1] == undefined 
-          ? 0 
-          : parseInt(element.timeReminder.toString().split(':')[1]) * (60000 / 1);
-          trt = trh + trm;
-          totalReminder = trt - mst;
-          let _diff = this.convertMsToHHMMSS(totalReminder);
-          
+          // console.log( element.timeReminder );
+          // trh = parseInt(element.timeReminder.toString().split(':')[0]) * 3600000 / 1;
+          // trm = element.timeReminder.toString().split(':')[1] == undefined 
+          // ? 0 
+          // : parseInt(element.timeReminder.toString().split(':')[1]) * (60000 / 1);
+          // trt = trh + trm;
+          // totalReminder = trt - mst;
+          // let _diff = this.convertMsToHHMMSS(totalReminder);
+          console.log(element.time + ":" + element.timem);
           this.data.serviceReportDays.push({
             id: element.id,
             reportDayId: element.reportDayId,
             service: element.service,
             serviceName: element.serviceName,
             authotime: element.authotime,
-            time: element.time + ":" + element.timem == undefined ? "00" : element.timem,
-            timeReminder: _diff,
+            time: element.time?.toString() + ":" + (element.timem == undefined ? "00" : element.timem?.toString()),
+            timeReminder: this.data.serviceReportDaysBundle[0].timeReminder,
             createdBy: element.createdBy,
             createdDate: element.createdDate,
             updateBy: element.updateBy,
