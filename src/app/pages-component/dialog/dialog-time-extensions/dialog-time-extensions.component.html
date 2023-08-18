@@ -1,0 +1,65 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Time Extension</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-grid-list cols="3" rowHeight="70px">
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Initial Date</mat-label>
+        <input [(ngModel)]="extensionsRentalFurniture.initialDate" (ngModelChange)="calculateDifference1()" matInput
+          required [matDatepicker]="pickerDelivery_Date">
+        <mat-datepicker-toggle matSuffix [for]="pickerDelivery_Date"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDelivery_Date></mat-datepicker>
+      </mat-form-field>
+      <div *ngIf="Dateinitial" class="error-message">
+        Field is required
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Final Date</mat-label>
+        <input [(ngModel)]="extensionsRentalFurniture.finalDate" (ngModelChange)="calculateDifference1()" matInput
+          required [matDatepicker]="pickerScheduled_Pick_Up_Date">
+        <mat-datepicker-toggle matSuffix [for]="pickerScheduled_Pick_Up_Date"></mat-datepicker-toggle>
+        <mat-datepicker #pickerScheduled_Pick_Up_Date></mat-datepicker>
+      </mat-form-field>
+      <div *ngIf="Datefinal" class="error-message">
+        Field is required
+      </div>
+      <div *ngIf="isInitialDateMayor" class="error-message">
+        The start date cannot be less than the end date
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Total Days</mat-label>
+        <input [(ngModel)]="extensionsRentalFurniture.totalDays" matInput disabled placeholder="Total Days"
+          type="number" min="0">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Comments</mat-label>
+        <textarea [(ngModel)]="extensionsRentalFurniture.comment" matInput #message maxlength="500">
+
+      </textarea>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="saveExtensions()">Save</button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,151 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Banking Details</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-grid-list cols="4" rowHeight="70px">
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Bank Name</mat-label>
+        <input [(ngModel)]="paymentMethod.bankName" matInput required placeholder="Bank Name">
+      </mat-form-field>
+      <div *ngIf="valid_bank" class="error-message">
+        The Bank Name is required
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="display: flex;" class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Account Type</mat-label>
+        <mat-select [(ngModel)]="paymentMethod.accountType">
+          <mat-option *ngFor="let item of ca_accountType;"
+          [value]="item.id">{{item.accountType}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="valid_acountType" class="error-message1">
+        The Account Type is required
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Acount Holder Name</mat-label>
+        <input [(ngModel)]="paymentMethod.accountHoldersName" matInput required placeholder="Acount Holder Name">
+      </mat-form-field>
+      <div *ngIf="valid_acountHolder" class="error-message">
+        The Account Type is required
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Account Number</mat-label>
+        <input [(ngModel)]="paymentMethod.accountNumber" matInput required placeholder="Account Number">
+      </mat-form-field>
+      <div *ngIf="valid_acountNumber" class="error-message">
+        The Account Type is required
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>CLABE</mat-label>
+        <input [(ngModel)]="paymentMethod.clabetype" matInput required placeholder="CLABE">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Routing Number (ABA)</mat-label>
+        <input [(ngModel)]="paymentMethod.routingNumber" matInput required placeholder="Routing Number (ABA)">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
+        <input [(ngModel)]="paymentMethod.swiftBicCode" matInput required placeholder="SWIFT / BIC Code ( If Applies)">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>IBAN</mat-label>
+        <input [(ngModel)]="paymentMethod.iban" matInput required placeholder="IBAN">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="display: flex; justify-content: space-around;" class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Account Currency</mat-label>
+        <mat-select [(ngModel)]="paymentMethod.currency">
+          <mat-option *ngFor="let item of ca_currency;"
+          [value]="item.id">{{item.currency}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Wire Fee Approx</mat-label>
+        <input [(ngModel)]="paymentMethod.wireFree" matInput required placeholder="Wire Fee Approx"
+        type="number" min="0">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Bank Address</mat-label>
+        <input [(ngModel)]="paymentMethod.bankAddress" matInput required placeholder="Bank Address">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">International Payment Acceptance</p>
+      <mat-checkbox [(ngModel)]="paymentMethod.internationalPayment" class="example-margin textarea"></mat-checkbox>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Comments</mat-label>
+        <textarea  [(ngModel)]="paymentMethod.comment" matInput #message maxlength="500">
+      </textarea>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="addOrEditBankingDetails();">Save</button>
+  </div>
+</mat-dialog-actions>

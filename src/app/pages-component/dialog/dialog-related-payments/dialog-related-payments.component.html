@@ -1,0 +1,67 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Payment Type</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-grid-list cols="2" rowHeight="70px">
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Payment</mat-label>
+        <input [(ngModel)]="paymentRentalFurniture.description" matInput placeholder="Payment">
+      </mat-form-field>
+      <div *ngIf="valid_descripcion" class="error-message">
+        Field is required
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Responsible</mat-label>
+        <mat-select [(ngModel)]="paymentRentalFurniture.responsible">
+          <mat-option *ngFor="let item of ca_responsible" [value]="item.id">
+            {{item.responsable}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="valid_responsible" class="error-message">
+        Field is required
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Amount</mat-label>
+        <input [(ngModel)]="paymentRentalFurniture.amount" matInput placeholder="Total Days">
+      </mat-form-field>
+      <div *ngIf="valid_amount" class="error-message">
+        Field is required
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div class="input_central wid">
+      <mat-form-field appearance="fill">
+        <mat-label>Currency</mat-label>
+        <mat-select [(ngModel)]="paymentRentalFurniture.currency">
+          <mat-option *ngFor="let item of ca_currency" [value]="item.id">{{item.currency}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="valid_currency" class="error-message">
+        Field is required
+      </div>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="saveRelatedPayments()">Save</button>
+  </div>
+</mat-dialog-actions>

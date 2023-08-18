@@ -1,0 +1,18 @@
+.wid {
+  width: 100%;
+}
+
+.error-message {
+  color: red;
+  font-size: 11px;
+  margin-top: -13px;
+  white-space: nowrap;
+}
+
+.error-message1 {
+  color: red;
+  font-size: 11px;
+  margin-top: 55px;
+  position: absolute;
+  white-space: nowrap;
+}
