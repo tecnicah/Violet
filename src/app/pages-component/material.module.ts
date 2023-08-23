@@ -370,6 +370,10 @@ import { DialogConfirmHistoryContractComponent } from './dialog/dialog-confirm-h
 import { ImgFallbackModule } from 'ngx-img-fallback';
 import { BankingDetailsComponent } from './dialog/dialog-catalog-offices/banking-details/banking-details.component';
 import { DocumentComponent } from './dialog/dialog-catalog-offices/document/document.component';
+import { DialogTimeExtensionsComponent } from './dialog/dialog-time-extensions/dialog-time-extensions.component';
+import { DialogRelatedPaymentsComponent } from './dialog/dialog-related-payments/dialog-related-payments.component';
+import { DialogPaymentsMethodsComponent } from './dialog/dialog-payments-methods/dialog-payments-methods.component';
+import { ModalBankingDetailsComponent } from './dialog/dialog-payments-methods/modal-banking-details/modal-banking-details.component';
 
 @NgModule({
   imports: [
@@ -779,6 +783,10 @@ import { DocumentComponent } from './dialog/dialog-catalog-offices/document/docu
     DialogConfirmHistoryContractComponent,
     BankingDetailsComponent,
     DocumentComponent,
+    DialogTimeExtensionsComponent,
+    DialogRelatedPaymentsComponent,
+    DialogPaymentsMethodsComponent,
+    ModalBankingDetailsComponent,
   ]
 })
 export class MaterialComponentsModule {}

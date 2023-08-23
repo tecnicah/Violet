@@ -7,7 +7,7 @@
       <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
     </div>
   </div>
-  
+
   <!-----------------------------------content-------------------------------------->
   <mat-dialog-content class="mat-typography">
 
@@ -40,19 +40,20 @@
                     </span>
                 </mat-form-field>
             </div> -->
-            <div class="textarea">
+
+             <div class="textarea">
                 <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
                     <textarea matInput #message  maxlength="500" (change)="newreminder.reminderComments = $event.target.value">
-                        {{newreminder.reminderComments}}
-                    </textarea>
-                    <mat-hint align="end">{{newreminder.reminderComments.length}} / 200</mat-hint>
+                      {{newreminder.reminderComments}}</textarea><!--{{newreminder.reminderComments}}-->
+                   <!--[(ngModel)]="newreminder.reminderComments"-->
+                      <mat-hint align="end">{{newreminder.reminderComments.length}} / 200</mat-hint>
                 </mat-form-field>
             </div>
         </mat-grid-tile>
     </mat-grid-list>
-  
+
   </mat-dialog-content>
-  
+
   <mat-dialog-actions align="end">
     <div class="page__section-buttong">
       <button (click)="save()">Save</button>

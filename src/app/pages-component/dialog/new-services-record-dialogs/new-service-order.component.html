@@ -620,7 +620,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field class="input_central_half" appearance="fill">
                 <mat-label>Location</mat-label>
-                <mat-select  [(ngModel)]="service_bundle.location" [disabled]='location_city.length == 0'>
+                <mat-select  [(ngModel)]="service_bundle.location" disabled><!--[disabled]='location_city.length == 0'-->
                   <mat-option *ngFor="let data of location_city" [value]="data.city">{{data.city}}</mat-option>
                 </mat-select>
                 <span class="label-error"
@@ -633,7 +633,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <mat-form-field appearance="fill" class="input_central_half">
                 <mat-label>Service</mat-label>
-                <mat-select matNativeControl required [disabled]="catalogServiceBundle.length == 0"
+                <mat-select   matNativeControl required [disabled]="catalogServiceBundle.length == 0"
                   [(ngModel)]="service_bundle.serviceId"
                   (selectionChange)="removeErrorLabel( $event.value, {handler: package_general_form, field: 'no_serv'} ); coordinationBundle();">
                   <mat-option disabled selected value="">Service</mat-option>

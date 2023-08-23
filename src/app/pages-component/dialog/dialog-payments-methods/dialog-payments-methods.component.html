@@ -1,0 +1,97 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Payment Methods</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+
+<mat-grid-list cols="3" rowHeight="70px">
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">Fiscal Invoice</p>
+      <mat-checkbox [(ngModel)]="dataPaymentMethods.fiscalInvoice" class="example-margin textarea"></mat-checkbox>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">Cash</p>
+      <mat-slide-toggle [(ngModel)]="dataPaymentMethods.cash" class="example-margin textarea"></mat-slide-toggle>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">Credit Card</p>
+      <mat-slide-toggle [(ngModel)]="dataPaymentMethods.creditCard" class="example-margin textarea"></mat-slide-toggle>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">Checks</p>
+      <mat-slide-toggle [(ngModel)]="dataPaymentMethods.checks" class="example-margin textarea"></mat-slide-toggle>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="dataPaymentMethods.checks">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">Pay to the Order Of</p>
+      <mat-slide-toggle [(ngModel)]="dataPaymentMethods.payToOrderOf" class="example-margin textarea"></mat-slide-toggle>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div style="height: 70%;">
+      <p class="subtitle" style="font-size: 12px; margin: 0;">Wire Transfer</p>
+      <mat-slide-toggle [(ngModel)]="dataPaymentMethods.wireTransfer"
+       class="example-margin textarea" (change)="getListBankingDetails($event)"></mat-slide-toggle>
+    </div><!--(click)="getListBankingDetails()"-->
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-dialog-content *ngIf="dataPaymentMethods.wireTransfer && dataPaymentMethods != null">
+  <div class="page__section margin-tb-min">
+    <div class="modal-form__subtitle">
+      Banking Details
+    </div>
+  </div>
+  <!--Inicio de la tabla-->
+  <div class="page__section margin-top-min">
+    <table mat-table [dataSource]="listBankingDetails" matSort class="mat-elevation-z8 margin_table">
+      <ng-container matColumnDef="banck">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="bankName">Bank Name</th>
+        <td mat-cell *matCellDef="let item"> {{item.bankName}}
+      </ng-container>
+      <ng-container matColumnDef="acount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="accountNumber">Account Number</th>
+        <td mat-cell *matCellDef="let item"> {{item.accountNumber}}
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="accountHoldersName">Name of account holder</th>
+        <td mat-cell *matCellDef="let item"> {{item.accountHoldersName}}
+      </ng-container>
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let item">
+          <img src="/assets/icons/pencil.png" style="width: 20px;" (click)="dialogBackDetails(item.id,item)">
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="payment"></tr>
+      <tr mat-row *matRowDef="let row; columns: payment;"></tr>
+    </table>
+  </div>
+  <div class="page__section" >
+    <mat-paginator #relatedPaginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+  </div>
+  <!--Fin de la tabla-->
+</mat-dialog-content>
+<div class="page__section margin-tb-min">
+  <div class="page__section-name"></div>
+  <div class="page__section-button">
+    <button (click)="dialogBackDetails(0,'')"style="white-space: nowrap;" class="button-icon button-icon--adder">
+      Add Banking Details
+    </button>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="savePaymentMethods()">Save</button>
+  </div>
+</mat-dialog-actions>

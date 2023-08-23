@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import { DialogAddReminderDetailComponent  } from '../dialog-add-reminder-detail/dialog-add-reminder-detail.component';
+import { DialogAddReminderDetailComponent } from '../dialog-add-reminder-detail/dialog-add-reminder-detail.component';
 import { GeneralConfirmationComponent } from '../general-confirmation/general-confirmation.component';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
 import { LoaderComponent } from 'app/shared/loader';
@@ -13,7 +13,7 @@ import { LoaderComponent } from 'app/shared/loader';
   templateUrl: './dialog-reminders-service-detail.component.html',
   styleUrls: ['./home-finding-full.component.scss']
 })
-export class DialogRemindersServiceDetailComponent implements  OnInit {
+export class DialogRemindersServiceDetailComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -22,11 +22,11 @@ export class DialogRemindersServiceDetailComponent implements  OnInit {
 
   _reminders = { reminderServiceDetails: null, workOrderServicesId: 0 }
   loader: LoaderComponent = new LoaderComponent();
-  
+
   ngOnInit(): void {
 
     this._reminders = this.data;
-    console.log("this._reminders, desde home finding: " , this._reminders);
+    console.log("this._reminders, desde home finding: ", this._reminders);
   }
   public __serverPath__: string = this._services.url_images;
 
@@ -36,7 +36,7 @@ export class DialogRemindersServiceDetailComponent implements  OnInit {
   }
 
   addReminder() {
-   // this.data.typeDocument = 1;
+    // this.data.typeDocument = 1;
     // this.data.location = this.data.data.location;
     this.data = this._reminders
     const dialogRef = this._dialog.open(DialogAddReminderDetailComponent, {
@@ -46,33 +46,45 @@ export class DialogRemindersServiceDetailComponent implements  OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log("respuesta de agregar el docuemnto en POP UP ==================================: ", result)
+
       if (result.success) {
-        this._reminders.reminderServiceDetails = result.result; 
+        this._reminders.reminderServiceDetails = result.result;
       }
+      console.log(this._reminders);
     });
   }
 
 
-  editReminder(item){
+  editReminder(item) {
 
-     this.data = this._reminders
-     this.data.reminderToTdit = item ; 
-     const dialogRef = this._dialog.open(DialogAddReminderDetailComponent, {
-       width: "95%",
-       data: this.data
-     });
- 
-     dialogRef.afterClosed().subscribe(result => {
-       console.log("respuesta de agregar el docuemnto en POP UP ==================================: ", result)
-       if (result.success) {
-         this._reminders.reminderServiceDetails = result.result; 
-       }
-     });
-   }
+    this.data = this._reminders
+    this.data.reminderToTdit = item;
+    const dialogRef = this._dialog.open(DialogAddReminderDetailComponent, {
+      width: "95%",
+      data: this.data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("respuesta de agregar el docuemnto en POP UP ==================================: ", result)
+      //add ultima vercion
+      console.log(this._reminders);
+      this._reminders = {
+        reminderServiceDetails: this._reminders.reminderServiceDetails,
+        workOrderServicesId: this._reminders.workOrderServicesId
+      }
+      console.log(this._reminders);
+
+      if (result.success) {
+        this._reminders.reminderServiceDetails = result.result;
+
+      }
+
+    });
+  }
 
 
-  removeReminder(item){
-    
+  removeReminder(item) {
+
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Confirmation",
@@ -83,11 +95,10 @@ export class DialogRemindersServiceDetailComponent implements  OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-       this.call_delete_service(item.id)
+        this.call_delete_service(item.id)
       }
-      else
-      {
-       // alert('false');
+      else {
+        // alert('false');
       }
     });
   }

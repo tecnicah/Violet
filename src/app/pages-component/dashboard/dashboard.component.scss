@@ -277,17 +277,17 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
     width: 9px;
     height: 9px;
     border-radius: 100%;
-  
+
     &--absolute {
       position: absolute;
       top: 40px;
       left: 7.5px;
     }
-  
+
     &__green {
       background: #009577;
     }
-  
+
     &__yellow {
       background: #fbb03b;
     }
@@ -301,16 +301,19 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
     &__green_color {
         color: #009577;
       }
-    
+
       &__yellow_color {
         color: #fbb03b;
       }
-    
+
       &__red_color {
         color: #ff5858;
       }
   }
-  
+  .urgent{
+    background-color: #FFE0E0;
+
+  }
   .mat-list-base .mat-list-item {
     font-size: 12px;
   }
@@ -329,7 +332,7 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
     display: inline-block;
     padding: 5px
   }
-  
+
   .icon-text{
     clear: left;
     text-align: right;
@@ -337,7 +340,7 @@ mat-paginator > div > div > div.mat-paginator-page-size.ng-star-inserted > mat-f
     line-height:25px;
     font-size: 12px;
   }
-  
+
   .spanicon
   {
     display:inline-block;
