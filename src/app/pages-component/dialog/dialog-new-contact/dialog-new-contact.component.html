@@ -180,12 +180,22 @@
       <div class="page__section">
         <div class="page__section-input page__section-input--6_2">
           <span class="documents__index documents__index--task">
-            Document Name
+            Document Type
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1">
           <span class="documents__index documents__index--task">
             Uploaded Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Expiration Date
+          </span>
+        </div>
+        <div class="page__section-input page__section-input--6_1">
+          <span class="documents__index documents__index--task">
+            Location
           </span>
         </div>
         <div class="page__section-input page__section-input--6_1">
@@ -213,6 +223,12 @@
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
           {{doc.createdDate | date:'dd MMM yyy' }}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{doc.expirationDate | date:'dd MMM yyy'}}
+        </div>
+        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+          {{nameCity(doc.city)}}
         </div>
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
           {{namePrivacy(doc.privacy)}}
