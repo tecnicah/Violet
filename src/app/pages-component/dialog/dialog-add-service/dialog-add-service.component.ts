@@ -65,7 +65,7 @@ export class DialogAddServiceComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger;
+
     console.log('data que recibe service', this.data);
     this.searchUserForm = this.fb.group({
       userType: new FormControl('')
@@ -80,7 +80,7 @@ export class DialogAddServiceComponent implements OnInit {
     //
     if (this.data.id == 0) {
       let data: any[] = [];
-      for (const iterator of this.data.obj_guardar.servicelocationcountries[0].countries) {
+      for (const iterator of this.data.obj_guardar?.servicelocationcountries[0].countries) {
         data.push({
           idCountry: iterator,
           scopeDescription: this.data.obj_guardar.servicelocationcountries[0].scopeDescription,
@@ -124,7 +124,7 @@ export class DialogAddServiceComponent implements OnInit {
     console.log(this.GetCountry)
     this._services.service_general_get(`AdminCenter/Services/ClientPartner/${this.data.sl}` + '?idPartner=' + this.data.partnerId).subscribe((data => {
       if (data.result) {
-        debugger;
+
         this.GetService = data.result;
         console.log(this.GetService);
         this.data.services?.forEach(element => {
@@ -154,7 +154,7 @@ export class DialogAddServiceComponent implements OnInit {
 
     // opcion cuando se crea un servicio nuevo y puede elegir muchos paises
     if (this.data.id == 0 && data == null) {
-      debugger;
+
 
       console.log('multicheck id servicios', this.searchUserForm.controls.userType.value);
       data = {
@@ -199,7 +199,7 @@ export class DialogAddServiceComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger;
+
       if (result.success) {
         console.log('data save', result);
         let user = JSON.parse(localStorage.getItem('userData'));
@@ -255,7 +255,7 @@ export class DialogAddServiceComponent implements OnInit {
           });
           // this.data.servicelocationcountries.push(result);
           // this.addCountryUpdate();
-          debugger;
+
           setTimeout(() => {
             this.addCountryUpdate();
           }, 100);
@@ -312,7 +312,7 @@ export class DialogAddServiceComponent implements OnInit {
   addCountryUpdate() {
     // metodo que agrega nombre y ciudad a la tabla cuando aun no se guarda los countries que se agregaron
     let valorTabla = [];
-    debugger;
+
     for (let c = 0; c < this.data.servicelocationcountries.length; c++) {
       const dataTableCountry = this.data.servicelocationcountries[c];
       for (let j = 0; j < this.GetCountry.length; j++) {
@@ -341,7 +341,7 @@ export class DialogAddServiceComponent implements OnInit {
         standarScopeDocuments: element.standarScopeDocuments
       });
     });
-   
+
     this.serviceLocationCountries = new MatTableDataSource(this.data.serviceLocationCountries);
      //this.serviceLocationCountries = new MatTableDataSource(valorTabla);
     //this.serviceLocationCountries.data.push(valorTabla);
@@ -375,7 +375,7 @@ export class DialogAddServiceComponent implements OnInit {
 
   // metodo que selecciona todos los servicios en el multicheck
   toggleAllSelection() {
-    debugger;
+
 
     if (this.allSelected.selected) {
       this.searchUserForm.controls.userType

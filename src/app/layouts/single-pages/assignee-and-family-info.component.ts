@@ -25,7 +25,7 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
   export class SinglePageAssigneeFamilyInfo implements OnInit {
 
     public no_main_photo: boolean = false;
-    
+
     constructor(
         public _services:ServiceGeneralService,
         public _router:Router,
@@ -66,9 +66,9 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
         this.requestSettingsData();
         this.getCatalogues();
         setTimeout(() => {
-            this.GetImmigrationProfile();    
+            this.GetImmigrationProfile();
         }, 200);
-        
+
         this.assing_dependents.push( new DependentInformationsModel() );
         this.assing_pets.push( new PetsNavigationModel() );
 
@@ -97,7 +97,7 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
             .subscribe( (response:any) => {
                 console.log("Request Information: ",response.result );
                 if( response.success ) {
-                 
+
                     this.sr_request_data = response.result;
                     this.WorkOrderServiceId = this.sr_request_data.housingAvailible[0]?.workOrderServices;
 
@@ -139,15 +139,15 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
                         if( response.success ) {
                             if(this.sr_request_data.housingAvailible[0].typeHousing == "Area Orientation"){
                                 this.housing_are = response.result;
-                                
+
                             }
                             if(this.sr_request_data.housingAvailible[0].typeHousing == "Pre Decision"){
                                 this.housing = response.result;
-                                
+
                             }
                             if(this.sr_request_data.housingAvailible[0].typeHousing == "Home Finding"){
                                 this.housing_hom = response.result;
-                                
+
                             }
                         }
                     })
@@ -487,7 +487,7 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
 
               debugger
               data__.forEach(E => {
-                  
+
                   if(E.id!=0){
                     console.log(JSON.stringify(E));
                     this._services.service_general_put('HousingSpecification/PutCreateHousingSpecification', E)
@@ -506,10 +506,10 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
                     }, (error:any) => {
                         console.error('Error (CreateHousingSpecification) => ', error);
                         this.__loader__.hideLoader();
-    
+
                     });
                   }
-                  
+
                     if(E.id==0){
                         this._services.service_general_post_with_url('HousingSpecification/AddHousingSpecification', E)
                         .subscribe( (response:any) => {
@@ -527,9 +527,9 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
                         }, (error:any) => {
                             console.error('Error (CreateHousingSpecification) => ', error);
                             this.__loader__.hideLoader();
-        
+
                         });
-                      
+
                   }
               });
 
@@ -598,7 +598,7 @@ import { DialogCropImageComponent } from 'app/pages-component/dialog/dialog-crop
 
     public saveFormsData2():void {
 
-    
+
         if( this.able_imm_section ) {
 
             this.saveImmgrationInformation();
@@ -1184,7 +1184,7 @@ debugger;
 
            this.amenities = amenities_;
            console.log(this.amenities);
-      
+
         this.caCurrency = await this._services.getCatalogueFrom('GetCurrency');
         this.gender_catalogue = await this._services.getCatalogueFrom('GetSex');
 
@@ -1295,8 +1295,8 @@ debugger;
 
           let diff = (date_init.getTime() - date_today.getTime()) / 1000;
           diff /= (60 * 60 * 24);
-  
-          console.log("EDADES: ", Math.abs(Math.round(diff / 365.25))); 
+
+          console.log("EDADES: ", Math.abs(Math.round(diff / 365.25)));
 
           return Math.abs(Math.round(diff / 365.25));
 
@@ -1330,42 +1330,42 @@ debugger;
           width: "70%",
           height: "95%"
         });
-    
+
         dialogRef.afterClosed().subscribe(result => {
           //console.log(result);
             if(result != undefined){
               this.no_main_photo = false;
-    
+
               const field_photo: any = document.getElementById(field_to_display),
                 //event_data: any = event.target.files[0],
                 dependent_index: string = field_to_display.split('_')[3],
                 root: any = this;
-    
+
                 const base64: any = result
                 ////console.log(base64.split('.')[1]);
                 switch (section) {
-    
+
                   case 'dependent':
                     this.assing_information.dependentInformations.photo = base64.split(',')[1];
                     root.assign_dependents[dependent_index].PhotoExtension = 'png';
                     break;
-    
+
                   case 'pet':
                     root.pets[dependent_index].photo = base64.split(',')[1];
                     root.pets[dependent_index].PhotoExtension = 'png'
                     break;
-    
+
                   case 'profile':
                     this.assing_information.photo = base64.split(',')[1];
                     this.assing_information.PhotoExtension = 'png';
                     break;
-    
+
                 }
-    
+
                 setTimeout(() => field_photo.setAttribute('src', base64), 333);
             }
         });
-    
+
       }
 
     /* Ultima actualizacion 3/Dic/2020 ==========================================================> */
@@ -1456,7 +1456,7 @@ debugger;
             }
 
         });
-         
+
         console.log(this.housing)
         return houses_selected;
 

@@ -18,7 +18,7 @@
           <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyy' }}</b></p>
         </div>
         <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
-          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false"> 
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
           <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
             Drag and Drop or
             <p class="browser" (click)="openFileSelector()">Browse File</p>
@@ -27,7 +27,7 @@
         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="cargaDocumento">Field is required
         </mat-hint>
       </div>
-     
+
     </mat-grid-tile>
   </mat-grid-list>
   <div class="upload-table">
@@ -101,7 +101,7 @@
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
+  <!--   <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Location</mat-label>
@@ -110,7 +110,7 @@
           </mat-hint>
         </mat-form-field>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
 
   </mat-grid-list>

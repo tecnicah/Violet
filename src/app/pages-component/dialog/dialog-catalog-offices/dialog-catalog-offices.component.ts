@@ -26,7 +26,6 @@ export class DialogCatalogOfficesComponent implements OnInit {
   dataCurrency: any[] = [];
   dataCity: any[] = [];
   listOfficy: Officy;
-
   public emailPattern: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   public typePrefix = {
     countriesName: ''
@@ -34,6 +33,7 @@ export class DialogCatalogOfficesComponent implements OnInit {
   public prefix;
   public prefixCatalog;
 
+  accountCategory: any
   ngOnInit(): void {
     this.__loader__.showLoader();
     this.getSelectOption()
@@ -78,6 +78,8 @@ export class DialogCatalogOfficesComponent implements OnInit {
           this.__loader__.hideLoader();
           console.log(this.data);
 
+          /*           this.data.relBankingDetailTypeOfficeBankingDetails = this.data.relBankingDetailTypeOfficeBankingDetails.map(item => item.idCatBankingDetailType)
+           */
         }
       });
     } else {
@@ -87,10 +89,15 @@ export class DialogCatalogOfficesComponent implements OnInit {
   ca_accountType = [];
   ca_statusDoc = [];
   ca_privacy = [];
+  ca_accountCat: any
   async getSelectOption() {
     this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_statusDoc = await this._services.getCatalogueFrom('GetDocumentStatus');
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
+    this._services.getService('GetBankingDetailType').subscribe(ele => {
+      console.log(ele);
+      this.ca_accountCat = ele.result.value
+    })
 
   }
   async get_catalogos() {
@@ -221,7 +228,28 @@ export class DialogCatalogOfficesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+  valid_accountCategory: boolean = false;
+  changeAccountCategory() {
+    this.valid_accountCategory = false
+    console.log(this.accountCategory);
+    if (this.data.id == 0) {
+      console.log('crear');
+      let lista = this.accountCategory.map(select => {
+        return {
+          id: 0,
+          idCatBankingDetailType: select,
+          idOfficeBankingDetailList: 0
+        }
+      })
+      console.log(lista);
+      this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
+      console.log(this.data.officeBankingDetailLists);
 
+    } else {
+      console.log('update');
+
+    }
+  }
   active_office: boolean = false;
   active_country: boolean = false;
   active_city: boolean = false;
@@ -232,29 +260,35 @@ export class DialogCatalogOfficesComponent implements OnInit {
   active_legalEntity: boolean = false
   //Inicio agregar Banking Details List
   addBank(id) {
-    console.log("entra a abrir modal bank para inserccion");
-    this.data.officeBankingDetailLists = this.data.officeBankingDetailLists || [];
-    let data_b = { operacion: "", id: 0, idCatOffice: 0, officeBankingDetailLists: [] };
-    data_b.operacion = 'insertar'
-    data_b.id = id
-    data_b.idCatOffice = this.data.idCatOffice ?? 0;
-    data_b.officeBankingDetailLists = this.data.officeBankingDetailLists ?? []
+    if (this.accountCategory == undefined || this.accountCategory == null) {
+      this.valid_accountCategory = true
+    }
+    else {
+      this.valid_accountCategory = false;
 
-    const dialog = this._dialog.open(BankingDetailsComponent, {
-      data: data_b,
-      width: "95%"
-    });
-    dialog.afterClosed().subscribe(result => {
-      if (result == undefined || result == true) return;
-      console.log(result);
-      if (this.data.id == 0) {
-        this.data.officeBankingDetailLists.push(result);
-      } else {
-        this.ngOnInit()
-      }
-      console.log(this.data);
-    })
+      console.log("entra a abrir modal bank para inserccion");
+      this.data.officeBankingDetailLists = this.data.officeBankingDetailLists || [];
+      let data_b = { operacion: "", id: 0, idCatOffice: 0, officeBankingDetailLists: [] };
+      data_b.operacion = 'insertar'
+      data_b.id = id
+      data_b.idCatOffice = this.data.idCatOffice ?? 0;
+      data_b.officeBankingDetailLists = this.data.officeBankingDetailLists ?? []
 
+      const dialog = this._dialog.open(BankingDetailsComponent, {
+        data: data_b,
+        width: "95%"
+      });
+      dialog.afterClosed().subscribe(result => {
+        if (result == undefined || result == true) return;
+        console.log(result);
+        if (this.data.id == 0) {
+          this.data.officeBankingDetailLists.push(result);
+        } else {
+          this.ngOnInit()
+        }
+        console.log(this.data);
+      })
+    }
   }
   //Fin agregar Banking Details List
   //Inicio editar Banking Details List
@@ -376,7 +410,7 @@ export class DialogCatalogOfficesComponent implements OnInit {
       this.nso_ainfo_fields.no_email = false
       console.log('3');
     }
-    const dataForm = ['legalEntity','office', 'country', 'city', 'address', 'zip', 'phone', 'email'];
+    const dataForm = ['legalEntity', 'office', 'country', 'city', 'address', 'zip', 'phone', 'email'];
     let validacion_Correc = false;
     for (const property of dataForm) {
       if (this.data[property] === undefined || this.data[property] === '') {

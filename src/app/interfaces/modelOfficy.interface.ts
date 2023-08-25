@@ -53,6 +53,13 @@ export interface Officy {
        createdDate?:Date,
        updatedBy?:number,
        updatedDate?:Date,
+       relBankingDetailTypeOfficeBankingDetails?: [
+        {
+          id?: number,
+          idCatBankingDetailType: number,
+          idOfficeBankingDetailList: number
+        }
+      ]
     }
   ]
 }

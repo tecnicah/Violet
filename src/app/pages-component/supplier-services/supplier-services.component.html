@@ -73,7 +73,7 @@
                     src="{{_imageLocal}}" src-fallback="./assets/avatar.png"
                   />
                   </div>
-                 
+
                 </label>
               </div>
               <span style="top: 70%;
@@ -147,7 +147,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central_half">
           <mat-label [ngClass]="{valid: active_supplierType}">Supplier Type</mat-label>
-          <mat-select [disabled]= "(data.supplierType != null) && (data.supplierType != 0 ) && (data.supplierType != '' ) && (id_serivice_ != 'nuevo')" 
+          <mat-select [disabled]= "(data.supplierType != null) && (data.supplierType != 0 ) && (data.supplierType != '' ) && (id_serivice_ != 'nuevo')"
           [(ngModel)]="data.supplierType" (focus)="active_supplierType = false" required (ngModelChange)="set_display_default_fields();">
             <mat-form-field appearance="outline" style="padding: 5px;">
               <mat-label>Supplier Type</mat-label>
@@ -223,7 +223,7 @@
         </mat-form-field>
       </mat-grid-tile>
       <!-- <mat-grid-tile [colspan]="5" [rowspan]="2">
-       
+
         <mat-form-field appearance="fill">
           <mat-label>About</mat-label>
           <input matInput placeholder="About" [(ngModel)]="data.about">
@@ -233,7 +233,7 @@
     <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" style="padding-bottom: 10px;">
       <span class=" text_">About</span>
     </div>
-    
+
     <div fxLayout="row" fxLayoutAlign="start start">
       <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="data.about" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </div>
@@ -328,7 +328,7 @@
     <!-------------->
 
      <!--REAL STATE AGENT-->
-     <mat-grid-list cols="5" rowHeight="70px" [hidden]="permisosConsultant == true" *ngIf="data.supplierType == 5">
+     <mat-grid-list cols="5" rowHeight="70px" [hidden]="permisosConsultant == true" *ngIf="ShowSupplierPartner()"><!--data.supplierType == 5 || data.supplierType == 22 || data.supplierType == 19|| data.supplierType == 17"-->
       <mat-grid-tile [colspan]="5" [rowspan]="1">
         <div class="textarea">
           <p class="page__section-name">Supplier Partner Details</p>
@@ -548,8 +548,12 @@
         <div class="textarea" style="height: 60%;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label [ngClass]="{valid: active_grade}">Grade</mat-label>
-            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].grade" (focus)="active_grade = false" required (ngModelChange)="changeModelGrade()" multiple>             
-              <mat-option *ngFor="let item of schoolgrades_catalogue" [value]="item.id">{{item.grade}}</mat-option>
+            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].grade"
+             (focus)="active_grade = false" required
+            (ngModelChange)="changeModelGrade()" multiple>
+              <mat-option [value]="-1">Select all</mat-option>
+              <mat-option *ngFor="let item of schoolgrades_catalogue"
+              [value]="item.id">{{item.grade}} - {{item.id}}</mat-option>
             </mat-select>
             <mat-error>Field is required</mat-error>
             <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_grade">Field is required</mat-hint>
@@ -561,7 +565,7 @@
         <div class="textarea" style="height: 60%;">
           <mat-form-field appearance="fill" class="input_central_half">
             <mat-label [ngClass]="{valid: active_language}">Languages</mat-label>
-            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].language" (focus)="active_language = false" required (ngModelChange)="changeModelLanguage()" multiple>             
+            <mat-select [(ngModel)]="data.supplierPartnerDetails[0].language" (focus)="active_language = false" required (ngModelChange)="changeModelLanguage()" multiple>
               <mat-option *ngFor="let item of languages_catalogue" [value]="item.id">{{item.name}}</mat-option>
             </mat-select>
             <mat-error>Field is required</mat-error>
@@ -689,7 +693,7 @@
                 style="background: transparent!important;" *ngIf="i > 0 && element.id == 0"
                 (click)="deleteCovertura(i)">
       </div>
-      
+
       <br>
 
       <div class="textarea" style="text-align: end;" id="seccion_dos{{i}}">
@@ -796,7 +800,7 @@
         </mat-grid-tile-->
         <!--  -->
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-form-field appearance="fill" class="input_central_half" *ngIf="data.supplierType != 13 && data.supplierType != 11 
+          <mat-form-field appearance="fill" class="input_central_half" *ngIf="data.supplierType != 13 && data.supplierType != 11
           && data.supplierType != 34 && data.supplierType != 5 && data.supplierType != 22 && data.supplierType != 15 && data.supplierType != 19
           && data.supplierType != 17 && data.supplierType != 21 && data.supplierType != 18 && data.supplierType != 26">
             <mat-label>Additional Cities</mat-label>
@@ -945,7 +949,7 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
-          
+
           <table class="mat-elevation-z8 textarea mat-table">
             <tr class="mat-header-row">
               <th class="mat-header-cell">Supplier Type</th>
@@ -1022,7 +1026,7 @@
                 <span>
                   <p class="page__section-name">Payment Methods</p>
                 </span>
-                
+
                 <span>
                   <p class="subtitle" style="font-size: 12px;">
                     Fiscal Invoice
@@ -1036,7 +1040,7 @@
           </mat-grid-list>
 
           <mat-grid-list cols="4" rowHeight="50px">
-          
+
             <mat-grid-tile [colspan]="4" [rowspan]="1">
               <div class="textarea" style="display: flex; justify-content: space-between;">
                 <span>
@@ -1065,7 +1069,7 @@
                 </div>
               </mat-grid-tile>
             </ng-container>
-            
+
             <mat-grid-tile [colspan]="4" [rowspan]="1">
               <div class="textarea">
                 <mat-checkbox class="example-margin" [(ngModel)]="element.paymentInformationServices[0].checks">
@@ -1107,7 +1111,7 @@
             </mat-grid-tile>
 
           </mat-grid-list>
-        
+
           <mat-grid-list cols="4" rowHeight="50px">
             <mat-grid-tile>
               <span>

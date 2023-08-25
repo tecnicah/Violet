@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
@@ -28,7 +28,7 @@ export class SupplierServicesComponent implements OnInit {
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       [{ align: [] }],
       ['blockquote', 'code-block'],
-      [{ list: 'ordered'}, { list: 'bullet' }]
+      [{ list: 'ordered' }, { list: 'bullet' }]
     ]
   };
 
@@ -61,17 +61,20 @@ export class SupplierServicesComponent implements OnInit {
   data: any = {
     "id": 0,
     "photo": '',
-    "taxesPercentage":  1,
-    "currency":2,
-    "amountPerHour":0,
+    "taxesPercentage": 1,
+    "currency": 2,
+    "amountPerHour": 0,
     "taxeName": " "
   };
   minDate: Date = new Date();
   htmlContent: any;
-  schoolgrades_catalogue: any[]= [];
+  schoolgrades_catalogue: any[] = [];
   languages_catalogue: any[] = [];
 
-  constructor(public router: Router, public _services: ServiceGeneralService, public _dialog: MatDialog, public _routerParams: ActivatedRoute) {}
+  constructor(public router: Router, public _services: ServiceGeneralService,
+    public _dialog: MatDialog,
+    public _routerParams: ActivatedRoute,
+    private change: ChangeDetectorRef) { }
 
   //*********************************************//
   public permission_read: boolean = false;
@@ -109,6 +112,8 @@ export class SupplierServicesComponent implements OnInit {
   ngOnInit(): void {
     this.consultaPermisos();
     this.date = new Date();
+    console.log(this.data);
+
     // for (let i = 1; i <= 10; i++) {
     //   this.fleetSize.push(i);
     // }
@@ -120,16 +125,47 @@ export class SupplierServicesComponent implements OnInit {
     this.verificaNodos();
 
     this.data.serviceLine = 2;
-
   }
-
+  ShowSupplierPartner() {
+    let view: boolean = false;
+    switch (this.data.supplierType) {
+      case 5:
+        view = true
+        break;
+      case 16:
+        view = true
+        break;
+      case 17:
+        view = true
+        break;
+      case 18:
+        view = true
+        break;
+      case 19:
+        view = true
+        break;
+      case 21:
+        view = true
+        break;
+      case 22:
+        view = true
+        break;
+      case 26:
+        view = true
+        break;
+      default:
+        view = false
+        break
+    }
+    return view
+  }
 
   onChangedEditor(event: any): void {
     if (event.html) {
-        this.htmlContent = event.html;
-      }
+      this.htmlContent = event.html;
+    }
   }
-  
+
   //*************************************************************//
   verificaNodos() {
     if (!this.data.supplierPartnerDetails) {
@@ -181,24 +217,24 @@ export class SupplierServicesComponent implements OnInit {
     this._services.service_general_get('SupplierPartnerProfile/GetService?key=' + id_serivice).subscribe((data => {
       if (data.success) {
         this.data = data.result;
-        console.log("dataaaa",data.result);
+        console.log("dataaaa", data.result);
         // revisa si es consultor y tiene permisos en secciones
 
         this.data.supplierPartnerDetails[0].grade = [];
         for (const iterator of data.result.relSupplierPartnerProfileServiceDetailGrades) {
           this.data.supplierPartnerDetails[0].grade.push(
-             iterator.gradeId
+            iterator.gradeId
           );
         }
 
         this.data.supplierPartnerDetails[0].language = [];
         for (const iterator of data.result.relSupplierPartnerProfileServiceDetailLanguages) {
           this.data.supplierPartnerDetails[0].language.push(
-             iterator.languageId
+            iterator.languageId
           );
         }
 
-        switch(this.data.supplierType) {
+        switch (this.data.supplierType) {
           case 34:
             this.type_document = 27;
             break;
@@ -251,10 +287,10 @@ export class SupplierServicesComponent implements OnInit {
             this.type_document = 30;
             break;
           default:
-            // code block
+          // code block
         }
-    
-        this._services.service_general_get('Catalogue/GetDocumentType/'+ this.type_document).subscribe((data => {
+
+        this._services.service_general_get('Catalogue/GetDocumentType/' + this.type_document).subscribe((data => {
           if (data.success) {
             this.ca_documentType = data.result;
             //console.log(this.ca_documentType);
@@ -262,7 +298,7 @@ export class SupplierServicesComponent implements OnInit {
         }));
 
         this._imageLocal = this._services.url_images + this.data.photo;
-          
+
         this.consultantPermisos();
         this.data.supplierPartnerDetails[0].vehiculo = [];
         if (this.data.supplierPartnerDetails[0].typeVehiclesSupplierPartnerDetails.length > 0) {
@@ -291,22 +327,21 @@ export class SupplierServicesComponent implements OnInit {
         for (let i = 0; i < this.data.areasCoverageServices.length; i++) {
           if (this.data.areasCoverageServices[i].paymentInformationServices.length > 0) {
             debugger;
-            for(let j = 0; j < this.data.areasCoverageServices[i].paymentInformationServices.length; j++)
-            {
-              if(this.data.areasCoverageServices[i].paymentInformationServices[j].creditCard){
+            for (let j = 0; j < this.data.areasCoverageServices[i].paymentInformationServices.length; j++) {
+              if (this.data.areasCoverageServices[i].paymentInformationServices[j].creditCard) {
                 this.data.areasCoverageServices[i].payment = true;
                 break;
               }
-              if(this.data.areasCoverageServices[i].paymentInformationServices[j].cash){
+              if (this.data.areasCoverageServices[i].paymentInformationServices[j].cash) {
                 this.data.areasCoverageServices[i].payment = true;
                 break;
               }
-              if(this.data.areasCoverageServices[i].paymentInformationServices[j].checks){
+              if (this.data.areasCoverageServices[i].paymentInformationServices[j].checks) {
                 this.data.areasCoverageServices[i].payment = true;
                 break;
               }
             }
-            
+
           }
           if (this.data.areasCoverageServices[i].paymentInformationServices[0]?.wireTransferServices.length > 0) {
             this.data.areasCoverageServices[i].wire = true;
@@ -372,6 +407,8 @@ export class SupplierServicesComponent implements OnInit {
 
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType');
+    console.log(this.ca_contactType);
+
     this.ca_language = await this._services.getCatalogueFrom('GetLanguages');
     //this.ca_supplierType = await this._services.getCatalogueFrom('GetSupplierType');
     this.ca_taxes = await this._services.getCatalogueFrom('GetTaxePercentage');
@@ -391,11 +428,11 @@ export class SupplierServicesComponent implements OnInit {
 
   }
 
-  display_default_fields:boolean = true;
+  display_default_fields: boolean = true;
 
-  set_display_default_fields(){
+  set_display_default_fields() {
     console.log("this.data.supplierType", this.data.supplierType);
-    switch(this.data.supplierType) {
+    switch (this.data.supplierType) {
       case 34:
         this.type_document = 27;
         break;
@@ -416,7 +453,7 @@ export class SupplierServicesComponent implements OnInit {
         break;
       case 15:
         this.type_document = 30;
-        break;  
+        break;
       case 12:
         this.type_document = 31;
         break;
@@ -424,26 +461,25 @@ export class SupplierServicesComponent implements OnInit {
         this.type_document = 30;
         break;
       default:
-        // code block
+      // code block
     }
 
-    this._services.service_general_get('Catalogue/GetDocumentType/'+ this.type_document).subscribe((data => {
+    this._services.service_general_get('Catalogue/GetDocumentType/' + this.type_document).subscribe((data => {
       if (data.success) {
         this.ca_documentType = data.result;
         //console.log(this.ca_documentType);
       }
     }));
 
-   if(this.data.supplierType == 13 || this.data.supplierType == 11 || this.data.supplierType == 28 || 
-    this.data.supplierType == 33 || this.data.supplierType == 27 || this.data.supplierType == 24 || 
-    this.data.supplierType == 5 || this.data.supplierType == 9 || this.data.supplierType == 12 || this.data.supplierType == 34){
-    this.display_default_fields = false;
+    if (this.data.supplierType == 13 || this.data.supplierType == 11 || this.data.supplierType == 28 ||
+      this.data.supplierType == 33 || this.data.supplierType == 27 || this.data.supplierType == 24 ||
+      this.data.supplierType == 5 || this.data.supplierType == 9 || this.data.supplierType == 12 || this.data.supplierType == 34) {
+      this.display_default_fields = false;
 
-   }
-   else
-   {
-     this.display_default_fields = true;
-   }
+    }
+    else {
+      this.display_default_fields = true;
+    }
 
   }
 
@@ -457,32 +493,32 @@ export class SupplierServicesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(result);
-        if(result != undefined){
-          this.no_main_photo = false;
+      if (result != undefined) {
+        this.no_main_photo = false;
 
-            const base64: any = result
-            this._imageLocal = base64;
-            this.data.photo =  base64.split(',')[1];
-            this.data.photoExtension = "png";
-          
-            // setTimeout(() => field_photo.setAttribute('src', base64), 333);
-            document.getElementById('lead_client_avatar').setAttribute('src', '' + base64);
-        }
+        const base64: any = result
+        this._imageLocal = base64;
+        this.data.photo = base64.split(',')[1];
+        this.data.photoExtension = "png";
+
+        // setTimeout(() => field_photo.setAttribute('src', base64), 333);
+        document.getElementById('lead_client_avatar').setAttribute('src', '' + base64);
+      }
     });
 
   }
 
-  serviceLineOption(id){
+  serviceLineOption(id) {
     debugger;
-    if(id==1){
-      this.data.immigration = true; 
+    if (id == 1) {
+      this.data.immigration = true;
     }
-    else{
+    else {
       this.data.relocation = true;
     }
 
   }
-  
+
   //*************************************************************//
   newCampus(i) {
 
@@ -606,10 +642,11 @@ export class SupplierServicesComponent implements OnInit {
     // });
   }
   //*************************************************************//
+  ca_contactTypeService: any = []
   newContact(type, i) {
 
     let _contact_type = 0;
-    switch(this.data.supplierType) {
+    switch (this.data.supplierType) {
       case 34:
         _contact_type = 1;
         break;
@@ -624,27 +661,27 @@ export class SupplierServicesComponent implements OnInit {
         break;
       case 15:
         _contact_type = 3;
-        break; 
+        break;
       case 17:
         _contact_type = 3;
-        break; 
+        break;
       case 21:
         _contact_type = 3;
-        break; 
+        break;
       case 18:
         _contact_type = 3;
-        break; 
+        break;
       case 26:
         _contact_type = 3;
-        break;  
+        break;
       case 12:
         _contact_type = 3;
-        break;  
+        break;
       case 10:
         _contact_type = 3;
-        break;  
+        break;
       default:
-        // code block
+      // code block
     }
 
     if (this.data.areasCoverageServices[i].country == null ||
@@ -672,13 +709,15 @@ export class SupplierServicesComponent implements OnInit {
       data: {
         country: this.data.areasCoverageServices[i].country,
         supplier_type: this.type_document,
-        contact_type: _contact_type
+        contact_type: _contact_type,
+        tipo: 'Administrative'
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
-        //console.log(result);
+        console.log(result);
+
         result.createdBy = this.user.id;
         result.createdDate = new Date();
         result.updatedBy = this.user.id;
@@ -686,6 +725,11 @@ export class SupplierServicesComponent implements OnInit {
         result.id = 0;
         result.areasCoverage = this.data.areasCoverageServices[i].id;
         this.data.areasCoverageServices[i].administrativeContactsServices.push(result)
+        this._services.service_general_get('Catalogue/GetContactType?id=' + result.contact_type).subscribe(type => {
+          console.log(type);
+          this.ca_contactType = type.result
+        })
+
       }
     });
   }
@@ -869,7 +913,8 @@ export class SupplierServicesComponent implements OnInit {
       width: "90%",
       data: {
         city: this.data.areasCoverageServices[i].primaryCity,
-        supplier_type: this.type_document
+        supplier_type: this.type_document,
+        tipo: 'Provider',
       }
     });
 
@@ -883,6 +928,7 @@ export class SupplierServicesComponent implements OnInit {
     });
   }
   //*************************************************************//
+
   editPhoto() {
     document.getElementById('photoSup').click();
   }
@@ -1022,7 +1068,13 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   nameContact(id) {
+
+    console.log(this.data.supplierType);
+    console.log(this.ca_contactType);
+
     for (let i = 0; i < this.ca_contactType.length; i++) {
+      console.log(this.ca_contactType[i].id);
+      console.log(id);
       if (this.ca_contactType[i].id == id) {
         return this.ca_contactType[i].type;
       }
@@ -1057,15 +1109,15 @@ export class SupplierServicesComponent implements OnInit {
   valida_form() {
     let contador = 0;
     this.seccionUno = 0;
-    if(this.data.supplierType == 34){
+    if (this.data.supplierType == 34) {
       if (this.data.supplierPartnerDetails[0].grade == undefined || this.data.supplierPartnerDetails[0].grade == '' || this.data.supplierPartnerDetails[0].grade == null) {
-        this.active_grade= true;
+        this.active_grade = true;
         this.seccionUno++;
         contador++;
       }
 
       if (this.data.supplierPartnerDetails[0].language == undefined || this.data.supplierPartnerDetails[0].language == '' || this.data.supplierPartnerDetails[0].language == null) {
-        this.active_language= true;
+        this.active_language = true;
         this.seccionUno++;
         contador++;
       }
@@ -1182,23 +1234,58 @@ export class SupplierServicesComponent implements OnInit {
   //   supplierPartnerProfileServiceId: 0,
   //   languageId: 2
   // });
+  selectAll: boolean = false;
+  changeModelGrade() {
 
-
-  changeModelGrade(){
-    console.log(this.data.supplierPartnerDetails[0].grade)
     this.data.relSupplierPartnerProfileServiceDetailGrades = [];
+    console.log(this.data.supplierPartnerDetails[0].grade)
+
+    if (!this.selectAll && this.data.supplierPartnerDetails[0].grade.includes(-1)) {
+      this.selectAll = true
+      this.data.supplierPartnerDetails[0].grade = [-1, ...this.schoolgrades_catalogue.map(item => item.id)];
+    }
+    else if (this.selectAll) {
+      this.selectAll = false
+      if (!this.data.supplierPartnerDetails[0].grade.includes(-1)) {
+        this.data.supplierPartnerDetails[0].grade = [];
+      } else {
+        this.data.supplierPartnerDetails[0].grade.shift()
+        this.data.supplierPartnerDetails[0].grade = [...this.data.supplierPartnerDetails[0].grade];
+      }
+    } else if (this.data.supplierPartnerDetails[0].grade.length === this.schoolgrades_catalogue.length) {
+      this.selectAll = true
+      this.data.supplierPartnerDetails[0].grade = [-1, ...this.data.supplierPartnerDetails[0].grade];
+
+    }
+    console.log(this.data.supplierPartnerDetails[0].grade)
+    this.pushModelGrade()
+    this.change.detectChanges()
+    /*      console.log(this.data.supplierPartnerDetails[0].grade)
+        this.data.relSupplierPartnerProfileServiceDetailGrades = [];
+        for (const iterator of this.data.supplierPartnerDetails[0].grade) {
+          this.data.relSupplierPartnerProfileServiceDetailGrades.push(
+            {
+              id: 0,
+              supplierPartnerProfileServiceId: 0,
+              gradeId: parseInt(iterator)
+            }
+          );
+        } */
+  }
+  pushModelGrade() {
     for (const iterator of this.data.supplierPartnerDetails[0].grade) {
-      this.data.relSupplierPartnerProfileServiceDetailGrades.push(
-        {
-          id: 0,
-          supplierPartnerProfileServiceId: 0,
-          gradeId: parseInt(iterator)
-        }
-      );
+      if (iterator != -1) {
+        this.data.relSupplierPartnerProfileServiceDetailGrades.push(
+          {
+            id: 0,
+            supplierPartnerProfileServiceId: 0,
+            gradeId: parseInt(iterator)
+          }
+        );
+      }
     }
   }
-
-  changeModelLanguage(){
+  changeModelLanguage() {
     console.log(this.data.supplierPartnerDetails[0].language)
     this.data.relSupplierPartnerProfileServiceDetailLanguages = [];
     for (const iterator of this.data.supplierPartnerDetails[0].language) {
@@ -1211,13 +1298,13 @@ export class SupplierServicesComponent implements OnInit {
       );
     }
   }
-  
+
   save() {
     this.loader.showLoader();
     this.data.createdBy = this.user.id;
     this.data.createdDate = new Date();
     this.data.updatedBy = this.user.id;
-    this.data.updatedDate = new Date(); 
+    this.data.updatedDate = new Date();
     console.log("DATA a guardar: ", this.data);
     //console.log(this.toppings);
 
@@ -1256,7 +1343,7 @@ export class SupplierServicesComponent implements OnInit {
       //console.log("ENTRA A POST");
 
       console.log("PostService", this.data);
-      
+
       // this.data.relSupplierPartnerProfileServiceDetailGrades = [];
       // this.data.relSupplierPartnerProfileServiceDetailLanguages = [];
 
@@ -1299,7 +1386,7 @@ export class SupplierServicesComponent implements OnInit {
           this.router.navigateByUrl('/supplierPartners');
 
         }
-        else{
+        else {
           const dialog = this._dialog.open(DialogGeneralMessageComponent, {
             data: {
               header: "Error",
@@ -1309,12 +1396,12 @@ export class SupplierServicesComponent implements OnInit {
           });
           this.loader.hideLoader();
         }
-      },(err)=>{
+      }, (err) => {
         console.log("error en SupplierPartnerProfile/PostService ========", err);
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Error",
-              body: "Invalid Information, Please contact support"
+            body: "Invalid Information, Please contact support"
           },
           width: "350px"
         });

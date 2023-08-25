@@ -79,7 +79,7 @@ export class DialogNewContactComponent implements OnInit {
         if(result != undefined){
           this.no_main_photo = false;
           //this._services.url_images = "";
-debugger;
+
           const field_photo: any = document.getElementById(field_to_display),
             //event_data: any = event.target.files[0],
             dependent_index: string = field_to_display.split('_')[3],
@@ -89,14 +89,14 @@ debugger;
             ////console.log(base64.split('.')[1]);
             this.administrativeContactsServices.photo =  base64.split(',')[1];
             this.administrativeContactsServices.photoExtension = "png";
-          
+
             setTimeout(() => field_photo.setAttribute('src', base64), 333);
         }
     });
 
   }
 
-  
+
   //************************************************************//
   verificaNodos(){
     if (this.data != null) {
@@ -113,11 +113,13 @@ debugger;
     //this.ca_documentType = await this._services.getCatalogueFrom('GetDocumentType');
     this._services.service_general_get('Catalogue/GetDocumentType/'+this.data.supplier_type).subscribe((data => {
       if (data.success) {
-        this.ca_documentType = data.result; 
+        this.ca_documentType = data.result;
         console.log(this.ca_documentType);
       }
-    })) 
+    }))
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id='+this.data.contact_type);
+    console.log(this.ca_contactType);
+
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
   }
@@ -135,9 +137,9 @@ debugger;
          },
          width: "350px"
        });
-   
+
        dialogRef.afterClosed().subscribe(result => {
-       
+
        })
 
        return;
@@ -148,7 +150,8 @@ debugger;
       data: {
         country: this.administrativeContactsServices.country,
         city: this.administrativeContactsServices.city,
-        supplier_type: this.data.supplier_type
+        supplier_type: this.data.supplier_type,
+        tipo:this.data.tipo,
       }
     });
 
@@ -197,7 +200,7 @@ debugger;
               this.administrativeContactsServices.photoExtension = ext[1];
               this.administrativeContactsServices.b64 = imageUrl;
 
-              debugger
+
             };
           });
         });
@@ -301,7 +304,7 @@ debugger;
   }
   onClickDownloadPdf(b64, ext){
     let base64String = b64;
-  
+
     this.downloadPdf(base64String,"archivo", ext);
   }
 
@@ -317,7 +320,7 @@ debugger;
     activeNumberLongitud: boolean = false;
     contador = 0;
     validForm(){
-      debugger
+
       console.log("entra a funcion");
       if(this.administrativeContactsServices.contactType == undefined || this.administrativeContactsServices.contactType == null || this.administrativeContactsServices.contactType == ''){
         this.activeContactType = true;
@@ -335,7 +338,7 @@ debugger;
         this.activePhoneNumber = true;
         this.contador++;
       }
-      
+
       if(this.administrativeContactsServices.email == undefined || this.administrativeContactsServices.email == null || this.administrativeContactsServices.email == ''){
         this.activeEmail = true;
         this.contador++;
@@ -351,7 +354,7 @@ debugger;
         //this.activeDocumentos = true;
         //this.contador++;
       }
-    
+
       let aux_number = this.administrativeContactsServices.phoneNumber;
       if(aux_number != undefined){
         let n = aux_number.toString();
@@ -361,8 +364,8 @@ debugger;
           this.contador++;
         }
       }
-      
-  
+
+
       if(this.contador == 0){
          this.save();
       }else{
@@ -373,15 +376,15 @@ debugger;
           },
           width: "350px"
         });
-    
+
         dialogRef.afterClosed().subscribe(result => {
-        
+
         })
         this.contador = 0;
         return;
       }
     }
-  
+
     validateEmail(){
       let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         if (emailRegex.test(this.administrativeContactsServices.email)) {
@@ -397,22 +400,22 @@ debugger;
             },
             width: "350px"
           });
-      
+
           dialogRef.afterClosed().subscribe(result => {
-          
+
           })
         }
     }
 
-    
+
     validaNumericos(event){
       console.log("valid");
-      if(event.key == '0' || event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' || 
+      if(event.key == '0' || event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4' ||
          event.key == '5' || event.key == '6' || event.key == '7' || event.key == '8' || event.key == '9' ||
          event.key == 'Backspace' ){
          return true;
       }
-    
+
        return false;
     }
 

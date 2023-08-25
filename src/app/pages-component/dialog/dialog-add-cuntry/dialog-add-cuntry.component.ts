@@ -33,7 +33,7 @@ export class DialogAddCuntryComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialog: MatDialog) { }
 
-    img_url: string;  
+    img_url: string;
   caCounty: any[] = [];
   dataScopeDocument: any[] = [];
   documentsColum: string[] = ['Document', 'Uploaded', 'Status', 'Privacy'];
@@ -48,7 +48,7 @@ export class DialogAddCuntryComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger;
+
     this.img_url = environment.images_path;
     console.log('data que recibe country', this.data );
     if(this.data.documentLocationCountries){}else{
@@ -68,7 +68,7 @@ export class DialogAddCuntryComponent implements OnInit {
         this.htmlContent = event.html;
       }
   }
-  
+
     //*********************************************//
 	public permission_read : boolean = false;
 	public permission_write : boolean = false;
@@ -91,7 +91,7 @@ export class DialogAddCuntryComponent implements OnInit {
   @ViewChild('allSelected') private allSelected: MatOption;
   // metodo que selecciona todos los servicios en el multicheck
   toggleAllSelection() {
-    debugger;
+
 
     if (this.allSelected.selected) {
       this.data.idCountry = [0];
@@ -268,7 +268,7 @@ export class DialogAddCuntryComponent implements OnInit {
      this._services.service_general_delete_noapi('DeleteDocumentLocationCountry?id='+id).subscribe((r) => {
        console.log(r);
        if (r.success) {
-         this.data.documentLocationCountries = [];        
+         this.data.documentLocationCountries = [];
          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
            data: {
              header: "Success",
@@ -276,17 +276,17 @@ export class DialogAddCuntryComponent implements OnInit {
            },
            width: "350px"
          });
- 
+
          r.result.value.forEach(element => {
            this.data.documentLocationCountries.push(element);
          });
-         
+
          console.log("this.data.documentGeneralContractPricingInfos",this.data.documentLocationCountries);
          this.loader.hideLoader();
        }
      });
    }
-   
+
   save() {
     if(this.data.id == 0){
       if (this.allSelected.selected) {

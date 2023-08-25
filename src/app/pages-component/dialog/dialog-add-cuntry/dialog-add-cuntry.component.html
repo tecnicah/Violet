@@ -10,11 +10,13 @@
 <mat-dialog-content class="mat-typography">
 
   <mat-grid-list cols="4" rowHeight="60px">
-     <!-- add countru multicheck en caso de que la data reciba action = new -->
-     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="(data.action == 'new' && data.id == 0) || (data.action != 'new' && data.id == 0)">
+    <!-- add countru multicheck en caso de que la data reciba action = new -->
+    <mat-grid-tile [colspan]="1" [rowspan]="1"
+      *ngIf="(data.action == 'new' && data.id == 0) || (data.action != 'new' && data.id == 0)">
       <mat-form-field appearance="fill" class="textarea input_central">
         <mat-label [ngClass]="{valid: active_country}">Country</mat-label>
-        <mat-select [(ngModel)]="data.idCountry" (focus)="active_country = false" required matNativeControl multiple (ngModelChange)="getStandarDocuments()">
+        <mat-select [(ngModel)]="data.idCountry" (focus)="active_country = false" required matNativeControl multiple
+          (ngModelChange)="getStandarDocuments()">
           <mat-form-field appearance="outline" style="padding: 5px;">
             <mat-label>Country</mat-label>
             <input matInput placeholder="Country" [(ngModel)]="filerCountry.name">
@@ -23,7 +25,8 @@
           <mat-option *ngFor="let item of caCounty | filterBy:filerCountry" [value]="item.id">
             {{item.name}}
           </mat-option>
-          <mat-option disabled *ngIf="(caCounty | filterBy: filerCountry).length === 0">No matching elements</mat-option>
+          <mat-option disabled *ngIf="(caCounty | filterBy: filerCountry).length === 0">No matching
+            elements</mat-option>
         </mat-select>
         <mat-error>Field is required</mat-error>
         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_country">Field is required</mat-hint>
@@ -57,11 +60,11 @@
     </mat-grid-tile>
 
     <!-- este solo se mostrara si no es caso para multicheck  -->
-    <mat-grid-tile [colspan]="1" [rowspan]="1" >
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <p>Standard Scope & Documents</p>
-      <mat-checkbox [disabled]="data.idCountry == undefined" [(ngModel)]="data.standarScopeDocuments" (change)="getStandarDocuments(); data.standarScopeDocuments = $event.checked ? 1 : 0 " [checked]="data.standarScopeDocuments === 1"
-      ></mat-checkbox>
-        <!-- (change)="getStandarDocuments(); data.standarScopeDocuments = $event.checked ? 1 : 0 " -->
+      <mat-checkbox [disabled]="data.idCountry == undefined" [(ngModel)]="data.standarScopeDocuments"
+        (change)="getStandarDocuments(); data.standarScopeDocuments = $event.checked ? 1 : 0 "
+        [checked]="data.standarScopeDocuments === 1"></mat-checkbox>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
   </mat-grid-list>
@@ -77,12 +80,14 @@
   </mat-grid-list>
   <mat-grid-list cols="4" rowHeight="300px" *ngIf="(data.standarScopeDocuments === 0)">
     <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="data.scopeDescription" [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
+      <quill-editor style="width: 100% !important;" placeholder="About" [(ngModel)]="data.scopeDescription"
+        [modules]="modulesQuill" (onEditorChanged)="onChangedEditor($event)"></quill-editor>
     </mat-grid-tile>
   </mat-grid-list>
 
   <!-- scope description and documents standar-->
   <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 1) && (data.action != 'new')">
+
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-name">
         Stantard desciption
@@ -92,7 +97,7 @@
     <mat-grid-tile [colspan]="4" [rowspan]="1">
       <div class="page__section-data font-size-12 comments input_central">
         <span class="text-mini gray_05">Scope Description</span><br />
-        <p *ngIf="dataScopeDocument != null"  [innerHTML]="dataScopeDocument.scopeDescription"></p>
+        <p *ngIf="dataScopeDocument != null" [innerHTML]="dataScopeDocument.scopeDescription"></p>
         <p *ngIf="dataScopeDocument == null"> No Data</p>
       </div>
 
@@ -101,18 +106,20 @@
 
   <!-- scope description and documents standar multicheck-->
   <mat-grid-list cols="4" rowHeight="60px" *ngIf="(data.standarScopeDocuments === 1)&& (data.action == 'new')">
+
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="page__section-name">
-        Stantard desciption
+        Stantard desciption And Documents standard
       </div>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+    <!--Esto se quito-->
+    <!-- <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="4" [rowspan]="1" *ngFor="let item of dataScopeDescription">
-      <div class="page__section-data font-size-12 comments input_central" >
+      <div class="page__section-data font-size-12 comments input_central">
         <span class="text-mini gray_05">Scope Description</span><br />
-        <p  [innerHTML]="item"></p>
+        <p [innerHTML]="item"></p>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
   </mat-grid-list>
 
   <!-- documentos del partner  -->
@@ -144,48 +151,41 @@
         </div>
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries">
-          <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-            style="background: transparent!important;" (click)="deleteDocument(item.id)">
-          <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deleteDocument(item.id)">
+        <div class="page__section-input page__section-input--25 documents__ascard--task browser">
           <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
             {{ item.documentType}}
-          </a> 
-          <!-- idDocumentTypeName -->
-          </div>
-          <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
+          </a>
+        </div>
+        <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
 
-            {{item.updateDate |date :'dd MMM yyy'}}
-            <!-- {{item.updateDate| date:'dd MMM yyy'}} -->
+          {{item.updateDate |date :'dd MMM yyy'}}
 
-          </div>
-          <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
+        </div>
+        <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
 
-            {{item.uploadDate| date:'dd MMM yyy'}}
-            <!-- {{item.updateDate| date:'dd MMM yyy'}} -->
+          {{item.uploadDate| date:'dd MMM yyy'}}
 
-          </div>
-          <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
-            {{item.statusName}}
-            <!-- statusName -->
-          </div>
-          <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
-            {{item.statusName}}
-            <!-- statusName -->
-          </div>
-          <div *ngIf="item.id==0" class="page__section-input page__section-input--25 documents__ascard--task">
-            {{item.privacyName}}
-            <!-- privacyName, -->
-          </div>
-          <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
-            {{item.privacyName}}
-            <!-- privacyName, -->
-          </div>
+        </div>
+        <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.statusName}}
+        </div>
+        <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.statusName}}
+        </div>
+        <div *ngIf="item.id==0" class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.privacyName}}
+        </div>
+        <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
+          {{item.privacyName}}
         </div>
       </div>
+    </div>
   </mat-grid-list>
   <!-- documentos standar de admin center de get sin multicheck-->
-  <mat-grid-list cols="1" *ngIf="(data.standarScopeDocuments === 1) && (data.action != 'new') && data.standarScopeDocuments != null" >
-
+  <mat-grid-list cols="1"
+    *ngIf="(data.standarScopeDocuments === 1) && (data.action != 'new') && data.standarScopeDocuments != null">
     <div class="page__section margin-top-min">
       <div class="page__section-name">
         Documents standard
@@ -213,29 +213,33 @@
         </div>
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of dataScopeDocument?.documentServiceCountries">
-          <div class="page__section-input page__section-input--25 documents__ascard--task browser">
-            <a href="{{img_url}}{{item.filePath}}" target="_blank" class="browser">
-              {{  getDocument(item.documentType)}}
-            </a> 
-          </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
+        <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+          <a href="{{img_url}}{{item.filePath}}" target="_blank" class="browser">
+            {{ getDocument(item.documentType)}}
+          </a>
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
 
-            {{item.updatedDate |date :'dd MMM yyy'}}
+          {{item.updatedDate |date :'dd MMM yyy'}}
 
-          </div>
-          <div  class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getStatus(item.status)}}
-          </div>
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{getStatus(item.status)}}
+        </div>
 
-          <div  class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getPrivacy(item.privacy)}}
-          </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{getPrivacy(item.privacy)}}
+        </div>
       </div>
     </div>
   </mat-grid-list>
   <!-- visualizacion de documentos multicheck -->
-  <mat-grid-list cols="1" *ngIf="((data.standarScopeDocuments === 1) && (data.action == 'new'))" >
-    <div class="page__section margin-top-min">
+  <mat-grid-list cols="1" *ngIf="((data.standarScopeDocuments === 1) && (data.action == 'new'))">
+    <h3>Description and documents of the selected services were loaded correctly,they will be displayed when
+    opening the servicesDescripcion and documents of the selected services were loaded correctly,they will be
+    displayed when openning the services</h3>
+    <!--Esto se quito-->
+    <!--    <div class="page__section margin-top-min">
       <div class="page__section-name">
         Documents standard
       </div>
@@ -262,30 +266,31 @@
         </div>
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of dataScopeDocument">
-          <div class="page__section-input page__section-input--25 documents__ascard--task browser">
-            <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
-              {{ getDocument(item.documentType)}}
-            </a> 
-          </div>
-          <div class="page__section-input page__section-input--25 documents__ascard--task">
-
-            {{item.updatedDate |date :'dd MMM yyy'}}
-
-          </div>
-          <div  class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getStatus(item.status)}}
-          </div>
-
-          <div  class="page__section-input page__section-input--25 documents__ascard--task">
-            {{getPrivacy(item.privacy)}}
-          </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+          <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
+            {{ getDocument(item.documentType)}}
+          </a>
         </div>
-    </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+
+          {{item.updatedDate |date :'dd MMM yyy'}}
+
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{getStatus(item.status)}}
+        </div>
+
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{getPrivacy(item.privacy)}}
+        </div>
+      </div>
+    </div> -->
   </mat-grid-list>
 
 
   <div class="textarea margin_table" style="text-align: end;" *ngIf="(data.standarScopeDocuments === 0) ">
-    <button class="btnr btnr--add" *ngIf="permission_write || permission_edit" (click)="DialogDocumentsLeadClientComponent(null)" matRipple matRippleColor="rgba(157, 50, 146, 0.5)">
+    <button class="btnr btnr--add" *ngIf="permission_write || permission_edit"
+      (click)="DialogDocumentsLeadClientComponent(null)" matRipple matRippleColor="rgba(157, 50, 146, 0.5)">
       Add New Document
     </button>
   </div>
