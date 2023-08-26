@@ -10,6 +10,7 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 })
 export class DialogWireTransferComponent implements OnInit {
 
+  accountCategory: any[] = [];
   data:any = {};
   ca_countType:any[]=[];
   ca_currency:any[]=[];
@@ -23,6 +24,7 @@ export class DialogWireTransferComponent implements OnInit {
     }
     this.ca_countType    = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_currency   = await this._services.getCatalogueFrom('GetCurrency');
+    this.getSelectOption();
   }
 
   save(){
@@ -35,9 +37,36 @@ export class DialogWireTransferComponent implements OnInit {
     this.dialogRef.close(this.data);
   }
 
+  valid_accountCategory: boolean = false;  
+  changeAccountCategory() {
+    this.valid_accountCategory = false
+    console.log(this.accountCategory);
+    console.log('crear');
+      let lista = this.accountCategory.map(select => {
+        return {
+          id: 0,
+          idCatBankingDetailType: select,
+          idOfficeBankingDetailList: 0
+        }
+      })
+      console.log(lista);
+      this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
+      console.log(this.data.officeBankingDetailLists);
+  }
+
+  ca_accountType = [];
+  ca_accountCat: any
+  async getSelectOption() {
+    this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
+    this._services.getService('GetBankingDetailType').subscribe(ele => {
+      console.log(ele);
+      this.ca_accountCat = ele.result.value
+    })
+
+  }
 
   public contador = 0;
-  public activeAccountType : boolean = false;
+  public activeaccountNameBeneficiary : boolean = false;
   public activeAccountHolders : boolean = false;
   public activeBankName : boolean = false;
   public activeAccountNumber : boolean = false;
@@ -50,50 +79,50 @@ export class DialogWireTransferComponent implements OnInit {
   public activeComments : boolean  = false;
   validForm(){
     this.contador = 0;
-     if(this.data.accountType == '' || this.data.accountType == null || this.data.accountType == undefined){
-       this.activeAccountType = true;
+     if(this.data.accountNameBeneficiary == '' || this.data.accountNameBeneficiary == null || this.data.accountNameBeneficiary == undefined){
+       this.activeaccountNameBeneficiary = true;
        this.contador++;
      }
-     if(this.data.accountHoldersName == '' || this.data.accountHoldersName == null || this.data.accountHoldersName == undefined){
-       this.activeAccountHolders = true;
-       this.contador++;
-    }
-    if(this.data.bankName == '' || this.data.bankName == null || this.data.bankName == undefined){
-       this.activeBankName = true;
-       this.contador++;
-    }
-    if(this.data.accountNumber == '' || this.data.accountNumber == null || this.data.accountNumber == undefined){
-       this.activeAccountNumber = true;
-       this.contador++;
-    }
-    if(this.data.routingNumber == '' || this.data.routingNumber == null || this.data.routingNumber == undefined){
-       this.activeRoutingNumber = true;
-       this.contador++;
-    }
-    if(this.data.swiftBicCode == '' || this.data.swiftBicCode == null || this.data.swiftBicCode == undefined){
-       this.activeSwift = true;
-       this.contador++;
-    }
-    if(this.data.currency == '' && this.data.currency == null && this.data.currency == undefined){
-      this.activeCurrency = true;
-      this.contador++;
-    }
-    if(this.data.wireFeeApprox == '' || this.data.wireFeeApprox == null || this.data.wireFeeApprox == undefined){
-      this.activeWireFee = true;
-      this.contador++;
-    }
-    if(this.data.bankAddress == '' || this.data.bankAddress == null || this.data.bankAddress == undefined){
-      this.activeBankAdress = true;
-      this.contador++;
-    }
-    if(this.data.internationalPaymentAcceptance == '' || this.data.internationalPaymentAcceptance == null || this.data.internationalPaymentAcceptance == undefined){
-      this.activeInternational = true;
-      this.contador++;
-    }
-    if(this.data.comments == '' || this.data.comments == null || this.data.comments == undefined){
-      this.activeComments = true;
-      this.contador++;
-    }
+    //  if(this.data.accountHoldersName == '' || this.data.accountHoldersName == null || this.data.accountHoldersName == undefined){
+    //    this.activeAccountHolders = true;
+    //    this.contador++;
+    // }
+    // if(this.data.bankName == '' || this.data.bankName == null || this.data.bankName == undefined){
+    //    this.activeBankName = true;
+    //    this.contador++;
+    // }
+    // if(this.data.accountNumber == '' || this.data.accountNumber == null || this.data.accountNumber == undefined){
+    //    this.activeAccountNumber = true;
+    //    this.contador++;
+    // }
+    // if(this.data.routingNumber == '' || this.data.routingNumber == null || this.data.routingNumber == undefined){
+    //    this.activeRoutingNumber = true;
+    //    this.contador++;
+    // }
+    // if(this.data.swiftBicCode == '' || this.data.swiftBicCode == null || this.data.swiftBicCode == undefined){
+    //    this.activeSwift = true;
+    //    this.contador++;
+    // }
+    // if(this.data.currency == '' && this.data.currency == null && this.data.currency == undefined){
+    //   this.activeCurrency = true;
+    //   this.contador++;
+    // }
+    // if(this.data.wireFeeApprox == '' || this.data.wireFeeApprox == null || this.data.wireFeeApprox == undefined){
+    //   this.activeWireFee = true;
+    //   this.contador++;
+    // }
+    // if(this.data.bankAddress == '' || this.data.bankAddress == null || this.data.bankAddress == undefined){
+    //   this.activeBankAdress = true;
+    //   this.contador++;
+    // }
+    // if(this.data.internationalPaymentAcceptance == '' || this.data.internationalPaymentAcceptance == null || this.data.internationalPaymentAcceptance == undefined){
+    //   this.activeInternational = true;
+    //   this.contador++;
+    // }
+    // if(this.data.comments == '' || this.data.comments == null || this.data.comments == undefined){
+    //   this.activeComments = true;
+    //   this.contador++;
+    // }
     if(this.contador == 0){
       this.save();
     }else{
