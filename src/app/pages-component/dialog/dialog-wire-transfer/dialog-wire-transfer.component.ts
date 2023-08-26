@@ -11,47 +11,59 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 export class DialogWireTransferComponent implements OnInit {
 
   accountCategory: any[] = [];
-  data:any = {};
-  ca_countType:any[]=[];
-  ca_currency:any[]=[];
-
-  constructor(public _services: ServiceGeneralService,  public _dialog:MatDialog,public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public datas: any) { }
+  data: any = {};
+  ca_countType: any[] = [];
+  ca_currency: any[] = [];
+  constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public datas: any) { }
 
   async ngOnInit() {
     console.log("INFORMACION DE RECEPCION: ", this.datas);
-    if(this.datas != null){
+    if (this.datas != null) {
       this.data = this.datas;
+      console.log(this.data);
+      let office = this.data.officeBankingDetailLists[0]
+      let resul = office.relBankingDetailTypeOfficeBankingDetails.map(ele => {
+        return ele.idCatBankingDetailType
+      })
+      this.accountCategory = resul
     }
-    this.ca_countType    = await this._services.getCatalogueFrom('GetBankAccountType');
-    this.ca_currency   = await this._services.getCatalogueFrom('GetCurrency');
+    this.ca_countType = await this._services.getCatalogueFrom('GetBankAccountType');
+    this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
     this.getSelectOption();
+
   }
 
-  save(){
+  save() {
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
-    
+
+    let lista = this.accountCategory.map(select => {
+      return {
+        id: 0,
+        idCatBankingDetailType: select,
+        idOfficeBankingDetailList: 0
+      }
+    })
+    console.log(lista);
+    this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
+    console.log(this.data.officeBankingDetailLists);
+
     this.data.success = true;
     console.log("esta es la data que se enviara: ", this.data);
     this.dialogRef.close(this.data);
   }
 
-  valid_accountCategory: boolean = false;  
+  valid_accountCategory: boolean = false;
   changeAccountCategory() {
-    this.valid_accountCategory = false
     console.log(this.accountCategory);
     console.log('crear');
-      let lista = this.accountCategory.map(select => {
-        return {
-          id: 0,
-          idCatBankingDetailType: select,
-          idOfficeBankingDetailList: 0
-        }
-      })
-      console.log(lista);
-      this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
-      console.log(this.data.officeBankingDetailLists);
+    if (this.accountCategory == undefined || this.accountCategory.length <= 0) {
+      this.valid_accountCategory = true
+    } else {
+      this.valid_accountCategory = false
+
+    }
   }
 
   ca_accountType = [];
@@ -64,82 +76,65 @@ export class DialogWireTransferComponent implements OnInit {
     })
 
   }
+  isValid(value: any): boolean {
+    return value === null || value === undefined || value === '';
+  }
+  valid_accountName: boolean = false;
+  valid_taxId: boolean = false;
+  valid_accountNumberBeneficiary: boolean = false;
+  valid_idCurrency: boolean = false;
+  valid_idAccountType: boolean = false;
+  valid_bankNameBeneficiary: boolean = false;
+  validForm() {
+    if (this.accountCategory == undefined || this.accountCategory.length <= 0) {
+      this.valid_accountCategory = true
+    } else {
+      this.valid_accountCategory = false
+    }
+    const { accountNameBeneficiary, taxId, accountNumberBeneficiary, idCurrency
+      , idAccountType, bankNameBeneficiary } = this.data
 
-  public contador = 0;
-  public activeaccountNameBeneficiary : boolean = false;
-  public activeAccountHolders : boolean = false;
-  public activeBankName : boolean = false;
-  public activeAccountNumber : boolean = false;
-  public activeRoutingNumber : boolean = false;
-  public activeSwift : boolean = false;
-  public activeCurrency : boolean = false;
-  public activeWireFee : boolean  = false;
-  public activeBankAdress : boolean  = false;
-  public activeInternational : boolean  = false;
-  public activeComments : boolean  = false;
-  validForm(){
-    this.contador = 0;
-     if(this.data.accountNameBeneficiary == '' || this.data.accountNameBeneficiary == null || this.data.accountNameBeneficiary == undefined){
-       this.activeaccountNameBeneficiary = true;
-       this.contador++;
-     }
-    //  if(this.data.accountHoldersName == '' || this.data.accountHoldersName == null || this.data.accountHoldersName == undefined){
-    //    this.activeAccountHolders = true;
-    //    this.contador++;
-    // }
-    // if(this.data.bankName == '' || this.data.bankName == null || this.data.bankName == undefined){
-    //    this.activeBankName = true;
-    //    this.contador++;
-    // }
-    // if(this.data.accountNumber == '' || this.data.accountNumber == null || this.data.accountNumber == undefined){
-    //    this.activeAccountNumber = true;
-    //    this.contador++;
-    // }
-    // if(this.data.routingNumber == '' || this.data.routingNumber == null || this.data.routingNumber == undefined){
-    //    this.activeRoutingNumber = true;
-    //    this.contador++;
-    // }
-    // if(this.data.swiftBicCode == '' || this.data.swiftBicCode == null || this.data.swiftBicCode == undefined){
-    //    this.activeSwift = true;
-    //    this.contador++;
-    // }
-    // if(this.data.currency == '' && this.data.currency == null && this.data.currency == undefined){
-    //   this.activeCurrency = true;
-    //   this.contador++;
-    // }
-    // if(this.data.wireFeeApprox == '' || this.data.wireFeeApprox == null || this.data.wireFeeApprox == undefined){
-    //   this.activeWireFee = true;
-    //   this.contador++;
-    // }
-    // if(this.data.bankAddress == '' || this.data.bankAddress == null || this.data.bankAddress == undefined){
-    //   this.activeBankAdress = true;
-    //   this.contador++;
-    // }
-    // if(this.data.internationalPaymentAcceptance == '' || this.data.internationalPaymentAcceptance == null || this.data.internationalPaymentAcceptance == undefined){
-    //   this.activeInternational = true;
-    //   this.contador++;
-    // }
-    // if(this.data.comments == '' || this.data.comments == null || this.data.comments == undefined){
-    //   this.activeComments = true;
-    //   this.contador++;
-    // }
-    if(this.contador == 0){
-      this.save();
-    }else{
-      let msg = '';
-          msg = "It is necessary to fill all information requested";
-     
-      const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
-        data: {
-          header: "Warning",
-          body: msg
-        },
-        width: "350px"
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-      
-      })
-    } 
+    if (this.accountCategory.includes(1)) {
+      this.valid_accountName = this.isValid(accountNameBeneficiary);
+      this.valid_taxId = this.isValid(taxId);
+      this.valid_accountNumberBeneficiary = this.isValid(accountNumberBeneficiary);
+      this.valid_idCurrency = this.isValid(idCurrency);
+      this.valid_idAccountType = this.isValid(idAccountType);
+      this.valid_bankNameBeneficiary = this.isValid(bankNameBeneficiary);
+      const variablesAValidar = [this.valid_accountName, this.valid_taxId, this.valid_accountNumberBeneficiary,
+      this.valid_idCurrency, this.valid_idAccountType, this.valid_bankNameBeneficiary];
+
+      if (variablesAValidar.every(valid => !valid) && !this.valid_accountCategory) {
+        console.log('entro');
+        this.save();
+
+      } else {
+        console.log('salio 1');
+
+      }
+    }
+    else {
+      this.valid_accountName = false
+      this.valid_taxId = false
+      this.valid_accountNumberBeneficiary = false
+      this.valid_idCurrency = false
+      this.valid_idAccountType = false
+      this.valid_bankNameBeneficiary = false
+      if (!this.valid_accountCategory) {
+        this.save();
+        console.log('inter');
+      }
+
+    }
+
+
+    /* if (variablesAValidar.every(valid => !valid) && !this.valid_accountCategory) {
+
+      // this.save();
+    } else {
+      console.log('salio');
+
+    } */
+
   }
 }

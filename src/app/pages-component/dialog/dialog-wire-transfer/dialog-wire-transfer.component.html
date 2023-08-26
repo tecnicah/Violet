@@ -8,7 +8,7 @@
   </div>
 </div>
 <!----------------------------------OPEN CONTENT------------------------------------------>
-<mat-dialog-content class="mat-typography"  style="height: calc(100% - 96px);max-height: unset">
+<mat-dialog-content class="mat-typography" style="height: calc(100% - 96px);max-height: unset">
 
   <mat-grid-list cols="4" rowHeight="100px">
 
@@ -16,13 +16,13 @@
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Account Category</mat-label>
-          <mat-select [(ngModel)]="accountCategory"  (ngModelChange)="changeAccountCategory()" multiple>
+          <mat-select [(ngModel)]="accountCategory" (ngModelChange)="changeAccountCategory()" multiple>
             <mat-option *ngFor="let item of ca_accountCat" [value]="item.id">
               {{item.name}}</mat-option>
           </mat-select>
           <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_accountCategory">Field is required</mat-hint>
         </mat-form-field>
-      </div>     
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -38,7 +38,9 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Account Name</mat-label>
-            <input matInput [(ngModel)]="data.accountNameBeneficiary">
+            <input matInput [(ngModel)]="data.accountNameBeneficiary" required>
+            <mat-hint style="color: #e91e63; font-size: 12px"
+              *ngIf="valid_accountName">Field is required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -46,7 +48,9 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Tax ID</mat-label>
-            <input matInput [(ngModel)]="data.taxId">
+            <input matInput [(ngModel)]="data.taxId" required>
+            <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_taxId">Field is
+              required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -54,7 +58,9 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Account Number</mat-label>
-            <input matInput [(ngModel)]="data.accountNumberBeneficiary">
+            <input matInput [(ngModel)]="data.accountNumberBeneficiary" type="number" min="0" required>
+            <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_accountNumberBeneficiary">Field is
+              required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -62,10 +68,11 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Currency</mat-label>
-            <mat-select [(ngModel)]="data.idCurrency">
+            <mat-select [(ngModel)]="data.idCurrency" required>
               <mat-option *ngFor="let item of ca_currency" [value]="item.id">
                 {{item.currency}}</mat-option>
             </mat-select>
+            <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_idCurrency">Field is required</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -73,10 +80,12 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Account Type</mat-label>
-            <mat-select [(ngModel)]="data.idAccountType">
+            <mat-select [(ngModel)]="data.idAccountType" required>
               <mat-option *ngFor="let item of ca_countType" [value]="item.id">
                 {{item.accountType}}</mat-option>
             </mat-select>
+            <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_idAccountType">Field is required</mat-hint>
+
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -84,19 +93,17 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Bank Name</mat-label>
-            <input matInput [(ngModel)]="data.bankNameBeneficiary">
+            <input matInput [(ngModel)]="data.bankNameBeneficiary" required>
+            <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_bankNameBeneficiary">Field is
+              required</mat-hint>
           </mat-form-field>
         </div>
-      </mat-grid-tile>
-      <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
       </mat-grid-tile>
       <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
         <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
             <mat-label>Bank Adress</mat-label>
-            <input matInput [(ngModel)]="data.bankAddressBeneficiary"
-            #bankAddressBeneficiary
-            maxlength="150">
+            <input matInput [(ngModel)]="data.bankAddressBeneficiary" #bankAddressBeneficiary maxlength="150">
             <mat-hint align="end">{{bankAddressBeneficiary.value.length}} / 150</mat-hint>
           </mat-form-field>
         </div>
@@ -121,7 +128,7 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Clabe</mat-label>
-            <input matInput [(ngModel)]="data.clabe">
+            <input matInput [(ngModel)]="data.clabe" type="number" min="0">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -129,7 +136,7 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Iban</mat-label>
-            <input matInput [(ngModel)]="data.iban">
+            <input matInput [(ngModel)]="data.iban" type="number" min="0">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -137,7 +144,8 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-            <input matInput placeholder="SWIFT / BIC Code ( If Applies)" [(ngModel)]="data.swiftBeneficiary">
+            <input matInput placeholder="SWIFT / BIC Code ( If Applies)" [(ngModel)]="data.swiftBeneficiary"
+              type="number" min="0">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -146,9 +154,7 @@
           <p class="subtitle" style="font-size: 12px;">W8/w9</p>
           <mat-checkbox class="example-margin" [(ngModel)]="data.w8W9"></mat-checkbox>
         </div>
-
       </mat-grid-tile>
-
       <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
@@ -161,20 +167,20 @@
       <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <p class="subtitle" style="font-size: 12px;">International Payment Acceptance</p>
-          <mat-checkbox disabled class="example-margin" [(ngModel)]="data.internationalPaymentAcceptance"></mat-checkbox>
+          <mat-checkbox  class="example-margin"
+            [(ngModel)]="data.internationalPaymentAcceptance"></mat-checkbox>
         </div>
       </mat-grid-tile>
-
-      <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
         <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
             <mat-label>Adiccional Instruccion</mat-label>
-            <input matInput [(ngModel)]="data.adiitionalInstruccion" #adiitionalInstruccion
-            maxlength="250">
-            <mat-hint align="end">{{adiitionalInstruccion.value.length}} / 250</mat-hint>
+            <input [(ngModel)]="data.adiitionalInstruccion" matInput  #message_bankaddress maxlength="250">
+            <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
           </mat-form-field>
         </div>
       </mat-grid-tile>
+
     </mat-grid-list>
     <!--Fin Banking Details Beneficiary-->
 
@@ -197,8 +203,8 @@
         <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
             <mat-label>Bank Address</mat-label>
-            <input matInput placeholder="Bank Address" type="text" #message_bankaddress
-              maxlength="150" [(ngModel)]="data.bankNameIntermediary">
+            <input matInput placeholder="Bank Address" type="text" #message_bankaddress maxlength="150"
+              [(ngModel)]="data.bankAddressIntermediary">
             <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
           </mat-form-field>
         </div>

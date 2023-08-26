@@ -82,6 +82,7 @@ export class DialogOfficeInformationComponent implements OnInit {
   //*********************************************//
   data_PaymentInformationPartner: any
   data_PaymentInformationPremier: any
+
   ngOnInit(): void {
     this.consultaPermisos();
     console.log(this.data);
@@ -125,8 +126,17 @@ export class DialogOfficeInformationComponent implements OnInit {
   }
 
   list_ca_accountType = [];
+  ca_accountCat: any
+  AccountCategoryList(account) {
+    let hola = account.map(ele => ele.idCatBankingDetailType)
+    return hola
+  }
   async getSelectOption() {
     this.list_ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
+    this._services.getService('GetBankingDetailType').subscribe(ele => {
+      console.log(ele);
+      this.ca_accountCat = ele.result.value
+    })
   }
   tablaDetaild: any = []
   SeleccionarOffice(idOffice) {

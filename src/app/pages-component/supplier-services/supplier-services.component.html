@@ -1128,10 +1128,10 @@
           <!--TABLE WIRE TRANSFER-->
           <table class="mat-elevation-z8 textarea mat-table"  *ngIf="element.wire">
             <tr class="mat-header-row">
-              <th class="mat-header-cell">Account Type</th>
-              <th class="mat-header-cell">Account Holders Name</th>
-              <th class="mat-header-cell">Bank Name</th>
-              <th class="mat-header-cell">Account Number / CLABE</th>
+              <th class="mat-header-cell">Account Name Beneficiary</th>
+              <th class="mat-header-cell">Account Number Beneficiary</th>
+              <th class="mat-header-cell">Bank Name Beneficiary</th>
+              <th class="mat-header-cell">CLABE</th>
               <th class="mat-header-cell">International Payment Acceptance</th>
               <th class="mat-header-cell"></th>
             </tr>
@@ -1140,7 +1140,7 @@
               <td class="mat-cell">{{wire.accountNameBeneficiary}}</td>
               <td class="mat-cell">{{wire.accountNumberBeneficiary}}</td>
               <td class="mat-cell">{{wire.bankNameBeneficiary}}</td>
-              <td class="mat-cell">{{wire.internationalPaymentAcceptance}}</td>
+              <td class="mat-cell">{{wire.clabe}}</td>
               <td class="mat-cell">
                 <div class="table-row__check">
                   <img src="assets/table-icons/check.png" *ngIf="wire.internationalPaymentAcceptance" />

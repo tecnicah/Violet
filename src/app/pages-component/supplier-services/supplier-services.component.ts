@@ -326,7 +326,7 @@ export class SupplierServicesComponent implements OnInit {
         //console.log("esta es la consulta del servicio: ", this.data);
         for (let i = 0; i < this.data.areasCoverageServices.length; i++) {
           if (this.data.areasCoverageServices[i].paymentInformationServices.length > 0) {
-            debugger;
+
             for (let j = 0; j < this.data.areasCoverageServices[i].paymentInformationServices.length; j++) {
               if (this.data.areasCoverageServices[i].paymentInformationServices[j].creditCard) {
                 this.data.areasCoverageServices[i].payment = true;
@@ -509,7 +509,7 @@ export class SupplierServicesComponent implements OnInit {
   }
 
   serviceLineOption(id) {
-    debugger;
+
     if (id == 1) {
       this.data.immigration = true;
     }
@@ -778,14 +778,17 @@ export class SupplierServicesComponent implements OnInit {
   //*************************************************************//
   addWireTransfer(i) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
-      width: "90%"
+      width: "90%",
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
+        console.log(result);
         this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices.push(result);
+        console.log(this.data);
+
         //console.log(this.data);
-        debugger
+
       }
     });
   }
@@ -1128,7 +1131,7 @@ export class SupplierServicesComponent implements OnInit {
       this.seccionUno++;
       contador++;
     }
-    debugger;
+
     this.data.relocation = true;
     if (this.data.immigration == undefined && this.data.relocation == undefined) {
       this.active_serviceLine = true;
@@ -1300,7 +1303,7 @@ export class SupplierServicesComponent implements OnInit {
   }
 
   save() {
-    debugger;
+
     this.loader.showLoader();
     this.data.createdBy = this.user.id;
     this.data.createdDate = new Date();

@@ -103,6 +103,16 @@ export class BankingDetailsComponent implements OnInit {
       this.valid_accountCategory = false
     }
   }
+  isValid(value: any): boolean {
+    return value === null || value === undefined || value === '';
+  }
+  valid_accountName: boolean = false;
+  valid_taxId: boolean = false;
+  valid_accountNumberBeneficiary: boolean = false;
+  valid_idCurrency: boolean = false;
+  valid_idAccountType: boolean = false;
+  valid_bankNameBeneficiary: boolean = false;
+
   save_data() {
     if (this.data_.operacion == 'insertar') {
       this.insertDetail()
@@ -137,37 +147,95 @@ export class BankingDetailsComponent implements OnInit {
       this.valid_accountCategory = true
     } else {
       this.valid_accountCategory = false
-      if (this.data_.id != 0) {
-        this.data_land.relBankingDetailTypeOfficeBankingDetails = []
-        this.accountCategory.forEach(ele => {
-          this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
-            id: 0,
-            idCatBankingDetailType: ele,
-            idOfficeBankingDetailList: 0
+    }
+    if (this.accountCategory.includes(1)) {
+      this.valid_accountName = this.isValid(accountNameBeneficiary);
+      this.valid_taxId = this.isValid(taxId);
+      this.valid_accountNumberBeneficiary = this.isValid(accountNumberBeneficiary);
+      this.valid_idCurrency = this.isValid(idCurrency);
+      this.valid_idAccountType = this.isValid(idAccountType);
+      this.valid_bankNameBeneficiary = this.isValid(bankNameBeneficiary);
+      const variablesAValidar = [this.valid_accountName, this.valid_taxId, this.valid_accountNumberBeneficiary,
+      this.valid_idCurrency, this.valid_idAccountType, this.valid_bankNameBeneficiary];
+      if (variablesAValidar.every(valid => !valid) && !this.valid_accountCategory) {
+        if (this.data_.id != 0) {
+          this.data_land.relBankingDetailTypeOfficeBankingDetails = []
+          this.accountCategory.forEach(ele => {
+            this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
+              id: 0,
+              idCatBankingDetailType: ele,
+              idOfficeBankingDetailList: 0
+            })
           })
-        })
-        console.log("data general : ", this.data_land);
-        console.log("data de account:", this.accountCategory);
-        this._services.service_general_post_with_url("Catalog/AddOfficeBankingDetailList", this.data_land).subscribe(documentOffices => {
-          console.log(documentOffices);
+          console.log("data general : ", this.data_land);
+          console.log("data de account:", this.accountCategory);
+          this._services.service_general_post_with_url("Catalog/AddOfficeBankingDetailList", this.data_land).subscribe(documentOffices => {
+            console.log(documentOffices);
+            this.viewMensajeComponente('save', 'Banking Details List was saved correctly')
+            this.dialogRef.close(this.data_land);
+          })
+        } else {
+          this.data_land.relBankingDetailTypeOfficeBankingDetails = []
+          this.accountCategory.forEach(ele => {
+            this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
+              id: 0,
+              idCatBankingDetailType: ele,
+              idOfficeBankingDetailList: 0
+            })
+          })
+          console.log("data general : ", this.data_land);
+          console.log("data de account:", this.accountCategory);
           this.viewMensajeComponente('save', 'Banking Details List was saved correctly')
           this.dialogRef.close(this.data_land);
-        })
+        }
+
       } else {
-        this.data_land.relBankingDetailTypeOfficeBankingDetails = []
-        this.accountCategory.forEach(ele => {
-          this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
-            id: 0,
-            idCatBankingDetailType: ele,
-            idOfficeBankingDetailList: 0
+        console.log('salio');
+
+      }
+    } else {
+      this.valid_accountName = false
+      this.valid_taxId = false
+      this.valid_accountNumberBeneficiary = false
+      this.valid_idCurrency = false
+      this.valid_idAccountType = false
+      this.valid_bankNameBeneficiary = false
+      if (!this.valid_accountCategory) {
+        if (this.data_.id != 0) {
+          this.data_land.relBankingDetailTypeOfficeBankingDetails = []
+          this.accountCategory.forEach(ele => {
+            this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
+              id: 0,
+              idCatBankingDetailType: ele,
+              idOfficeBankingDetailList: 0
+            })
           })
-        })
-        console.log("data general : ", this.data_land);
-        console.log("data de account:", this.accountCategory);
-        this.viewMensajeComponente('save', 'Banking Details List was saved correctly')
-        this.dialogRef.close(this.data_land);
+          console.log("data general : ", this.data_land);
+          console.log("data de account:", this.accountCategory);
+          this._services.service_general_post_with_url("Catalog/AddOfficeBankingDetailList", this.data_land).subscribe(documentOffices => {
+            console.log(documentOffices);
+            this.viewMensajeComponente('save', 'Banking Details List was saved correctly')
+            this.dialogRef.close(this.data_land);
+          })
+        } else {
+          this.data_land.relBankingDetailTypeOfficeBankingDetails = []
+          this.accountCategory.forEach(ele => {
+            this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
+              id: 0,
+              idCatBankingDetailType: ele,
+              idOfficeBankingDetailList: 0
+            })
+          })
+          console.log("data general : ", this.data_land);
+          console.log("data de account:", this.accountCategory);
+          this.viewMensajeComponente('save', 'Banking Details List was saved correctly')
+          this.dialogRef.close(this.data_land);
+        }
       }
     }
+
+
+
   }
   updateDetail() {
     this.data_land.id = this.data_.id
@@ -181,6 +249,54 @@ export class BankingDetailsComponent implements OnInit {
       this.valid_accountCategory = true
     } else {
       this.valid_accountCategory = false
+    }
+    const { accountNameBeneficiary, taxId, accountNumberBeneficiary, idCurrency
+      , idAccountType, bankNameBeneficiary } = this.data_land
+    if (this.accountCategory.includes(1)) {
+
+      this.valid_accountName = this.isValid(accountNameBeneficiary);
+      this.valid_taxId = this.isValid(taxId);
+      this.valid_accountNumberBeneficiary = this.isValid(accountNumberBeneficiary);
+      this.valid_idCurrency = this.isValid(idCurrency);
+      this.valid_idAccountType = this.isValid(idAccountType);
+      this.valid_bankNameBeneficiary = this.isValid(bankNameBeneficiary);
+      const variablesAValidar = [this.valid_accountName, this.valid_taxId, this.valid_accountNumberBeneficiary,
+      this.valid_idCurrency, this.valid_idAccountType, this.valid_bankNameBeneficiary];
+      if (variablesAValidar.every(valid => !valid) && !this.valid_accountCategory) {
+        if (this.data_.id != 0) {
+          this.data_land.relBankingDetailTypeOfficeBankingDetails = []
+          this.accountCategory.forEach(ele => {
+            this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
+              id: 0,
+              idCatBankingDetailType: ele,
+              idOfficeBankingDetailList: this.data_land.id
+            })
+          })
+          console.log("data general : ", JSON.stringify(this.data_land));
+          console.log("data de account:", this.accountCategory);
+          this._services.service_general_put("Catalog/EditOfficeBankingDetailList", this.data_land).subscribe(documentOffices => {
+            console.log(documentOffices);
+            this.viewMensajeComponente('edit', 'Banking Details List was edited correctly')
+            this.dialogRef.close(this.data_land);
+          })
+        } else {
+          this.data_land.relBankingDetailTypeOfficeBankingDetails = []
+          this.accountCategory.forEach(ele => {
+            this.data_land.relBankingDetailTypeOfficeBankingDetails.push({
+              id: 0,
+              idCatBankingDetailType: ele,
+              idOfficeBankingDetailList: 0
+            })
+          })
+          console.log("data general : ", this.data_land);
+          console.log("data de account:", this.accountCategory);
+          this.viewMensajeComponente('edit', 'Banking Details List was edited correctly')
+          this.dialogRef.close(this.data_land);
+        }
+      } else {
+        console.log('salio x2');
+      }
+    } else {
       if (this.data_.id != 0) {
         this.data_land.relBankingDetailTypeOfficeBankingDetails = []
         this.accountCategory.forEach(ele => {
@@ -212,6 +328,7 @@ export class BankingDetailsComponent implements OnInit {
         this.dialogRef.close(this.data_land);
       }
     }
+
   }
   viewMensajeComponente(header: string, msg: string) {
     window.scrollTo(0, 0);
