@@ -198,226 +198,234 @@
     <p class="page__section-name" style="font-size: 14px;">Banking Details List</p>
   </div>
 
-  <div class="input_final" style="width: 20%;">
-    <mat-form-field appearance="fill">
-      <mat-label>Account Category</mat-label>
-      <mat-select [(ngModel)]="this.accountCategory"  (ngModelChange)="changeAccountCategory()" multiple>
-        <mat-option *ngFor="let item of ca_accountCat" [value]="item.id">
-          {{item.name}}</mat-option>
-      </mat-select>
-      <mat-hint style="color: #e91e63; font-size: 12px" *ngIf="valid_accountCategory">Field is required</mat-hint>
-    </mat-form-field>
-  </div>
   <!--Inicio de Tabla Banking Details-->
   <!--class="mat-typography"-->
-  <mat-dialog-content class="conten-detail"
-    *ngIf="data?.officeBankingDetailLists != undefined && data?.officeBankingDetailLists.length >=1">
-    <div class="mat-elevation-z5" style="padding-top: 10px;">
-      <!--Inicio Banking Details Beneficiary-->
+  <mat-dialog-content class="conten-detail" *ngIf="ocultarOffice()">
+    <div class="mat-elevation-z5" style="padding-top: 10px;"
+      *ngFor="let data_land of data?.officeBankingDetailLists; let i = index">
       <mat-grid-list cols="4" rowHeight="70px">
         <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
           <div class="input_final">
-            Banking Details Beneficiary
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
             <mat-form-field appearance="fill">
-              <mat-label>Account Name</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Tax ID</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Account Number</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Account Number</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Currency</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Account Type</mat-label>
-              <mat-select disabled>
-                <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}
-                </mat-option>
+              <mat-label>Account Category </mat-label>
+              <mat-select disabled [value]="AccountCategoryList(data_land.relBankingDetailTypeOfficeBankingDetails)" multiple>
+                <mat-option *ngFor="let item of ca_accountCat" [value]="item.id">
+                  {{item.name}} </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
         </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Bank Name</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
-          <div class="input_final" style="width: 86%;">
-            <mat-form-field appearance="fill">
-              <mat-label>Bank Adress</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Back Branch</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Clabe</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Iban</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-              <input disabled matInput placeholder="SWIFT / BIC Code ( If Applies)">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <p class="subtitle" style="font-size: 12px;">W8w9</p>
-            <mat-checkbox disabled class="example-margin"></mat-checkbox>
-          </div>
+      </mat-grid-list>
+      <ng-container *ngFor="let item of data_land.relBankingDetailTypeOfficeBankingDetails">
+        <!--Inicio Banking Details Beneficiary-->
+        <mat-grid-list cols="4" rowHeight="70px" *ngIf="item.idCatBankingDetailType == 1">
+          <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
+            <div class="input_final">
+              Banking Details Beneficiary
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Account Name</mat-label>
+                <input [(ngModel)]="data_land.accountNameBeneficiary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Tax ID</mat-label>
+                <input [(ngModel)]="data_land.taxId" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Account Number</mat-label>
+                <input [(ngModel)]="data_land.accountNumberBeneficiary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Currency </mat-label>
+                <mat-select placeholder="Currency" [(ngModel)]='data_land.idCurrency' disabled>
+                  <mat-option *ngFor="let data of ca_currency" [value]="data.id">
+                    {{data.currency}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Account Type</mat-label>
+                <mat-select [(ngModel)]="data_land.idAccountType" disabled>
+                  <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Name</mat-label>
+                <input [(ngModel)]="data_land.bankNameBeneficiary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
+            <div class="input_final" style="width: 86%;">
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Adress</mat-label>
+                <input [(ngModel)]="data_land.bankAddressBeneficiary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Back Branch</mat-label>
+                <input [(ngModel)]="data_land.bankBranch" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Back Phone</mat-label>
+                <input [(ngModel)]="data_land.bankPhone" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Clabe</mat-label>
+                <input [(ngModel)]="data_land.clabe" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Iban</mat-label>
+                <input [(ngModel)]="data_land.iban" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
+                <input [(ngModel)]="data_land.swiftBeneficiary" disabled matInput
+                  placeholder="SWIFT / BIC Code ( If Applies)">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <p class="subtitle" style="font-size: 12px;">W8w9</p>
+              <mat-checkbox [(ngModel)]="data_land.w8W9" disabled class="example-margin"></mat-checkbox>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
+            <div class="input_final" style="width: 86%;">
+              <mat-form-field appearance="fill">
+                <mat-label>Adiccional Instruccion</mat-label>
+                <input [(ngModel)]="data_land.adiitionalInstruccion" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
 
           <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-            ></mat-grid-tile>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
-          <div class="input_final" style="width: 86%;">
-            <mat-form-field appearance="fill">
-              <mat-label>Adiccional Instruccion</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Wire Fee Approx</mat-label>
-              <span matPrefix>$ &nbsp;</span>
-              <input disabled matInput required placeholder="Wire Fee Approx" type="number" min="0">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <p class="subtitle" style="font-size: 12px;">International Payment Acceptance</p>
-            <mat-checkbox disabled class="example-margin"></mat-checkbox>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <!--Fin Banking Details Beneficiary-->
-
-      <!--Inicio Banking Details Intermediary-->
-      <mat-grid-list cols="4" rowHeight="70px">
-        <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
-          <div class="input_final">
-            Banking Details Intermediary
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Bank Name</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
-          <div class="input_final" style="width: 86%;">
-            <mat-form-field appearance="fill">
-              <mat-label>Bank Address</mat-label>
-              <input matInput disabled required placeholder="Bank Address" type="text" #message_bankaddress
-                maxlength="150">
-              <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-              <input disabled matInput placeholder="SWIFT / BIC Code ( If Applies)">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Account Number</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-          <div class="input_final">
-            <mat-form-field appearance="fill">
-              <mat-label>Account Name</mat-label>
-              <input matInput disabled required>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <!--Fin Banking Details Intermediary-->
-
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Wire Fee Approx</mat-label>
+                <span matPrefix>$ &nbsp;</span>
+                <input [(ngModel)]="data_land.wireFeeApprox" disabled matInput required placeholder="Wire Fee Approx"
+                  type="number" min="0">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <p class="subtitle" style="font-size: 12px;">International Payment Acceptance</p>
+              <mat-checkbox [(ngModel)]="data_land.internationalPaymentAcceptance" disabled
+                class="example-margin"></mat-checkbox>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <!--Fin Banking Details Beneficiary-->
+        <!--Inicio Banking Details Intermediary-->
+        <mat-grid-list cols="4" rowHeight="70px" *ngIf="item.idCatBankingDetailType ==2">
+          <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
+            <div class="input_final">
+              Banking Details Intermediary
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Name</mat-label>
+                <input [(ngModel)]="data_land.bankNameIntermediary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
+            <div class="input_final" style="width: 86%;">
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Address</mat-label>
+                <input [(ngModel)]="data_land.bankAddressIntermediary" matInput disabled required
+                  placeholder="Bank Address" type="text" #message_bankaddress maxlength="150">
+                <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
+                <input [(ngModel)]="data_land.swiftIntermediary" disabled matInput
+                  placeholder="SWIFT / BIC Code ( If Applies)">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Account Number</mat-label>
+                <input [(ngModel)]="data_land.accountNumberIntermediary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Account Name</mat-label>
+                <input [(ngModel)]="data_land.accountNameIntermediary" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <!--Fin Banking Details Intermediary-->
+      </ng-container>
       <mat-grid-list cols="4" rowHeight="70px">
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          Account # i
+          Account # {{i+1}}
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <img src="assets/icons/pencil.png" style="width: 20px; margin-left: 20px;">
+          <img src="assets/icons/pencil.png" style="width: 20px; margin-left: 20px;"
+          (click)="editBank(data_land)">
           &nbsp;&nbsp;
-          <img src="assets/icons/delete.png" style="width: 20px; margin-left: 20px;">
+          <img src="assets/icons/delete.png" style="width: 20px; margin-left: 20px;"
+          (click)="deletebank(data_land)">
         </mat-grid-tile>
       </mat-grid-list>
     </div>
