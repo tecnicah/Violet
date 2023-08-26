@@ -1137,10 +1137,10 @@
             </tr>
             <tr class="mat-row"
               *ngFor="let wire of element.paymentInformationServices[0].wireTransferServices; let k = index">
-              <td class="mat-cell">{{nameAccount(wire.accountType)}}</td>
-              <td class="mat-cell">{{wire.accountHoldersName}}</td>
-              <td class="mat-cell">{{wire.bankName}}</td>
-              <td class="mat-cell">{{wire.accountType}}</td>
+              <td class="mat-cell">{{wire.accountNameBeneficiary}}</td>
+              <td class="mat-cell">{{wire.accountNumberBeneficiary}}</td>
+              <td class="mat-cell">{{wire.bankNameBeneficiary}}</td>
+              <td class="mat-cell">{{wire.internationalPaymentAcceptance}}</td>
               <td class="mat-cell">
                 <div class="table-row__check">
                   <img src="assets/table-icons/check.png" *ngIf="wire.internationalPaymentAcceptance" />
