@@ -692,47 +692,154 @@
           </div>
         </mat-grid-tile>
       </mat-grid-list>
-      <br>
-      <table class="mat-elevation-z8 textarea mat-table" *ngIf="show" [hidden]="permisosConsultant == true">
-        <tr class="mat-header-row">
-          <th class="mat-header-cell">Account Name Beneficiary</th>
-          <th class="mat-header-cell">Account Number Beneficiary</th>
-          <th class="mat-header-cell">Bank Name Beneficiary</th>
-          <th class="mat-header-cell">CLABE</th>
-          <th class="mat-header-cell">International Payment Acceptance</th>
-          <th class="mat-header-cell"></th>
-        </tr>
-        <tr class="mat-row">
-          <td class="mat-cell">1</td>
-          <td class="mat-cell">2</td>
-          <td class="mat-cell">3</td>
-          <td class="mat-cell">4</td>
-          <td class="mat-cell">
-            <div class="table-row__check">
-              <img src="assets/table-icons/check.png" />
-              <img src="assets/table-icons/uncheck.png" />
+      <!--Este es nuevo a comenzar-->
+      <div class="mat-elevation-z4" style="padding: 10px;" *ngIf="show" [hidden]="permisosConsultant == true">
+        <mat-grid-list cols="4" rowHeight="25px">
+          <mat-grid-tile [colspan]="4" [rowspan]="2">
+            <div class="textarea" style="display: flex; justify-content: space-between;">
+              <span>
+                <p class="page__section-name">Payment Methods</p>
+              </span>
+
+              <span>
+                <p class="subtitle" style="font-size: 12px;">
+                  Fiscal Invoice
+                </p>
+                <mat-checkbox class="example-margin">
+                </mat-checkbox>
+              </span>
             </div>
-          </td>
-          <td class="mat-cell">
-            <img src="assets\icons\pencil.png" style="width: 20px;">
-            &nbsp;
-            <img src="assets/icons/quit.svg" style="width: 20px;">
-          </td>
-        </tr>
-      </table>
-      <br>
-      <mat-grid-list cols="4" rowHeight="100px" *ngIf="show" [hidden]="permisosConsultant == true">
-        <mat-grid-tile [colspan]="4" [rowspan]="1">
-          <div class="addPropperty">
-            <div class="page__section-button page__section-button--big" style="width: 145px; flex: 0 1 160px;">
-              <button class="button-icon button-icon--more" style="white-space: nowrap;"
-              (click)="addPaymentInformation()">
-                Add Payment Information
-              </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="4" rowHeight="50px">
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="textarea" style="display: flex; justify-content: space-between;">
+              <span>
+                <mat-checkbox class="example-margin">
+                  <b style="font-size: 12px;">Credit Card</b>
+                </mat-checkbox>
+              </span>
             </div>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
+          </mat-grid-tile>
+
+          <ng-container>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+              <div class="input_final textarea">
+                <mat-checkbox class="example-margin">
+                  <span class="subtitle" style="font-size: 12px;"></span>
+                </mat-checkbox>
+              </div>
+            </mat-grid-tile>
+          </ng-container>
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="textarea">
+              <mat-checkbox class="example-margin">
+                <b style="font-size: 12px;">Checks</b>
+              </mat-checkbox>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div style="width: 98%;">
+              <mat-form-field appearance="fill">
+                <mat-label>Pay to the Order Of</mat-label>
+                <input matInput required placeholder="Pay to the Order Of" type="text" #message_payto maxlength="150">
+                <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="textarea">
+              <mat-checkbox class="example-margin">
+                <b style="font-size: 12px;">Cash</b>
+              </mat-checkbox>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div style="width: 98%;">
+              <mat-form-field appearance="fill">
+                <mat-label>Comments</mat-label>
+                <input matInput required placeholder="Comments cash" type="text" #message_comm maxlength="150">
+                <mat-hint align="end">{{message_comm.value.length}} / 150</mat-hint>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <mat-grid-list cols="4" rowHeight="50px">
+          <mat-grid-tile>
+            <span>
+              <mat-checkbox class="example-margin">
+                <b style="font-size: 12px;">Wire Transfer</b>
+              </mat-checkbox>
+            </span>
+          </mat-grid-tile>
+          <br>
+        </mat-grid-list>
+        <br>
+        <br>
+        <!------------------------------------------------------------->
+        <!--TABLE WIRE TRANSFER-->
+        <table class="mat-elevation-z8 textarea mat-table">
+          <tr class="mat-header-row">
+            <th class="mat-header-cell">Account Name Beneficiary</th>
+            <th class="mat-header-cell">Account Number Beneficiary</th>
+            <th class="mat-header-cell">Bank Name Beneficiary</th>
+            <th class="mat-header-cell">CLABE</th>
+            <th class="mat-header-cell">International Payment Acceptance</th>
+            <th class="mat-header-cell"></th>
+          </tr>
+          <tr class="mat-row">
+            <td class="mat-cell">1</td>
+            <td class="mat-cell">2</td>
+            <td class="mat-cell">3</td>
+            <td class="mat-cell">4</td>
+            <td class="mat-cell">
+              <div class="table-row__check">
+                <img src="assets/table-icons/check.png" />
+                <img src="assets/table-icons/uncheck.png" />
+              </div>
+            </td>
+            <td class="mat-cell">
+              <img src="assets\icons\pencil.png" style="width: 20px;">
+              &nbsp;
+              <img src="assets/icons/quit.svg" style="width: 20px;">
+            </td>
+          </tr>
+        </table>
+        <br>
+        <!------------------------------------------------------------->
+        <mat-grid-list cols="4" rowHeight="100px">
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="addPropperty">
+              <div class="page__section-button page__section-button--big" style="width: 145px; flex: 0 1 160px;">
+                <button class="button-icon button-icon--more" style="white-space: nowrap;"
+                  (click)="addPaymentInformation()">
+                  Add Payment Information
+                </button>
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="4" rowHeight="70px">
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <mat-form-field appearance="fill">
+              <mat-label>General Comments</mat-label>
+              <input matInput required placeholder="General Comments" type="text" #message_pcomment maxlength="150">
+              <mat-hint align="end">{{message_pcomment.value.length}} / 150</mat-hint>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+
+
+      <!--Esto es otro -->
       <!--       <div class="mat-elevation-z5" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;" *ngIf="show"
         [hidden]="permisosConsultant == true">
         <div *ngFor="let item_ of data_consultant.personalInformation.paymentInformationProfiles">
