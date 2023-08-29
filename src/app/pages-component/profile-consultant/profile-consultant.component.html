@@ -766,7 +766,7 @@
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <mat-grid-tile [colspan]="4" [rowspan]="1" *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].cash == true">
             <div style="width: 98%;">
               <mat-form-field appearance="fill">
                 <mat-label>Comments</mat-label>

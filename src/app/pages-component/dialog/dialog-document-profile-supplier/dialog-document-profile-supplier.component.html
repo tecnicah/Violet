@@ -16,7 +16,7 @@
       </div>
     </mat-grid-tile>
 
-     <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
+    <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
       <div *ngIf="city != undefined " class="textarea">
         <p class="Location">Location &nbsp; <b class="City">{{city}}</b></p>
       </div>
@@ -67,18 +67,18 @@
     <mat-grid-tile [colspan]="2" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
-          <mat-label>Document Name</mat-label>
-          <input matInput [(ngModel)]="tempData.documentType" (focus)="activeDocument = false;">
-         <!--  <mat-select [(ngModel)]="tempData.documentType" (focus)="activeDocument = false;">
+          <mat-label>Document Type</mat-label>
+          <!--           <input matInput [(ngModel)]="tempData.documentType" (focus)="activeDocument = false;">
+ --> <mat-select [(ngModel)]="tempData.documentType" (focus)="activeDocument = false;">
             <mat-option *ngFor="let item of documentType" [value]="item.id">{{item.documentType}}</mat-option>
-          </mat-select> -->
+          </mat-select>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeDocument">Field is required
           </mat-hint>
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
-     <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
+    <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
           <mat-label>Expiration Date</mat-label>
