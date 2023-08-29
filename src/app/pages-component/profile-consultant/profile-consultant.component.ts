@@ -230,7 +230,7 @@ export class ProfileConsultantComponent implements OnInit {
     } else if (this.id_covertura == 0 && this.id != "New") {
       this._services.service_general_get('Profile/GetProfile/' + Number(this.id)).subscribe((data => {
         if (data.success) {
-          console.log(data.result);
+          console.log('Profile/GetProfile/', data.result);
           this.data_consultant = data.result;
           this.data_consultant.supplierType = 1;
           if (this.id_pais != 0) {
@@ -285,29 +285,30 @@ export class ProfileConsultantComponent implements OnInit {
 
           if (this.data_consultant.personalInformation.paymentInformationProfiles.length == 0) {
             this.data_consultant.personalInformation.paymentInformationProfiles.push({
-              "wireTransfer": null,
+          
+              "wire": false,
               "fiscalInvoice": null,
-              "accountType": null,
-              "accountHoldersName": "",
-              "bankName": "",
-              "accountNumber": null,
-              "routingNumber": null,
-              "swiftBicCode": "",
-              "currency": null,
-              "clabe": null,
-              "wireFeeApprox": null,
-              "bankAddress": "",
-              "internationalPaymentAcceptance": null,
+              "creditCard": null,
+              "checks": null,
+              "payToOrderOf": null,
+              "cash": null,
+              "comment": '',
+              "generalComment": null,
               "createdBy": this.user.id,
               "createdDate": new Date(),
               "updatedBy": this.user.id,
-              "updatedDate": new Date()
+              "updatedDate": new Date,
+              "creditCardPaymentInformationProfiles": [
+
+              ],
+
+              "wireTransferProfiles": [
+
+              ],
             });
           } else {
-            if (this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransfer ||
-              this.data_consultant.personalInformation.paymentInformationProfiles[0].fiscalInvoice) {
-              this.data_consultant.togglePayment = true;
-              this.show = true;
+            if (this.data_consultant.personalInformation.paymentInformationProfiles.paymentInformationServices[0]?.wireTransferProfiles.length > 0) {
+              this.data_consultant.personalInformation.paymentInformationProfiles[0].wire = true;
             }
           }
         }
@@ -353,25 +354,42 @@ export class ProfileConsultantComponent implements OnInit {
   //FUNCION PARA HACER PAYMENT INFORMATION//
   paymentMethod() {
     this.data_consultant.personalInformation.paymentInformationProfiles.push({
-      "wireTransfer": null,
+      "id": 0,
+      "idPaymentInformationProfile": 0,
+      "wire": false,
       "fiscalInvoice": null,
-      "accountType": null,
-      "accountHoldersName": "",
-      "bankName": "",
-      "accountNumber": null,
-      "routingNumber": null,
-      "swiftBicCode": "",
-      "currency": null,
-      "clabe": null,
-      "wireFeeApprox": null,
-      "bankAddress": "",
-      "internationalPaymentAcceptance": null,
+      "creditCard": null,
+      "checks": null,
+      "payToOrderOf": null,
+      "cash": null,
+      "comment": '',
+      "generalComment": null,
       "createdBy": this.user.id,
       "createdDate": new Date(),
       "updatedBy": this.user.id,
-      "updatedDate": new Date()
+      "updatedDate": new Date,
+      "creditCardPaymentInformationProfiles": [
+
+      ],
+
+      "wireTransferProfiles": [
+
+      ],
     });
   }
+
+  pushData(data, i, event, j) {
+    if (event.checked) {
+      console.log(this.data_consultant);
+      this.data_consultant.personalInformation.paymentInformationProfiles[0].creditCardPaymentInformationProfiles.push({
+        "paymentInformationProfile": 0,
+        "creditCard": data.id,
+      });
+    } else {
+      this.data_consultant.personalInformation.paymentInformationProfiles[0].creditCardPaymentInformationProfiles.splice(j, 1);
+    }
+  }
+
   //*********************************************************************************//
   //CONSULTA DE CATALOGOS DE INFORMACION//
   ca_creditCard = [];
