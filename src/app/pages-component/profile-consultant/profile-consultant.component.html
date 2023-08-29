@@ -705,7 +705,8 @@
                 <p class="subtitle" style="font-size: 12px;">
                   Fiscal Invoice
                 </p>
-                <mat-checkbox class="example-margin">
+                <mat-checkbox class="example-margin"
+                  [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].fiscalInvoice">
                 </mat-checkbox>
               </span>
             </div>
@@ -716,14 +717,16 @@
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="textarea" style="display: flex; justify-content: space-between;">
               <span>
-                <mat-checkbox class="example-margin">
+                <mat-checkbox class="example-margin"
+                  [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].creditCard">
                   <b style="font-size: 12px;">Credit Card</b>
                 </mat-checkbox>
               </span>
             </div>
           </mat-grid-tile>
 
-          <ng-container>
+          <!--esto falta-->
+          <ng-container *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].creditCard">
             <mat-grid-tile [colspan]="1" [rowspan]="1">
               <div class="input_final textarea">
                 <mat-checkbox class="example-margin">
@@ -735,17 +738,21 @@
 
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="textarea">
-              <mat-checkbox class="example-margin">
+              <mat-checkbox class="example-margin"
+                [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].checks">
                 <b style="font-size: 12px;">Checks</b>
               </mat-checkbox>
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile [colspan]="4" [rowspan]="1">
+          <mat-grid-tile [colspan]="4" [rowspan]="1"
+            *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].checks">
             <div style="width: 98%;">
               <mat-form-field appearance="fill">
                 <mat-label>Pay to the Order Of</mat-label>
-                <input matInput required placeholder="Pay to the Order Of" type="text" #message_payto maxlength="150">
+                <input matInput required placeholder="Pay to the Order Of" type="text"
+                  [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].payToOrderOf"
+                  #message_payto maxlength="150">
                 <mat-hint align="end">{{message_payto.value.length}} / 150</mat-hint>
               </mat-form-field>
             </div>
@@ -753,7 +760,7 @@
 
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="textarea">
-              <mat-checkbox class="example-margin">
+              <mat-checkbox class="example-margin" [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].cash">
                 <b style="font-size: 12px;">Cash</b>
               </mat-checkbox>
             </div>
@@ -763,7 +770,7 @@
             <div style="width: 98%;">
               <mat-form-field appearance="fill">
                 <mat-label>Comments</mat-label>
-                <input matInput required placeholder="Comments cash" type="text" #message_comm maxlength="150">
+                <input [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].comment" matInput required placeholder="Comments cash" type="text" #message_comm maxlength="150">
                 <mat-hint align="end">{{message_comm.value.length}} / 150</mat-hint>
               </mat-form-field>
             </div>
