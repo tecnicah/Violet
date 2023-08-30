@@ -11,12 +11,12 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 })
 export class DialogProfileDocumentComponent implements OnInit {
 
-  temporalDocument:   any = {};
-  data_document:any = {};
+  temporalDocument: any = {};
+  data_document: any = {};
   today = new Date();
-  user:any;
+  user: any;
 
-  constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data_: any,public _services : ServiceGeneralService, public _dialog: MatDialog) { }
+  constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data_: any, public _services: ServiceGeneralService, public _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userData'));
@@ -27,14 +27,14 @@ export class DialogProfileDocumentComponent implements OnInit {
   ca_document = [];
   ca_privacy = [];
   ca_statusDoc = [];
-  async catalogos(){
+  async catalogos() {
     //this.ca_document = await this._services.getCatalogueFrom('GetDocumentType');
     this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
     this.ca_privacy = this.ca_privacy.filter(item => item.id !== 1);
     this.ca_statusDoc = await this._services.getCatalogueFrom('GetDocumentStatus');
     this._services.service_general_get('Catalogue/GetDocumentType/3').subscribe((data => {
       if (data.success) {
-          this.ca_document = data.result;
+        this.ca_document = data.result;
       }
     }))
   }
@@ -67,26 +67,26 @@ export class DialogProfileDocumentComponent implements OnInit {
 
 
               let ext = droppedFile.relativePath.split(".");
-              debugger;
+
               this.temporalDocument = {
-                "id":0,
-                "consultantContactsService":0,
+                "id": 0,
+                "consultantContactsService": 0,
                 "fileName": droppedFile.relativePath,
                 "filePath": encoded,
-                "fileExtension": ext[ext.length-1],
-                "documentType":'',
-                "expirationDate":"",
-                "location":"",
-                "privacy":'',
-                "status":'',
-                "createdBy":this.user.id,
+                "fileExtension": ext[ext.length - 1],
+                "documentType": '',
+                "expirationDate": "",
+                "location": "",
+                "privacy": '',
+                "status": '',
+                "createdBy": this.user.id,
                 "createdDate": new Date(),
-                "updatedBy":this.user.id,
+                "updatedBy": this.user.id,
                 "updatedDate": new Date(),
-                "type":file.type
+                "type": file.type
               }
               console.log(this.temporalDocument);
-              if(this.temporalDocument.fileName != undefined || this.temporalDocument.fileName != null || this.temporalDocument.fileName != ''){
+              if (this.temporalDocument.fileName != undefined || this.temporalDocument.fileName != null || this.temporalDocument.fileName != '') {
                 this.cargaDocumento = false;
               }
 
@@ -111,25 +111,25 @@ export class DialogProfileDocumentComponent implements OnInit {
     console.log(event);
   }
 
-  save(){
-      this.temporalDocument = {
-        "id":0,
-        "consultantContactsService":0,
-        "fileName": this.temporalDocument.fileName,
-        "filePath": this.temporalDocument.filePath,
-        "fileExtension": this.temporalDocument.fileExtension,
-        "documentType": this.data_document.documentType,
-        "expirationDate": this.data_document.expirationDate,
-        "location":this.data_document.location,
-        "privacy":this.data_document.privacy,
-        "status":this.data_document.status,
-        "createdBy": this.temporalDocument.createdBy,
-        "createdDate": this.temporalDocument.createdDate,
-        "updatedBy": this.temporalDocument.updatedBy,
-        "updatedDate": this.temporalDocument.updatedDate,
-        "type": this.temporalDocument.type,
-        "success": true
-      }
+  save() {
+    this.temporalDocument = {
+      "id": 0,
+      "consultantContactsService": 0,
+      "fileName": this.temporalDocument.fileName,
+      "filePath": this.temporalDocument.filePath,
+      "fileExtension": this.temporalDocument.fileExtension,
+      "documentType": this.data_document.documentType,
+      "expirationDate": this.data_document.expirationDate,
+      "location": this.data_document.location,
+      "privacy": this.data_document.privacy,
+      "status": this.data_document.status,
+      "createdBy": this.temporalDocument.createdBy,
+      "createdDate": this.temporalDocument.createdDate,
+      "updatedBy": this.temporalDocument.updatedBy,
+      "updatedDate": this.temporalDocument.updatedDate,
+      "type": this.temporalDocument.type,
+      "success": true
+    }
 
     this.dialogRef.close(this.temporalDocument);
   }
@@ -142,54 +142,54 @@ export class DialogProfileDocumentComponent implements OnInit {
   activeDocument: boolean = false;
   cargaDocumento: boolean = false;
   contador = 0;
- valida_form(){
+  valida_form() {
 
-  if(this.temporalDocument.fileName == undefined || this.temporalDocument.fileName == null || this.temporalDocument.fileName == ''){
-    this.cargaDocumento = true;
-    this.contador++;
+    if (this.temporalDocument.fileName == undefined || this.temporalDocument.fileName == null || this.temporalDocument.fileName == '') {
+      this.cargaDocumento = true;
+      this.contador++;
+    }
+
+    if (this.data_document.documentType == undefined || this.data_document.documentType == null || this.data_document.documentType == '') {
+      this.activeDocument = true;
+      this.contador++;
+    }
+
+
+    if (this.data_document.privacy == undefined || this.data_document.privacy == null || this.data_document.privacy == '') {
+      this.activePrivacy = true;
+      this.contador++;
+    }
+
+    if (this.data_document.status == undefined || this.data_document.status == null || this.data_document.status == '') {
+      this.activeStatus = true;
+      this.contador++;
+    }
+    if (this.data_document.expirationDate == undefined || this.data_document.expirationDate == null || this.data_document.expirationDate == '') {
+      this.activeExpiration = true;
+      this.contador++;
+    }
+   /*  if (this.data_document.location == undefined || this.data_document.location == null || this.data_document.location == '') {
+      this.activeLocation = true;
+      this.contador++;
+    } */
+
+    if (this.contador == 0) {
+      this.save();
+    } else {
+      window.scrollTo(0, 0);
+      const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+        data: {
+          header: "Warning",
+          body: "To save it is necessary to save all the requested fields"
+        },
+        width: "350px"
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+
+      })
+      this.contador = 0;
+      return;
+    }
   }
-
-  if(this.data_document.documentType == undefined || this.data_document.documentType == null || this.data_document.documentType == ''){
-    this.activeDocument = true;
-    this.contador++;
-  }
-
-
-  if(this.data_document.privacy == undefined || this.data_document.privacy == null || this.data_document.privacy == ''){
-    this.activePrivacy = true;
-    this.contador++;
-  }
-
-  if(this.data_document.status == undefined || this.data_document.status == null || this.data_document.status == ''){
-    this.activeStatus = true;
-    this.contador++;
-  }
-  if(this.data_document.expirationDate == undefined || this.data_document.expirationDate == null || this.data_document.expirationDate == ''){
-    this.activeExpiration = true;
-    this.contador++;
-  }
-  if(this.data_document.location == undefined || this.data_document.location == null || this.data_document.location == ''){
-    this.activeLocation = true;
-    this.contador++;
-  }
-
-  if(this.contador == 0){
-     this.save();
-  }else{
-    window.scrollTo(0,0);
-    const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
-      data: {
-        header: "Warning",
-        body: "To save it is necessary to save all the requested fields"
-      },
-      width: "350px"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-
-    })
-    this.contador = 0;
-    return;
-  }
- }
 }
