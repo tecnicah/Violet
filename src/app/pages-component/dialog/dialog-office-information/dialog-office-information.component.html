@@ -474,7 +474,14 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Phone Number</mat-label>
+                <input disabled [(ngModel)]="details.bankPhone" type="number" matInput min="0">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
           <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
             <div class="input_final">
               <mat-form-field appearance="fill">
@@ -525,7 +532,7 @@
           <mat-grid-tile [colspan]="2" [rowspan]="1">
             <div class="input_final" style="width: 86%;">
               <mat-form-field appearance="fill">
-                <mat-label>Instructions Additional</mat-label>
+                <mat-label>Additional Instructions</mat-label>
                 <input disabled [(ngModel)]="details.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
                 <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
               </mat-form-field>
@@ -582,14 +589,7 @@
                 </mat-form-field>
               </div>
             </mat-grid-tile>
-            <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-              <div class="input_final">
-                <mat-form-field appearance="fill">
-                  <mat-label>Bank Phone Number</mat-label>
-                  <input disabled [(ngModel)]="details.bankPhone" type="number" matInput min="0">
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
+
           </mat-grid-list>
         </div>
       </div>

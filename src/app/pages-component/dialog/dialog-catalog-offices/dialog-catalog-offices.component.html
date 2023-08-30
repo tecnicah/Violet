@@ -297,7 +297,14 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-
+          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
+            <div class="input_final">
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Phone Number</mat-label>
+                <input [(ngModel)]="data_land.bankPhone" matInput disabled required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
           <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
             <div class="input_final">
               <mat-form-field appearance="fill">
@@ -349,7 +356,7 @@
           <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
             <div class="input_final" style="width: 86%;">
               <mat-form-field appearance="fill">
-                <mat-label>Instructions Additional</mat-label>
+                <mat-label>Additional Instructions</mat-label>
                 <input [(ngModel)]="data_land.adiitionalInstruccion" matInput disabled required>
               </mat-form-field>
             </div>
@@ -407,14 +414,7 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
-            <div class="input_final">
-              <mat-form-field appearance="fill">
-                <mat-label>Bank Phone Number</mat-label>
-                <input [(ngModel)]="data_land.bankPhone" matInput disabled required>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
+
         </mat-grid-list>
         <!--Fin Banking Details Intermediary-->
       </ng-container>
