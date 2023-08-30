@@ -12,6 +12,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DialogConfirmComponent } from '../dialog/dialog-confirm/dialog-confirm.component';
 import { DialogWireTransferComponent } from '../dialog/dialog-wire-transfer/dialog-wire-transfer.component';
+import { DialogWireTransferProfileComponent } from '../dialog/dialog-wire-transfer-profile/dialog-wire-transfer-profile.component';
 
 
 @Component({
@@ -1210,7 +1211,7 @@ export class ProfileConsultantComponent implements OnInit {
     }
   }
   addPaymentInformation() {
-    const dialogRef = this._dialog.open(DialogWireTransferComponent, {
+    const dialogRef = this._dialog.open(DialogWireTransferProfileComponent, {
       width: "90%"
     });
     dialogRef.afterClosed().subscribe(result => {

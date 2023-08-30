@@ -374,6 +374,7 @@ import { DialogTimeExtensionsComponent } from './dialog/dialog-time-extensions/d
 import { DialogRelatedPaymentsComponent } from './dialog/dialog-related-payments/dialog-related-payments.component';
 import { DialogPaymentsMethodsComponent } from './dialog/dialog-payments-methods/dialog-payments-methods.component';
 import { ModalBankingDetailsComponent } from './dialog/dialog-payments-methods/modal-banking-details/modal-banking-details.component';
+import { DialogWireTransferProfileComponent } from './dialog/dialog-wire-transfer-profile/dialog-wire-transfer-profile.component';
 
 @NgModule({
   imports: [
@@ -787,6 +788,7 @@ import { ModalBankingDetailsComponent } from './dialog/dialog-payments-methods/m
     DialogRelatedPaymentsComponent,
     DialogPaymentsMethodsComponent,
     ModalBankingDetailsComponent,
+    DialogWireTransferProfileComponent,
   ]
 })
 export class MaterialComponentsModule {}
