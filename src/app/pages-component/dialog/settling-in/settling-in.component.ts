@@ -31,7 +31,7 @@ export class SettlingInComponent implements OnInit {
     workOrderServicesId: 0,
     partner_id: 0
   };
-  
+
   isVisible : boolean =false;
 
   constructor(public router: Router, public dialogRef: MatDialogRef<any>,
@@ -39,8 +39,8 @@ export class SettlingInComponent implements OnInit {
     public _services: ServiceGeneralService,
     public _dialog: MatDialog) {
       console.log("data----",data)
-     
-      
+
+
      }
 
 
@@ -88,7 +88,7 @@ export class SettlingInComponent implements OnInit {
 
   }
 
-  //////////////////////manage estatus 
+  //////////////////////manage estatus
 
   disabled_by_permissions: boolean = false;
   hide_by_permissions: boolean = false;
@@ -99,7 +99,7 @@ export class SettlingInComponent implements OnInit {
   sr_: boolean = false;
 
   setup_permissions_settings() {
-    //debugger;
+    //;
     if (!this.data.data.numberWorkOrder) {
       this.wo_ = this.data.workOrderId;
     }
@@ -134,7 +134,7 @@ export class SettlingInComponent implements OnInit {
   }
 
   change_button() {
-    //debugger;
+    //;
     if (this.show_completed) {
       const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
         data: {
@@ -147,7 +147,7 @@ export class SettlingInComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         // ////console.log(result);
         if (result) {
-          this.settlingin.statusId = 37; //penidng to completion 
+          this.settlingin.statusId = 37; //penidng to completion
           this.save();
         }
       });
@@ -165,7 +165,7 @@ export class SettlingInComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         // ////console.log(result);
         if (result) {
-          this.settlingin.statusId = 2; //penidng to completion 
+          this.settlingin.statusId = 2; //penidng to completion
           this.save();
         }
       });
@@ -211,11 +211,11 @@ export class SettlingInComponent implements OnInit {
       //
       // //console.log(result);
       if (result.success) {
-        this.settlingin.statusId = result.id; //penidng to completion 
+        this.settlingin.statusId = result.id; //penidng to completion
         this.get_text_status();
       }
       else {
-        //nada 
+        //nada
       }
     });
 
@@ -565,7 +565,7 @@ export class SettlingInComponent implements OnInit {
   }
 
   get_relastonship_name(id): string {
-    // debugger;
+    // ;
     let rel = ""
     if (id == 7) {
       rel = "Assignee";
@@ -602,7 +602,7 @@ export class SettlingInComponent implements OnInit {
 
   // select cleaning services
   get_supplierPartnerClean() {
-    debugger;
+    ;
     this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService=" + this.settlingin.workOrderServicesId + "&supplierType=22&serviceLine=2").subscribe((data => {
       console.log("CHILD CARE GetServiceProviderByServiceId:", data);
 
@@ -613,7 +613,7 @@ export class SettlingInComponent implements OnInit {
   }
 
   setShildrenSupplier(id) {
-    debugger;
+    ;
     this.ChildCareCompanySupplier.forEach(element => {
       if (element.id == id) {
         this.settlingin.childCareSupplier = element.contactName == null || element.contactName == '' ? 'No contact name' : element.contactName;
@@ -622,7 +622,7 @@ export class SettlingInComponent implements OnInit {
   }
 
   setCleanSupplier(id) {
-    debugger;
+    ;
     this.CleaningCompanySupplier.forEach(element => {
       if (element.id == id) {
         this.settlingin.cleaningServicesSupplier = element.contactName == null || element.contactName == '' ? 'No contact name' : element.contactName;

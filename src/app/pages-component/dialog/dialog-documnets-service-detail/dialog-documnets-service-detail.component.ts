@@ -27,6 +27,7 @@ export class DialogDocumnetsServiceDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.serviceScope.documentcountries = this.data.documentsServiceDetails;
+    console.log('service Documments : ' , this.serviceScope.documentcountries);
 
   }
   public __serverPath__: string = this._services.url_images;
@@ -47,13 +48,13 @@ export class DialogDocumnetsServiceDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log("respuesta de agregar el docuemnto en POP UP ==================================: ", result)
       if (result.success) {
-        this.serviceScope.documentcountries = result.result; 
+        this.serviceScope.documentcountries = result.result;
       }
     });
   }
 
   delete_document(item) {
-    
+
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
         header: "Confirmation",
