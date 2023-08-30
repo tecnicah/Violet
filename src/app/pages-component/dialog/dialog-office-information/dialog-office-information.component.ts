@@ -306,6 +306,8 @@ export class DialogOfficeInformationComponent implements OnInit {
   }
 
   get_account(id) {
+
+
     for (let i = 0; i < this.ca_account.length; i++) {
       if (this.ca_account[i].id == id) {
         return this.ca_account[i].accountType;

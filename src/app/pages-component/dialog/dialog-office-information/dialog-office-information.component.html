@@ -310,10 +310,10 @@
         </tr>
         <tr class="mat-row"
           *ngFor="let data_ of data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers; let k = index">
-          <td class="mat-cell">{{get_account(data_?.accountType)}}</td>
-          <td class="mat-cell">{{data_?.accountHoldersName}}</td>
-          <td class="mat-cell">{{data_?.bankName}}</td>
-          <td class="mat-cell">{{data_?.accountNumber}}</td>
+          <td class="mat-cell">{{get_account(data_?.idAccountType)}}</td>
+          <td class="mat-cell">{{data_?.accountNumberBeneficiary}}</td>
+          <td class="mat-cell">{{data_?.bankNameBeneficiary}}</td>
+          <td class="mat-cell">{{data_?.accountNumberBeneficiary}}</td>
           <td class="mat-cell">
             <div class="table-row__check">
               <img src="assets/table-icons/check.png" *ngIf="data_?.internationalPaymentAcceptance" />
@@ -406,7 +406,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Account Name</mat-label>
-                <input [(ngModel)]="details.accountNameBeneficiary" matInput required>
+                <input disabled [(ngModel)]="details.accountNameBeneficiary" matInput required>
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -414,7 +414,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Tax ID</mat-label>
-                <input [(ngModel)]="details.taxId" matInput required>
+                <input disabled [(ngModel)]="details.taxId" matInput required>
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -422,7 +422,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Account Number</mat-label>
-                <input [(ngModel)]="details.accountNumberBeneficiary" matInput type="number" min="0" required>
+                <input disabled [(ngModel)]="details.accountNumberBeneficiary" matInput type="number" min="0" required>
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -430,7 +430,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Currency</mat-label>
-                <mat-select [(ngModel)]="details.idCurrency" required>
+                <mat-select disabled [(ngModel)]="details.idCurrency" required>
                   <mat-option *ngFor="let item of ca_currency" [value]="item.id">
                     {{item.currency}}</mat-option>
                 </mat-select>
@@ -441,7 +441,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Account Type</mat-label>
-                <mat-select [(ngModel)]="details.idAccountType" required>
+                <mat-select disabled [(ngModel)]="details.idAccountType" required>
                   <mat-option *ngFor="let item of list_ca_accountType" [value]="item.id">
                     {{item.accountType}}</mat-option>
                 </mat-select>
@@ -452,7 +452,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Bank Name</mat-label>
-                <input [(ngModel)]="details.bankNameBeneficiary" matInput required>
+                <input disabled [(ngModel)]="details.bankNameBeneficiary" matInput required>
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -460,7 +460,7 @@
             <div class="input_final" style="width: 86%;">
               <mat-form-field appearance="fill">
                 <mat-label>Bank Address (Type Address including City and Country)</mat-label>
-                <input [(ngModel)]="details.bankAddressBeneficiary" matInput #bankAddressBeneficiary maxlength="150"
+                <input disabled [(ngModel)]="details.bankAddressBeneficiary" matInput #bankAddressBeneficiary maxlength="150"
                   placeholder="Type Address including City and Country">
                 <mat-hint align="end">{{bankAddressBeneficiary.value.length}} / 150</mat-hint>
               </mat-form-field>
@@ -470,7 +470,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>Bank Branch</mat-label>
-                <input [(ngModel)]="details.bankBranch" matInput>
+                <input disabled [(ngModel)]="details.bankBranch" matInput>
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -479,7 +479,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>CLABE/CBU/CCI</mat-label>
-                <input [(ngModel)]="details.clabe" matInput type="number" min="0">
+                <input disabled [(ngModel)]="details.clabe" matInput type="number" min="0">
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -487,7 +487,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>IBAN</mat-label>
-                <input [(ngModel)]="details.iban" matInput type="number" min="0">
+                <input disabled [(ngModel)]="details.iban" matInput type="number" min="0">
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -495,7 +495,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-                <input [(ngModel)]="details.swiftBeneficiary" matInput placeholder="SWIFT / BIC Code ( If Applies)"
+                <input disabled [(ngModel)]="details.swiftBeneficiary" matInput placeholder="SWIFT / BIC Code ( If Applies)"
                   type="number" min="0">
               </mat-form-field>
             </div>
@@ -503,7 +503,7 @@
           <mat-grid-tile rid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
             <div class="input_final">
               <p class="subtitle" style="font-size: 12px;">W8/W9</p>
-              <mat-checkbox [(ngModel)]="details.w8W9" class="example-margin"></mat-checkbox>
+              <mat-checkbox disabled [(ngModel)]="details.w8W9" class="example-margin"></mat-checkbox>
             </div>
           </mat-grid-tile>
 
@@ -512,21 +512,21 @@
               <mat-form-field appearance="fill">
                 <mat-label>Wire Fee Approx</mat-label>
                 <span matPrefix>$ &nbsp;</span>
-                <input [(ngModel)]="details.wireFeeApprox" matInput placeholder="Wire Fee Approx" type="number" min="0">
+                <input disabled [(ngModel)]="details.wireFeeApprox" matInput placeholder="Wire Fee Approx" type="number" min="0">
               </mat-form-field>
             </div>
           </mat-grid-tile>
           <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
             <div class="input_final">
               <p class="subtitle" style="font-size: 12px;">International Payment Acceptance</p>
-              <mat-checkbox [(ngModel)]="details.internationalPaymentAcceptance" class="example-margin"></mat-checkbox>
+              <mat-checkbox disabled [(ngModel)]="details.internationalPaymentAcceptance" class="example-margin"></mat-checkbox>
             </div>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="2" [rowspan]="1">
             <div class="input_final" style="width: 86%;">
               <mat-form-field appearance="fill">
                 <mat-label>Instructions Additional</mat-label>
-                <input [(ngModel)]="details.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
+                <input disabled [(ngModel)]="details.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
                 <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
               </mat-form-field>
             </div>
@@ -543,7 +543,7 @@
               <div class="input_final">
                 <mat-form-field appearance="fill">
                   <mat-label>Bank Name</mat-label>
-                  <input [(ngModel)]="details.bankNameIntermediary" matInput>
+                  <input disabled [(ngModel)]="details.bankNameIntermediary" matInput>
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -551,7 +551,7 @@
               <div class="input_final" style="width: 86%;">
                 <mat-form-field appearance="fill">
                   <mat-label>Bank Address (Type Address including City and Country)</mat-label>
-                  <input [(ngModel)]="details.bankAddressIntermediary" matInput
+                  <input disabled [(ngModel)]="details.bankAddressIntermediary" matInput
                     placeholder="Type Address including City and Country" type="text" #message_bankaddress
                     maxlength="150">
                   <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
@@ -562,7 +562,7 @@
               <div class="input_final">
                 <mat-form-field appearance="fill">
                   <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-                  <input [(ngModel)]="details.swiftIntermediary" matInput placeholder="SWIFT / BIC Code ( If Applies)">
+                  <input disabled [(ngModel)]="details.swiftIntermediary" matInput placeholder="SWIFT / BIC Code ( If Applies)">
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -570,7 +570,7 @@
               <div class="input_final">
                 <mat-form-field appearance="fill">
                   <mat-label>Account Number</mat-label>
-                  <input [(ngModel)]="details.accountNumberIntermediary" matInput>
+                  <input disabled [(ngModel)]="details.accountNumberIntermediary" matInput>
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -578,7 +578,7 @@
               <div class="input_final">
                 <mat-form-field appearance="fill">
                   <mat-label>Account Name</mat-label>
-                  <input [(ngModel)]="details.accountNameIntermediary" matInput>
+                  <input disabled [(ngModel)]="details.accountNameIntermediary" matInput>
                 </mat-form-field>
               </div>
             </mat-grid-tile>
@@ -586,7 +586,7 @@
               <div class="input_final">
                 <mat-form-field appearance="fill">
                   <mat-label>Bank Phone Number</mat-label>
-                  <input [(ngModel)]="details.bankPhone" type="number" matInput min="0">
+                  <input disabled [(ngModel)]="details.bankPhone" type="number" matInput min="0">
                 </mat-form-field>
               </div>
             </mat-grid-tile>
