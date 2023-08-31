@@ -34,6 +34,7 @@ export class DialogWireTransferProfileComponent implements OnInit {
   }
 
   save() {
+    console.log(this.data.accountNumber);
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
