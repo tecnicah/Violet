@@ -1227,6 +1227,56 @@ export class ProfileConsultantComponent implements OnInit {
       }
     }
   }
+  editWireTransfer(i, wire, k) {
+    const dialogRef = this._dialog.open(DialogWireTransferComponent, {
+      width: "90%",
+      data: wire
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        //this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices[k] = result;
+        //console.log("Edicion de archivo: ", this.data);
+      }
+    });
+  }
+  deleteWireTransfer(i, wire, k) {
+    //console.log("este es i  ", i);
+    //console.log("este es wire  ", wire);
+    //console.log("este es k  ", k);
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      data: {
+        header: "Delete confirmation",
+        body: "Are you sure to delete the Wire Transfer"
+      },
+      width: "350px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(result);
+      if (result) {
+        if (wire.id && wire.id != 0) {
+          this._services.service_general_delete('SupplierPartnerProfile/Delete/Service/WireTransfer/' + wire.id).subscribe((data) => {
+            //console.log('respuesta de eliminacion', data);
+            if (data.success) {
+              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                data: {
+                  header: "Success",
+                  body: `Success Wiretransfer deleted`
+                },
+                width: "350px"
+              });
+            }
+            //this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices.splice(k, 1);
+          }, (error) => {
+            console.error('error con el delete', error);
+          })
+        } else {
+          // this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices.splice(k, 1);
+        }
+      }
+    })
+  }
+
   addPaymentInformation() {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       width: "90%"
@@ -1234,6 +1284,7 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         console.log(result);
+        this.data_consultant.personalInformation.paymentInformationProfiles.wireTransferProfiles.push(result);
 
       }
     })
