@@ -792,21 +792,24 @@
               <th class="mat-header-cell">International Payment Acceptance</th>
               <th class="mat-header-cell"></th>
             </tr>
-            <tr class="mat-row">
-              <td class="mat-cell">1</td>
-              <td class="mat-cell">2</td>
-              <td class="mat-cell">3</td>
-              <td class="mat-cell">4</td>
+            <tr class="mat-row"
+              *ngFor="let wire of data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferServices; let k = index">
+              <td class="mat-cell">{{wire.accountNameBeneficiary}}</td>
+              <td class="mat-cell">{{wire.accountNumberBeneficiary}}</td>
+              <td class="mat-cell">{{wire.bankNameBeneficiary}}</td>
+              <td class="mat-cell">{{wire.clabe}}</td>
               <td class="mat-cell">
                 <div class="table-row__check">
-                  <img src="assets/table-icons/check.png" />
-                  <img src="assets/table-icons/uncheck.png" />
+                  <img src="assets/table-icons/check.png" *ngIf="wire.internationalPaymentAcceptance" />
+                  <img src="assets/table-icons/uncheck.png" *ngIf="!wire.internationalPaymentAcceptance" />
                 </div>
               </td>
               <td class="mat-cell">
-                <img src="assets\icons\pencil.png" style="width: 20px;">
+                <img src="assets\icons\pencil.png" style="width: 20px;" *ngIf="permission_write || permission_edit"
+                  (click)="editWireTransfer(i, wire, k)">
                 &nbsp;
-                <img src="assets/icons/quit.svg" style="width: 20px;">
+                <img src="assets/icons/quit.svg" style="width: 20px;" *ngIf="permission_write || permission_edit"
+                  (click)="deleteWireTransfer(i, wire, k)">
               </td>
             </tr>
           </table>
