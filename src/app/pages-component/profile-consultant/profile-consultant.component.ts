@@ -308,7 +308,7 @@ export class ProfileConsultantComponent implements OnInit {
               ],
             });
           } else {
-            if (this.data_consultant.personalInformation.paymentInformationProfiles.paymentInformationServices[0]?.wireTransferProfiles.length > 0) {
+            if (this.data_consultant.personalInformation.paymentInformationProfiles[0]?.wireTransferProfiles.length > 0) {
               this.data_consultant.personalInformation.paymentInformationProfiles[0].wire = true;
             }
           }
@@ -1285,7 +1285,8 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         console.log(result);
-        this.data_consultant.personalInformation.paymentInformationProfiles.wireTransferProfiles.push(result);
+        console.log(this.data_consultant.personalInformation);
+        this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles.push(result);
 
       }
     })

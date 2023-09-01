@@ -687,13 +687,13 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
             <p class="page__section-name">Payment Information</p>
-            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_consultant.togglePayment">
+            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_consultant.personalInformation.paymentInformationProfiles[0]?.wire">
             </mat-slide-toggle>
           </div>
         </mat-grid-tile>
       </mat-grid-list>
       <!--Este es nuevo a comenzar-->
-      <div class="mat-elevation-z4" style="padding: 10px;" *ngIf="show" [hidden]="permisosConsultant == true">
+      <div class="mat-elevation-z4" style="padding: 10px;" *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0]?.wire" [hidden]="permisosConsultant == true">
         <mat-grid-list cols="4" rowHeight="25px">
           <mat-grid-tile [colspan]="4" [rowspan]="2">
             <div class="textarea" style="display: flex; justify-content: space-between;">
@@ -747,7 +747,7 @@
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile [colspan]="4" [rowspan]="1"
+          <mat-grid-tile [colspan]="4" [rowspan]="2"
             *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].checks">
             <div style="width: 98%;">
               <mat-form-field appearance="fill">
@@ -793,7 +793,7 @@
               <th class="mat-header-cell"></th>
             </tr>
             <tr class="mat-row"
-              *ngFor="let wire of data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferServices; let k = index">
+              *ngFor="let wire of data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles; let k = index">
               <td class="mat-cell">{{wire.accountNameBeneficiary}}</td>
               <td class="mat-cell">{{wire.accountNumberBeneficiary}}</td>
               <td class="mat-cell">{{wire.bankNameBeneficiary}}</td>

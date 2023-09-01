@@ -35,20 +35,22 @@ export class DialogWireTransferProfileComponent implements OnInit {
 
   save() {
     console.log(this.data.accountNumber);
+    this.data.RelBankingWireTransferProfiles = [];
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
 
-    let lista = this.accountCategory.map(select => {
-      return {
+    this.accountCategory.map(select => {
+      this.data.RelBankingWireTransferProfiles.push({
         id: 0,
         idCatBankingDetailType: select,
-        idOfficeBankingDetailList: 0
-      }
+        idWireTransferProfile: 0
+      });
     })
-    console.log(lista);
-    this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
-    console.log(this.data.officeBankingDetailLists);
+    // console.log(lista);
+   
+    // this.data.relBankingDetailTypeOfficeBankingDetails: lista;
+    // console.log(this.data.officeBankingDetailLists);
 
     this.data.success = true;
     console.log("esta es la data que se enviara: ", this.data);
@@ -114,7 +116,7 @@ export class DialogWireTransferProfileComponent implements OnInit {
 
       }
     }
-    else {
+    else { //RelBankingWireTransferProfiles
       this.valid_accountName = false
       this.valid_taxId = false
       this.valid_accountNumberBeneficiary = false
