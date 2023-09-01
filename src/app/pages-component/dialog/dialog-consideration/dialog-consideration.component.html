@@ -1,0 +1,36 @@
+<!-----------------------------------header-------------------------------------->
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+      <h2 mat-dialog-title class="primary_title">Special Consideration</h2>
+    </div>
+    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    </div>
+  </div>
+  <!-----------------------------------content-------------------------------------->
+  <mat-dialog-content class="mat-typography">
+  
+    <mat-grid-list cols="4" rowHeight="70px">
+
+  
+      <mat-grid-tile [colspan]="4" [rowspan]="1">
+        <div class="input_central textarea">
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="Comment" [(ngModel)]="data.text">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+  
+    </mat-grid-list>
+  
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+  
+    <div class="page__section-buttong">
+      <button *ngIf="data_.edicion" (click)="save_data();">Save</button>
+    </div>
+  
+  </mat-dialog-actions>
+  
