@@ -89,7 +89,7 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>List Rent Price</mat-label>
+                                    <mat-label>Previous Rent</mat-label>
                                     <span matPrefix>$ &nbsp;</span>
                                     <input matInput placeholder="List Rent Price" type="number"
                                         [(ngModel)]="data_contracts.listRentPrice" (change)="calc_RentCostSavings();">
@@ -99,7 +99,7 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>Final Rent Price</mat-label>
+                                    <mat-label>New Rent Price</mat-label>
                                     <span matPrefix>$ &nbsp;</span>
                                     <input matInput placeholder="Final Rent Price" type="number"
                                         (change)="calc_RentCostSavings();" [(ngModel)]="data_contracts.finalRentPrice">
@@ -107,7 +107,7 @@
                             </div>
                         </mat-grid-tile>
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
-                            <div class="input_central textarea">
+                            <div class="input_central textarea" *ngIf="data_contracts.finalRentPrice > 0">
                                 <mat-form-field appearance="fill">
                                     <mat-label>Rent Cost Savings</mat-label>
                                     <span matPrefix>$ &nbsp;</span>
