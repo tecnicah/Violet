@@ -28,8 +28,63 @@ export class IrSelectComponent implements OnInit {
   ////////////////////////////
 
   ngOnInit(): void {
-    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:", this.data)
     this.get_lsf_versions();
+  }
+
+  get_lsf_versions() {
+    this.loader.showLoader();
+    this._services.service_general_get('HousingList/GetLeaseInspectionsVersions?id_service_detail=' + this.data.servide_detail_id + "&id_catCategoryId=" + this.data.cat_category_id + "&housing_list_id=" + this.data.ph_id,).subscribe(versiones => {
+      this.loader.hideLoader();
+      if (versiones.success) {
+
+        this.versions_ir = versiones.result.ins_rep_versions;
+        this.ir_service_detail_id = this.data.servide_detail_id;
+        console.log(' this.ir_service_detail_id  ===========================: ', this.ir_service_detail_id);
+        this.GetStatusIR();
+        console.log('DATA GetLeaseInspectionsVersions ===========================: ', this.versions_ir);
+
+      }
+      else {
+        alert('error las versiones')
+      }
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("error al cargar los estatus de I&R: ", err);
+    };
+  };
+
+
+  ir_tarjeta = false;
+  moin_tarjeta = false;
+  moout_tarjeta = false;
+
+  set_cards() {
+    if (this.ir_service_detail_id > 0) {
+
+      var v_selected = this.versions_ir.filter(e => e.idServiceDetail == this.ir_service_detail_id);
+      if (v_selected.length > 0) {
+        this.ir_tarjeta = false;
+        this.moin_tarjeta = false;
+        this.moout_tarjeta = false;
+debugger;
+        if (v_selected[0].catCategoryId == 16) //departure//
+        {
+          this.ir_tarjeta = true;
+          this.moout_tarjeta = true;
+        }
+        else if( v_selected[0].catCategoryId == 21) //H finding
+        {
+          this.ir_tarjeta = true;
+          this.moin_tarjeta = true;
+        }
+        else if( v_selected[0].catCategoryId == 22) //Lease Renewal
+        {
+          this.ir_tarjeta = true;
+        }
+        //console.log("este es el objeto; "   , v_selected)
+      }
+
+    }
   }
 
 
@@ -63,36 +118,13 @@ export class IrSelectComponent implements OnInit {
     // }));
   };
 
-    ///api/HousingList/GetInspRepBySectionPrint?key='+this.dataJson.ph+'&servide_detail_id='+this.dataJson.id+'&section='+this.roption
-  
+  ///api/HousingList/GetInspRepBySectionPrint?key='+this.dataJson.ph+'&servide_detail_id='+this.dataJson.id+'&section='+this.roption
+
 
   data_return = {
     id: 0,
     success: false
   }
-
-
-  get_lsf_versions() {
-    this.loader.showLoader();
-    this._services.service_general_get('HousingList/GetLeaseInspectionsVersions?id_service_detail=' + this.data.servide_detail_id + "&id_catCategoryId="+ this.data.cat_category_id +"&housing_list_id=" + this.data.ph_id,).subscribe(versiones => {
-      this.loader.hideLoader();
-      if (versiones.success) {
-
-        this.versions_ir = versiones.result.ins_rep_versions;
-        this.ir_service_detail_id = this.data.servide_detail_id;
-        console.log(' this.ir_service_detail_id  ===========================: ', this.ir_service_detail_id );
-        this.GetStatusIR();
-        console.log('DATA GetLeaseInspectionsVersions ===========================: ', this.versions_ir);
-
-      }
-      else {
-        alert('error las versiones')
-      }
-    }), (err) => {
-      this.loader.hideLoader();
-      console.log("error al cargar los estatus de I&R: ", err);
-    };
-  };
 
   GetStatusIR() {
     this.loader.showLoader();
@@ -100,7 +132,7 @@ export class IrSelectComponent implements OnInit {
     this._services.service_general_get('HousingList/GetStatusIR?servide_detail_id=' + this.ir_service_detail_id + "&key=" + this.data.ph_id,).subscribe(res => {
       this.loader.hideLoader();
       if (res.success) {
-
+        this.set_cards();
         this.resultado_estatus = res.result.value;
 
         console.log('DATA GetStatusIR ===========================: ', this.resultado_estatus);
@@ -115,20 +147,18 @@ export class IrSelectComponent implements OnInit {
 
 
   validate_move_in_out(status, type) {
-    let pop_up ;
-    if(type == 1)
-    {
+    let pop_up;
+    if (type == 1) {
       pop_up = IrMoveinComponent
     }
-    else if( type == 2)
-    {
+    else if (type == 2) {
       pop_up = IrMoveoutComponent
     }
-    else{
+    else {
       pop_up = IrIrComponent
     }
 
-     if(status == 1 || status == null){
+    if (status == 1 || status == null) {
       const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
         data: {
           header: "Start confirmation",
@@ -139,20 +169,19 @@ export class IrSelectComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log(result);
         if (result) {
-          this.start_process(type,pop_up);
+          this.start_process(type, pop_up);
         }
-        else{
+        else {
         }
       });
-     }
-     else
-     {
-        this.open_section(pop_up);
-     }
+    }
+    else {
+      this.open_section(pop_up);
+    }
   };
 
 
-  open_section(pop_up){
+  open_section(pop_up) {
 
     let edicion = false;
     if (this.data.servide_detail_id == this.ir_service_detail_id) {
@@ -165,7 +194,7 @@ export class IrSelectComponent implements OnInit {
         servide_detail_id: this.ir_service_detail_id
         , edicion
         , sr_id: this.data.sr_id
-        ,wos_id : this.data.wos_id
+        , wos_id: this.data.wos_id
       },
       width: "100%",
 
@@ -175,7 +204,7 @@ export class IrSelectComponent implements OnInit {
       this.ngOnInit();
       if (result.success) {
         console.log("po pup de LSF cerrado succes true");
-       // this.ngOnInit();
+        // this.ngOnInit();
       }
       else {
         console.log("po pup de LSF cerrado succes false");
@@ -185,32 +214,32 @@ export class IrSelectComponent implements OnInit {
 
 
   start_process(type, pop_up) {
-   
+
     //el objeto lo creas con el 2 hardcodeado, en id_permanent_home pones el id de la casa y en id_service_detail el valor de la selección del 
     //select de versiones, en type pones (1 Move in , 2 move out, 3 Inspections & Repairs)
-      let req_ = { status_id: 2, id_permanent_home: this.data.ph_id, id_service_detail: this.ir_service_detail_id, type: type }
-      this._services.service_general_post_with_url('HousingList/save_ir_statusbyhousingid', req_).subscribe(r => {
-        if (r.success) {
-          this.open_section(pop_up);
-          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-            data: {
-              header: "Success",
-              body: "Process has ben started"
-            },
-            width: "350px"
-          });
-        }
-        else {
-          console.log("Error actualziando estatus de el ir: ", r);
-          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-            data: {
-              header: "Error",
-              body: "Updated status Error"
-            },
-            width: "350px"
-          });
-        }
-      })
+    let req_ = { status_id: 2, id_permanent_home: this.data.ph_id, id_service_detail: this.ir_service_detail_id, type: type }
+    this._services.service_general_post_with_url('HousingList/save_ir_statusbyhousingid', req_).subscribe(r => {
+      if (r.success) {
+        this.open_section(pop_up);
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Success",
+            body: "Process has ben started"
+          },
+          width: "350px"
+        });
+      }
+      else {
+        console.log("Error actualziando estatus de el ir: ", r);
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Error",
+            body: "Updated status Error"
+          },
+          width: "350px"
+        });
+      }
+    })
 
   };
 

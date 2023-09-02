@@ -26,7 +26,7 @@
                             style="display: flex;  height: 100%;">
                             <div>
                                 <span class="text-mini gray_05">Creation Date</span><br />
-                                <!-- {{permanentHome.createdDate | date: 'dd MMM yyyy'}} -->
+                                <span *ngIf="data_move_out.createdDate" >{{data_move_out.createdDate | date: 'MM dd yyyy'}}</span> 
                             </div>
                         </div>
                     </mat-grid-tile>
@@ -181,13 +181,7 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                        <!-- Row shown when there is no matching data. -->
-                        <!-- <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                      </tr> -->
                     </table>
-
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"></mat-paginator> -->
 
                 </div>
                     <mat-grid-list cols="4" rowHeight="70px">

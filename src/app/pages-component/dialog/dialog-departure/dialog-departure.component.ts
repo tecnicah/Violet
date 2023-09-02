@@ -784,6 +784,30 @@ irfselect() {
     }
   });
 };
+
+editHousing(data) {
+
+    data.supplierType = 3
+    data.workOrderServicesId = this.data.wos_id,
+    data.sr = this.atributos_generales.sr_id;
+    data.numberWorkOrder = this.atributos_generales.wo_number;
+    data.serviceID = this.atributos_generales.service_number;
+    data.serviceName = "Add Property",
+    data.idServiceDetail = this.data.servide_detail_id;
+    data.shared = 1;
+    data.cat_service_id =  this.atributos_generales.cat_category_id
+    data.serviceTypeId= this.atributos_generales.type_id
+    data.catCategoryId = this.atributos_generales.cat_category_id
+    const dialogRef = this._dialog.open(DialogHomeDetailsComponent, {
+      data: data,
+      width: "95%"
+    });
+
+
+  dialogRef.afterClosed().subscribe(result => {
+    this.ngOnInit();
+  })
+}
   
 }
 

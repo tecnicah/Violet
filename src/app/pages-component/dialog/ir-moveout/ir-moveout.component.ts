@@ -479,7 +479,7 @@ export class IrMoveoutComponent implements OnInit {
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
             header: "Success",
-            body: "Deleted Data"
+            body: "Section has been added, please edit to complete the information"
           },
           width: "350px"
         });
