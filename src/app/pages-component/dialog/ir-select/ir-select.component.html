@@ -36,49 +36,41 @@
     <div class="page__section">
 
         <div class="dash dash--80" style=" width: 100%;" *ngIf="resultado_estatus">
-            <div *ngIf="data.options.ir" class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="validate_move_in_out(resultado_estatus.groupIr.status, 3);">
+            <div *ngIf="ir_tarjeta" class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="validate_move_in_out(resultado_estatus.groupIr.status, 3);">
                 <div class="dash__card dash__card--up cursor-pointer">
                     <span class="dash__card--flag index-orange" *ngIf="resultado_estatus.groupIr.status == 1 || !resultado_estatus.groupIr.status"></span>
                     <span class="dash__card--flag index-yellow" *ngIf="resultado_estatus.groupIr.status == 2"></span>
                     <span class="dash__card--flag index-lemon" *ngIf="resultado_estatus.groupIr.status == 3"></span>
                     <div class="dash__card-sTitl">Inspections & Repairs</div>
-                    <!-- <img src="../../../assets/ir.png" class="dash__card-sIcon" style="width: 25px;" /> -->
                     <i class="material-icons dash__card-sIcon" style="color: orange" *ngIf="resultado_estatus.groupIr.status == 1 || !resultado_estatus.groupIr.status">access_time_filled</i>
                     <i class="material-icons dash__card-sIcon" style="color: yellow" *ngIf="resultado_estatus.groupIr.status == 2">play_circle_filled</i>
                     <i class="material-icons dash__card-sIcon" style="color: #2ab42a" *ngIf="resultado_estatus.groupIr.status == 3">check_circle</i>
                     <span class="dash__card-sTitls">{{resultado_estatus.groupIr.statusText }}</span>
-                    <!--  <div class="dash__card-sMini">
-                    <span>{{counts?.arrivals}}</span> 
-                  </div>-->
                 </div>
             </div>
-            <div *ngIf="data.options.movein" class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="validate_move_in_out(resultado_estatus.propertyReports[0].status, 1);">
+
+            <div *ngIf="moin_tarjeta" class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="validate_move_in_out(resultado_estatus.propertyReports[0].status, 1);">
                 <div class="dash__card dash__card--up cursor-pointer">
                     <span class="dash__card--flag index-orange" *ngIf="resultado_estatus.propertyReports[0].status == 1 || !resultado_estatus.propertyReports[1].status"></span>
                     <span class="dash__card--flag index-yellow" *ngIf="resultado_estatus.propertyReports[0].status == 2"></span>
                     <span class="dash__card--flag index-lemon" *ngIf="resultado_estatus.propertyReports[0].status == 3"></span>
                     <div class="dash__card-sTitl">Move in</div>
-                    <!-- <img src="../../../assets/move.png" class="dash__card-sIcon" style="width: 25px;" /> -->
                     <i class="material-icons dash__card-sIcon" style="color: orange" *ngIf="resultado_estatus.propertyReports[0].status == 1 || !resultado_estatus.propertyReports[0].status">access_time_filled</i>
                     <i class="material-icons dash__card-sIcon" style="color: yellow" *ngIf="resultado_estatus.propertyReports[0].status == 2">play_circle_filled</i>
                     <i class="material-icons dash__card-sIcon" style="color: #2ab42a" *ngIf="resultado_estatus.propertyReports[0].status == 3">check_circle</i>
                     <span class="dash__card-sTitls">{{resultado_estatus.propertyReports[0].statusText }}</span>
                 </div>
             </div>
-            <div *ngIf="data.options.moveout" class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="validate_move_in_out(resultado_estatus.propertyReports[1].status, 2);">
+            <div *ngIf="moout_tarjeta" class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="validate_move_in_out(resultado_estatus.propertyReports[1].status, 2);">
                 <div class="dash__card dash__card--up cursor-pointer">
                     <span class="dash__card--flag index-orange" *ngIf="resultado_estatus.propertyReports[1].status == 1 || !resultado_estatus.propertyReports[1].status"></span>
                     <span class="dash__card--flag index-yellow" *ngIf="resultado_estatus.propertyReports[1].status == 2"></span>
                     <span class="dash__card--flag index-lemon" *ngIf="resultado_estatus.propertyReports[1].status == 3"></span>
                     <div class="dash__card-sTitl">Move Out</div>
-                    <!-- <img src="../../../assets/move.png" class="dash__card-sIcon" style="width: 25px;" /> -->
                     <i class="material-icons dash__card-sIcon" style="color: orange" *ngIf="resultado_estatus.propertyReports[1].status == 1 || !resultado_estatus.propertyReports[1].status">access_time_filled</i>
                     <i class="material-icons dash__card-sIcon" style="color: yellow" *ngIf="resultado_estatus.propertyReports[1].status == 2">play_circle_filled</i>
                     <i class="material-icons dash__card-sIcon" style="color: #2ab42a" *ngIf="resultado_estatus.propertyReports[1].status == 3">check_circle</i>
                     <span class="dash__card-sTitls">{{resultado_estatus.propertyReports[1].statusText }}</span>
-                    <!--  <div class="dash__card-sMini">
-                    <span>{{counts?.arrivals}}</span> 
-                  </div>-->
                 </div>
             </div>
             
