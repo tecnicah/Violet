@@ -60,7 +60,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   //CATALOGOS_GET//
   ca_estatus: any[] = [];
   ca_requestType: any[] = [];
-  area_orientation: any;
+  pre_decision: any;
   nacionality: any;
   ca_document: any;
   ca_grade = [];
@@ -81,11 +81,37 @@ export class PreDecisionOrientationComponent implements OnInit {
     this.get_catalogos();
   }
 
+  ca_privacy = [];
+  async get_catalogos() {
+    this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=12").subscribe((data => {
+      ////console.log(data);
+      if (data.success) {
+        this.ca_estatus = data.result;
+      }
+    }))
+    this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
+    //this.ca_estatus = await this._services.getCatalogueFrom('GetStatus');
+    this.nacionality = await this._services.getCatalogueFrom('GetCountry');
+    //this.ca_document = await this._services.getCatalogueFrom('GetDocumentType');
+    this._services.service_general_get('Catalogue/GetDocumentType/12').subscribe((data => {
+      if (data.success) {
+        this.ca_document = data.result;
+        ////console.log(this.ca_document);
+      }
+    }))
+    this.ca_requestType = await this._services.getCatalogueFrom('GetRequestType');
+    this.ca_grade = await this._services.getCatalogueFrom('GetGradeSchooling');
+
+
+    this.get_predesicion();
+    // this.get_dependent();
+  }
+
   _texto_status = "";
 
   get_text_status() {
     for (var v = 0; v < this.ca_estatus.length; v++) {
-      if (this.ca_estatus[v].id == this.area_orientation.statusId) {
+      if (this.ca_estatus[v].id == this.pre_decision.statusId) {
         this._texto_status = this.ca_estatus[v].status;
       }
     }
@@ -95,19 +121,19 @@ export class PreDecisionOrientationComponent implements OnInit {
     this._services.service_general_get('RelocationServices/GetPredecisionOrientationById?id=' + this.data.data.service[0].id).subscribe((data => {
       if (data.success) {
         debugger;
-        this.area_orientation = data.result;
+        this.pre_decision = data.result;
         this.isHousing = data.result.housing;
         this.isSchool = data.result.schooling;
         this.GetBasicServiceData();
         this.setup_permissions_settings();
         this.get_text_status();
-        console.log('DATA RelocationServices/GetPredecisionOrientationById : ', this.area_orientation);
+        console.log('DATA RelocationServices/GetPredecisionOrientationById : ', this.pre_decision);
         setTimeout(() => {
           this._services.service_general_get("RelocationServices/GetChildrenPredecisionBySrId?sr=" + this.atributos_generales.sr_id +"&work_order_service_id="+data.result.workOrderServicesId).subscribe(res => {
       
             if (res.success) {
               console.log("GetChildrenBySchoolingPredecision", res);
-              this.area_orientation.schoolings = res.applicant.value;
+              this.pre_decision.schoolings = res.applicant.value;
             }
           }, error => {
       
@@ -116,16 +142,16 @@ export class PreDecisionOrientationComponent implements OnInit {
           // .subscribe(res => {
           //   if (res.success) {
           //     console.log("GetChildrenBySchoolingPredecision", res);
-          //     this.area_orientation.schoolings = res.applicant.value;
+          //     this.pre_decision.schoolings = res.applicant.value;
           //   }
           // });
         }, 300);
        
-        // this.showPanelHousing = this.area_orientation.housing;
-        // this.showPanelSchooling = this.area_orientation.schooling;
+        // this.showPanelHousing = this.pre_decision.housing;
+        // this.showPanelSchooling = this.pre_decision.schooling;
 
         //DATA TABLE EXTENSION//
-        // this.dataSource = this.area_orientation.extensionAreaOrientations;
+        // this.dataSource = this.pre_decision.extensionAreaOrientations;
         this.getDataHousing();
         this.getDataSchool();
         
@@ -149,7 +175,7 @@ export class PreDecisionOrientationComponent implements OnInit {
         type: "area_prientation",
         type_id: 17,
         srId: this.data.sr,
-        wos_id: this.area_orientation.workOrderServicesId,
+        wos_id: this.pre_decision.workOrderServicesId,
       },
       width: "350px"
     });
@@ -159,10 +185,10 @@ export class PreDecisionOrientationComponent implements OnInit {
       // //console.log(result);
       this.loader.showLoader();
       if (result.success) {
-        this.area_orientation.statusId = result.id; //penidng to completion 
+        this.pre_decision.statusId = result.id; //penidng to completion 
         this.get_text_status();
 
-        this._services.service_general_put("RelocationServices/PutPreDecisionOrientationStatus", this.area_orientation).subscribe((data => {
+        this._services.service_general_put("RelocationServices/PutPreDecisionOrientationStatus", this.pre_decision).subscribe((data => {
           if (data.success) {
             //console.log(data);
             const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -214,11 +240,11 @@ export class PreDecisionOrientationComponent implements OnInit {
       else{
         this.hide_by_permissions = true;
       }
-      if(this.area_orientation.statusId != 39 && this.area_orientation.statusId != 2 ){ //active , in progress
+      if(this.pre_decision.statusId != 39 && this.pre_decision.statusId != 2 ){ //active , in progress
         this.hide_complete= true;
       }
       else{
-        if(this.area_orientation.statusId == 39){
+        if(this.pre_decision.statusId == 39){
           this.show_progress = true;
         }
         else{
@@ -241,7 +267,7 @@ export class PreDecisionOrientationComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           // ////console.log(result);
            if (result) {
-            this.area_orientation.statusId = 37; //penidng to completion 
+            this.pre_decision.statusId = 37; //penidng to completion 
             this.save();
            }
          });
@@ -259,7 +285,7 @@ export class PreDecisionOrientationComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           // ////console.log(result);
            if (result) {
-            this.area_orientation.statusId = 2; //penidng to completion 
+            this.pre_decision.statusId = 2; //penidng to completion 
             this.save();
            }
          });
@@ -270,7 +296,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
    // get service scope
    getServiceScope() {
-    this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.area_orientation.workOrderServicesId}&client=${this.data.data.partnerId }`).subscribe(resp => {
+    this._services.service_general_get(`AdminCenter/ScopeDocuments/Service?service=${this.pre_decision.workOrderServicesId}&client=${this.data.data.partnerId }`).subscribe(resp => {
       if (resp.success) {
         ////console.log('Data ScopeService: ', resp);
         this.serviceScope = resp.result.value;
@@ -296,33 +322,8 @@ export class PreDecisionOrientationComponent implements OnInit {
       }
     }))
   }
-  //***********************************************************************************//
-  //CONSULTING INFORMATION CATALOGOS//
-  ca_privacy = [];
-  async get_catalogos() {
-    this._services.service_general_get("Catalogue/GetStatusWorkOrder?category=12").subscribe((data => {
-      ////console.log(data);
-      if (data.success) {
-        this.ca_estatus = data.result;
-      }
-    }))
-    this.ca_privacy = await this._services.getCatalogueFrom('GetPrivacy');
-    //this.ca_estatus = await this._services.getCatalogueFrom('GetStatus');
-    this.nacionality = await this._services.getCatalogueFrom('GetCountry');
-    //this.ca_document = await this._services.getCatalogueFrom('GetDocumentType');
-    this._services.service_general_get('Catalogue/GetDocumentType/12').subscribe((data => {
-      if (data.success) {
-        this.ca_document = data.result;
-        ////console.log(this.ca_document);
-      }
-    }))
-    this.ca_requestType = await this._services.getCatalogueFrom('GetRequestType');
-    this.ca_grade = await this._services.getCatalogueFrom('GetGradeSchooling');
 
 
-    this.get_predesicion();
-    // this.get_dependent();
-  }
   //***********************************************************************************//
   //DATA TABLE HOUSING//
   
@@ -332,7 +333,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     this._services.service_general_get(`HousingList/GetSegmentedHousing?wo_id=${this.data.data.workOrderId}&id_service_detail=${this.data.data.service[0].id}&shared=${0}`).subscribe(data_housing => {
      //debugger;
       if (data_housing.success) {
-        this.area_orientation.housing = data_housing.message;
+       // this.pre_decision.housing = data_housing.message;
        
         console.log('DATA CONSULTA HOUSING LIST: ', data_housing);
         this.isHousing = data_housing.message.length > 0 ? true : false;
@@ -403,10 +404,10 @@ export class PreDecisionOrientationComponent implements OnInit {
 
   getDataSchool() {
     debugger;
-     this._services.service_general_get('SchoolsList/GetAllSchoolByserviceid?wo_id=' + this.data.data.workOrderId + "&service_id="+this.area_orientation.id).subscribe((data_schooling_list => {
+     this._services.service_general_get('SchoolsList/GetAllSchoolByserviceid?wo_id=' + this.data.data.workOrderId + "&service_id="+this.pre_decision.id).subscribe((data_schooling_list => {
       if (data_schooling_list.success) {
         console.log("data_schooling_list", data_schooling_list);
-        this.area_orientation.schooling = data_schooling_list.message; 
+      //  this.pre_decision.schooling = data_schooling_list.message; 
      
         this.isSchool = data_schooling_list.message.length > 0 ? true : false;
         data_schooling_list.message.forEach(element => {
@@ -445,7 +446,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
   get_assaigne_info() {
     ////debugger;
-    this._services.service_general_get("AssigneeInformation/GetAssigneeInfoByWOSId?wos_id=" + this.area_orientation.workOrderServicesId).subscribe((data => {
+    this._services.service_general_get("AssigneeInformation/GetAssigneeInfoByWOSId?wos_id=" + this.pre_decision.workOrderServicesId).subscribe((data => {
      ////debugger;
       if (data.success) {
         ////console.log("GetAssigneeInfoByWOSId ====================",data.result);
@@ -457,7 +458,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
   //**CONSULTA PAYMENT**//
   get_payment() {
-    this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.area_orientation.workOrderServicesId).subscribe((data => {
+    this._services.service_general_get("RequestPayment/GetRequestedPayments?WorkOrderServicesId=" + this.pre_decision.workOrderServicesId).subscribe((data => {
       if (data.success) {
         ////console.log(data.result);
         this.calculo = data.result.value;
@@ -471,8 +472,8 @@ export class PreDecisionOrientationComponent implements OnInit {
   //***********************************************************************************//
   //FUNCTION FOR SHOW PANEL HOUSING//
   displayPanelHosudig($event) {
-    this.area_orientation.housing = $event.checked;
-    if (this.area_orientation.housing) {
+    this.pre_decision.housing = $event.checked;
+    if (this.pre_decision.housing) {
       this.showPanelHousing = true;
     } else {
       this.showPanelHousing = false;
@@ -481,8 +482,8 @@ export class PreDecisionOrientationComponent implements OnInit {
   //***********************************************************************************//
   //FUNCTION FOR SHOW PANEL HOUSING//
   displayPanelSchooling($event) {
-    this.area_orientation.schooling = $event.checked;
-    if (this.area_orientation.schooling) {
+    this.pre_decision.schooling = $event.checked;
+    if (this.pre_decision.schooling) {
       this.showPanelSchooling = true;
     } else {
       this.showPanelSchooling = false;
@@ -491,9 +492,9 @@ export class PreDecisionOrientationComponent implements OnInit {
   //***********************************************************************************//
   //**METHODS REMINDER (NEW)**//
   addReminder() {
-    this.area_orientation.reminderPredecisionOrientations.push({
+    this.pre_decision.reminderPredecisionOrientations.push({
       "id": 0,
-      "predecisionOrientationId": this.area_orientation.id,
+      "predecisionOrientationId": this.pre_decision.id,
       "reminderDate": new Date(),
       "reminderComments": " ",
       "createdBy": this.user.id,
@@ -513,7 +514,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       ////console.log(result);
       if (result) {
         if (id == 0) {
-          this.area_orientation.predecisionOrientationId.splice(i, 1);
+          this.pre_decision.predecisionOrientationId.splice(i, 1);
         } else {
           this._services.service_general_delete("ImmigrationServices/DeleteReminderPDO?id=" + id).subscribe((data => {
             if (data.success) {
@@ -535,9 +536,9 @@ export class PreDecisionOrientationComponent implements OnInit {
   //**METHODS COMMENTS (NEW)**//
   addReply() {
     ////console.log(this.user);
-    this.area_orientation.commentPredecisionOrientations.push({
+    this.pre_decision.commentPredecisionOrientations.push({
       "id": 0,
-      "predecisionOrientationId": this.area_orientation.id,
+      "predecisionOrientationId": this.pre_decision.id,
       "reply": null,
       "userId": this.user.id,
       "createdBy": this.user.id,
@@ -546,7 +547,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       "updatedDate": new Date(),
       "user": this.user
     })
-    if (this.area_orientation.commentPredecisionOrientations.length == 1) {
+    if (this.pre_decision.commentPredecisionOrientations.length == 1) {
       this.cr = "Comment";
     } else {
       this.cr = "Reply";
@@ -573,7 +574,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       service: this.data.data.serviceTypeId,
       type_housing: 1,
       //workOrderServicesId: this.data.data.workOrderId
-      workOrderServicesId: this.area_orientation.workOrderServicesId
+      workOrderServicesId: this.pre_decision.workOrderServicesId
     }
     const dialogRef = this._dialog.open(DialogHousingSpecificationsComponent, {
       data: data_,
@@ -593,7 +594,7 @@ export class PreDecisionOrientationComponent implements OnInit {
         id: 0,
         nuevo: true,
         workOrder: this.data.data.workOrderId,
-        workOrderServicesId: this.area_orientation.workOrderServicesId,
+        workOrderServicesId: this.pre_decision.workOrderServicesId,
         numberWorkOrder: this.data.data.numberWorkOrder,
         serviceID: this.data.data.number_server,
         serviceName: this.data.data.service_name,
@@ -617,7 +618,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   editHousing(data) {
     ////console.log("Editar Housing: ", data);
     data.supplierType = 3
-    data.workOrderServicesId = this.area_orientation.workOrderServicesId,
+    data.workOrderServicesId = this.pre_decision.workOrderServicesId,
       data.sr = this.data.sr;
     data.numberWorkOrder = this.data.data.numberWorkOrder;
     data.serviceID = this.data.data.number_server;
@@ -635,36 +636,17 @@ export class PreDecisionOrientationComponent implements OnInit {
     })
   }
 
-  // editHousing(data){ 
-  //   data.supplierType = 3
-  //   data.workOrderServicesId = this.home_finding.workOrderServicesId,
-  //   data.sr = this.data.sr;
-  //   data.numberWorkOrder = this.data.data.numberWorkOrder;
-  //   data.serviceID =  this.data.data.number_server;
-  //   data.serviceName = this.data.data.service_name;
-  //   data.idServiceDetail =  this.home_finding.id;
-  //   data.shared = 1;
-  //   data.cat_service_id = 26;
-  //   ////console.log("Editar Housing: ", data);
-  //   const dialogRef = this._dialog.open(DialogHomeDetailsComponent,{
-  //     data: data,
-  //     width: "95%"
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.getDataHousing();
-  //   })
-  // }
   //**********************************************************************************//
   //AGREGAR ESCUELA//
   addSchool() {
     let data_ = {
       id: 0,
-      schooling_search_id: this.area_orientation.id,
-      workOrderId: this.data.data.workOrderId, //this.area_orientation.workOrderServicesId,
+      schooling_search_id: this.pre_decision.id,
+      workOrderId: this.data.data.workOrderId, //this.pre_decision.workOrderServicesId,
       service: this.data.data.serviceRecordId,
       serviceTypeId: this.data.data.serviceTypeId,
       sr: this.data.sr, 
-      workOrderServicesId: this.area_orientation.workOrderServicesId,
+      workOrderServicesId: this.pre_decision.workOrderServicesId,
       wo_: this.wo_,
       sr_: this.sr_
     }
@@ -684,7 +666,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     data_.wo_= this.wo_;
     data_.sr_= this.sr_;
     data_.sr= this.data.sr;
-    data_.workOrderServicesId= this.area_orientation.workOrderServicesId;
+    data_.workOrderServicesId= this.pre_decision.workOrderServicesId;
     const dialogRef = this._dialog.open(DialogSchoolDetailsComponent, {
       data: data_,
       width: "95%"
@@ -781,12 +763,12 @@ export class PreDecisionOrientationComponent implements OnInit {
   //**********************************************************************************//
   //**METHODS PAYMENTS (NEW PAYMENT)**//
   addPayment(data) {
-    ////console.log('workOrderServicesId', this.area_orientation.workOrderServicesId);
+    ////console.log('workOrderServicesId', this.pre_decision.workOrderServicesId);
     if (data == null) {
       data = {
         serviceRecord: this.data.data.serviceRecordId,
         sr: this.data.data.serviceRecordId,
-        workOrderServices: this.area_orientation.workOrderServicesId,
+        workOrderServices: this.pre_decision.workOrderServicesId,
         workOrder: this.data.data.workOrderId,
         service: this.data.data.id_server,
         id: 0,
@@ -866,7 +848,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       ////console.log(result);
       if (result.success) {
-        result.predecisionOrientationId = this.area_orientation.id;
+        result.predecisionOrientationId = this.pre_decision.id;
         this.temporalDocument.push(result);
       }
     });
@@ -944,7 +926,7 @@ export class PreDecisionOrientationComponent implements OnInit {
 
   //AGREGAR HIJO//
   addChild() {
-    this._services.service_general_get('RelocationServices/GetServiceChildToAddByWos_Id?wos_id='+ this.area_orientation.workOrderServicesId + '&sr_id='+ this.atributos_generales.sr_id)
+    this._services.service_general_get('RelocationServices/GetServiceChildToAddByWos_Id?wos_id='+ this.pre_decision.workOrderServicesId + '&sr_id='+ this.atributos_generales.sr_id)
     .subscribe(res => {
       console.log(res);
       this.loader.showLoader
@@ -983,11 +965,11 @@ export class PreDecisionOrientationComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
               
               debugger;
-              //this.area_orientation.schooling = result;
-              //console.log(this.area_orientation.schoolingInformations);
+              //this.pre_decision.schooling = result;
+              //console.log(this.pre_decision.schoolingInformations);
               let _schoolingInformations: any[] = [];
 
-              console.log(this.area_orientation.workOrderServiceId);
+              console.log(this.pre_decision.workOrderServiceId);
               result.forEach(element => {
                 if(element.active){
                   _schoolingInformations.push({
@@ -1003,7 +985,7 @@ export class PreDecisionOrientationComponent implements OnInit {
                     currentGrade: element.currentGrade,
                     comments: element.comments,
                     active: true,
-                    workOrderServiceId: this.area_orientation.workOrderServicesId,
+                    workOrderServiceId: this.pre_decision.workOrderServicesId,
                     id_dependent: element.id,
                   });
                 }  
@@ -1094,41 +1076,41 @@ export class PreDecisionOrientationComponent implements OnInit {
   //**********************************************************************************//
   save() {
     this.loader.showLoader();
-    ////console.log("SAVE INFORMATION: ", this.area_orientation);
-    this.area_orientation.documentPredecisionOrientations = this.temporalDocument;
-    this.area_orientation.updateBy = this.user.id;
-    this.area_orientation.updatedDate = new Date();
-    this.area_orientation.createdBy = this.user.id;
-    this.area_orientation.createdDate = new Date();
-    this.area_orientation.authoDateExtension = new Date();
-    this.area_orientation.authoAcceptanceDateExtension = new Date();
-    this.area_orientation.housing = this.isHousing;
-    this.area_orientation.schooling = this.isSchool;
-    ////console.log(this.area_orientation);
+    ////console.log("SAVE INFORMATION: ", this.pre_decision);
+    this.pre_decision.documentPredecisionOrientations = this.temporalDocument;
+    this.pre_decision.updateBy = this.user.id;
+    this.pre_decision.updatedDate = new Date();
+    this.pre_decision.createdBy = this.user.id;
+    this.pre_decision.createdDate = new Date();
+    this.pre_decision.authoDateExtension = new Date();
+    this.pre_decision.authoAcceptanceDateExtension = new Date();
+    this.pre_decision.housing = this.isHousing;
+    this.pre_decision.schooling = this.isSchool;
+    ////console.log(this.pre_decision);
 
-    let data_comment_aux = this.area_orientation.commentPredecisionOrientations;
-    this.area_orientation.commentPredecisionOrientations = [];
+    let data_comment_aux = this.pre_decision.commentPredecisionOrientations;
+    this.pre_decision.commentPredecisionOrientations = [];
 
     for (let i = 0; i < data_comment_aux.length; i++) {
       if (data_comment_aux[i].reply != null && data_comment_aux[i].reply != undefined && data_comment_aux[i].reply.trim() != '') {
-        this.area_orientation.commentPredecisionOrientations.push(data_comment_aux[i]);
+        this.pre_decision.commentPredecisionOrientations.push(data_comment_aux[i]);
       }
     }
     // si el estatus cambia a complete la fecha se guarda
-    if (this.area_orientation.statusId == 4 || this.area_orientation.statusId == 5) {
-      this.area_orientation.serviceCompletionDate = new Date().toISOString();
+    if (this.pre_decision.statusId == 4 || this.pre_decision.statusId == 5) {
+      this.pre_decision.serviceCompletionDate = new Date().toISOString();
     }
     else {
-      this.area_orientation.serviceCompletionDate = '';
+      this.pre_decision.serviceCompletionDate = '';
     }
 
-    if(this.area_orientation.statusId == 4 || this.area_orientation.statusId == 5){
-      this.area_orientation.serviceCompletionDate = new Date().toISOString();
+    if(this.pre_decision.statusId == 4 || this.pre_decision.statusId == 5){
+      this.pre_decision.serviceCompletionDate = new Date().toISOString();
     }
     
-    this.area_orientation.schoolings = [];
+    this.pre_decision.schoolings = [];
     debugger;
-    this._services.service_general_put("RelocationServices/PutPreDecisionOrientation", this.area_orientation).subscribe(data => {
+    this._services.service_general_put("RelocationServices/PutPreDecisionOrientation", this.pre_decision).subscribe(data => {
       if (data.success) {
         ////console.log(data);
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -1267,37 +1249,37 @@ export class PreDecisionOrientationComponent implements OnInit {
 
     if (!event.checked) {
       if (data == 'supermarks') {
-        if (this.area_orientation.supermarksdate) {
+        if (this.pre_decision.supermarksdate) {
           console.log('Mostrar popup: ', data, event);
           this.confirm_uncheckif('supermarks');
         }
       }
       if (data == 'shoppingSocialAreas') {
-        if (this.area_orientation.shoppingSocialAreasdate) {
+        if (this.pre_decision.shoppingSocialAreasdate) {
           console.log('Mostrar popup: ', data, event);
           this.confirm_uncheckif('shoppingSocialAreas');
         }
       }
       if (data == 'parks') {
-        if (this.area_orientation.parksdate) {
+        if (this.pre_decision.parksdate) {
           console.log('Mostrar popup: ', data, event);
           this.confirm_uncheckif('parks');
         }
       }
       if (data == 'extracurricularActivities') {
-        if (this.area_orientation.extracurricularActivitiesdate) {
+        if (this.pre_decision.extracurricularActivitiesdate) {
           console.log('Mostrar popup: ', data, event);
           this.confirm_uncheckif('extracurricularActivities');
         }
       }
       if (data == 'emergencyHealth') {
-        if (this.area_orientation.emergencyHealthdate) {
+        if (this.pre_decision.emergencyHealthdate) {
           console.log('Mostrar popup: ', data, event);
           this.confirm_uncheckif('emergencyHealth');
         }
       }
       if (data == 'other') {
-        if (this.area_orientation.otherdate) {
+        if (this.pre_decision.otherdate) {
           console.log('Mostrar popup: ', data, event);
           this.confirm_uncheckif('other');
         }
@@ -1323,31 +1305,31 @@ export class PreDecisionOrientationComponent implements OnInit {
       if (!result) {
         if (data == 'supermarks') {
 
-          this.area_orientation.supermarks = true;
+          this.pre_decision.supermarks = true;
 
         }
         if (data == 'shoppingSocialAreas') {
 
-          this.area_orientation.shoppingSocialAreas = true;
+          this.pre_decision.shoppingSocialAreas = true;
 
         }
         if (data == 'parks') {
 
-          this.area_orientation.parks = true;
+          this.pre_decision.parks = true;
 
         }
         if (data == 'extracurricularActivities') {
-          this.area_orientation.extracurricularActivities = true;
+          this.pre_decision.extracurricularActivities = true;
           console.log('Mostrar popup: ', data, event);
 
         }
         if (data == 'emergencyHealth') {
-          this.area_orientation.emergencyHealth = true;
+          this.pre_decision.emergencyHealth = true;
           console.log('Mostrar popup: ', data, event);
 
         }
         if (data == 'other') {
-          this.area_orientation.other = true;
+          this.pre_decision.other = true;
           console.log('Mostrar popup: ', data, event);
 
         }
@@ -1357,8 +1339,6 @@ export class PreDecisionOrientationComponent implements OnInit {
 
 
   ///////////////////////////// JUNIO 2023 
-
-
 
 
 isVisible:boolean =false;
@@ -1371,7 +1351,7 @@ isVisible:boolean =false;
 
 GetBasicServiceData() {
   this.loader.showLoader();
-  this._services.service_general_get(`ServiceRecord/GetBasicServiceDataByWosId?wos_id=${this.area_orientation.workOrderServicesId}`).subscribe(resp => {
+  this._services.service_general_get(`ServiceRecord/GetBasicServiceDataByWosId?wos_id=${this.pre_decision.workOrderServicesId}`).subscribe(resp => {
     this.loader.hideLoader();
     if (resp.success) {
       console.log(' GetBasicServiceData: ================================', resp);

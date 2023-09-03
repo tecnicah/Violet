@@ -1,4 +1,4 @@
-<div *ngIf="show && area_orientation">
+<div *ngIf="show && pre_decision">
   <!------------------------------------OPEN HEADER------------------------------------------>
   <div fxLayout="row" fxLayoutGap="10px">
     <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
@@ -16,7 +16,7 @@
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
             <span class="text-mini gray_05">Autho</span><br />
-            <span *ngIf="area_orientation">{{area_orientation.authoDate | date:'dd MMM yyy'}}</span>
+            <span *ngIf="pre_decision">{{pre_decision.authoDate | date:'dd MMM yyy'}}</span>
           </div>
 
           <div style="text-align:end; width: auto !important;">
@@ -29,15 +29,15 @@
         <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
           <div>
             <span class="text-mini gray_05">Acceptance</span><br />
-            <span *ngIf="area_orientation">{{area_orientation.authoDate | date:'dd MMM yyy'}}</span>
+            <span *ngIf="pre_decision">{{pre_decision.authoDate | date:'dd MMM yyy'}}</span>
           </div>
         </div>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="area_orientation">
-        <div style="height: 70%;" *ngIf="area_orientation.coordination">
+      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="pre_decision">
+        <div style="height: 70%;" *ngIf="pre_decision.coordination">
           <p class="subtitle" style="font-size: 8px; margin: 0;">Coordination</p>
-          <mat-checkbox [disabled] class="example-margin textarea" [(ngModel)]="area_orientation.coordination">
+          <mat-checkbox [disabled] class="example-margin textarea" [(ngModel)]="pre_decision.coordination">
           </mat-checkbox>
         </div>
       </mat-grid-tile>
@@ -77,10 +77,10 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central">
           <div class="page__section-data font-size-12 comments input_final" style="display: flex;"
-            *ngIf="area_orientation">
+            *ngIf="pre_decision">
             <div>
               <span class="text-mini gray_05">Completion</span><br />
-              {{ area_orientation.serviceCompletionDate | date:'dd MMM yyy' }}
+              {{ pre_decision.serviceCompletionDate | date:'dd MMM yyy' }}
             </div>
             <div style="text-align:end; width: auto !important;">
               <mat-icon class="calendar">calendar_today</mat-icon>
@@ -99,17 +99,17 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div>
           <mat-checkbox [disabled]="disabled_by_permissions" (change)="marcar_opcion('supermarks', $event);"
-            class="example-margin" [(ngModel)]="area_orientation.supermarks">
+            class="example-margin" [(ngModel)]="pre_decision.supermarks">
             <span class="subtitle" style="font-size: 12px;"> Supermarkets </span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid" *ngIf="area_orientation.supermarks">
+        <div class="input_central wid" *ngIf="pre_decision.supermarks">
           <mat-form-field appearance="fill">
             <mat-label>Completion</mat-label>
             <input [min]="today" matInput [matDatepicker]="picker4" placeholder="Completion Date"
-              [(ngModel)]="area_orientation.supermarksdate">
+              [(ngModel)]="pre_decision.supermarksdate">
             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
@@ -118,17 +118,17 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div>
           <mat-checkbox [disabled]="disabled_by_permissions" (change)="marcar_opcion('shoppingSocialAreas', $event);"
-            class="example-margin" [(ngModel)]="area_orientation.shoppingSocialAreas">
+            class="example-margin" [(ngModel)]="pre_decision.shoppingSocialAreas">
             <span class="subtitle" style="font-size: 12px;">Shopping ¬ Social Areas</span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid" *ngIf="area_orientation.shoppingSocialAreas">
+        <div class="input_central wid" *ngIf="pre_decision.shoppingSocialAreas">
           <mat-form-field appearance="fill">
             <mat-label>Completion</mat-label>
             <input [min]="today" matInput [matDatepicker]="picker4" placeholder="Completion Date"
-              [(ngModel)]="area_orientation.shoppingSocialAreasdate">
+              [(ngModel)]="pre_decision.shoppingSocialAreasdate">
             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
@@ -137,17 +137,17 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div>
           <mat-checkbox [disabled]="disabled_by_permissions" (change)="marcar_opcion('parks', $event);"
-            class="example-margin" [(ngModel)]="area_orientation.parks">
+            class="example-margin" [(ngModel)]="pre_decision.parks">
             <span class="subtitle" style="font-size: 12px;"> Parks </span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid" *ngIf="area_orientation.parks">
+        <div class="input_central wid" *ngIf="pre_decision.parks">
           <mat-form-field appearance="fill">
             <mat-label>Completion</mat-label>
             <input [min]="today" matInput [matDatepicker]="picker4" placeholder="Completion Date"
-              [(ngModel)]="area_orientation.parksdate">
+              [(ngModel)]="pre_decision.parksdate">
             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
@@ -157,17 +157,17 @@
         <div>
           <mat-checkbox [disabled]="disabled_by_permissions"
             (change)="marcar_opcion('extracurricularActivities', $event);" class="example-margin"
-            [(ngModel)]="area_orientation.extracurricularActivities">
+            [(ngModel)]="pre_decision.extracurricularActivities">
             <span class="subtitle" style="font-size: 12px;"> Extracurricular Activities</span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid" *ngIf="area_orientation.extracurricularActivities">
+        <div class="input_central wid" *ngIf="pre_decision.extracurricularActivities">
           <mat-form-field appearance="fill">
             <mat-label>Completion</mat-label>
             <input [min]="today" matInput [matDatepicker]="picker4" placeholder="Completion Date"
-              [(ngModel)]="area_orientation.extracurricularActivitiesdate">
+              [(ngModel)]="pre_decision.extracurricularActivitiesdate">
             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
@@ -176,17 +176,17 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div>
           <mat-checkbox [disabled]="disabled_by_permissions" (change)="marcar_opcion('emergencyHealth', $event);"
-            class="example-margin" [(ngModel)]="area_orientation.emergencyHealth">
+            class="example-margin" [(ngModel)]="pre_decision.emergencyHealth">
             <span class="subtitle" style="font-size: 12px;">Emergency and health facilities</span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid" *ngIf="area_orientation.emergencyHealth">
+        <div class="input_central wid" *ngIf="pre_decision.emergencyHealth">
           <mat-form-field appearance="fill">
             <mat-label>Completion</mat-label>
             <input [min]="today" matInput [matDatepicker]="picker4" placeholder="Completion Date"
-              [(ngModel)]="area_orientation.emergencyHealthdate">
+              [(ngModel)]="pre_decision.emergencyHealthdate">
             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
@@ -196,27 +196,27 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div>
           <mat-checkbox [disabled]="disabled_by_permissions" (change)="marcar_opcion('other', $event);"
-            class="example-margin" [(ngModel)]="area_orientation.other">
+            class="example-margin" [(ngModel)]="pre_decision.other">
             <span class="subtitle" style="font-size: 12px;">Other</span>
           </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central wid" *ngIf="area_orientation.other">
+        <div class="input_central wid" *ngIf="pre_decision.other">
           <mat-form-field appearance="fill">
             <mat-label>Completion</mat-label>
             <input [min]="today" matInput [matDatepicker]="picker4" placeholder="Completion Date"
-              [(ngModel)]="area_orientation.otherdate">
+              [(ngModel)]="pre_decision.otherdate">
             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
           </mat-form-field>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <div class="wid" style="height: 80%;" *ngIf="area_orientation.other">
+        <div class="wid" style="height: 80%;" *ngIf="pre_decision.other">
           <mat-form-field appearance="fill">
             <mat-label>If Other Specify</mat-label>
-            <input matInput placeholder="If Other Specify" [(ngModel)]="area_orientation.othertext">
+            <input matInput placeholder="If Other Specify" [(ngModel)]="pre_decision.othertext">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -224,8 +224,8 @@
     <mat-grid-list cols="4" rowHeight="75px">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
-          <p class="page__section-name">Houses</p>
-          <mat-slide-toggle [(ngModel)]="isHousing" (change)="displayPanelHosudig($event)">
+          <p class="page__section-name">Houses| {{isHousing}}</p>
+          <mat-slide-toggle [(ngModel)]="pre_decision.housing" (change)="displayPanelHosudig($event)">
           </mat-slide-toggle>
         </div>
       </mat-grid-tile>
@@ -233,7 +233,7 @@
     <!---------------------------------------------------------------------->
     <!---------------------------------------------------------------------->
     <!--SECION PARA OCULTAR SECCION HOUSING-->
-    <div *ngIf="isHousing">
+    <div *ngIf="pre_decision.housing">
       <!----------------------- INICIO BOTONERA ACCIONES HL------------------------------------>
 
       <mat-grid-list cols="5" rowHeight="70px">
@@ -343,14 +343,14 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
           <p class="page__section-name" style="width: 100%;">Schools</p>
-          <mat-slide-toggle [(ngModel)]="isSchool"
+          <mat-slide-toggle [(ngModel)]="pre_decision.schooling"
             (change)="displayPanelSchooling($event)"></mat-slide-toggle>
         </div>
       </mat-grid-tile>
 
     </mat-grid-list>
     <!---------------------------------------------------------------------------------------------------->
-    <div *ngIf="isSchool">
+    <div *ngIf="pre_decision.schooling">
       <mat-grid-list cols="4" rowHeight="70px">
 
         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -437,7 +437,7 @@
       <br><br>
 
       <!--START CARD SCHOOLNG-->
-      <div *ngFor="let data of area_orientation.schoolings; let i = index" style="padding-bottom: 15px;">
+      <div *ngFor="let data of pre_decision.schoolings; let i = index" style="padding-bottom: 15px;">
         <div class="mat-elevation-z8 textarea">
           <!----------------------------------------------------------------------------------------->
           <mat-grid-list cols="4" rowHeight="50px">
