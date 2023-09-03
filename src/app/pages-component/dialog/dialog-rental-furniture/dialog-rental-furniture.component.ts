@@ -23,6 +23,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { DialogTimeExtensionsComponent } from '../dialog-time-extensions/dialog-time-extensions.component';
 import { DialogRelatedPaymentsComponent } from '../dialog-related-payments/dialog-related-payments.component';
 import { DialogPaymentsMethodsComponent } from '../dialog-payments-methods/dialog-payments-methods.component';
+import { SenRequestComponent } from './sen-request/sen-request.component';
 
 
 @Component({
@@ -130,6 +131,7 @@ export class DialogRentalFurnitureComponent implements OnInit {
     }
     return listNumber;
   }
+  ca_paymentResponsibility: any
   async getListSelect() {
     this.ca_duracion = await this._services.getCatalogueFrom('GetDuration');
     console.log('ca_duracion', this.ca_duracion);
@@ -137,6 +139,11 @@ export class DialogRentalFurnitureComponent implements OnInit {
     console.log('ca_currency', this.ca_currency);
     this.ca_responsible = await this._services.getCatalogueFrom('GetResponsablePayment');
     console.log('ca_responsible', this.ca_responsible);
+    this._services.service_general_get('AdminCenter/GetPaymentResponsibility').subscribe(ele => {
+      this.ca_paymentResponsibility = ele.result
+      console.log('ca_paymentResponsibility', this.ca_paymentResponsibility);
+    })
+
   }
   listfurniture() {
     const urlfurniture = 'RelocationServices/GetRentalFurnitureCoordinationById?id=' + this.id
@@ -167,10 +174,21 @@ export class DialogRentalFurnitureComponent implements OnInit {
 
       })
   }
+  showSendRequest() {
+    const dialogRef = this._dialog.open(SenRequestComponent, {
+      data: {
+        supplier: this.dataRentalForniture.supplierPartner,
+        contact: this.dataRentalForniture.mainContact,
+        supplier_get: this.supplier_get,
+        contactSupplier: this.contactSupplier
+      },
+      width: '70%',
+    })
+  }
   addPaymentsMethods() {
     const dialogRef = this._dialog.open(DialogPaymentsMethodsComponent, {
       data: {
-        wosId :this.wosId
+        wosId: this.wosId
       },
       width: '70%',
     });
@@ -285,5 +303,27 @@ export class DialogRentalFurnitureComponent implements OnInit {
       this.ListFuntionTableRelated()
       this.__loader__.hideLoader()
     })
+  }
+  save() {
+    this.__loader__.showLoader();
+    console.log(this.dataRentalForniture);
+
+    this._services.service_general_put('RelocationServices/PutRentalFurnitureCoordinaton', this.dataRentalForniture).subscribe(save => {
+      console.log(save);
+      if (save.success == false) return;
+      this.viewMensajeComponente('Success', 'Update Data');
+      this.__loader__.hideLoader()
+      this.dialogRef.close()
+    })
+  }
+  viewMensajeComponente(header: string, msg: string) {
+    window.scrollTo(0, 0);
+    const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+      data: {
+        header: header,
+        body: msg
+      },
+      width: "350px"
+    });
   }
 }
