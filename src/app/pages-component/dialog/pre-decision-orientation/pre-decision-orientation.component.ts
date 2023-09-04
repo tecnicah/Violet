@@ -138,25 +138,13 @@ export class PreDecisionOrientationComponent implements OnInit {
           }, error => {
       
           });
-          // this._services.service_general_get('RelocationServices/GetChildrenBySchoolingPredecision?sr='+ this.atributos_generales.sr_id + '&predecisionId='+ data.result.id)
-          // .subscribe(res => {
-          //   if (res.success) {
-          //     console.log("GetChildrenBySchoolingPredecision", res);
-          //     this.pre_decision.schoolings = res.applicant.value;
-          //   }
-          // });
+
         }, 300);
        
-        // this.showPanelHousing = this.pre_decision.housing;
-        // this.showPanelSchooling = this.pre_decision.schooling;
-
-        //DATA TABLE EXTENSION//
-        // this.dataSource = this.pre_decision.extensionAreaOrientations;
         this.getDataHousing();
         this.getDataSchool();
         
         this.loader.hideLoader();
-        // this.getServiceScope();
       }
     }), (err) => {
       this.loader.hideLoader();
@@ -203,7 +191,7 @@ export class PreDecisionOrientationComponent implements OnInit {
         }));
       }
       else {
-        //nada 
+        this.loader.hideLoader();
       }
     });
   };
@@ -403,15 +391,16 @@ export class PreDecisionOrientationComponent implements OnInit {
   //***********************************************************************************//
 
   getDataSchool() {
-    debugger;
+   // debugger;
      this._services.service_general_get('SchoolsList/GetAllSchoolByserviceid?wo_id=' + this.data.data.workOrderId + "&service_id="+this.pre_decision.id).subscribe((data_schooling_list => {
+     // debugger;
       if (data_schooling_list.success) {
         console.log("data_schooling_list", data_schooling_list);
       //  this.pre_decision.schooling = data_schooling_list.message; 
      
-        this.isSchool = data_schooling_list.message.length > 0 ? true : false;
-        data_schooling_list.message.forEach(element => {
-          this.dataSourceSchool.push({
+       // this.isSchool = data_schooling_list.message.length > 0 ? true : false;
+       /* data_schooling_list.message.forEach(element => {
+           this.dataSourceSchool.push({
             additionalComments: element.additionalComments,
             address: element.address,
             admision: element.admision,
@@ -432,9 +421,9 @@ export class PreDecisionOrientationComponent implements OnInit {
             supplierId: element.supplierId,
             visitDate: element.visitDate,
             visitDateTime: element.visitDateTime
-          });
-        });
-        // this.dataSourceSchool = data_schooling_list.message;
+          }); 
+        });*/
+         this.dataSourceSchool = data_schooling_list.message;
       }
     }));
   }

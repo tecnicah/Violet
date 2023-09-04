@@ -239,7 +239,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <div class="page__section-buttong">
+  <div class="page__section-buttong" *ngIf="this.data.serviceName != 'Pre-Decision Orientation'">
     <button (click)='export_hs();'>Import HS</button>
   </div>
   &nbsp;&nbsp;&nbsp;&nbsp;
