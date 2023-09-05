@@ -71,6 +71,7 @@ debugger;
         {
           this.ir_tarjeta = true;
           this.moout_tarjeta = true;
+          this.moin_tarjeta = true;
         }
         else if( v_selected[0].catCategoryId == 21) //H finding
         {

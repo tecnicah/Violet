@@ -35,7 +35,7 @@
 <mat-dialog-content class="mat-typography">
     <div class="page__section">
 
-        <div class="dash dash--80" style=" width: 100%;">
+        <div class="dash dash--80" style=" width: 100%;" *ngIf="this.data.cat_category_id != 16">
 
             <div class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="lscontract();">
                 <div class="dash__card dash__card--up cursor-pointer">
@@ -98,6 +98,13 @@
 
                 </div>
             </div>
+        </div>
+        <div class="dash dash--80" style=" width: 100%;" *ngIf="this.data.cat_category_id == 16">
+        <label style="font-weight: bolder; font-size: 20px;">
+            <br><br><br>
+            This service does not have a lease summary
+           
+        </label>
         </div>
 
     </div>

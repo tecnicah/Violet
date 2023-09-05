@@ -71,7 +71,7 @@
                     <mat-grid-tile [colspan]="4" [rowspan]="1">
                         <div class="textarea" style="margin-top: -80px;">
                             <br><br>
-                            <p class="subtitle" style="font-size: 12px; margin: 0px;">Notes</p>
+                            <p class="subtitle" style="font-size: 12px; margin: 0px;">Overall Move In Notes</p>
                             <mat-form-field appearance="outline" class="textarea" style="width: 100% !important;">
                                 <textarea matInput #message maxlength="500" [(ngModel)]="data_move_in.notes"></textarea>
                                 <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
@@ -84,7 +84,7 @@
                     <mat-grid-tile [colspan]="4" [rowspan]="1">
                         <div style="width: 100%;">
                             <div>
-                                <p class="page__section-name">Sections</p>
+                                <p class="page__section-name">Property Sections</p>
                             </div>
                         </div>
                     </mat-grid-tile>
@@ -113,7 +113,7 @@
 
                         <!-- Progress Column -->
                         <ng-container matColumnDef="status">
-                            <th mat-header-cell *matHeaderCellDef> Status </th>
+                            <th mat-header-cell *matHeaderCellDef> Condition </th>
                             <td mat-cell *matCellDef="let row">
                                 <div>
                                     <mat-form-field appearance="fill" style="max-width: 200px;">

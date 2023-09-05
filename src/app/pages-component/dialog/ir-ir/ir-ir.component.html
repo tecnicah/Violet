@@ -3,7 +3,7 @@
         <h2 mat-dialog-title class="primary_title" style="float:left;"> Inspections & Repairs
 
             <span style="font-size: medium; color: darkmagenta; font-style: normal; font-weight: normal;">
-                - Property Inspection
+            <br> Property Inspection
             </span>
         </h2>
 
@@ -50,22 +50,12 @@
                 <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;"
                     *ngFor="let item of data_inspection; let k = index">
                     <mat-grid-list cols="4" rowHeight="70px">
-                        <mat-grid-tile [colspan]="1" [rowspan]="1">
-                            <div class="input_central textarea">
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Inspection Date</mat-label>
-                                    <input matInput [matDatepicker]="pickertres" placeholder="Initial Inspection Date"
-                                        [(ngModel)]='item.initialInspectionDate'>
-                                    <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
-                                    <mat-datepicker #pickertres></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                        </mat-grid-tile>
+                        
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
                                     <mat-label>Inspection Type</mat-label>
-                                    <mat-select [(ngModel)]="item.inspectType">
+                                    <mat-select [(ngModel)]="item.inspectType" (selectionChange)="update_headers(item)">
                                         <mat-option *ngFor="let s of ca_inspec_type" [value]='s.id'>{{s.type}}
                                         </mat-option>
                                     </mat-select>
@@ -75,13 +65,25 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
+                                    <mat-label>Inspection Date</mat-label>
+                                    <input matInput [matDatepicker]="pickertres" placeholder="Initial Inspection Date"
+                                        [(ngModel)]='item.initialInspectionDate' (ngModelChange)="update_headers(item)">
+                                    <mat-datepicker-toggle matSuffix [for]="pickertres"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickertres></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <div class="input_central textarea">
+                                <!-- <mat-form-field appearance="fill">
                                     <mat-label>Property Section</mat-label>
                                     <mat-select [(ngModel)]="item.propertySection">
                                         <mat-option *ngFor="let s of ca_propertySection"
                                             [value]='s.id'>{{s.propertySection}}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                Actions: {{item.repairs.length}}
                             </div>
                         </mat-grid-tile>
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -112,7 +114,7 @@
                             </div>
                         </mat-grid-tile>
                         <mat-grid-list cols="4" rowHeight="70px">
-                            <mat-grid-tile [colspan]="4" [rowspan]="1">
+                            <!-- <mat-grid-tile [colspan]="4" [rowspan]="1">
                                 <div class="page__section-buttong"
                                     style="display: flex; justify-content: flex-start; flex: 0px !important;">
                                     <button class="button-icon"
@@ -121,10 +123,10 @@
                                         Save Inspection Header
                                     </button>
                                 </div>
-                            </mat-grid-tile>
+                            </mat-grid-tile> -->
                             <mat-grid-tile [colspan]="1" [rowspan]="1">
                                 <div>
-                                    <p class="page__section-name" style="font-size: 14px;">Actions</p>
+                                    <p class="page__section-name" style="font-size: 14px;">Actions List</p>
                                 </div>
                             </mat-grid-tile>
                             <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
@@ -136,6 +138,11 @@
                             <!---------------------------TABLA HOUSING------------------------------>
                             <table matTableExporter mat-table [dataSource]="item.repairs"
                                 class="mat-elevation-z8 textarea">
+                                <ng-container matColumnDef="Neighborhood">
+                                    <th mat-header-cell *matHeaderCellDef> Section </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{getSection(element.propertySection)}} </td>
+                                </ng-container>
                                 <ng-container matColumnDef="Address">
                                     <th mat-header-cell *matHeaderCellDef> Action Type </th>
                                     <td mat-cell *matCellDef="let element" style="cursor:pointer;">
@@ -145,20 +152,16 @@
                                         </a>
                                     </td>
                                 </ng-container>
-                                <ng-container matColumnDef="Neighborhood">
-                                    <th mat-header-cell *matHeaderCellDef> Start Date </th>
-                                    <td mat-cell *matCellDef="let element">
-                                        {{element.repairStartDate | date: 'MM/dd/yyyy'}} </td>
-                                </ng-container>
+                                
                                 <ng-container matColumnDef="Price">
                                     <th mat-header-cell *matHeaderCellDef> Total Days </th>
                                     <td mat-cell *matCellDef="let element">{{element.totalDays}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="Property Type">
+                                <!-- <ng-container matColumnDef="Property Type">
                                     <th mat-header-cell *matHeaderCellDef> Total Cost </th>
                                     <td mat-cell *matCellDef="let element"> {{element.totalCostRepair | currency }}
                                     </td>
-                                </ng-container>
+                                </ng-container> -->
                                 <ng-container matColumnDef="photos">
                                     <th mat-header-cell *matHeaderCellDef> Photos </th>
                                     <td mat-cell *matCellDef="let element">
