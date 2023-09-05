@@ -31,7 +31,7 @@
                 <input matInput placeholder="Country" [(ngModel)]="filterCountry.name">
               </mat-form-field>
               <mat-option *ngFor="let item of catalogoCountry| filterBy: filterCountry" [value]="item.name">
-                {{item.name}}</mat-option>
+                {{item.name | titlecase}}</mat-option>
               <mat-option disabled *ngIf="(catalogoCountry | filterBy: filterCountry).length === 0">No matching elements
               </mat-option>
             </mat-select>

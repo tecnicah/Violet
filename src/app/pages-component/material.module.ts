@@ -377,6 +377,7 @@ import { ModalBankingDetailsComponent } from './dialog/dialog-payments-methods/m
 import { DialogWireTransferProfileComponent } from './dialog/dialog-wire-transfer-profile/dialog-wire-transfer-profile.component';
 import { LsfSpecialcComponent } from './dialog/lsf-specialc/lsf-specialc.component';
 import { DialogConsiderationComponent } from './dialog/dialog-consideration/dialog-consideration.component';
+import { SenRequestComponent } from './dialog/dialog-rental-furniture/sen-request/sen-request.component';
 
 @NgModule({
   imports: [
@@ -793,6 +794,7 @@ import { DialogConsiderationComponent } from './dialog/dialog-consideration/dial
     DialogWireTransferProfileComponent,
     LsfSpecialcComponent,
     DialogConsiderationComponent,
+    SenRequestComponent,
   ]
 })
 export class MaterialComponentsModule {}
