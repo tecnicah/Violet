@@ -155,10 +155,11 @@ export class IrRepairDetailComponent implements OnInit {
      ,createdDate: new Date()
      ,idServiceDetail: this.data.servide_detail_id
      ,InspectionId: this.data.inspection.id
-     ,
+     ,propertySection: null
     }
   }
 
+  totalDays ="0";
 
   async get_catalogs() {
 
@@ -199,7 +200,44 @@ export class IrRepairDetailComponent implements OnInit {
     this.supplierPartner_repairs();
     
    // this.GetInspRepBySection(this.data.ph_id, this.data.servide_detail_id, 3);
+    this.checkDates();
+  
   };
+
+  startDate= "";
+  endDate= ";"
+
+  formatDate(date: string){
+    if(date === null){
+      return null;
+    }
+    const dateF = date.slice(0, 10);
+    const myDate = dateF.split("-");
+    return myDate[0] + '/' + myDate[1] + '/' + myDate[2];
+  }
+
+  checkDates(){
+    this.startDate        = this.formatDate(this.repair.repairStartDate), // jsonRepair.repairStartDate;
+    this.endDate          = this.formatDate(this.repair.repairEndDate), //jsonRepair.repairEndDate;
+    console.log(this.startDate);
+    console.log(this.endDate);
+    var date1Updated = new Date(this.startDate.replace(/-/g,'/'));  
+    var date2Updated = new Date(this.endDate.replace(/-/g,'/'));
+    console.log(date1Updated);
+    console.log(date2Updated);
+    debugger;
+    if(date2Updated < date1Updated){
+      console.log('es menor la final');
+      alert("The final date of repair must not be less than the initial date");
+    }
+    else{
+      console.log('es mayor la final');
+      var Difference_In_Time = date2Updated.getTime() - date1Updated.getTime();
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+      this.repair.totalDays = Difference_In_Days.toString();
+    }
+  }
 
 
   supplierPartner_repairs() {
@@ -215,7 +253,6 @@ export class IrRepairDetailComponent implements OnInit {
       console.log("no se realizo la consulta por falta de parametro");
     });
   }
-
 
   GetInspRepBySection(key, servide_detail_id, section) {
     this.loader.showLoader();
@@ -317,7 +354,7 @@ export class IrRepairDetailComponent implements OnInit {
   };
 
   saveRepairs() {
-
+debugger;
     if (this.repair.repairType> 0){
       if(this.repair.id > 0){
         this.update_repair(this.repair);

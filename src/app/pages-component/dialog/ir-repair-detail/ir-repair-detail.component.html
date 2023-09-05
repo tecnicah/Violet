@@ -17,6 +17,18 @@
 
     <div class="mat-elevation-z5" style="padding: 20px; margin-bottom: 20px; position: relative;">
         <mat-grid-list cols="4" rowHeight="70px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Property Section</mat-label>
+                        <mat-select [(ngModel)]="repair.propertySection">
+                            <mat-option *ngFor="let s of ca_propertySection"
+                                [value]='s.id'>{{s.propertySection}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> 
+                </div>
+            </mat-grid-tile>
 
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <div class="input_central textarea">
@@ -64,57 +76,51 @@
                     </mat-form-field>
                 </div>
             </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Total Days  | {{repair.totalDays}}</mat-label>
+                        <input disabled matInput  placeholder="0"  [(ngModel)]="repair.totalDays">
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Supplier Parter</mat-label>
+                        <mat-select [(ngModel)]="repair.supplierPartner">
+                            <mat-option *ngFor="let data of SupplierCompany_repairs"
+                                [value]="data.id">{{data.comercialName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <div class="input_central textarea">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Total Cost</mat-label>
+                        <input  matInput  placeholder="0"  [(ngModel)]="repair.totalCostRepair">
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field  class="input_central_half">
+                  <mat-label>Currency</mat-label>
+                  <mat-select
+                          matNativeControl
+                          required
+                          [(ngModel)]="repair.currency">
+                      <mat-option selected disabled value="">Currency</mat-option>
+                      <mat-option *ngFor="let item of ca_currency;" [(value)]="item.id">{{ item.currency }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-grid-tile>
 
 
 
         </mat-grid-list>
         <div>
-            <mat-grid-list cols="4" rowHeight="130px">
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                    <div class="input_central textarea">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Total Days</mat-label>
-                            <input matInput placeholder="Total Days" type="number" min="0" [(ngModel)]="repair.totalDays">
-                        </mat-form-field>
-                    </div>
-                </mat-grid-tile>
-                
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                    <div class="input_central textarea">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Total Cost of Repair</mat-label>
-                            <span matPrefix>$ &nbsp;</span>
-                            <input matInput placeholder="Total Cost of Repair" type="number" min="0"
-                                [(ngModel)]="repair.totalCostRepair">
-                        </mat-form-field>
-                    </div>
-                </mat-grid-tile>
 
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                    <div class="input_central textarea">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Currency</mat-label>
-                            <mat-select [(ngModel)]="repair.currency">
-                                <mat-option *ngFor="let data of ca_currency"
-                                    [value]="data.id">{{data.currency}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </mat-grid-tile>
-
-                <mat-grid-tile [colspan]="1" [rowspan]="1">
-                    <div class="input_central textarea">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Supplier Partner</mat-label>
-                            <mat-select [(ngModel)]="repair.supplierPartner" (ngModelChange)="_supplier();">
-                                <mat-option *ngFor="let data of SupplierCompany_repairs" [value]="data.id">
-                                    {{data.comercialName}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </mat-grid-tile>
-            </mat-grid-list>
             <mat-grid-list cols="4" rowHeight="130px">
                 <mat-grid-tile [colspan]="4" [rowspan]="1">
                     <div class="textarea">

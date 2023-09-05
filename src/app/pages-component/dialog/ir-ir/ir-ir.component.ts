@@ -36,7 +36,7 @@ export class IrIrComponent implements OnInit {
   lsf_service_detail_id;
   // Inspection Type 
   dataSourceHousing: any[] = [];
-  displayedColumnsHousing: string[] = ['Address', 'Neighborhood', 'Property Type','Price', 'photos'];
+  displayedColumnsHousing: string[] = ['Neighborhood','Address','Price', 'photos'];
   displayedColumnsAttend: string[] = ['tittle', 'name', 'email'];
   ca_inspec_type = [{ id: 1, type: "Pre Inspection" }, { id: 2, type: "Post Delivery" }]
 
@@ -492,6 +492,38 @@ export class IrIrComponent implements OnInit {
 
   }
 
+  update_headers(obj_inspect) {
+    
+    this._services.service_general_put("HousingList/PutInspection", obj_inspect).subscribe((data => {
+     
+      if (data.success) {
+        console.log("HousingList/PutInspection: ", data);
+        this.loader.hideLoader();
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Succes",
+            body: "Succes Updated Data"
+          },
+          width: "350px"
+        });
+      }
+      else {
+        const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+          data: {
+            header: "Error",
+            body: "Error Updated Data"
+          },
+          width: "350px"
+        });
+      }
+    }
+    ), (err) => {
+      this.loader.hideLoader();
+      console.log("error al guardar los contract details: ", err);
+    })
+
+  }
+
   delete_inspection(obj_inspect) {
     this._services.service_general_put("HousingList/DeleteInspection", obj_inspect.id).subscribe((data => {
       //////debugger;
@@ -853,6 +885,14 @@ export class IrIrComponent implements OnInit {
     for (let i = 0; i < this.ca_repair.length; i++) {
       if (this.ca_repair[i].id == id) {
         return this.ca_repair[i].repairType;
+      }
+    }
+  }
+
+  getSection(id) {
+    for (let i = 0; i < this.ca_propertySection.length; i++) {
+      if (this.ca_propertySection[i].id == id) {
+        return this.ca_propertySection[i].propertySection;
       }
     }
   }
