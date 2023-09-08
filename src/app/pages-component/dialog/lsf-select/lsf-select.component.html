@@ -24,7 +24,7 @@
         <div class="input_central textarea">
             <mat-form-field appearance="fill">
                 <mat-label style="font-size:medium;">Lease Summary Version</mat-label>
-                <mat-select [(ngModel)]='lsf_service_detail_id'>
+                <mat-select [(ngModel)]='lsf_service_detail_id' (selectionChange)="change_version();">
                     <mat-option *ngFor="let data of versions_lsf" [value]="data.idServiceDetail">{{data.catCategoryText}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -35,7 +35,7 @@
 <mat-dialog-content class="mat-typography">
     <div class="page__section">
 
-        <div class="dash dash--80" style=" width: 100%;" *ngIf="this.data.cat_category_id != 16">
+        <div class="dash dash--80" style=" width: 100%;" *ngIf="version_selected_categoryId != 16">
 
             <div class="dash__cell dash__cell--25" style=" width: 33%; margin-bottom: 5px;" (click)="lscontract();">
                 <div class="dash__card dash__card--up cursor-pointer">
@@ -99,7 +99,7 @@
                 </div>
             </div>
         </div>
-        <div class="dash dash--80" style=" width: 100%;" *ngIf="this.data.cat_category_id == 16">
+        <div class="dash dash--80" style=" width: 100%;" *ngIf="version_selected_categoryId == 16">
         <label style="font-weight: bolder; font-size: 20px;">
             <br><br><br>
             This service does not have a lease summary

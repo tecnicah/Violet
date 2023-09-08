@@ -120,7 +120,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   get_predesicion(){
     this._services.service_general_get('RelocationServices/GetPredecisionOrientationById?id=' + this.data.data.service[0].id).subscribe((data => {
       if (data.success) {
-        debugger;
+        //debugger;
         this.pre_decision = data.result;
         this.isHousing = data.result.housing;
         this.isSchool = data.result.schooling;
@@ -153,7 +153,7 @@ export class PreDecisionOrientationComponent implements OnInit {
   }
 
   change_status_detail() {
-    ////debugger;
+    //////debugger;
     const dialogRef = this._dialog.open(DialogStatusDetailComponent, {
       data: {
         header: "Confirmation",
@@ -169,7 +169,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //debugger;
+      ////debugger;
       // //console.log(result);
       this.loader.showLoader();
       if (result.success) {
@@ -207,7 +207,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     sr_: boolean = false;
   
     setup_permissions_settings(){
-      ////debugger;
+      //////debugger;
       if (!this.data.data.numberWorkOrder){
          this.wo_ = this.data.workOrderId;
       }
@@ -242,7 +242,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     }
   
     change_button(){
-      ////debugger;
+      //////debugger;
       if(this.show_completed){
         const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
           data: {
@@ -316,10 +316,10 @@ export class PreDecisionOrientationComponent implements OnInit {
   //DATA TABLE HOUSING//
   
   getDataHousing() {
-    //debugger;
+    ////debugger;
 
     this._services.service_general_get(`HousingList/GetSegmentedHousing?wo_id=${this.data.data.workOrderId}&id_service_detail=${this.data.data.service[0].id}&shared=${0}`).subscribe(data_housing => {
-     //debugger;
+     ////debugger;
       if (data_housing.success) {
        // this.pre_decision.housing = data_housing.message;
        
@@ -391,9 +391,9 @@ export class PreDecisionOrientationComponent implements OnInit {
   //***********************************************************************************//
 
   getDataSchool() {
-   // debugger;
+   // //debugger;
      this._services.service_general_get('SchoolsList/GetAllSchoolByserviceid?wo_id=' + this.data.data.workOrderId + "&service_id="+this.pre_decision.id).subscribe((data_schooling_list => {
-     // debugger;
+     // //debugger;
       if (data_schooling_list.success) {
         console.log("data_schooling_list", data_schooling_list);
       //  this.pre_decision.schooling = data_schooling_list.message; 
@@ -434,9 +434,9 @@ export class PreDecisionOrientationComponent implements OnInit {
   dependents: any = [];
 
   get_assaigne_info() {
-    ////debugger;
+    //////debugger;
     this._services.service_general_get("AssigneeInformation/GetAssigneeInfoByWOSId?wos_id=" + this.pre_decision.workOrderServicesId).subscribe((data => {
-     ////debugger;
+     //////debugger;
       if (data.success) {
         ////console.log("GetAssigneeInfoByWOSId ====================",data.result);
         this.dependents = data.result.dependentInformations.filter(d => d.relationshipId  == 2);
@@ -672,7 +672,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     }
     else
     {
-      debugger;
+      //debugger;
       this.sl_to_send.forEach((element, index) => {
         if(element == obj.id){
           this.sl_to_send.splice(index, 1)
@@ -895,7 +895,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     console.log(pos);
     // console.log(this.data.data.service[0].id);
     console.log(data);
-    debugger;
+    //debugger;
     this._services.service_general_post_with_url("RelocationServices/DeleteSchoolingPredecision", data.id).subscribe((data => {
       if (data.success) {
         //    //console.log(data);
@@ -953,7 +953,7 @@ export class PreDecisionOrientationComponent implements OnInit {
       
             dialogRef.afterClosed().subscribe(result => {
               
-              debugger;
+              //debugger;
               //this.pre_decision.schooling = result;
               //console.log(this.pre_decision.schoolingInformations);
               let _schoolingInformations: any[] = [];
@@ -1073,8 +1073,8 @@ export class PreDecisionOrientationComponent implements OnInit {
     this.pre_decision.createdDate = new Date();
     this.pre_decision.authoDateExtension = new Date();
     this.pre_decision.authoAcceptanceDateExtension = new Date();
-    this.pre_decision.housing = this.isHousing;
-    this.pre_decision.schooling = this.isSchool;
+  //  this.pre_decision.housing = this.isHousing;
+   // this.pre_decision.schooling = this.isSchool;
     ////console.log(this.pre_decision);
 
     let data_comment_aux = this.pre_decision.commentPredecisionOrientations;
@@ -1098,7 +1098,7 @@ export class PreDecisionOrientationComponent implements OnInit {
     }
     
     this.pre_decision.schoolings = [];
-    debugger;
+    //debugger;
     this._services.service_general_put("RelocationServices/PutPreDecisionOrientation", this.pre_decision).subscribe(data => {
       if (data.success) {
         ////console.log(data);
