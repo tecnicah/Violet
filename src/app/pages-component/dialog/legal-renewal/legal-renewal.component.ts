@@ -411,6 +411,7 @@ export class LegalRenewalComponent implements OnInit {
 
       if (result.success) {
         console.log("po pup de HOSUING LIST cerrado succes true")
+        this.get_catalogos();
       }
       else {
         console.log("po pup de LSF cerrado succes false")

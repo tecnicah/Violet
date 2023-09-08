@@ -156,6 +156,7 @@ export class LsfLandlordComponent implements OnInit {
   };
 
   editBank(data_) {
+    debugger;
     console.log("entra a abrir modal landlorddetail para edicion");
     data_.operacion == 'editar'
     const dialog = this._dialog.open(DialoglLandlordBankDetailComponent, {

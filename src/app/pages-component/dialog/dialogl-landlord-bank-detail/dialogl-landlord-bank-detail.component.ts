@@ -61,7 +61,22 @@ export class DialoglLandlordBankDetailComponent implements OnInit {
     this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
     this.ca_creditCard.sort((a, b) => (a.id < b.id ? -1 : 1));
+    this.GetLSFBySection();
   }
+
+  ca_accountCat =[];
+
+  GetLSFBySection() {
+
+    this._services.service_general_get("HousingList/GetCatAccountCategoryBanking?id=1").subscribe((cd => {
+      console.log('GetCatAccountCategoryBanking : ', cd);
+      this.ca_accountCat = cd.hl;
+
+    }), (err) => {
+   
+      console.log("error al GetCatAccountCategoryBanking: ", err);
+    })
+  };
 
   save_data() {
 
