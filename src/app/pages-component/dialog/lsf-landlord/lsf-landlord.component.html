@@ -102,13 +102,34 @@
                     </mat-grid-tile>
 
                     <mat-grid-tile [colspan]="3" [rowspan]="1">
-                        <div class="textarea" *ngFor="let datacart of ca_creditCard">
-                            <mat-checkbox class="example-margin" (change)="guarda_card($event, datacart);"
-                                [checked]="datacart.checked" *ngIf="data_land.creditCard">
-                                <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
+                        <div class="textarea">
+                            <mat-checkbox class="example-margin" [(ngModel)]='data_land.visaCard'
+                                [checked]="data_land.visaCard" *ngIf="data_land.creditCard">
+                                <span class="subtitle" style="font-size: 12px;">Visa</span>
                             </mat-checkbox>
                         </div>
-                    </mat-grid-tile>
+                    
+                      <div class="textarea">
+                          <mat-checkbox class="example-margin" [(ngModel)]='data_land.masterCard'
+                              [checked]="data_land.masterCard" *ngIf="data_land.creditCard">
+                              <span class="subtitle" style="font-size: 12px;">Master Card</span>
+                          </mat-checkbox>
+                      </div>
+                  
+                    <div class="textarea">
+                        <mat-checkbox class="example-margin" [(ngModel)]='data_land.americanCard'
+                            [checked]="data_land.americanCard" *ngIf="data_land.creditCard">
+                            <span class="subtitle" style="font-size: 12px;">American Express</span>
+                        </mat-checkbox>
+                    </div>
+                
+                  <div class="textarea">
+                      <mat-checkbox class="example-margin" [(ngModel)]='data_land.otherCard'
+                          [checked]="data_land.otherCard" *ngIf="data_land.creditCard">
+                          <span class="subtitle" style="font-size: 12px;">Other</span>
+                      </mat-checkbox>
+                  </div>
+              </mat-grid-tile>
                     <mat-grid-tile [colspan]="1" [rowspan]="1">
                         <div class="textarea">
                             <mat-checkbox class="example-margin" [(ngModel)]='data_land.cash'
