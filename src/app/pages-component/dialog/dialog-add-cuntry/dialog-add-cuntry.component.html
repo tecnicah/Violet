@@ -129,33 +129,43 @@
         Documents
       </div>
       <div class="page__section">
-        <div class="page__section-input page__section-input--25">
+        <div class="page__section-input" style="flex:0 1 20%">
           <span class="documents__index documents__index--task">
             Document Name
           </span>
         </div>
-        <div class="page__section-input page__section-input--25">
+        <div class="page__section-input" style="flex:0 1 20%">
           <span class="documents__index documents__index--task">
             Uploaded Date
           </span>
         </div>
-        <div class="page__section-input page__section-input--25">
+        <div class="page__section-input" style="flex:0 1 20%">
           <span class="documents__index documents__index--task">
             Status
           </span>
         </div>
-        <div class="page__section-input page__section-input--25">
+        <div class="page__section-input" style="flex:0 1 20%">
           <span class="documents__index documents__index--task">
             Privacy
+          </span>
+        </div>
+        <div class="page__section-input" style="flex:0 1 20%">
+          <span class="documents__index documents__index--task">
+            Description
           </span>
         </div>
       </div>
       <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries">
         <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
           style="background: transparent!important;" (click)="deleteDocument(item.id)">
-        <div class="page__section-input page__section-input--25 documents__ascard--task browser">
+        <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task browser">
           <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
             {{ item.documentType}}
+          </a>
+        </div>
+        <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task browser">
+          <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
+            {{ item.idDocumentTypeName}}
           </a>
         </div>
         <div *ngIf="item.id == 0" class="page__section-input page__section-input--25 documents__ascard--task">
@@ -179,6 +189,9 @@
         </div>
         <div *ngIf="item.id!=0" class="page__section-input page__section-input--25 documents__ascard--task">
           {{item.privacyName}}
+        </div>
+        <div class="page__section-input page__section-input--25 documents__ascard--task">
+          {{ item.id == 0 ? item.description : 'pruebita xd'}}
         </div>
       </div>
     </div>
@@ -236,8 +249,8 @@
   <!-- visualizacion de documentos multicheck -->
   <mat-grid-list cols="1" *ngIf="((data.standarScopeDocuments === 1) && (data.action == 'new'))">
     <h3>Description and documents of the selected services were loaded correctly,they will be displayed when
-    opening the servicesDescripcion and documents of the selected services were loaded correctly,they will be
-    displayed when openning the services</h3>
+      opening the servicesDescripcion and documents of the selected services were loaded correctly,they will be
+      displayed when openning the services</h3>
     <!--Esto se quito-->
     <!--    <div class="page__section margin-top-min">
       <div class="page__section-name">

@@ -934,16 +934,21 @@
             <th class="mat-header-cell">City</th>
             <th class="mat-header-cell"></th>
           </tr>
-          <tr class="mat-row" *ngFor="let datos of element.administrativeContactsServices; let k = index">
-            <td class="mat-cell">{{nameContact(datos.contactType)}}</td>
+          <tr class="mat-row" *ngFor="let datos of listadministrativeContactsServices( element.administrativeContactsServices);
+          let k = index" [attr.id]="k">
+            <!--             <td class="mat-cell">{{nameContact(datos.contactType)}}</td>-->
+            <td class="mat-cell">{{contactTypeMap[datos.contactType]}}</td>
             <td class="mat-cell">{{datos.contactName}}</td>
             <td class="mat-cell">{{datos.title}}</td>
             <td class="mat-cell">{{datos.phoneNumber}}</td>
             <td class="mat-cell">{{datos.email}}</td>
             <td class="mat-cell">{{getCityName(datos.city,i)}}</td>
             <td class="mat-cell">
+            <!--   <img src="assets\icons\pencil.png" style="width: 20px;" *ngIf="permission_write || permission_edit"
+                (click)="editAdmin(i, datos, k)"> -->
+              <span>&nbsp;</span>
               <img src="assets\icons\pencil.png" style="width: 20px;" *ngIf="permission_write || permission_edit"
-                (click)="editAdmin(i, datos, k)">
+                (click)="editAdmin2($event,datos,i,k)">
               <span>&nbsp;</span>
               <img src="assets\icons\delete.png" style="width: 20px; cursor: pointer;" *ngIf="permission_delete"
                 (click)="deleteAdminContact(datos.id, i, k)">
@@ -1247,11 +1252,11 @@
                   Expiration Date
                 </span>
               </div>
-              <div class="page__section-input page__section-input--6_1">
+              <!--      <div class="page__section-input page__section-input--6_1">
                 <span class="documents__index documents__index--task">
                   Location
                 </span>
-              </div>
+              </div> -->
               <div class="page__section-input page__section-input--6_1">
                 <span class="documents__index documents__index--task">
                   Privacy
@@ -1279,9 +1284,9 @@
               <div class="page__section-input page__section-input--6_1 documents__ascard--task">
                 {{document.expirationDate | date:'dd MMM yyy'}}
               </div>
-              <div class="page__section-input page__section-input--6_1 documents__ascard--task">
+              <!--   <div class="page__section-input page__section-input--6_1 documents__ascard--task">
                 {{getCityName(document.city,i)}}
-              </div>
+              </div> -->
               <div class="page__section-input page__section-input--6_1 documents__ascard--task">
                 {{namePrivacy(document.privacy)}}
               </div>

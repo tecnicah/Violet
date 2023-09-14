@@ -122,11 +122,11 @@
         <!-- title -->
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central textarea">
-            <mat-label [ngClass]="{valid: active_title}">Title</mat-label>
+            <mat-label [ngClass]="{valid: active_title}">Supplier Development</mat-label>
             <mat-select [disabled]="data_consultant.title == 32" matNativeControl [(ngModel)]="data_consultant.title"
               (focus)="active_title = false" required>
               <mat-form-field appearance="outline" style="padding: 5px;">
-                <mat-label>Title</mat-label>
+                <mat-label>Supplier Development</mat-label>
                 <input matInput placeholder="Title" [(ngModel)]="filterTitle.title">
               </mat-form-field>
               <mat-option *ngFor="let data of ca_title | filterBy: filterTitle" [value]="data.id">

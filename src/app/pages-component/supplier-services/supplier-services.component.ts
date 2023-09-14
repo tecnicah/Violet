@@ -86,7 +86,7 @@ export class SupplierServicesComponent implements OnInit {
     let url = localStorage.getItem('url_permisos');
     this._services.service_general_get('Role/' + url).subscribe(data => {
       if (data.success) {
-        //console.log("Permisos: ", data.result.value)
+        console.log("Permisos: ", data.result.value)
         this.permission_read = data.result.value[0].reading;
         this.permission_write = data.result.value[0].writing;
         this.permission_edit = data.result.value[0].editing;
@@ -234,61 +234,7 @@ export class SupplierServicesComponent implements OnInit {
           );
         }
 
-        switch (this.data.supplierType) {
-          case 34:
-            this.type_document = 27;
-            break;
-          case 11:
-            this.type_document = 28;
-            break;
-          case 13:
-            this.type_document = 28;
-            break;
-          case 5:
-            this.type_document = 30;
-            break;
-          case 9:
-            this.type_document = 30;
-            break;
-          case 22:
-            this.type_document = 30;
-            break;
-          case 15:
-            this.type_document = 30;
-            break;
-          case 17:
-            this.type_document = 30;
-            break;
-          case 21:
-            this.type_document = 30;
-            break;
-          case 18:
-            this.type_document = 30;
-            break;
-          case 26:
-            this.type_document = 30;
-            break;
-          case 17:
-            this.type_document = 30;
-            break;
-          case 21:
-            this.type_document = 30;
-            break;
-          case 18:
-            this.type_document = 30;
-            break;
-          case 26:
-            this.type_document = 30;
-            break;
-          case 12:
-            this.type_document = 31;
-            break;
-          case 10:
-            this.type_document = 30;
-            break;
-          default:
-          // code block
-        }
+        this.type_document = this.showtype_document(this.data.supplierType)
 
         this._services.service_general_get('Catalogue/GetDocumentType/' + this.type_document).subscribe((data => {
           if (data.success) {
@@ -376,6 +322,153 @@ export class SupplierServicesComponent implements OnInit {
       }
     }))
   }
+  showcontact_type(id) {
+    /*     const contactTypeCategory1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 34];
+        const contactTypeCategory2 = [11, 12, 13, 14, 15];
+        const contactTypeCategory3 = [16, 17, 18, 19, 20, 21, 22];
+
+        if (contactTypeCategory1.includes(id)) {
+          return 1;
+        }
+        else if (contactTypeCategory2.includes(id)) {
+          return 2;
+        }
+        else if (contactTypeCategory3.includes(id)) {
+          return 3;
+        }
+        else {
+          return 0
+        } */
+    let _contact_type = 0
+    switch (id) {
+      case 34:
+        _contact_type = 1;
+        break;
+      case 26:
+        _contact_type = 3;
+        break;
+      case 22:
+        _contact_type = 3;
+        break;
+
+      case 21:
+        _contact_type = 3;
+        break;
+      case 18:
+        _contact_type = 3;
+        break;
+      case 17:
+        _contact_type = 3;
+        break;
+      case 16:
+        _contact_type = 3;
+        break;
+      case 15:
+        _contact_type = 3;
+        break;
+      case 13://agregado ultime
+        _contact_type = 3;
+        break;
+      case 12:
+        _contact_type = 3;
+        break;
+      case 11://agregado ultime
+        _contact_type = 3;
+        break;
+      case 10:
+        _contact_type = 1;
+        break;
+      case 9:
+        _contact_type = 1;
+        break;
+      case 8:
+        _contact_type = 1;
+        break;
+      case 7:
+        _contact_type = 1;
+        break;
+      case 6:
+        _contact_type = 1;
+        break;
+      case 5:
+        _contact_type = 1;
+        break;
+      case 4:
+        _contact_type = 1;
+        break;
+      case 3:
+        _contact_type = 1;
+        break;
+      case 2:
+        _contact_type = 1;
+        break;
+      case 1:
+        _contact_type = 1;
+        break;
+      default:
+      // code block
+    }
+    return _contact_type;
+  }
+  showtype_document(supplier_type) {
+    let type_document = 0
+    switch (supplier_type) {
+      case 34:
+        type_document = 27;
+        break;
+      case 11:
+        type_document = 30;//28
+        break;
+      case 13:
+        type_document = 30;//28
+        break;
+      case 5:
+        type_document = 30;
+        break;
+      case 9:
+        type_document = 30;
+        break;
+      case 22:
+        type_document = 30;
+        break;
+      case 15:
+        type_document = 30;
+        break;
+      case 17:
+        type_document = 30;
+        break;
+      case 21:
+        type_document = 30;
+        break;
+      case 18:
+        type_document = 30;
+        break;
+      case 26:
+        type_document = 30;
+        break;
+      case 17:
+        type_document = 30;
+        break;
+      case 21:
+        type_document = 30;
+        break;
+      case 18:
+        type_document = 30;
+        break;
+      case 26:
+        type_document = 30;
+        break;
+      case 12:
+        type_document = 31;
+        break;
+      case 10:
+        type_document = 30;
+        break;
+      default:
+      // code block
+    }
+    return type_document;
+  }
   //*************************************************************//
   AuxiliarCards() {
     this.ca_creditCard.forEach(E => {
@@ -432,37 +525,8 @@ export class SupplierServicesComponent implements OnInit {
 
   set_display_default_fields() {
     console.log("this.data.supplierType", this.data.supplierType);
-    switch (this.data.supplierType) {
-      case 34:
-        this.type_document = 27;
-        break;
-      case 11:
-        this.type_document = 28;
-        break;
-      case 13:
-        this.type_document = 28;
-        break;
-      case 5:
-        this.type_document = 30;
-        break;
-      case 9:
-        this.type_document = 30;
-        break;
-      case 22:
-        this.type_document = 30;
-        break;
-      case 15:
-        this.type_document = 30;
-        break;
-      case 12:
-        this.type_document = 31;
-        break;
-      case 10:
-        this.type_document = 30;
-        break;
-      default:
-      // code block
-    }
+
+    this.type_document = this.showtype_document(this.data.supplierType)
 
     this._services.service_general_get('Catalogue/GetDocumentType/' + this.type_document).subscribe((data => {
       if (data.success) {
@@ -480,9 +544,19 @@ export class SupplierServicesComponent implements OnInit {
     else {
       this.display_default_fields = true;
     }
+    this.ListContactTypeView()
 
   }
+  contactTypeMap = {};
+  ListContactTypeView() {
+    this.data.areasCoverageServices.forEach(ele => {
+      ele.administrativeContactsServices.forEach(adm => {
+        console.log("administrativeContactsServices", adm);
 
+        this.nameAccount(adm.contactType);
+      });
+    });
+  }
   public previewSelectedPhoto(event: any, field_to_display: string, section: string = ''): void {
 
     const dialogRef = this._dialog.open(DialogCropImageComponent, {
@@ -577,6 +651,7 @@ export class SupplierServicesComponent implements OnInit {
           })
         } else {
           this.data.areasCoverageServices[i].administrativeContactsServices.splice(k, 1);
+
         }
       }
     });
@@ -645,24 +720,18 @@ export class SupplierServicesComponent implements OnInit {
   ca_contactTypeService: any = []
   newContact(type, i) {
 
+
     let _contact_type = 0;
-    switch (this.data.supplierType) {
+    _contact_type = this.showcontact_type(this.data.supplierType)
+
+    /* switch (this.data.supplierType) {
       case 34:
         _contact_type = 1;
         break;
-      case 5:
-        _contact_type = 3;
-        break;
-      case 9:
+      case 26:
         _contact_type = 3;
         break;
       case 22:
-        _contact_type = 3;
-        break;
-      case 15:
-        _contact_type = 3;
-        break;
-      case 17:
         _contact_type = 3;
         break;
       case 21:
@@ -671,18 +740,36 @@ export class SupplierServicesComponent implements OnInit {
       case 18:
         _contact_type = 3;
         break;
-      case 26:
+      case 17:
+        _contact_type = 3;
+        break;
+      case 15:
+        _contact_type = 3;
+        break;
+      case 13://agregado ultime
         _contact_type = 3;
         break;
       case 12:
         _contact_type = 3;
         break;
+      case 11://agregado ultime
+        _contact_type = 3;
+        break;
       case 10:
         _contact_type = 3;
         break;
+      case 9:
+        _contact_type = 3;
+        break;
+      case 5:
+        _contact_type = 1;
+        break;
+      case 4:
+        _contact_type = 1;
+        break;
       default:
       // code block
-    }
+    } */
 
     if (this.data.areasCoverageServices[i].country == null ||
       this.data.areasCoverageServices[i].country == undefined ||
@@ -726,8 +813,14 @@ export class SupplierServicesComponent implements OnInit {
         result.areasCoverage = this.data.areasCoverageServices[i].id;
         this.data.areasCoverageServices[i].administrativeContactsServices.push(result)
         this._services.service_general_get('Catalogue/GetContactType?id=' + result.contact_type).subscribe(type => {
-          console.log(type);
           this.ca_contactType = type.result
+          console.log(this.ca_contactType);
+          for (let i = 0; i < this.ca_contactType.length; i++) {
+            if (this.ca_contactType[i].id === result.contactType) {
+              this.contactTypeMap[result.contactType] = this.ca_contactType[i].type;
+              console.log(this.contactTypeMap);
+            }
+          }
         })
 
       }
@@ -775,23 +868,7 @@ export class SupplierServicesComponent implements OnInit {
       }
     });
   }
-  //*************************************************************//
-  addWireTransfer(i) {
-    const dialogRef = this._dialog.open(DialogWireTransferComponent, {
-      width: "90%",
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.success) {
-        console.log(result);
-        this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices.push(result);
-        console.log(this.data);
-
-        //console.log(this.data);
-
-      }
-    });
-  }
   //*************************************************************//
   getCity(data, i) {
     //console.log("consulta ciudad: ", data);
@@ -985,38 +1062,157 @@ export class SupplierServicesComponent implements OnInit {
   public fileLeave(event) {
     //console.log(event);
   }
-  //************************************************************//
-  editWireTransfer(i, wire, k) {
+  //*************************************************************//
+  addWireTransfer(i) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       width: "90%",
-      data: wire
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
+        console.log(result);
+        this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices.push(result);
+        console.log(this.data);
+
+        //console.log(this.data);
+
+      }
+    });
+  }
+  //************************************************************//
+  editWireTransfer(i, wire, k) {
+    console.log(this.data.areasCoverageServices[i].paymentInformationServices[0]);
+
+    console.log(wire);
+    let banking = wire.relBankingDetailTypeWireTransferServices
+    console.log('entro aqui x2');
+    const dialogRef = this._dialog.open(DialogWireTransferComponent, {
+      width: "90%",
+      data: wire
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        console.log(result);
+
         this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices[k] = result;
+        console.log( this.data.areasCoverageServices[i].paymentInformationServices[0].wireTransferServices[k]);
+
         //console.log("Edicion de archivo: ", this.data);
       }
     });
   }
   //************************************************************//
   editAdmin(i, datos, k) {
-    datos.country = this.data.areasCoverageServices[i].country
+    console.log('datos', datos);
+    console.log('this.data.supplierType', this.data.supplierType);
+
+    let _contact_type = 0;
+    _contact_type = this.showcontact_type(datos.contactType)
+
+    console.log(_contact_type);
+
+    this.type_document = this.showtype_document(this.data.supplierType)
+    datos.supplier_type = this.type_document
+    datos.contact_type = _contact_type
+    datos.country = this.data.areasCoverageServices[i].country,
+      datos.contactTypeMap = datos.contactType
+    console.log(datos);
+
     const dialogRef = this._dialog.open(DialogNewContactComponent, {
       width: "90%",
       data: datos
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.success) {
-        //console.log(result);
+      if (result != undefined) {
         result.createdBy = this.user.id;
         result.createdDate = new Date();
         result.updatedBy = this.user.id;
         result.updatedDate = new Date();
+        console.log(result);
         this.data.areasCoverageServices[i].administrativeContactsServices[k] = result;
+        this._services.service_general_get('Catalogue/GetContactType?id=' + result.contact_type).subscribe(type => {
+          this.ca_contactType = type.result
+          console.log(this.ca_contactType);
+          for (let j = 0; j < this.ca_contactType.length; j++) {
+            if (this.ca_contactType[j].id === result.contactType) {
+              console.log(this.contactTypeMap);
+              console.log(result.contactTypeMap);
+              console.log(result.contactType);
+              console.log(k);
+              console.log(this.contactTypeMap[result.contactTypeMap]);
+              console.log(this.contactTypeMap[result.contactType]);
+              console.log(this.contactTypeMap[k]);
+
+              /*               delete this.contactTypeMap[result.contactTypeMap]
+                            this.contactTypeMap[result.contactType] = this.ca_contactType[j].type
+                            j = this.ca_contactType.length */
+              //this.contactTypeMap[result.contactTypeMap] = this.contactTypeMap[result.contactType]
+
+            }
+          }
+          console.log(this.contactTypeMap);
+
+        })
       }
     });
+  }
+  editAdmin2(event, datos, i, k) {
+    const boton = event.target as HTMLButtonElement;
+    const fila = boton.closest('tr') as HTMLTableRowElement;
+    const id = fila.getAttribute('id');
+    console.log('ID de la fila:', id);
+    console.log('datos', datos);
+    console.log('this.data.supplierType', this.data.supplierType);
+
+    let _contact_type = 0;
+    _contact_type = this.showcontact_type(datos.contactType)
+
+    console.log(_contact_type);
+
+    this.type_document = this.showtype_document(this.data.supplierType)
+    datos.supplier_type = this.type_document
+    datos.contact_type = _contact_type
+    datos.country = this.data.areasCoverageServices[i].country,
+      datos.contactTypeMap = datos.contactType
+    console.log(datos);
+
+    const dialogRef = this._dialog.open(DialogNewContactComponent, {
+      width: "90%",
+      data: datos
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        result.createdBy = this.user.id;
+        result.createdDate = new Date();
+        result.updatedBy = this.user.id;
+        result.updatedDate = new Date();
+        console.log(result);
+        this.data.areasCoverageServices[i].administrativeContactsServices[k] = result;
+
+        this._services.service_general_get('Catalogue/GetContactType?id=' + result.contact_type).subscribe(type => {
+          this.ca_contactType = type.result
+          this.contact.splice(k, 1);
+
+          console.log(this.contact);
+          for (let j = 0; j < this.ca_contactType.length; j++) {
+            if (this.ca_contactType[j].id === result.contactType) {
+              this.data.areasCoverageServices[i].administrativeContactsServices.push(result)
+              this.contactTypeMap[result.contactType]
+              this.contactTypeMap[result.contactType] = this.ca_contactType[j].type
+
+              break;
+            }
+          }
+
+        })
+      }
+    })
+  }
+  contact: any
+  listadministrativeContactsServices(contact) {
+    this.contact = contact
+    return this.contact
   }
   //************************************************************//
   editConsultant(i, datos, k) {
@@ -1055,12 +1251,25 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   nameAccount(id) {
-    for (let i = 0; i < this.ca_accountType.length; i++) {
-      if (this.ca_accountType[i].id == id) {
-        return this.ca_accountType[i].accountType;
+    console.log(id);
+    let _contact_type = 0;
+    _contact_type = this.showcontact_type(id)
+
+    console.log(_contact_type);
+    this._services.service_general_get('Catalogue/GetContactType?id=' + _contact_type).subscribe(type => {
+      this.ca_contactType = type.result;
+      console.log(this.ca_contactType);
+      for (let i = 0; i < this.ca_contactType.length; i++) {
+        if (this.ca_contactType[i].id === id) {
+          console.log(this.ca_contactType[i].id === id);
+          this.contactTypeMap[id] = this.ca_contactType[i].type;
+          console.log(this.contactTypeMap);
+        }
       }
-    }
+    });
   }
+
+
   //************************************************************//
   nameSupplier(id) {
     for (let i = 0; i < this.ca_typeSupplier.length; i++) {
@@ -1071,17 +1280,18 @@ export class SupplierServicesComponent implements OnInit {
   }
   //************************************************************//
   nameContact(id) {
-
-    console.log(this.data.supplierType);
-    console.log(this.ca_contactType);
-
-    for (let i = 0; i < this.ca_contactType.length; i++) {
-      console.log(this.ca_contactType[i].id);
-      console.log(id);
-      if (this.ca_contactType[i].id == id) {
-        return this.ca_contactType[i].type;
+    this._services.service_general_get('Catalogue/GetContactType?id=' + id).subscribe(type => {
+      this.ca_contactType = type.result
+      console.log(this.ca_contactType);
+      let encontrado = false;
+      for (let i = 0; i < this.ca_contactType.length; i++) {
+        if (this.ca_contactType[i].id == id) {
+          encontrado = true;
+          return this.ca_contactType[i].type;
+        }
       }
-    }
+    })
+
   }
   //************************************************************//
   nameLanguage(data) {
@@ -1492,6 +1702,8 @@ export class SupplierServicesComponent implements OnInit {
   updateDate() {
     this.data.supplierPartnerDetails[0].grade = null;
     this.data.supplierPartnerDetails[0].language = null;
+    console.log(JSON.stringify(this.data));
+
     this._services.service_general_put('SupplierPartnerProfile/PutService', this.data).subscribe((data => {
       //console.log("save supplier: ", data);
       if (data.success) {
