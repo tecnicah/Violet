@@ -30,7 +30,7 @@
           <mat-select formControlName="userType" multiple>
             <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
             <mat-option *ngFor="let filters of caCounty" [value]="filters.id">
-              {{filters.name}}
+              {{filters.name | titlecase}}
             </mat-option>
           </mat-select>
         </mat-form-field>
