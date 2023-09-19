@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddVahicleConsultantComponent } from '../dialog/dialog-add-vahicle-consultant/dialog-add-vahicle-consultant.component';
@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DialogConfirmComponent } from '../dialog/dialog-confirm/dialog-confirm.component';
 import { DialogWireTransferComponent } from '../dialog/dialog-wire-transfer/dialog-wire-transfer.component';
 import { DialogWireTransferProfileComponent } from '../dialog/dialog-wire-transfer-profile/dialog-wire-transfer-profile.component';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -185,7 +186,6 @@ export class ProfileConsultantComponent implements OnInit {
 
 
   constructor(private sanitizer: DomSanitizer, public router: Router, public _services: ServiceGeneralService, public _dialog: MatDialog, public _routerParams: ActivatedRoute, private _permissions: NgxPermissionsService) { }
-
   public prefixCatalog;
 
   validaNumericos(event) {
@@ -227,12 +227,18 @@ export class ProfileConsultantComponent implements OnInit {
       this.data_consultant.id = 0;
       this.catalogos();
       this.paymentMethod();
+      console.log('1 entro');
+
       this.loader.hideLoader();
     } else if (this.id_covertura == 0 && this.id != "New") {
+      console.log('2 entro');
       this._services.service_general_get('Profile/GetProfile/' + Number(this.id)).subscribe((data => {
         if (data.success) {
-          console.log(data.result);
+          console.log("getProfile : ", data.result);
           this.data_consultant = data.result;
+          console.log("ca_creditCard", this.ca_creditCard);
+          this.clickWireTransfer()
+
           this.data_consultant.supplierType = 1;
           if (this.id_pais != 0) {
             this.disabled_select = true;
@@ -281,10 +287,13 @@ export class ProfileConsultantComponent implements OnInit {
               this.data_consultant.additional.push(language_additional[j].language);
             }
           }
+          console.log(this.data_consultant.personalInformation.paymentInformationProfiles);
 
           this.verificaNodos();
 
           if (this.data_consultant.personalInformation.paymentInformationProfiles.length == 0) {
+            console.log('paymentInformationProfiles vacio');
+
             this.data_consultant.personalInformation.paymentInformationProfiles.push({
               "wireTransfer": null,
               "fiscalInvoice": null,
@@ -305,16 +314,22 @@ export class ProfileConsultantComponent implements OnInit {
               "updatedDate": new Date()
             });
           } else {
-            if (this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransfer ||
-              this.data_consultant.personalInformation.paymentInformationProfiles[0].fiscalInvoice) {
-              this.data_consultant.togglePayment = true;
-              this.show = true;
-            }
+
+              if (this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransfer ||
+               this.data_consultant.personalInformation.paymentInformationProfiles[0].fiscalInvoice) {
+               this.data_consultant.togglePayment = true;
+               this.show = true;
+               console.log('entro aqui ? ');
+
+             }
+
           }
         }
         this.catalogos();
       }))
     } else {
+      console.log('3 entro');
+
       this.data_consultant.id = 0;
       this.data_consultant.supplierType = 1;
       this.catalogos();
@@ -323,6 +338,7 @@ export class ProfileConsultantComponent implements OnInit {
     }
 
   }
+
   goBack() {
     window.history.back();
   }
@@ -375,8 +391,8 @@ export class ProfileConsultantComponent implements OnInit {
   }
   //*********************************************************************************//
   //CONSULTA DE CATALOGOS DE INFORMACION//
-  ca_creditCard = [];
-  ca_accountType = [];
+  ca_creditCard: any
+  ca_accountType = []
   ca_currency = [];
   ca_office = [];
   ca_title = [];
@@ -393,16 +409,18 @@ export class ProfileConsultantComponent implements OnInit {
   ca_supplierType = [];
   ca_countryPersonelInfo: Array<any> = [];
   async catalogos() {
+    this.loader.showLoader();
+    this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
     this.prefixCatalog = await this._services.getCatalogueFrom('PhoneCode');
     //this.ca_relation = await this._services.getCatalogueFrom('GetRelationship');
     this._services.service_general_get('AdminCenter/GetRelationshipContact').subscribe(resp => {
       if (resp.success) {
-        console.log('get emergency contact', resp);
+        console.log('get emergency contacft', resp);
         this.ca_relation = resp.result;
       }
     });
+
     this.ca_accountType = await this._services.getCatalogueFrom('GetBankAccountType');
-    this.ca_creditCard = await this._services.getCatalogueFrom('GetCreditCard');
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
     this.ca_office = await this._services.getCatalogueFrom('GetOffice');
     this.ca_title = await this._services.getCatalogueFrom('GetTitle');
@@ -436,7 +454,22 @@ export class ProfileConsultantComponent implements OnInit {
         return true;
       }
     })
+    this.clickWireTransfer()
+
+    this.loader.hideLoader()
+    console.log(this.ca_creditCard);
+    const datita = this.data_consultant.personalInformation.paymentInformationProfiles[0]
+    console.log('togllepayment true');
+/*     if (datita.cash || datita.checks || datita.fiscalInvoice || datita.wire || datita.creditCard) {
+      console.log('aqui entro x2');
+      this.data_consultant.togglePayment = true;
+      this.show = true;
+      console.log(this.ca_creditCard);
+      this.clickWireTransfer()
+
+    } */
   }
+
   //*********************************************************************************//
   //CONSULTA CIUDAD//
   ca_city = [];
@@ -447,7 +480,28 @@ export class ProfileConsultantComponent implements OnInit {
       }
     }))
   }
+  pushData(data, event, j) {
+    console.log(data);
 
+    let creditCardPaymentInformationProfiles = this.data_consultant.personalInformation.paymentInformationProfiles[0].creditCardPaymentInformationProfiles
+    if (event.checked) {
+      creditCardPaymentInformationProfiles.push({
+        "paymentInformationService": 0,
+        "creditCard": data.id,
+      });
+    }
+    else {
+
+      for (let index = 0; index < creditCardPaymentInformationProfiles.length; index++) {
+        const element = creditCardPaymentInformationProfiles[index];
+        if (element.creditCard == data.id) {
+          creditCardPaymentInformationProfiles.splice(index, 1);
+        }
+      }
+    }
+    console.log("push y eliminar:", this.data_consultant.personalInformation.paymentInformationProfiles[0].creditCardPaymentInformationProfiles);
+    console.log(j);
+  }
   //CONSULTA CIUDAD//
   ca_city_ = [];
   getCity_() {
@@ -709,12 +763,36 @@ export class ProfileConsultantComponent implements OnInit {
   //*********************************************************************************//
   //FUNCION PARA PAYMENT INFORMATION//
   paymentInformation(event) {
-    //  console.log(event);
+    console.log(event);
     if (event.checked) {
       this.show = true;
+      this.clickWireTransfer()
+
     } else {
       this.show = false;
     }
+  }
+  clickWireTransfer() {
+    this.loader.showLoader()
+    let wireTrans = this.data_consultant.personalInformation.paymentInformationProfiles[0]
+
+    if (wireTrans.wireTransferProfiles.length >= 1) {
+      wireTrans.wire = true
+    } else {
+      wireTrans.wire = false
+    }
+    this.ca_creditCard?.forEach(datacart => {
+      const matchingProfile = wireTrans.creditCardPaymentInformationProfiles.find(
+        profile => profile.creditCard === datacart.id
+      );
+      datacart.isChecked = !!matchingProfile;
+
+    })
+    this.loader.hideLoader()
+
+    console.log("ca_creditCard x2", this.ca_creditCard);
+
+
   }
   //NOMBRE DEL TIPO DE VIHICULO//
   getVehicle(id) {
@@ -759,6 +837,7 @@ export class ProfileConsultantComponent implements OnInit {
   //********************************************************************************//
   //FUNCION PARA GUARDAR LA INFORMACION//
   save() {
+
     // concatenar prefix de telefono
     if (this.data_consultant.phoneNumber != '' && this.prefix) {
       this.data_consultant.phoneNumber = `${this.prefix}+${this.data_consultant.phoneNumber}`
@@ -785,6 +864,7 @@ export class ProfileConsultantComponent implements OnInit {
       this.insert_data();
     } else {
       this.update_data();
+      //this.clickWireTransfer()
     }
   }
 
@@ -889,7 +969,6 @@ export class ProfileConsultantComponent implements OnInit {
         }
       }
     }
-
     this.data_consultant.documentConsultantContactsConsultants = [];
     this.data_consultant.documentConsultantContactsConsultants = this.temporalDocument;
     this.data_consultant.updatedBy = this.user.id
@@ -916,12 +995,15 @@ export class ProfileConsultantComponent implements OnInit {
         this.loader.hideLoader();
         this.temporalDocument = [];
         this.ngOnInit();
+        const credi = this.data_consultant.personalInformation.paymentInformationProfiles[0]
+
+        console.log(this.data_consultant);
+
       }
     }), (err) => {
       console.log("error al actualizar los datos: ", err);
     })
   }
-
   ngOnDestroy() {
     console.log("remove id");
     localStorage.removeItem('id_coverture');
@@ -1217,7 +1299,55 @@ export class ProfileConsultantComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         console.log(result);
+        this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles.push(result)
+      }
+    })
+  }
+  editWireTransfer(wire, k) {
+    console.log(wire);
+    console.log(k);
+    const dialogRef = this._dialog.open(DialogWireTransferProfileComponent, {
+      width: "90%",
+      data: wire
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles[k] = result
+        console.log(this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles);
 
+      }
+    })
+  }
+  deleteWireTransfer(wire, k) {
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      data: {
+        header: "Delete confirmation",
+        body: "Are you sure to delete the Wire Transfer"
+      },
+      width: "350px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(wire);
+        if (wire.id && wire.id != 0) {
+          this._services.service_general_put('Profile/DeleteWireTransferProfile', wire.id).subscribe((data) => {
+            if (data.success) {
+              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                data: {
+                  header: "Success",
+                  body: `Success Wiretransfer deleted`
+                },
+                width: "350px"
+              });
+            }
+            this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles.splice(k, 1);
+          }, (error) => {
+            console.error('error con el delete', error);
+          })
+        } else {
+          this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles.splice(k, 1);
+
+        }
       }
     })
   }
