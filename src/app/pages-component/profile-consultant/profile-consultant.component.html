@@ -687,7 +687,7 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
             <p class="page__section-name">Payment Information</p>
-            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_consultant.togglePayment">
+            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_consultant.togglePayment" [(ngModel)]="data_consultant.togglePayment" >
             </mat-slide-toggle>
           </div>
         </mat-grid-tile>

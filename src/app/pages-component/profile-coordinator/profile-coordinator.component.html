@@ -908,7 +908,7 @@
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
           <p class="page__section-name">Payment Information</p>
-          <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_coordinator.togglePayment">
+          <mat-slide-toggle (change)="paymentInformation($event)" [(ngModel)]="data_coordinator.togglePayment">
           </mat-slide-toggle>
         </div>
       </mat-grid-tile>
@@ -969,7 +969,7 @@
 
         <mat-grid-tile [colspan]="4" [rowspan]="1"
           *ngIf="data_coordinator.personalInformation.paymentInformationProfiles[0].checks">
-          <div style="width: 98%;">
+          <div style="width: 98%;margin-top:14px">
             <mat-form-field appearance="fill">
               <mat-label>Pay to the Order Of</mat-label>
               <input matInput required placeholder="Pay to the Order Of" type="text"

@@ -77,7 +77,7 @@ export class ProfileCoordinatorComponent implements OnInit {
       if (data.success) {
         console.log(data.result);
         this.data_coordinator = data.result;
-        this.clickWireTransfer()
+      //  this.clickWireTransfer()
         this.verificaNodos();
         // revisa si es consultor y tiene permisos en secciones
         this.consultantPermisos();
@@ -469,28 +469,26 @@ export class ProfileCoordinatorComponent implements OnInit {
   }
   clickWireTransfer() {
     this.loader.showLoader()
+    let wireTrans = this.data_coordinator.personalInformation?.paymentInformationProfiles[0]
+    console.log(wireTrans);
 
-    console.log(this.data_coordinator);
-
-    let wireTrans = this.data_coordinator.personalInformation.paymentInformationProfiles[0]
-
-    if (wireTrans.wireTransferProfiles.length >= 1) {
+    if (wireTrans?.wireTransferProfiles?.length >= 1 || wireTrans?.wireTransferProfiles != undefined) {
       wireTrans.wire = true
     } else {
       wireTrans.wire = false
     }
-
     this.ca_creditCard?.forEach(datacart => {
-      const matchingProfile = wireTrans.creditCardPaymentInformationProfiles.find(
+      const matchingProfile = wireTrans?.creditCardPaymentInformationProfiles?.find(
         profile => profile.creditCard === datacart.id
       );
       datacart.isChecked = !!matchingProfile;
 
     })
-
     this.loader.hideLoader()
 
     console.log("ca_creditCard x2", this.ca_creditCard);
+
+
   }
   pushData(data, event, j) {
     console.log(data);
@@ -520,6 +518,11 @@ export class ProfileCoordinatorComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
+        let wireTrans = this.data_coordinator?.personalInformation?.paymentInformationProfiles[0]?.wireTransferProfiles
+        if (!wireTrans) {
+          wireTrans = []
+          this.data_coordinator.personalInformation.paymentInformationProfiles[0].wireTransferProfiles = wireTrans
+        }
         console.log(result);
         this.data_coordinator.personalInformation.paymentInformationProfiles[0].wireTransferProfiles.push(result)
       }
@@ -552,7 +555,7 @@ export class ProfileCoordinatorComponent implements OnInit {
       if (result) {
         console.log(wire);
         if (wire.id && wire.id != 0) {
-          this._services.service_general_put('Profile/DeleteWireTransferProfile', wire.id).subscribe((data) => {
+          this._services.service_general_put(`Profile/DeleteWireTransferProfile?id=${wire.id}`, '').subscribe((data) => {
             if (data.success) {
               const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                 data: {
