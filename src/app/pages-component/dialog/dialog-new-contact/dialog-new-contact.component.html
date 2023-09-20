@@ -4,7 +4,7 @@
     <h2 mat-dialog-title class="primary_title">Administrative Contact</h2>
   </div>
   <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
-    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+    <mat-icon (click)="cerrar()" style="cursor:pointer">close</mat-icon>
   </div>
 </div>
 <!----------------------------------OPEN CONTENT------------------------------------------>
@@ -77,7 +77,7 @@
       <div class="input_final textarea">
         <mat-form-field appearance="fill">
           <mat-label>Contact Type</mat-label>
-          <mat-select [(ngModel)]="administrativeContactsServices.contactType" (focus)="activeContactType = false;">
+          <mat-select  [(ngModel)]="administrativeContactsServices.contactType" (focus)="activeContactType = false;">
             <mat-option *ngFor="let item of ca_contactType" [value]="item.id">{{item.type}}</mat-option>
           </mat-select>
           <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="activeContactType">Field is required</mat-hint>

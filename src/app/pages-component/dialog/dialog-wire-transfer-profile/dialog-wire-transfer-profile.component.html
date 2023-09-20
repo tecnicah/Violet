@@ -10,7 +10,7 @@
 <!----------------------------------OPEN CONTENT------------------------------------------>
 <mat-dialog-content class="mat-typography" style="height: calc(100% - 96px);max-height: unset">
 
-  <mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-list cols="4" rowHeight="57px">
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
@@ -28,7 +28,7 @@
 
   <div class="mat-elevation-z5">
     <!--Inicio Banking Details Beneficiary-->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory.includes(1)">
+    <mat-grid-list cols="4" rowHeight="52px" *ngIf="accountCategory.includes(1)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Beneficiary
@@ -99,9 +99,9 @@
         </div>
       </mat-grid-tile>
       <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
-        <div style="width: 86%;" class="input_final">
+        <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
-            <mat-label>Bank Address (Type Address including City and Country)</mat-label>
+            <mat-label>Bank Address</mat-label>
             <input matInput [(ngModel)]="data.bankAddressBeneficiary" #bankAddressBeneficiary maxlength="150"
               placeholder="Type Address including City and Country">
             <mat-hint align="end">{{bankAddressBeneficiary.value.length}} / 150</mat-hint>
@@ -120,7 +120,7 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Bank Phone Number</mat-label>
-            <input type="number" min="0" matInput [(ngModel)]="data.bankPhone">
+            <input type="text" matInput [(ngModel)]="data.bankPhone">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -155,6 +155,15 @@
           <mat-checkbox class="example-margin" [(ngModel)]="data.w8W9"></mat-checkbox>
         </div>
       </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_final" style="width: 86%;">
+          <mat-form-field appearance="fill">
+            <mat-label>Additional Instructions</mat-label>
+            <input [(ngModel)]="data.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
+            <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
       <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
@@ -170,20 +179,12 @@
           <mat-checkbox class="example-margin" [(ngModel)]="data.internationalPaymentAcceptance"></mat-checkbox>
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <div style="width: 86%;" class="input_final">
-          <mat-form-field appearance="fill">
-            <mat-label>Additional Instructions</mat-label>
-            <input [(ngModel)]="data.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
-            <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
+
     </mat-grid-list>
     <!--Fin Banking Details Beneficiary-->
 
     <!--Inicio Banking Details Intermediary-->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory.includes(2)">
+    <mat-grid-list  cols="4" rowHeight="53px" *ngIf="accountCategory.includes(2)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Intermediary
@@ -198,12 +199,11 @@
         </div>
       </mat-grid-tile>
       <mat-grid-tile style="left: -42px;" [colspan]="2" [rowspan]="1">
-        <div style="width: 86%;" class="input_final">
+        <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
-            <mat-label>Bank Address (Type Address including City and Country)</mat-label>
-            <input matInput placeholder="Type Address including City and Country" type="text" #message_bankaddress
-              maxlength="150" [(ngModel)]="data.bankAddressIntermediary"
-              placeholder="Type Address including City and Country">
+            <mat-label>Bank Address</mat-label>
+            <input matInput placeholder="Bank Address" type="text" #message_bankaddress maxlength="150"
+              [(ngModel)]="data.bankAddressIntermediary" placeholder="Type Address including City and Country">
             <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
           </mat-form-field>
         </div>
@@ -232,6 +232,7 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
+
     </mat-grid-list>
     <!--Fin Banking Details Intermediary-->
   </div>

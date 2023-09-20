@@ -102,15 +102,16 @@
       <mat-grid-tile [colspan]="2" [rowspan]="1">
         <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
-            <mat-label>Bank Adress</mat-label>
-            <input [(ngModel)]="data_land.bankAddressBeneficiary" matInput>
+            <mat-label>Bank Address (Type Address including City and Country)</mat-label>
+            <input [(ngModel)]="data_land.bankAddressBeneficiary" placeholder="Type Address including City and Country"
+              matInput>
           </mat-form-field>
         </div>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
-            <mat-label>Back Branch</mat-label>
+            <mat-label>Bank Branch</mat-label>
             <input [(ngModel)]="data_land.bankBranch" matInput>
           </mat-form-field>
         </div>
@@ -118,7 +119,7 @@
       <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
-            <mat-label>Back Phone</mat-label>
+            <mat-label>Bank Phone Number</mat-label>
             <input [(ngModel)]="data_land.bankPhone" matInput>
           </mat-form-field>
         </div>
@@ -126,7 +127,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
-            <mat-label>Clabe</mat-label>
+            <mat-label>CLABE/CBU/CCI</mat-label>
             <input [(ngModel)]="data_land.clabe" matInput type="number" min="0">
           </mat-form-field>
         </div>
@@ -134,7 +135,7 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
-            <mat-label>Iban</mat-label>
+            <mat-label>IBAN</mat-label>
             <input [(ngModel)]="data_land.iban" matInput type="number" min="0">
           </mat-form-field>
         </div>
@@ -150,10 +151,11 @@
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
-          <p class="subtitle" style="font-size: 12px;">W8w9</p>
+          <p class="subtitle" style="font-size: 12px;">W8/W9</p>
           <mat-checkbox [(ngModel)]="data_land.w8W9" class="example-margin"></mat-checkbox>
         </div>
       </mat-grid-tile>
+
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
@@ -172,14 +174,13 @@
       <mat-grid-tile [colspan]="2" [rowspan]="1">
         <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
-            <mat-label>Adiccional Instruccion</mat-label>
+            <mat-label>Additional Instructions</mat-label>
             <input [(ngModel)]="data_land.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
             <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
 
           </mat-form-field>
         </div>
       </mat-grid-tile>
-
     </mat-grid-list>
     <!--Fin Banking Details Beneficiary-->
 
@@ -201,9 +202,9 @@
       <mat-grid-tile [colspan]="2" [rowspan]="1">
         <div class="input_final" style="width: 86%;">
           <mat-form-field appearance="fill">
-            <mat-label>Bank Address</mat-label>
-            <input [(ngModel)]="data_land.bankAddressIntermediary" matInput placeholder="Bank Address" type="text"
-              #message_bankaddress maxlength="150">
+            <mat-label>Bank Address (Type Address including City and Country)</mat-label>
+            <input [(ngModel)]="data_land.bankAddressIntermediary" matInput type="text"
+              placeholder="Type Address including City and Country" #message_bankaddress maxlength="150">
             <mat-hint align="end">{{message_bankaddress.value.length}} / 150</mat-hint>
           </mat-form-field>
         </div>
@@ -232,6 +233,7 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
+
     </mat-grid-list>
     <!--Fin Banking Details Intermediary-->
     <!--  <mat-grid-list cols="4" rowHeight="70px">

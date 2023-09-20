@@ -122,11 +122,11 @@
         <!-- title -->
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-form-field appearance="fill" class="input_central textarea">
-            <mat-label [ngClass]="{valid: active_title}">Title</mat-label>
+            <mat-label [ngClass]="{valid: active_title}">Supplier Development</mat-label>
             <mat-select [disabled]="data_consultant.title == 32" matNativeControl [(ngModel)]="data_consultant.title"
               (focus)="active_title = false" required>
               <mat-form-field appearance="outline" style="padding: 5px;">
-                <mat-label>Title</mat-label>
+                <mat-label>Supplier Development</mat-label>
                 <input matInput placeholder="Title" [(ngModel)]="filterTitle.title">
               </mat-form-field>
               <mat-option *ngFor="let data of ca_title | filterBy: filterTitle" [value]="data.id">
@@ -687,11 +687,12 @@
         <mat-grid-tile [colspan]="4" [rowspan]="1">
           <div class="textarea">
             <p class="page__section-name">Payment Information</p>
-            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_consultant.togglePayment">
+            <mat-slide-toggle (change)="paymentInformation($event)" [checked]="data_consultant.togglePayment" [(ngModel)]="data_consultant.togglePayment" >
             </mat-slide-toggle>
           </div>
         </mat-grid-tile>
       </mat-grid-list>
+      <br>
       <!--Este es nuevo a comenzar-->
       <div class="mat-elevation-z4" style="padding: 10px;" *ngIf="show" [hidden]="permisosConsultant == true">
         <mat-grid-list cols="4" rowHeight="25px">
@@ -729,14 +730,13 @@
           <ng-container *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].creditCard">
             <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let datacart of ca_creditCard; let j = index">
               <div class="input_final textarea">
-                <mat-checkbox class="example-margin" (change)="pushData(datacart, i, $event, j)"
-                  [checked]="datacart.checked">
-                  <span class="subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
+                <mat-checkbox class="example-margin" [checked]="datacart.isChecked"
+                  (change)="pushData(datacart,$event,j)">
+                  <span class=" subtitle" style="font-size: 12px;">{{datacart.creditCard}}</span>
                 </mat-checkbox>
               </div>
             </mat-grid-tile>
           </ng-container>
-
 
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="textarea">
@@ -762,72 +762,86 @@
 
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <div class="textarea">
-              <mat-checkbox class="example-margin" [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].cash">
+              <mat-checkbox class="example-margin"
+                [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].cash">
                 <b style="font-size: 12px;">Cash</b>
               </mat-checkbox>
             </div>
           </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="4" [rowspan]="1"
+            *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].cash == true">
+            <div style="width: 98%;">
+              <mat-form-field appearance="fill">
+                <mat-label>Comments</mat-label>
+                <input [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].comment" matInput
+                  required placeholder="Comments cash" type="text" #message_comm maxlength="150">
+                <mat-hint align="end">{{message_comm.value.length}} / 150</mat-hint>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
         </mat-grid-list>
 
         <mat-grid-list cols="4" rowHeight="50px">
           <mat-grid-tile>
             <span>
-              <mat-checkbox class="example-margin" [(ngModel)]="data_consultant.personalInformation.paymentInformationProfiles[0].wire">
+              <mat-checkbox class="example-margin"
+                [(ngModel)]="this.data_consultant.personalInformation.paymentInformationProfiles[0].wire">
                 <b style="font-size: 12px;">Wire Transfer</b>
               </mat-checkbox>
             </span>
           </mat-grid-tile>
           <br>
         </mat-grid-list>
-<br>
-        <div *ngIf="data_consultant.personalInformation.paymentInformationProfiles[0].wire">
-          <!------------------------------------------------------------->
-          <!--TABLE WIRE TRANSFER-->
-          <table class="mat-elevation-z8 textarea mat-table">
-            <tr class="mat-header-row">
-              <th class="mat-header-cell">Account Name Beneficiary</th>
-              <th class="mat-header-cell">Account Number Beneficiary</th>
-              <th class="mat-header-cell">Bank Name Beneficiary</th>
-              <th class="mat-header-cell">CLABE</th>
-              <th class="mat-header-cell">International Payment Acceptance</th>
-              <th class="mat-header-cell"></th>
-            </tr>
-            <tr class="mat-row"
-              *ngFor="let wire of data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferServices; let k = index">
-              <td class="mat-cell">{{wire.accountNameBeneficiary}}</td>
-              <td class="mat-cell">{{wire.accountNumberBeneficiary}}</td>
-              <td class="mat-cell">{{wire.bankNameBeneficiary}}</td>
-              <td class="mat-cell">{{wire.clabe}}</td>
-              <td class="mat-cell">
-                <div class="table-row__check">
-                  <img src="assets/table-icons/check.png" *ngIf="wire.internationalPaymentAcceptance" />
-                  <img src="assets/table-icons/uncheck.png" *ngIf="!wire.internationalPaymentAcceptance" />
-                </div>
-              </td>
-              <td class="mat-cell">
-                <img src="assets\icons\pencil.png" style="width: 20px;" *ngIf="permission_write || permission_edit"
-                  (click)="editWireTransfer(i, wire, k)">
-                &nbsp;
-                <img src="assets/icons/quit.svg" style="width: 20px;" *ngIf="permission_write || permission_edit"
-                  (click)="deleteWireTransfer(i, wire, k)">
-              </td>
-            </tr>
-          </table>
-          <br>
-          <!------------------------------------------------------------->
-          <mat-grid-list cols="4" rowHeight="100px">
-            <mat-grid-tile [colspan]="4" [rowspan]="1">
-              <div class="addPropperty">
-                <div class="page__section-button page__section-button--big" style="width: 145px; flex: 0 1 160px;">
-                  <button class="button-icon button-icon--more" style="white-space: nowrap;"
-                    (click)="addPaymentInformation()">
-                    Add Payment Information
-                  </button>
-                </div>
+        <br>
+        <br>
+        <!------------------------------------------------------------->
+        <!--TABLE WIRE TRANSFER-->
+        <table class="mat-elevation-z8 textarea mat-table"
+          *ngIf="this.data_consultant.personalInformation.paymentInformationProfiles[0].wire">
+          <tr class="mat-header-row">
+            <th class="mat-header-cell">Account Name Beneficiary</th>
+            <th class="mat-header-cell">Account Number Beneficiary</th>
+            <th class="mat-header-cell">Bank Name Beneficiary</th>
+            <th class="mat-header-cell">CLABE</th>
+            <th class="mat-header-cell">International Payment Acceptance</th>
+            <th class="mat-header-cell"></th>
+          </tr>
+          <tr class="mat-row"
+            *ngFor="let wire of this.data_consultant.personalInformation.paymentInformationProfiles[0].wireTransferProfiles; let k = index">
+            <td class="mat-cell">{{wire.accountNameBeneficiary}}</td>
+            <td class="mat-cell">{{wire.accountNumberBeneficiary}}</td>
+            <td class="mat-cell">{{wire.bankNameBeneficiary}}</td>
+            <td class="mat-cell">{{wire.clabe}}</td>
+            <td class="mat-cell">
+              <div class="table-row__check">
+                <img src="assets/table-icons/check.png" *ngIf="wire.internationalPaymentAcceptance" />
+                <img src="assets/table-icons/uncheck.png" *ngIf="!wire.internationalPaymentAcceptance" />
               </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </div>
+            </td>
+            <td class="mat-cell">
+              <img src="assets\icons\pencil.png" style="width: 20px;" (click)="editWireTransfer(wire, k)">
+              &nbsp;
+              <img src="assets/icons/quit.svg" style="width: 20px;" (click)="deleteWireTransfer(wire, k)">
+            </td>
+          </tr>
+        </table>
+        <br>
+        <!------------------------------------------------------------->
+        <mat-grid-list cols="4" rowHeight="100px">
+          <mat-grid-tile [colspan]="4" [rowspan]="1">
+            <div class="addPropperty">
+              <div class="page__section-button page__section-button--big" style="width: 145px; flex: 0 1 160px;">
+                <button class="button-icon button-icon--more" style="white-space: nowrap;"
+                  (click)="addPaymentInformation()">
+                  Add Payment Information
+                </button>
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+
         <mat-grid-list cols="4" rowHeight="70px">
           <mat-grid-tile [colspan]="4" [rowspan]="1">
             <mat-form-field appearance="fill">

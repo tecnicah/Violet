@@ -16,7 +16,7 @@
       <mat-form-field appearance="fill" class="input_central textarea">
         <mat-label>Country</mat-label>
         <mat-select matNativeControl [(ngModel)]="data.country">
-          <mat-option *ngFor="let item of ca_country" [value]="item.id">{{item.name}}</mat-option>
+          <mat-option *ngFor="let item of ca_country" [value]="item.id">{{item.name | titlecase}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

@@ -1,0 +1,92 @@
+<div fxLayout="row">
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="primary_title">Send Request</h2>
+  </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="2" rowHeight="70px">
+    <!--Inicio Supplier Partners-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex; justify-content: space-around;" class="input_central wid">
+        <mat-form-field appearance="fill">
+          <mat-label>Supplier Partners</mat-label>
+          <mat-select disabled [(ngModel)]="data.supplier">
+            <mat-option *ngFor="let item of data.supplier_get" [value]="item.id">
+              {{item.legalName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <!--Fin Supplier Partners-->
+    <!--inicio Contact-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div style="display: flex; justify-content: space-around;" class="input_central wid">
+        <mat-form-field appearance="fill">
+          <mat-label>Contact</mat-label>
+          <mat-select disabled [(ngModel)]="data.contact">
+            <mat-option *ngFor="let item of data.contactSupplier" [value]="item.id">{{item.contactName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <!--Fin Contact-->
+    <!--Iniciio email manual-->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central wid">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input [(ngModel)]="email" matInput placeholder="email@email.com"
+            (change)="validEmailFinance($event.target.value);">
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_email">
+            Field is required
+          </span>
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_email_val">
+            E-mail format not valid
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <!--Email a Enviar-->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central wid">
+        <mat-form-field appearance="fill">
+          <mat-label>Email Cotizacion</mat-label>
+          <input [(ngModel)]="cotizacion" matInput placeholder="Email a enviar"
+            (change)="validEmailCoti($event.target.value);">
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_cotizacion">
+            Field is required
+          </span>
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_cotizacion_val">
+            E-mail format not valid
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <!--Fin Email a Enviar-->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="input_central wid">
+        <mat-form-field appearance="fill">
+          <mat-label>Comment</mat-label>
+          <textarea [(ngModel)]="comment" matInput #message maxlength="500">
+
+        </textarea>
+          <span class="label-error" *ngIf="nso_ainfo_fields.no_comment">
+            Fild is requiered
+          </span>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="valida_form()">Send</button>
+  </div>
+</mat-dialog-actions>

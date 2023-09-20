@@ -2,14 +2,16 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
+import { LoaderComponent } from 'app/shared/loader';
 
 @Component({
-  selector: 'app-dialog-wire-transfer',
-  templateUrl: './dialog-wire-transfer.component.html',
-  styleUrls: ['./dialog-wire-transfer.component.css']
+  selector: 'app-dialog-wire-transfer-profile',
+  templateUrl: './dialog-wire-transfer-profile.component.html',
+  styleUrls: ['./dialog-wire-transfer-profile.component.css']
 })
-export class DialogWireTransferComponent implements OnInit {
+export class DialogWireTransferProfileComponent implements OnInit {
   user: any;
+  loader: LoaderComponent = new LoaderComponent();
 
   accountCategory: any[] = [];
   data: any = {};
@@ -18,17 +20,18 @@ export class DialogWireTransferComponent implements OnInit {
   constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public datas: any) { }
 
   async ngOnInit() {
+    this.loader.showLoader()
     this.user = JSON.parse(localStorage.getItem('userData'));
+
     console.log("INFORMACION DE RECEPCION: ", this.datas);
     this.data = { ...this.datas }
 
-
     if (this.datas != null) {
+      //      console.log(this.data);
       this.data = { ...this.datas }
-      // this.data = this.datas;
-      console.log(this.data);
-      // let office = this.data.officeBankingDetailLists[0]
-      let resul = this.data?.relBankingDetailTypeWireTransferServices?.map(ele => {
+
+      //let office = this.data.officeBankingDetailLists[0]
+      let resul = this.data.relBankingWireTransferProfiles.map(ele => {
         return ele.idCatBankingDetailType
       })
       this.accountCategory = resul
@@ -38,8 +41,10 @@ export class DialogWireTransferComponent implements OnInit {
     this.getSelectOption();
 
   }
-  idWireTransferService: any
+
   save() {
+    this.loader.showLoader()
+
     console.log(this.data.accountNumber);
     this.data.accountNameBeneficiary = this.data.accountNameBeneficiary
     this.data.accountNameIntermediary = this.data.accountNameIntermediary
@@ -73,22 +78,29 @@ export class DialogWireTransferComponent implements OnInit {
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
-    this.data.relBankingDetailTypeWireTransferServices = []
+
+   /*  this.data.accountNumber = Number(this.data.accountNumber);
+    this.data.routingNumber = Number(this.data.routingNumber);
+    this.data.wireFeeApprox = Number(this.data.wireFeeApprox); */
+    this.data.relBankingWireTransferProfiles = []
     console.log(this.data);
 
     let lista = this.accountCategory.map(select => {
       return {
         id: 0,
         idCatBankingDetailType: select,
-        idWireTransferService: this.datas == null ? 0 : this.data.id
+        idWireTransferProfile: this.datas == null ? 0 : this.data.id
       }
     })
     console.log(lista);
-    this.data.relBankingDetailTypeWireTransferServices = lista
-    console.log(this.data);
+   // this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
+   this.data.relBankingWireTransferProfiles = lista
+
+   console.log(this.data);
 
     this.data.success = true;
     console.log("esta es la data que se enviara: ", this.data);
+      this.loader.hideLoader()
     this.dialogRef.close(this.data);
   }
 
@@ -111,6 +123,7 @@ export class DialogWireTransferComponent implements OnInit {
     this._services.getService('GetBankingDetailType').subscribe(ele => {
       console.log(ele);
       this.ca_accountCat = ele.result.value
+      this.loader.hideLoader()
     })
 
   }
@@ -175,4 +188,5 @@ export class DialogWireTransferComponent implements OnInit {
     } */
 
   }
+
 }
