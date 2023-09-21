@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
+import { LoaderComponent } from 'app/shared/loader';
 
 @Component({
   selector: 'app-dialog-wire-transfer-profile',
@@ -9,6 +10,8 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
   styleUrls: ['./dialog-wire-transfer-profile.component.css']
 })
 export class DialogWireTransferProfileComponent implements OnInit {
+  user: any;
+  loader: LoaderComponent = new LoaderComponent();
 
   accountCategory: any[] = [];
   data: any = {};
@@ -17,12 +20,18 @@ export class DialogWireTransferProfileComponent implements OnInit {
   constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public datas: any) { }
 
   async ngOnInit() {
+    this.loader.showLoader()
+    this.user = JSON.parse(localStorage.getItem('userData'));
+
     console.log("INFORMACION DE RECEPCION: ", this.datas);
+    this.data = { ...this.datas }
+
     if (this.datas != null) {
-      this.data = this.datas;
-      console.log(this.data);
-      let office = this.data.officeBankingDetailLists[0]
-      let resul = office.relBankingDetailTypeOfficeBankingDetails.map(ele => {
+      //      console.log(this.data);
+      this.data = { ...this.datas }
+
+      //let office = this.data.officeBankingDetailLists[0]
+      let resul = this.data.relBankingWireTransferProfiles.map(ele => {
         return ele.idCatBankingDetailType
       })
       this.accountCategory = resul
@@ -34,26 +43,64 @@ export class DialogWireTransferProfileComponent implements OnInit {
   }
 
   save() {
+    this.loader.showLoader()
+
     console.log(this.data.accountNumber);
-    this.data.RelBankingWireTransferProfiles = [];
+    this.data.accountNameBeneficiary = this.data.accountNameBeneficiary
+    this.data.accountNameIntermediary = this.data.accountNameIntermediary
+    this.data.accountNumberBeneficiary = this.data.accountNumberBeneficiary//number
+    this.data.accountNumberIntermediary = this.data.accountNumberIntermediary
+    this.data.adiitionalInstruccion = this.data.adiitionalInstruccion
+    this.data.bankAddressBeneficiary = this.data.bankAddressBeneficiary
+    this.data.bankAddressIntermediary = this.data.bankAddressIntermediary
+    this.data.bankBranch = this.data.bankBranch
+    this.data.bankNameBeneficiary = this.data.bankNameBeneficiary
+    this.data.bankNameIntermediary = this.data.bankNameIntermediary
+    this.data.bankPhone = this.data.bankPhone
+    this.data.clabe = this.data.clabe//number
+    this.data.bankPhone = this.data.bankPhone
+    this.data.bankPhone = this.data.bankPhone
+    this.data.bankPhone = this.data.bankPhone
+    this.data.createdBy = this.user.id
+    this.data.createdDate = new Date()
+    this.data.iban = this.data.iban //number
+    this.data.id = this.data.id == undefined ? 0 : this.data.id
+    this.data.idAccountType = this.data.idAccountType //number
+    this.data.idCurrency = this.data.idCurrency
+    this.data.internationalPaymentAcceptance = this.data.internationalPaymentAcceptance
+    this.data.swiftBeneficiary = this.data.swiftBeneficiary
+    this.data.swiftIntermediary = this.data.swiftIntermediary
+    this.data.taxId = this.data.taxId
+    this.data.updatedBy = this.user.id
+    this.data.updatedDate = new Date()
+    this.data.w8W9 = this.data.w8W9
+    //aparte
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
 
-    this.accountCategory.map(select => {
-      this.data.RelBankingWireTransferProfiles.push({
+   /*  this.data.accountNumber = Number(this.data.accountNumber);
+    this.data.routingNumber = Number(this.data.routingNumber);
+    this.data.wireFeeApprox = Number(this.data.wireFeeApprox); */
+    this.data.relBankingWireTransferProfiles = []
+    console.log(this.data);
+
+    let lista = this.accountCategory.map(select => {
+      return {
         id: 0,
         idCatBankingDetailType: select,
-        idWireTransferProfile: 0
-      });
+        idWireTransferProfile: this.datas == null ? 0 : this.data.id
+      }
     })
-    // console.log(lista);
-   
-    // this.data.relBankingDetailTypeOfficeBankingDetails: lista;
-    // console.log(this.data.officeBankingDetailLists);
+    console.log(lista);
+   // this.data.officeBankingDetailLists = [{ relBankingDetailTypeOfficeBankingDetails: lista }]
+   this.data.relBankingWireTransferProfiles = lista
+
+   console.log(this.data);
 
     this.data.success = true;
     console.log("esta es la data que se enviara: ", this.data);
+      this.loader.hideLoader()
     this.dialogRef.close(this.data);
   }
 
@@ -76,6 +123,7 @@ export class DialogWireTransferProfileComponent implements OnInit {
     this._services.getService('GetBankingDetailType').subscribe(ele => {
       console.log(ele);
       this.ca_accountCat = ele.result.value
+      this.loader.hideLoader()
     })
 
   }
@@ -116,7 +164,7 @@ export class DialogWireTransferProfileComponent implements OnInit {
 
       }
     }
-    else { //RelBankingWireTransferProfiles
+    else {
       this.valid_accountName = false
       this.valid_taxId = false
       this.valid_accountNumberBeneficiary = false

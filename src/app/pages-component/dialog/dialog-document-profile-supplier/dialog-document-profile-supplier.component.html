@@ -15,12 +15,12 @@
         <p class="Upload-Document">Upload Document</p>
       </div>
     </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
+    <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'"></mat-grid-tile>
+   <!--  <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
       <div *ngIf="city != undefined " class="textarea">
         <p class="Location">Location &nbsp; <b class="City">{{city}}</b></p>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
     <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="this.data.tipo=='Provider'">
       <div class="textarea">

@@ -67,7 +67,7 @@ export class DialogOfficeInformationComponent implements OnInit {
   public permission_delete: boolean = false;
   public permission_edit: boolean = false;
   consultaPermisos() {
-    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    console.log("DATA", this.data);
     let url = localStorage.getItem('url_permisos');
     this._services.service_general_get('Role/' + url).subscribe(data => {
       if (data.success) {
@@ -455,6 +455,48 @@ export class DialogOfficeInformationComponent implements OnInit {
         this.officeContacts = new MatTableDataSource(this.data.officeContacts);
       }
     });
+  }
+
+  deletreWireTransfer(data_, index){
+    console.log(data_);
+    
+    if(data_.id != 0){
+      const dialogRef = this._dialog.open(DialogConfirmComponent, {
+        data: {
+          header: "Delete confirmation",
+          body: "Are you sure to delete this payment?"
+        }, width: '350px'
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+       
+        if (result) {
+          this.loader.showLoader();
+          this._services.service_general_putnoapi('DeleteWireTransferPartner?id=' + data_.id, '').subscribe(r => {
+            if (r.success) {
+              console.log("REGISTRO GUARDADO: ", r);
+              this.loader.hideLoader();
+              const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                data: {
+                  header: "Success",
+                  body: "Delete data"
+                },
+                width: "350px"
+              });
+              this.loader.showLoader();
+              this.data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.splice(index ,1);
+              this.loader.hideLoader();
+            }
+          })
+        }
+  
+      });
+    }
+    else{
+      this.loader.showLoader();
+      this.data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.splice(index ,1);
+      this.loader.hideLoader();
+    }
   }
 
   editWireTransfer(data_, i, nodo) {

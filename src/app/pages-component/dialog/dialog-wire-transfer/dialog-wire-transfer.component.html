@@ -28,7 +28,7 @@
 
   <div class="mat-elevation-z5">
     <!--Inicio Banking Details Beneficiary-->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory.includes(1)">
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory?.includes(1)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Beneficiary
@@ -183,7 +183,7 @@
     <!--Fin Banking Details Beneficiary-->
 
     <!--Inicio Banking Details Intermediary-->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory.includes(2)">
+    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory?.includes(2)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Intermediary
