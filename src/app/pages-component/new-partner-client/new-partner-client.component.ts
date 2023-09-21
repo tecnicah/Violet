@@ -710,6 +710,7 @@ export class NewPartnerClientComponent implements OnInit {
             this.lead_client.officeInformations[i] = result;
           } else {
             this.loader.showLoader();
+            console.log("result",JSON.stringify(result))
             this._services.service_general_putnoapi('UpdateOfficeInformation', result).subscribe(r => {
               if (r.success) {
                 console.log("REGISTRO ACTUALIZADO OFFICE: ", r);

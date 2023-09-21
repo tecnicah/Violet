@@ -22,23 +22,21 @@ export class DialogWireTransferComponent implements OnInit {
     console.log("INFORMACION DE RECEPCION: ", this.datas);
     this.data = { ...this.datas }
 
-
+    this.getSelectOption();
     if (this.datas != null) {
       this.data = { ...this.datas }
       // this.data = this.datas;
       console.log(this.data);
       // let office = this.data.officeBankingDetailLists[0]
-      let resul = this.data?.relBankingDetailTypeWireTransferServices?.map(ele => {
+      let resul = this.data?.relBankingDetailTypeWireTransferPaymentInformationSuppliers?.map(ele => {
         return ele.idCatBankingDetailType
       })
       this.accountCategory = resul
     }
     this.ca_countType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
-    this.getSelectOption();
-
   }
-  idWireTransferService: any
+  IdWireTransferPaymentInformationOfficeSupplier: any
   save() {
     console.log(this.data.accountNumber);
     this.data.accountNameBeneficiary = this.data.accountNameBeneficiary
@@ -73,18 +71,18 @@ export class DialogWireTransferComponent implements OnInit {
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
-    this.data.relBankingDetailTypeWireTransferServices = []
+    this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = []
     console.log(this.data);
 
     let lista = this.accountCategory.map(select => {
       return {
         id: 0,
         idCatBankingDetailType: select,
-        idWireTransferService: this.datas == null ? 0 : this.data.id
+        IdWireTransferPaymentInformationOfficeSupplier: this.datas == null ? 0 : this.data.id
       }
     })
     console.log(lista);
-    this.data.relBankingDetailTypeWireTransferServices = lista
+    this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = lista
     console.log(this.data);
 
     this.data.success = true;
