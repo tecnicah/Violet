@@ -1066,6 +1066,10 @@ export class SupplierServicesComponent implements OnInit {
   addWireTransfer(i) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       width: "90%",
+      data:{
+        component:'supplier-service',
+        data:null
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1088,7 +1092,11 @@ export class SupplierServicesComponent implements OnInit {
     console.log('entro aqui x2');
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
       width: "90%",
-      data: wire
+      data:{
+        component:'supplier-service',
+        data:wire
+      }
+     //antes data: wire
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {

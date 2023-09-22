@@ -457,19 +457,19 @@ export class DialogOfficeInformationComponent implements OnInit {
     });
   }
 
-  deletreWireTransfer(data_, index){
+  deletreWireTransfer(data_, index) {
     console.log(data_);
-    
-    if(data_.id != 0){
+
+    if (data_.id != 0) {
       const dialogRef = this._dialog.open(DialogConfirmComponent, {
         data: {
           header: "Delete confirmation",
           body: "Are you sure to delete this payment?"
         }, width: '350px'
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
-       
+
         if (result) {
           this.loader.showLoader();
           this._services.service_general_putnoapi('DeleteWireTransferPartner?id=' + data_.id, '').subscribe(r => {
@@ -484,25 +484,29 @@ export class DialogOfficeInformationComponent implements OnInit {
                 width: "350px"
               });
               this.loader.showLoader();
-              this.data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.splice(index ,1);
+              this.data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.splice(index, 1);
               this.loader.hideLoader();
             }
           })
         }
-  
+
       });
     }
-    else{
+    else {
       this.loader.showLoader();
-      this.data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.splice(index ,1);
+      this.data?.paymentInformationOfficeSuppliers[0].wireTransferPaymentInformationOfficeSuppliers.splice(index, 1);
       this.loader.hideLoader();
     }
   }
 
   editWireTransfer(data_, i, nodo) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
-      data: data_,
-      width: "95%"
+      //antes data: data_,
+      width: "95%",
+      data: {
+        component: 'partner_client',
+        data: data_
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -519,7 +523,11 @@ export class DialogOfficeInformationComponent implements OnInit {
 
   addWireTransfer(nodo) {
     const dialogRef = this._dialog.open(DialogWireTransferComponent, {
-      width: "95%"
+      width: "95%",
+      data: {
+        component: 'partner_client',
+        data: null
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

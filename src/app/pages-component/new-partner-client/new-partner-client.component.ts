@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ServiceGeneralService } from 'app/service/service-general/service-general.service';
 import { DialogContractPricingInfoComponent } from '../dialog/dialog-contract-pricing-info/dialog-contract-pricing-info.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,7 +36,7 @@ export class NewPartnerClientComponent implements OnInit {
   constructor(private rutaActiva: ActivatedRoute,
     public _services: ServiceGeneralService,
     public dialog: MatDialog,
-    public router: Router) {}
+    public router: Router) { }
   partnert: boolean = false;
   lead: boolean = false;
   caCompanyType: any[] = [];
@@ -79,7 +79,7 @@ export class NewPartnerClientComponent implements OnInit {
   public filterPricingPartner: any = { currency: '' };
 
   public dataContacts: any;
-  public _url = this.rutaActiva.snapshot.params.id; 
+  public _url = this.rutaActiva.snapshot.params.id;
   public _imageLocal = "";
 
 
@@ -92,21 +92,21 @@ export class NewPartnerClientComponent implements OnInit {
   siete: string[] = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete'];
   ocho: string[] = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho'];
 
-  public info_row : any = {};
+  public info_row: any = {};
   viewData(data) {
-    this.info_row.country  =  data.countriesName;
+    this.info_row.country = data.countriesName;
   }
 
 
   @ViewChild(MatSort) sort: MatSort;
 
 
-  paises(data){
+  paises(data) {
     console.log(data);
     this.countriesImm = [];
     this.countriesImm = data.serviceLocationCountries;
   }
-  paises_(data){
+  paises_(data) {
     console.log(data);
     this.countriesImm = [];
     this.countriesImm = data.serviceLocationCountries;
@@ -122,33 +122,33 @@ export class NewPartnerClientComponent implements OnInit {
     this.partnert = (this.rutaActiva.snapshot.routeConfig.path == "partner_client/:id") ? true : false;
     this.lead = (this.rutaActiva.snapshot.routeConfig.path == "lead/:id") ? true : false;
 
-    this._services.service_general_get_noapi('GetClientPartnerProfileCatalog').subscribe(r =>{
-      if(r.success){
+    this._services.service_general_get_noapi('GetClientPartnerProfileCatalog').subscribe(r => {
+      if (r.success) {
         this.caCliente = r.result.value;
       }
     })
 
     if (this.rutaActiva.snapshot.params.id == 'new') {
 
-      if (localStorage.getItem('user') == 'userClient' ) {
+      if (localStorage.getItem('user') == 'userClient') {
         this.lead_client.idTypePartnerClientProfile = 2;
         this.lead_client.name = (localStorage.getItem('name'));
         localStorage.removeItem('user');
         localStorage.removeItem('name');
 
-       }
+      }
 
 
-       this.lead_client.idCompanyType = 2; 
-       setTimeout(() => {
+      this.lead_client.idCompanyType = 2;
+      setTimeout(() => {
         this.lead_client.belongsToPartner = parseInt(localStorage.getItem('belongsId'));
 
-       }, 300);
+      }, 300);
 
       //  this.lead_client.belongsToPartner = localStorage.getItem('belongsId');
 
       //  console.log("this.lead_client.belongsToPartner",this.lead_client.belongsToPartner);
- 
+
       //  localStorage.removeItem('belongsId');
 
       this.lead_client.photo = "";
@@ -176,10 +176,10 @@ export class NewPartnerClientComponent implements OnInit {
               this.lead_client.idPricingType = [];
               for (const iterator of this.lead_client.relClientPartnerProfilePricingTypes) {
                 this.lead_client.idPricingType.push(
-                   iterator.idPricingType
+                  iterator.idPricingType
                 );
               }
-              console.log('this.lead_client',this.lead_client)
+              console.log('this.lead_client', this.lead_client)
             }
           }
           this._imageLocal = this._services.url_images + this.lead_client.photo;
@@ -192,13 +192,13 @@ export class NewPartnerClientComponent implements OnInit {
           this.officeInformations = new MatTableDataSource(this.lead_client.officeInformations);
           ;
           this.client = new MatTableDataSource(this.lead_client.client);
-          console.log("data lead_cliente: ",this.lead_client);
+          console.log("data lead_cliente: ", this.lead_client);
 
           // contactos de las oficinas
-          let contactos: any[]= [];
-          if(this.lead_client.officeInformations){
+          let contactos: any[] = [];
+          if (this.lead_client.officeInformations) {
             this.lead_client.officeInformations.forEach(office => {
-              if(office.officeContacts.length != 0){
+              if (office.officeContacts.length != 0) {
                 office.officeContacts.forEach(contact => {
                   contactos.push(contact);
                 });
@@ -228,8 +228,8 @@ export class NewPartnerClientComponent implements OnInit {
           this.contacts = new MatTableDataSource(this.lead_client.contacts);
           this.contacts.sort = this.sort;
           console.log("2");
-            this.relo = this.lead_client.experience_team_relo;
-            this.immi = this.lead_client.experience_team_imm;
+          this.relo = this.lead_client.experience_team_relo;
+          this.immi = this.lead_client.experience_team_imm;
 
 
           console.log(this._services.url_images);
@@ -241,23 +241,23 @@ export class NewPartnerClientComponent implements OnInit {
   }
 
   //*********************************************//
-	public permission_read : boolean = false;
-	public permission_write : boolean = false;
-	public permission_delete : boolean = false;
-  public pathUrl : string = 'https://my.premierds.com/api-test-premier/';
-	public permission_edit : boolean = false;
-	consultaPermisos(){
-		console.log("CONSULTA PARA PERMISOS DE USUARIO");
-		let url = localStorage.getItem('url_permisos');
-		this._services.service_general_get('Role/'+url).subscribe(data=>{
-			if(data.success){
-			   console.log("Permisos: ", data.result.value)
-			   this.permission_read = data.result.value[0].reading;
-			   this.permission_write = data.result.value[0].writing;
-			   this.permission_edit = data.result.value[0].editing;
-			   this.permission_delete = data.result.value[0].deleting;
-			}
-		})
+  public permission_read: boolean = false;
+  public permission_write: boolean = false;
+  public permission_delete: boolean = false;
+  public pathUrl: string = 'https://my.premierds.com/api-test-premier/';
+  public permission_edit: boolean = false;
+  consultaPermisos() {
+    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    let url = localStorage.getItem('url_permisos');
+    this._services.service_general_get('Role/' + url).subscribe(data => {
+      if (data.success) {
+        console.log("Permisos: ", data.result.value)
+        this.permission_read = data.result.value[0].reading;
+        this.permission_write = data.result.value[0].writing;
+        this.permission_edit = data.result.value[0].editing;
+        this.permission_delete = data.result.value[0].deleting;
+      }
+    })
   }
   //*********************************************//
 
@@ -266,17 +266,17 @@ export class NewPartnerClientComponent implements OnInit {
 
     setTimeout(() => {
       this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + 2)
-      .subscribe(r => {
-        console.log("CCCCCCCCCC",r);
-        if (r.success) {
-          this.lead_client.serviceLocationsrelo = r.result;
-          this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocationsrelo);
+        .subscribe(r => {
+          console.log("CCCCCCCCCC", r);
+          if (r.success) {
+            this.lead_client.serviceLocationsrelo = r.result;
+            this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocationsrelo);
 
-          console.log('serviceLocationsimmi', this.serviceLocationsrelo);
+            console.log('serviceLocationsimmi', this.serviceLocationsrelo);
 
-         
-        }
-      });
+
+          }
+        });
 
     }, 300);
 
@@ -288,11 +288,11 @@ export class NewPartnerClientComponent implements OnInit {
     window.history.back();
   }
 
-  refresh(id){
+  refresh(id) {
     this.router.navigate(['/partner_client/' + id])
-    .then(() => {
-      window.location.reload();
-    });
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   applyFilter(event: Event) {
@@ -318,9 +318,9 @@ export class NewPartnerClientComponent implements OnInit {
     this.caDuration = await this._services.getCatalogueFrom('GetPaymentRecurrence');
     this.caCurrency = await this._services.getCatalogueFrom('GetCurrency');
     ;
-    this.caParicingType = await this._services.getCatalogueFrom('GetPricingType','');
+    this.caParicingType = await this._services.getCatalogueFrom('GetPricingType', '');
     // this.caCity = await this._services.getCatalogueFrom('GetCity');
-    console.log(this.caParicingType );
+    console.log(this.caParicingType);
 
     this.catalogService = await this._services.getCatalogueFrom(`GetCataegoryByServiceLineId?serviceLineId=1`);
     this.ca_contactType = await this._services.getCatalogueFrom('GetContactType?id=2');
@@ -386,7 +386,7 @@ export class NewPartnerClientComponent implements OnInit {
       }
     }
   }
-  ReferrelFee(id:number) {
+  ReferrelFee(id: number) {
     for (let i = 0; i < this.caReferrelFee.length; i++) {
       if (this.caReferrelFee[i].id == id) {
         return this.caReferrelFee[i].referralFee1;
@@ -414,33 +414,33 @@ export class NewPartnerClientComponent implements OnInit {
       }
     }
   }
-  getName(id){
+  getName(id) {
     for (let i = 0; i < this.caExperienceTeamCatalog.length; i++) {
       // const element = this.caExperienceTeamCatalog[i];
-      if(this.caExperienceTeamCatalog[i].id == id){
+      if (this.caExperienceTeamCatalog[i].id == id) {
         return this.caExperienceTeamCatalog[i].name;
       }
     }
   }
 
-  get_contacType(id){
+  get_contacType(id) {
     for (let i = 0; i < this.ca_contactType.length; i++) {
       // const element = this.ca_contactType[i];
-      if(this.ca_contactType[i].id == id){
+      if (this.ca_contactType[i].id == id) {
         return this.ca_contactType[i].type;
       }
     }
   }
-  get_nameCity(id){
+  get_nameCity(id) {
     for (let i = 0; i < this.caCity.length; i++) {
-      if(this.caCity[i].id == id){
+      if (this.caCity[i].id == id) {
         return this.caCity[i].name;
       }
     }
   }
-  get_nameService(id){
+  get_nameService(id) {
     for (let i = 0; i < this.ca_Service.length; i++) {
-      if(this.ca_Service[i].service1 == id){
+      if (this.ca_Service[i].service1 == id) {
         return this.ca_Service[i].service;
       }
     }
@@ -511,7 +511,7 @@ export class NewPartnerClientComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      
+
       if (result.success) {
         result.idClientPartnerProfile = this.lead_client.id;
         if (result.action == "new") {
@@ -547,7 +547,7 @@ export class NewPartnerClientComponent implements OnInit {
             this.loader.showLoader();
             this._services.service_general_putnoapi('UpdateGeneralContractPricingInfo', result).subscribe(r => {
               if (r.success) {
-                
+
                 const dialog = this.dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
@@ -565,8 +565,7 @@ export class NewPartnerClientComponent implements OnInit {
         }
 
       }
-      else
-      {
+      else {
         this.ngAfterViewInit();
       }
     });
@@ -710,8 +709,11 @@ export class NewPartnerClientComponent implements OnInit {
             this.lead_client.officeInformations[i] = result;
           } else {
             this.loader.showLoader();
-            console.log("result",JSON.stringify(result))
-            this._services.service_general_putnoapi('UpdateOfficeInformation', result).subscribe(r => {
+            console.log(result);
+
+            console.log("result", JSON.stringify(result))
+
+             this._services.service_general_putnoapi('UpdateOfficeInformation', result).subscribe(r => {
               if (r.success) {
                 console.log("REGISTRO ACTUALIZADO OFFICE: ", r);
                 this.loader.hideLoader();
@@ -891,45 +893,45 @@ export class NewPartnerClientComponent implements OnInit {
 
   }
 
-  Line(param){
-    console.log('param',param);
-    if(param.index == 0){
+  Line(param) {
+    console.log('param', param);
+    if (param.index == 0) {
       this.service_type_ = 1;
-    }else{
+    } else {
       this.service_type_ = 2;
     }
     this.service_type_ = 2;
     this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + this.service_type_)
-    .subscribe(r => {
-      //console.log(r);
-      if (r.success) {
+      .subscribe(r => {
         //console.log(r);
-        if(this.service_type_ == 1){
-          this.lead_client.serviceLocations_Imm = r.result;
-          this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
+        if (r.success) {
+          //console.log(r);
+          if (this.service_type_ == 1) {
+            this.lead_client.serviceLocations_Imm = r.result;
+            this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
 
-          console.log('serviceLocationsimmi', this.serviceLocationsimmi);
+            console.log('serviceLocationsimmi', this.serviceLocationsimmi);
+          }
+          if (this.service_type_ == 2) {
+
+            this.lead_client.serviceLocations_Relo = r.result;
+            this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
+
+            console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+          }
         }
-        if(this.service_type_ == 2){
-
-          this.lead_client.serviceLocations_Relo = r.result;
-          this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
-
-          console.log('serviceLocationsrelo', this.serviceLocationsrelo);
-        }
-      }
-    });
+      });
 
     this.getCAtalogoService();
-        //this.service_type_ = param;
+    //this.service_type_ = param;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////
   //office information
   _lead_client_table: any = [];
   dialogService(data, i) {
-;
-    let services: any[]= [{
+    ;
+    let services: any[] = [{
       action: Number,
       country_total: Number,
       id: Number,
@@ -937,8 +939,8 @@ export class NewPartnerClientComponent implements OnInit {
       idService: Number,
       idServiceLine: Number,
       nickName: String,
-      servicesName: String  
-    }]; 
+      servicesName: String
+    }];
 
     // if(this.service_type_ == 1){
 
@@ -964,7 +966,7 @@ export class NewPartnerClientComponent implements OnInit {
     } else {
       data.service = [];
       data.sl = 2,
-      data.action = i;
+        data.action = i;
       services.forEach(element => {
         data.service.push({
           action: 0,
@@ -996,13 +998,13 @@ export class NewPartnerClientComponent implements OnInit {
         result.idClientPartnerProfile = this.lead_client.id;
         if (result.action == "new") {
           if (this.lead_client.id == 0) {
-             // cambiar el idService a 0 y services  va con el arreglo
+            // cambiar el idService a 0 y services  va con el arreglo
             result.services = result.idService;
             result.idService = 0;
-           
+
             result.services.forEach(element => {
               result.catalogServices.forEach(item => {
-                if(element == item.service1){
+                if (element == item.service1) {
                   this._lead_client_table.push({
                     id: result.id,
                     servicesName: item.service,
@@ -1011,7 +1013,7 @@ export class NewPartnerClientComponent implements OnInit {
                     obj_guardar: result
                   })
                 }
-              });              
+              });
             });
             this.lead_client.serviceLocations.push(result);
             console.log("AdDDD");
@@ -1022,38 +1024,38 @@ export class NewPartnerClientComponent implements OnInit {
             this.loader.showLoader();
             result.services = result.idService;
             result.idService = 0;
-            
+
             console.log(JSON.stringify(result))
             this._services.service_general_putnoapi('AddServiceLocation', result).subscribe(r => {
               if (r.success) {
                 console.log(r)
                 setTimeout(() => {
                   this._services.service_general_get_noapi('GetServiceLocation?id=' + this.rutaActiva.snapshot.params.id + '&serviceLine=' + 2)
-                  .subscribe(r => {
-                    //console.log(r);
-                    if (r.success) {
-                      this.lead_client.serviceLocations_Relo = r.result;
-                      this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
-            
-                      console.log('serviceLocationsrelo', this.serviceLocationsrelo);
-                      // if(this.service_type_ == 1){
-                      //   this.lead_client.serviceLocations_Imm = r.result;
-                      //   this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
-              
-                      //   console.log('serviceLocationsimmi', this.serviceLocationsimmi);
-                      // }
-                      // if(this.service_type_ == 2){
-              
-                      //   this.lead_client.serviceLocations_Relo = r.result;
-                      //   this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
-              
-                      //   console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+                    .subscribe(r => {
+                      //console.log(r);
+                      if (r.success) {
+                        this.lead_client.serviceLocations_Relo = r.result;
+                        this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
 
- 
-                      // }
-                    }
-                  });
-            
+                        console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+                        // if(this.service_type_ == 1){
+                        //   this.lead_client.serviceLocations_Imm = r.result;
+                        //   this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
+
+                        //   console.log('serviceLocationsimmi', this.serviceLocationsimmi);
+                        // }
+                        // if(this.service_type_ == 2){
+
+                        //   this.lead_client.serviceLocations_Relo = r.result;
+                        //   this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
+
+                        //   console.log('serviceLocationsrelo', this.serviceLocationsrelo);
+
+
+                        // }
+                      }
+                    });
+
                 }, 300);
                 const dialog = this.dialog.open(DialogGeneralMessageComponent, {
                   data: {
@@ -1074,7 +1076,7 @@ export class NewPartnerClientComponent implements OnInit {
           } else {
             this.loader.showLoader();
             this.lead_client.services = [];
-            if(result.servicelocationcountries){
+            if (result.servicelocationcountries) {
               for (const iterator of result.servicelocationcountries) {
                 //iterator.idCountry = iterator.idCountry[0];
                 result.serviceLocationCountries.push(iterator);
@@ -1098,19 +1100,19 @@ export class NewPartnerClientComponent implements OnInit {
                 //       if(this.service_type_ == 1){
                 //         this.lead_client.serviceLocations_Imm = r.result;
                 //         this.serviceLocationsimmi = new MatTableDataSource(this.lead_client?.serviceLocations_Imm);
-              
+
                 //         console.log('serviceLocationsimmi', this.serviceLocationsimmi);
                 //       }
                 //       if(this.service_type_ == 2){
-              
+
                 //         this.lead_client.serviceLocations_Relo = r.result;
                 //         this.serviceLocationsrelo = new MatTableDataSource(this.lead_client?.serviceLocations_Relo);
-              
+
                 //         console.log('serviceLocationsrelo', this.serviceLocationsrelo);
                 //       }
                 //     }
                 //   });
-            
+
                 // }, 200);
                 const dialog = this.dialog.open(DialogGeneralMessageComponent, {
                   data: {
@@ -1126,75 +1128,75 @@ export class NewPartnerClientComponent implements OnInit {
           }
 
         }
-   
+
         // aqui diferenciamos los servicios dependiendo de la SL
-      //   console.log(this.lead_client.serviceLocations);
-      //   let immi = [];
-      //   let immiRegistro = [];
-      //   let relo = [];
-      //   let reloRegistro = [];
+        //   console.log(this.lead_client.serviceLocations);
+        //   let immi = [];
+        //   let immiRegistro = [];
+        //   let relo = [];
+        //   let reloRegistro = [];
 
-      //   for (let i = 0; i < this.lead_client.serviceLocations.length; i++)
-      //   {
-      //     const element = this.lead_client.serviceLocations[i];
-      //     if (element.idServiceLine == 1) {
-      //       immi.push(element);
-      //     } else {
-      //       relo.push(element);
-      //     }
-      //   }
-      //   immi.forEach(element => {
-      //     for (let o = 0; o < element.services.length; o++) {
-      //       let elementS = element.services[o];
-      //       element.idPrueba = elementS;
-      //       console.log(element);
-      //       immiRegistro.push( {
-      //       action: element.action,
-      //       id: element.id,
-      //       idClientPartnerProfile: element.idClientPartnerProfile,
-      //       idService: elementS,
-      //       idServiceLine: element.idServiceLine,
-      //       nickName: element.nickName,
-      //       servicelocationcountries: element.servicelocationcountries,
-      //       services: element.services,
-      //       sl: element.sl,
-      //       success: element.success,
-      //       });
-      //     }
-      //   });
-      //   relo.forEach(element => {
-      //     for (let o = 0; o < element.services.length; o++) {
-      //       let elementS = element.services[o];
-      //       element.idPrueba = elementS;
-      //       console.log(element);
-      //       reloRegistro.push( {
-      //       action: element.action,
-      //       id: element.id,
-      //       idClientPartnerProfile: element.idClientPartnerProfile,
-      //       idService: elementS,
-      //       idServiceLine: element.idServiceLine,
-      //       nickName: element.nickName,
-      //       servicelocationcountries: element.servicelocationcountries,
-      //       services: element.services,
-      //       sl: element.sl,
-      //       success: element.success,
-      //       });
-      //     }
-      //   });
+        //   for (let i = 0; i < this.lead_client.serviceLocations.length; i++)
+        //   {
+        //     const element = this.lead_client.serviceLocations[i];
+        //     if (element.idServiceLine == 1) {
+        //       immi.push(element);
+        //     } else {
+        //       relo.push(element);
+        //     }
+        //   }
+        //   immi.forEach(element => {
+        //     for (let o = 0; o < element.services.length; o++) {
+        //       let elementS = element.services[o];
+        //       element.idPrueba = elementS;
+        //       console.log(element);
+        //       immiRegistro.push( {
+        //       action: element.action,
+        //       id: element.id,
+        //       idClientPartnerProfile: element.idClientPartnerProfile,
+        //       idService: elementS,
+        //       idServiceLine: element.idServiceLine,
+        //       nickName: element.nickName,
+        //       servicelocationcountries: element.servicelocationcountries,
+        //       services: element.services,
+        //       sl: element.sl,
+        //       success: element.success,
+        //       });
+        //     }
+        //   });
+        //   relo.forEach(element => {
+        //     for (let o = 0; o < element.services.length; o++) {
+        //       let elementS = element.services[o];
+        //       element.idPrueba = elementS;
+        //       console.log(element);
+        //       reloRegistro.push( {
+        //       action: element.action,
+        //       id: element.id,
+        //       idClientPartnerProfile: element.idClientPartnerProfile,
+        //       idService: elementS,
+        //       idServiceLine: element.idServiceLine,
+        //       nickName: element.nickName,
+        //       servicelocationcountries: element.servicelocationcountries,
+        //       services: element.services,
+        //       sl: element.sl,
+        //       success: element.success,
+        //       });
+        //     }
+        //   });
 
-      //   console.log(immi);
-      //   console.log(relo);
+        //   console.log(immi);
+        //   console.log(relo);
 
-      //   console.log('immiRegistro', immiRegistro);
-      //   console.log('reloRegistro', reloRegistro);
+        //   console.log('immiRegistro', immiRegistro);
+        //   console.log('reloRegistro', reloRegistro);
 
 
-      //   this.serviceLocationsimmi = new MatTableDataSource(immiRegistro);
-      //   this.serviceLocationsrelo = new MatTableDataSource(reloRegistro);
-      //   this.serviceLocations = new MatTableDataSource(this.lead_client.serviceLocations);
-      // }
+        //   this.serviceLocationsimmi = new MatTableDataSource(immiRegistro);
+        //   this.serviceLocationsrelo = new MatTableDataSource(reloRegistro);
+        //   this.serviceLocations = new MatTableDataSource(this.lead_client.serviceLocations);
+        // }
 
-    //});
+        //});
       }
     });
 
@@ -1221,9 +1223,9 @@ export class NewPartnerClientComponent implements OnInit {
       if (result.success) {
         result.idClientPartnerProfile = this.lead_client.id;
         //this.lead_client.clientPartnerProfileExperienceTeams.push(result);
-        if(result.idServiceLine == 1){
+        if (result.idServiceLine == 1) {
           this.immiTemp.push(result);
-        }else{
+        } else {
           this.reloTemp.push(result);
         }
         console.log(this.reloTemp);
@@ -1345,7 +1347,7 @@ export class NewPartnerClientComponent implements OnInit {
         this._imageLocal = base64;
         this.lead_client.photo = base64.split(',')[1];
         this.lead_client.photoExtension = 'png';
-       
+
       }
     });
   }
@@ -1364,9 +1366,9 @@ export class NewPartnerClientComponent implements OnInit {
       console.log(result);
       if (result) {
         if (id == 0) {
-          if(sl == 1){
+          if (sl == 1) {
             this.immiTemp.splice(i, 1);
-          }else{
+          } else {
             this.reloTemp.splice(i, 1);
           }
         } else {
@@ -1388,7 +1390,7 @@ export class NewPartnerClientComponent implements OnInit {
 
   }
 
-  changeModel(){
+  changeModel() {
     console.log(this.lead_client.idPricingType)
     this.lead_client.relClientPartnerProfilePricingTypes = [];
     for (const iterator of this.lead_client.idPricingType) {
@@ -1417,7 +1419,7 @@ export class NewPartnerClientComponent implements OnInit {
       this.lead_client.idTypePartnerClientProfile == null) {
       this.type = true;
     }
-    else{
+    else {
       this.type = false;
     }
 
@@ -1426,7 +1428,7 @@ export class NewPartnerClientComponent implements OnInit {
       this.lead_client.name == null) {
       this.name = true;
     }
-    else{
+    else {
       this.name = false;
     }
 
@@ -1435,7 +1437,7 @@ export class NewPartnerClientComponent implements OnInit {
       this.lead_client.idCompanyType == null) {
       this.comType = true;
     }
-    else{
+    else {
       this.comType = false;
 
     }
@@ -1470,7 +1472,7 @@ export class NewPartnerClientComponent implements OnInit {
       this.office = false
     }
 
-    if (this.comType || this.name || this.type ) {
+    if (this.comType || this.name || this.type) {
       console.log(this.type, this.name, this.comType, this.office);
       window.scrollTo(0, 0);
       return false;
@@ -1526,7 +1528,7 @@ export class NewPartnerClientComponent implements OnInit {
           setTimeout(() => {
             this.ngOnInit();
           }, 500);
-          
+
           const dialog = this.dialog.open(DialogGeneralMessageComponent, {
             data: {
               header: "Success",
@@ -1535,7 +1537,7 @@ export class NewPartnerClientComponent implements OnInit {
             width: "350px"
           });
 
-          
+
         }
       })
     } else if (this.lead && this.rutaActiva.snapshot.params.id == 'new') {
@@ -1569,7 +1571,7 @@ export class NewPartnerClientComponent implements OnInit {
               body: "Update data"
             },
             width: "350px"
-          });         
+          });
         }
       })
     }
@@ -1578,17 +1580,17 @@ export class NewPartnerClientComponent implements OnInit {
   }
   // aqui direcciona el perfil
 
-  openProfile(item){
+  openProfile(item) {
     console.log(item);
     // en el perfil consultant se abriran todos los roles
-    if(item.title != "Coordinator" && item.title != "Manager"){
-      this.router.navigateByUrl('profileconsultant/'+item.profileId);
+    if (item.title != "Coordinator" && item.title != "Manager") {
+      this.router.navigateByUrl('profileconsultant/' + item.profileId);
     }
-    if(item.title == "Coordinator"){
-      this.router.navigateByUrl('profilecoordinator/'+item.profileId);
+    if (item.title == "Coordinator") {
+      this.router.navigateByUrl('profilecoordinator/' + item.profileId);
     }
-    if(item.title == "Manager"){
-      this.router.navigateByUrl('profilemanager/'+item.profileId);
+    if (item.title == "Manager") {
+      this.router.navigateByUrl('profilemanager/' + item.profileId);
     }
 
   }
