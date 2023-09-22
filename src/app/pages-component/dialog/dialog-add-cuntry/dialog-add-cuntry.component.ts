@@ -23,7 +23,7 @@ export class DialogAddCuntryComponent implements OnInit {
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       [{ align: [] }],
       ['blockquote', 'code-block'],
-      [{ list: 'ordered'}, { list: 'bullet' }]
+      [{ list: 'ordered' }, { list: 'bullet' }]
     ]
   };
   htmlContent: any;
@@ -33,7 +33,7 @@ export class DialogAddCuntryComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialog: MatDialog) { }
 
-    img_url: string;
+  img_url: string;
   caCounty: any[] = [];
   dataScopeDocument: any[] = [];
   documentsColum: string[] = ['Document', 'Uploaded', 'Status', 'Privacy'];
@@ -50,8 +50,8 @@ export class DialogAddCuntryComponent implements OnInit {
   ngOnInit(): void {
 
     this.img_url = environment.images_path;
-    console.log('data que recibe country', this.data );
-    if(this.data.documentLocationCountries){}else{
+    console.log('data que recibe country', this.data);
+    if (this.data.documentLocationCountries) { } else {
       this.data.documentLocationCountries = [];
     }
     // si es un registro nuevo poner scope descripcion por default en 0
@@ -65,27 +65,27 @@ export class DialogAddCuntryComponent implements OnInit {
 
   onChangedEditor(event: any): void {
     if (event.html) {
-        this.htmlContent = event.html;
-      }
+      this.htmlContent = event.html;
+    }
   }
 
-    //*********************************************//
-	public permission_read : boolean = false;
-	public permission_write : boolean = false;
-	public permission_delete : boolean = false;
-	public permission_edit : boolean = false;
-	consultaPermisos(){
-		console.log("CONSULTA PARA PERMISOS DE USUARIO");
-		let url = localStorage.getItem('url_permisos');
-		this._services.service_general_get('Role/'+url).subscribe(data=>{
-			if(data.success){
-			   console.log("Permisos: ", data.result.value)
-			   this.permission_read = data.result.value[0].reading;
-			   this.permission_write = data.result.value[0].writing;
-			   this.permission_edit = data.result.value[0].editing;
-			   this.permission_delete = data.result.value[0].deleting;
-			}
-		})
+  //*********************************************//
+  public permission_read: boolean = false;
+  public permission_write: boolean = false;
+  public permission_delete: boolean = false;
+  public permission_edit: boolean = false;
+  consultaPermisos() {
+    console.log("CONSULTA PARA PERMISOS DE USUARIO");
+    let url = localStorage.getItem('url_permisos');
+    this._services.service_general_get('Role/' + url).subscribe(data => {
+      if (data.success) {
+        console.log("Permisos: ", data.result.value)
+        this.permission_read = data.result.value[0].reading;
+        this.permission_write = data.result.value[0].writing;
+        this.permission_edit = data.result.value[0].editing;
+        this.permission_delete = data.result.value[0].deleting;
+      }
+    })
   }
 
   @ViewChild('allSelected') private allSelected: MatOption;
@@ -104,8 +104,8 @@ export class DialogAddCuntryComponent implements OnInit {
     console.log(this.data.idCountry);
   }
   //*********************************************//
-
-  async catalogos(){
+  caDocumentType: any
+  async catalogos() {
     // this.caCounty = await this._services.getCatalogueFrom('GetCountry');
     // Catalogue/Country-Service-Location/1587
     this._services.service_general_get(`Catalogue/Country-Service-Location/${this.data.idServiceLocation}`).subscribe((data => {
@@ -121,7 +121,7 @@ export class DialogAddCuntryComponent implements OnInit {
 
     this._services.service_general_get(`AdminCenter/GetDocumentType`).subscribe((data => {
       console.log(data);
-      if(data.success){
+      if (data.success) {
         this.ca_document = data.result;
       }
     }))
@@ -131,6 +131,8 @@ export class DialogAddCuntryComponent implements OnInit {
         console.log('service', this.GetService);
       }
     }));
+    this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
+
   }
 
   getDocument(id) {
@@ -140,50 +142,29 @@ export class DialogAddCuntryComponent implements OnInit {
       }
     }
   }
-  getStatus(id){
-    for(let i = 0; i < this.caStatus.length; i++){
-       if(this.caStatus[i].id == id){
-         return this.caStatus[i].status;
-       }
+  getStatus(id) {
+    for (let i = 0; i < this.caStatus.length; i++) {
+      if (this.caStatus[i].id == id) {
+        return this.caStatus[i].status;
+      }
     }
   }
-  getPrivacy(id){
-    for(let i = 0; i < this.caPrivacy.length; i++){
-       if(this.caPrivacy[i].id == id){
-         return this.caPrivacy[i].privacy;
-       }
+  getPrivacy(id) {
+    for (let i = 0; i < this.caPrivacy.length; i++) {
+      if (this.caPrivacy[i].id == id) {
+        return this.caPrivacy[i].privacy;
+      }
     }
   }
 
 
-  DialogDocumentsLeadClientComponent(data){
-    if(data == null){
-      data = {id: 0};
-    }
 
-    data.status = true;
-    const dialogRef = this._dialog.open(DialogDocumentsLeadClientComponent, {
-      data: data, width: '90%'
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-
-    if (result.success) {
-       result.id = 0
-       result.idServiceLocationCountry = this.data.id;
-       result.updateDate = new Date();
-       console.log(result);
-       this.data.documentLocationCountries.push(result);
-     }
-
-  });
-  }
   // si standar esta en true trae los documentos standares que solicita premier para el servicio correspondiente
   getStandarDocuments() {
     this.dataScopeDocument = [];
     this.dataScopeDescription = [];
 
-    if(this.data.standarScopeDocuments == 1) {
+    if (this.data.standarScopeDocuments == 1) {
       console.log('muestra los documentos y scope descriptionde admin center modo lectura');
       console.log('id service', this.data.idService);
       console.log('id Country', this.data.idCountry);
@@ -191,17 +172,17 @@ export class DialogAddCuntryComponent implements OnInit {
       // si es multicheck
       if (this.data.idService.length > 0) {
         // nota para poder consultar los documentos se necesita el id del servicio y no el service1 que es asi como se guarda el service location
-        let getIdService: any[]= [];
+        let getIdService: any[] = [];
         let serviceId = this.data.idService;
-          for (let s = 0; s < serviceId.length; s++) {
-            const serv = serviceId[s];
-            for (let d = 0; d < this.GetService.length; d++) {
-              const dataServicios = this.GetService[d];
-              if (serv == dataServicios.service1) {
-                getIdService.push(dataServicios.id);
-              }
+        for (let s = 0; s < serviceId.length; s++) {
+          const serv = serviceId[s];
+          for (let d = 0; d < this.GetService.length; d++) {
+            const dataServicios = this.GetService[d];
+            if (serv == dataServicios.service1) {
+              getIdService.push(dataServicios.id);
             }
           }
+        }
         console.log('id servicios para docuemntos', getIdService);
         // en el siguiente for ya tendremos los id de los servicios, ahora ya podemos consultar el servicio de scope documents
 
@@ -212,12 +193,12 @@ export class DialogAddCuntryComponent implements OnInit {
             this._services.service_general_get(`AdminCenter/GetScopeDocument/${service}/${country}`).subscribe((resp => {
               if (resp.success) {
                 console.log('consulta de documents scope multicheck: ', resp);
-                 // get de commentarios
-                 if (resp.result != null) {
-                   this.dataScopeDescription.push(resp.result.scopeDescription);
-                   // get de documentos
-                   if (resp.result.documentServiceCountries.length != 0) {
-                      this.dataScopeDocument.push(resp.result.documentServiceCountries[0]);
+                // get de commentarios
+                if (resp.result != null) {
+                  this.dataScopeDescription.push(resp.result.scopeDescription);
+                  // get de documentos
+                  if (resp.result.documentServiceCountries.length != 0) {
+                    this.dataScopeDocument.push(resp.result.documentServiceCountries[0]);
                   }
                 }
 
@@ -231,12 +212,12 @@ export class DialogAddCuntryComponent implements OnInit {
       }
       else {
         // servicio get que trae la inf
-      this._services.service_general_get(`AdminCenter/GetScopeDocument/${this.data.idService}/${this.data.idCountry}`).subscribe((resp => {
-        if (resp.success) {
-          console.log('consulta de documents scope: ', resp);
-          this.dataScopeDocument = resp.result;
-        }
-      }));
+        this._services.service_general_get(`AdminCenter/GetScopeDocument/${this.data.idService}/${this.data.idCountry}`).subscribe((resp => {
+          if (resp.success) {
+            console.log('consulta de documents scope: ', resp);
+            this.dataScopeDocument = resp.result;
+          }
+        }));
       }
     }
 
@@ -251,46 +232,129 @@ export class DialogAddCuntryComponent implements OnInit {
     if (this.data.standarScopeDocuments == 1) {
       this.data.scopeDescription = '';
     }
-    if (this.data.scopeDescription == undefined || this.data.scopeDescription =='') {
+    if (this.data.scopeDescription == undefined || this.data.scopeDescription == '') {
       this.active_description = true;
     }
-    if((this.data.scopeDescription != undefined || this.data.scopeDescription.length == 0 ) && (this.data.idCountry != undefined)){
+    if ((this.data.scopeDescription != undefined || this.data.scopeDescription.length == 0) && (this.data.idCountry != undefined)) {
       this.save();
     }
 
-   }
+  }
 
 
-   deleteDocument(id)
-   {
-     console.log(id);
-     this.loader.hideLoader();
-     this._services.service_general_delete_noapi('DeleteDocumentLocationCountry?id='+id).subscribe((r) => {
-       console.log(r);
-       if (r.success) {
-         this.data.documentLocationCountries = [];
-         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-           data: {
-             header: "Success",
-             body: "Delete data"
-           },
-           width: "350px"
-         });
+  deleteDocument(id, p) {
+    console.log(id);
+    this.loader.showLoader();
+    if (id == 0) {
+      this.data.documentLocationCountries.splice(p, 1);
+      console.log("this.data.documentGeneralContractPricingInfos", this.data.documentLocationCountries);
+      this.viewMensajeComponente('delete', 'Document was delete correctly')
 
-         r.result.value.forEach(element => {
-           this.data.documentLocationCountries.push(element);
-         });
+      this.loader.hideLoader();
 
-         console.log("this.data.documentGeneralContractPricingInfos",this.data.documentLocationCountries);
-         this.loader.hideLoader();
-       }
-     });
-   }
+    } else {
+      this._services.service_general_delete_noapi('DeleteDocumentLocationCountry?id=' + id).subscribe((r) => {
+        console.log(r);
+        if (r.success) {
+          this.data.documentLocationCountries = [];
+          const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Success",
+              body: "Delete data"
+            },
+            width: "350px"
+          });
 
+          r.result.value.forEach(element => {
+            this.data.documentLocationCountries.push(element);
+          });
+
+          console.log("this.data.documentGeneralContractPricingInfos", this.data.documentLocationCountries);
+
+          this.viewMensajeComponente('delete', 'Document was delete correctly')
+          this.loader.hideLoader();
+        }
+      });
+    }
+  }
+  editDocument(item, i) {
+
+    /*     const idDocumentType = this.caDocumentType.find(ele => ele.id = item.idDocumentType)
+        if (idDocumentType) {
+          item.idDocumentTypeName = idDocumentType.documentType
+        } */
+    item.idDocumentTypeName = item.documentType
+    const parts = item.fileName.split('.');
+
+    item.fileExtension = parts[parts.length - 1];
+    console.log(item, i);
+    if (item == null) {
+      item = { id: 0 };
+    }
+
+    const dialogRef = this._dialog.open(DialogDocumentsLeadClientComponent, {
+      data: item, width: '90%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        this.loader.showLoader()
+        console.log(result);
+        if (result.id == 0) {
+          this.data.documentLocationCountries[i] = result
+          this.viewMensajeComponente('edit', 'Document List was edited correctly')
+          this.loader.hideLoader()
+        } else {
+          this.data.documentLocationCountries[i] = result
+          console.log('data a guardar', result);
+          this._services.service_general_putnoapi('UpdateDocumentLocation', result).subscribe(data => {
+            this.viewMensajeComponente('edit', 'Document List was edited correctly')
+            this.ngOnInit()
+            this.loader.hideLoader()
+          })
+          console.log(this.data.documentLocationCountries);
+
+        }
+
+      }
+    })
+  }
+  viewMensajeComponente(header: string, msg: string) {
+    window.scrollTo(0, 0);
+    const dialogRef = this._dialog.open(DialogGeneralMessageComponent, {
+      data: {
+        header: header,
+        body: msg
+      },
+      width: "350px"
+    });
+  }
+  DialogDocumentsLeadClientComponent(data) {
+    if (data == null) {
+      data = { id: 0 };
+    }
+
+    data.status = true;
+    const dialogRef = this._dialog.open(DialogDocumentsLeadClientComponent, {
+      data: data, width: '90%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result.success) {
+        result.id = 0
+        result.idServiceLocationCountry = this.data.id;
+        result.updateDate = new Date();
+        console.log(result);
+        this.data.documentLocationCountries.push(result);
+      }
+
+    });
+  }
   save() {
-    if(this.data.id == 0){
+    if (this.data.id == 0) {
       if (this.allSelected.selected) {
-        this.data.idCountry.splice(0,1);
+        this.data.idCountry.splice(0, 1);
       }
     }
     this.data.success = true;

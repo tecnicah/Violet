@@ -1,90 +1,96 @@
 <!-----------------------------------header-------------------------------------->
 <div fxLayout="row">
-    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
-      <h2 mat-dialog-title class="modal-form__title">Add New Document </h2>
-    </div>
-    <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
-      <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
-    </div>
+  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+    <h2 mat-dialog-title class="modal-form__title">Add New Document </h2>
   </div>
+  <div fxFlex.gt-lg="10" fxFlex.gt-md="10" fxFlex.gt-xs="100" fxFlex="100" align="end">
+    <mat-icon [mat-dialog-close]="true" style="cursor:pointer">close</mat-icon>
+  </div>
+</div>
 
-  <!-----------------------------------content-------------------------------------->
-  <mat-dialog-content class="mat-typography">
-    <mat-grid-list cols="4" rowHeight="160px">
-      <mat-grid-tile [colspan]="4" [rowspan]="1">
-        <div class="textarea">
-          <div style="display: flex; justify-content: space-between;">
-            <p class="subtitle" [ngClass]="{valid: active_fileName && temporalDocument.fileName == undefined}">Upload Documents</p>
-            <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyy' }}</b></p>
-          </div>
-          <ngx-file-drop  class="file-drop" dropZoneLabel="Drop files here"    (onFileDrop)="dropped($event)"
-            (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
-            <ng-template  ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-              Drag and Drop or
-              <p class="browser"  (click)="openFileSelector()">Browse File</p>
-            </ng-template>
-          </ngx-file-drop>
-          <div style="color:#e91e63; font-size: 12px;" *ngIf="active_fileName && temporalDocument.fileName == undefined">Field is required</div>
-
+<!-----------------------------------content-------------------------------------->
+<mat-dialog-content class="mat-typography">
+  <mat-grid-list cols="4" rowHeight="160px">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div class="textarea">
+        <div style="display: flex; justify-content: space-between;">
+          <p class="subtitle" [ngClass]="{valid: active_fileName && temporalDocument.fileName == undefined}">Upload
+            Documents</p>
+          <p class="subtitle">Uploaded Date: <b>{{today | date:'dd MMM yyy' }}</b></p>
         </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-    <div class="upload-table">
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody class="upload-name-style">
-          <tr>
-            <td class="subtitle">{{ temporalDocument.fileName }}</td>
-          </tr>
-        </tbody>
-      </table>
-     
-    </div>
-    <!-----------------------------------primera seccion-------------------------------------->
-    <mat-grid-list cols="2" rowHeight="70px">
+        <ngx-file-drop class="file-drop" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" [multiple]="false">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drag and Drop or
+            <p class="browser" (click)="openFileSelector()">Browse File</p>
+          </ng-template>
+        </ngx-file-drop>
+        <div style="color:#e91e63; font-size: 12px;" *ngIf="active_fileName && temporalDocument.fileName == undefined">
+          Field is required</div>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="textarea input_central">
-          <mat-form-field appearance="fill">
-            <mat-label [ngClass]="{valid: active_idDocumentType}">Document Type</mat-label>
-            <mat-select [(ngModel)]="temporalDocument.idDocumentType">
-              <mat-option *ngFor="let item of caDocumentType" (focus)="active_idDocumentType = false" required  (click)="temporalDocument.idDocumentTypeName = item.documentType" [value]="item.id"> {{item.documentType}}</mat-option>
-            </mat-select>
-            <mat-error>Field is required</mat-error>
-            <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_idDocumentType">Field is required</mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="upload-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="upload-name-style">
+        <tr>
+          <td class="subtitle">{{ temporalDocument.fileName }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.status">
-        <div class="textarea input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Status</mat-label>
-            <mat-select [(ngModel)]="temporalDocument.status">
-              <mat-option *ngFor="let item of caDocumentStatus" (click)="temporalDocument.statusName = item.status" [value]="item.id"> {{item.status}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
+  </div>
+  <!-----------------------------------primera seccion-------------------------------------->
+  <mat-grid-list cols="2" rowHeight="70px">
 
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.status">
-        <div class="textarea input_central">
-          <mat-form-field appearance="fill">
-            <mat-label>Privacy</mat-label>
-            <mat-select [(ngModel)]="temporalDocument.privacy">
-              <mat-option *ngFor="let item of caPrivacy" [value]="item.id" (click)="temporalDocument.privacyName = item.privacy"> {{item.privacy}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <div class="textarea input_central">
+        <mat-form-field appearance="fill">
+          <mat-label [ngClass]="{valid: active_idDocumentType}">Document Type</mat-label>
+          <mat-select [(ngModel)]="temporalDocument.idDocumentType">
+            <mat-option *ngFor="let item of caDocumentType" (focus)="active_idDocumentType = false"
+              (click)="temporalDocument.idDocumentTypeName = item.documentType" [value]="item.id">
+              {{item.documentType}}</mat-option>
+          </mat-select>
+          <mat-error>Field is required</mat-error>
+          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_idDocumentType">Field is required</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.status">
+      <div class="textarea input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="temporalDocument.status">
+            <mat-option *ngFor="let item of caDocumentStatus" (click)="temporalDocument.statusName = item.status"
+              [value]="item.id"> {{item.status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="data.status">
+      <div class="textarea input_central">
+        <mat-form-field appearance="fill">
+          <mat-label>Privacy</mat-label>
+          <mat-select [(ngModel)]="temporalDocument.privacy">
+            <mat-option *ngFor="let item of caPrivacy" [value]="item.id"
+              (click)="temporalDocument.privacyName = item.privacy"> {{item.privacy}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
 
 
 
-      <!--mat-grid-tile [colspan]="1" [rowspan]="1">
+    <!--mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_final" >
           <mat-label>Document Name</mat-label>
           <input matInput required placeholder="Document Name"  #messagedos maxlength="500" [(ngModel)]="temporalDocument.documentName">
@@ -92,19 +98,20 @@
         </mat-form-field>
       </mat-grid-tile-->
 
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <mat-form-field appearance="fill">
-          <mat-label>Description</mat-label>
-          <input matInput placeholder="Description"  #message maxlength="500"  (focus)="active_description = false"  [(ngModel)]="temporalDocument.description">
-        </mat-form-field>
-      </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Description" #message maxlength="500" (focus)="active_description = false"
+          [(ngModel)]="temporalDocument.description">
+      </mat-form-field>
+    </mat-grid-tile>
 
-    </mat-grid-list>
+  </mat-grid-list>
 
-  </mat-dialog-content>
+</mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <div class="page__section-buttong">
-      <button (click)="save()">Save</button>
-    </div>
-  </mat-dialog-actions>
+<mat-dialog-actions align="end">
+  <div class="page__section-buttong">
+    <button (click)="save()">Save</button>
+  </div>
+</mat-dialog-actions>

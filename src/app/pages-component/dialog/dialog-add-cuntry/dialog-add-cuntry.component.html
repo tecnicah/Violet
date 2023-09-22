@@ -155,9 +155,11 @@
           </span>
         </div>
       </div>
-      <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries">
+      <div class="page__section documents__ascard" *ngFor="let item of data.documentLocationCountries,let p = index">
         <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="deleteDocument(item.id)">
+          style="background: transparent!important;" (click)="deleteDocument(item.id,p)">
+          <img src="assets/icons/pencil.png" class="edit"
+          (click)="editDocument(item,p)">
         <div *ngIf="item.id != 0" class="page__section-input page__section-input--25 documents__ascard--task browser">
           <a href="{{img_url}}{{item.fileRequest}}" target="_blank">
             {{ item.documentType}}
