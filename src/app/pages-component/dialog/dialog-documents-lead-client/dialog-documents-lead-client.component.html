@@ -98,7 +98,7 @@
         </mat-form-field>
       </mat-grid-tile-->
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile *ngIf="temporalDocument.id == 0" [colspan]="2" [rowspan]="1">
       <mat-form-field appearance="fill">
         <mat-label>Description</mat-label>
         <input matInput placeholder="Description" #message maxlength="500" (focus)="active_description = false"
