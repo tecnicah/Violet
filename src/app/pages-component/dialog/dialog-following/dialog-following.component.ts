@@ -22,7 +22,6 @@ import { DialogLegalReviewConsultation } from '../legal-review-consultation/lega
 import { DialogBundleComponent } from '../dialog-bundle/dialog-bundle.component';
 import { PreDecisionOrientationComponent } from '../pre-decision-orientation/pre-decision-orientation.component';
 import { AreaOrientationComponent } from '../area-orientation/area-orientation.component';
-import { HomeFindingComponent } from '../home-finding/home-finding.component';
 import { SettlingInComponent } from '../settling-in/settling-in.component';
 import { SchoolSearchComponent } from '../school-search/school-search.component';
 import { DialogDepartureComponent } from '../dialog-departure/dialog-departure.component';
@@ -803,9 +802,9 @@ export class DialogFollowingComponent implements OnInit {
       case 13:
         moda = AreaOrientationComponent;
         break;
-      case 21:
+ /*      case 21:
         moda = HomeFindingComponent;
-        break;
+        break; */
       case 14:
         moda = SettlingInComponent;
         break;

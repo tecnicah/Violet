@@ -54,7 +54,6 @@ import { DialogExportComponent } from './dialog/dialog-export/dialog-export.comp
 
 import { PreDecisionOrientationComponent } from './dialog/pre-decision-orientation/pre-decision-orientation.component';
 import { AreaOrientationComponent } from './dialog/area-orientation/area-orientation.component';
-import { HomeFindingComponent } from './dialog/home-finding/home-finding.component';
 import { DialogDocumentsComponent } from './dialog/dialog-documents/dialog-documents.component';
 import { SettlingInComponent } from './dialog/settling-in/settling-in.component';
 import { SchoolSearchComponent } from './dialog/school-search/school-search.component';
@@ -145,8 +144,6 @@ import { MessengerCenterComponent } from './messenger-center/messenger-center.co
 import { DialogNewChatComponent } from './dialog/dialog-new-chat/dialog-new-chat.component';
 import { DialogDeletepaymentconceptComponent } from './dialog/dialog-deletepaymentconcept/dialog-deletepaymentconcept.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { DialogInspectionrepairsComponent } from './dialog/dialog-inspectionrepairs/dialog-inspectionrepairs.component';
-import { DialogLeaseSummaryComponent } from './dialog/dialog-lease-summary/dialog-lease-summary.component';
 import { DialogPropertyExpensesComponent } from './dialog/dialog-property-expenses/dialog-property-expenses.component';
 import { DialogPaymentTypeComponent } from './dialog/dialog-payment-type/dialog-payment-type.component';
 import { DialogKeyComponent } from './dialog/dialog-key/dialog-key.component';
@@ -331,14 +328,10 @@ import { DialogStatusDetailComponent } from './dialog/dialog-status-detail/dialo
 import { DialoglLandlordBankDetailComponent } from './dialog/dialogl-landlord-bank-detail/dialogl-landlord-bank-detail.component';
 import { AppointmentAllApointmentComponent } from './appointment-all-apointment/appointment-all-apointment.component';
 import { DialogAttendeesInspecComponent } from './dialog/dialog-attendees-inspec/dialog-attendees-inspec.component';
-import { PrintLsfComponent } from './dialog/print-lsf/print-lsf.component';
 import { DialogAddPaymenentInformationComponent } from './dialog/dialog-add-paymenent-information/dialog-add-paymenent-information.component';
-import { PrintLdComponent } from './dialog/print-ld/print-ld.component';
-import { PrintIrComponent } from './dialog/print-ir/print-ir.component';
+
 import { AsignarserviciosComponent } from './dialog/asignarservicios/asignarservicios.component';
 import { DialogDasboardServiceComponent } from './dialog/dialog-dasboard-service/dialog-dasboard-service.component';
-import { LsfComponent } from './dialog/home-finding/lsf/lsf.component';
-import { IrComponent } from './dialog/home-finding/ir/ir.component';
 import { HomeFindingFullComponent } from './home-finding-full/home-finding-full.component';
 import { DialogClientSdComponent } from './dialog/dialog-client-sd/dialog-client-sd.component';
 import { DialogClientDocuComponent } from './dialog/dialog-client-docu/dialog-client-docu.component';
@@ -492,7 +485,6 @@ import { SenRequestComponent } from './dialog/dialog-rental-furniture/sen-reques
     DialogExportComponent,
     PreDecisionOrientationComponent,
     AreaOrientationComponent,
-    HomeFindingComponent,
     DialogDocumentsComponent,
     SettlingInComponent,
     SchoolSearchComponent,
@@ -570,8 +562,6 @@ import { SenRequestComponent } from './dialog/dialog-rental-furniture/sen-reques
     MessengerCenterComponent,
     DialogNewChatComponent,
     DialogDeletepaymentconceptComponent,
-    DialogInspectionrepairsComponent,
-    DialogLeaseSummaryComponent,
     DialogPropertyExpensesComponent,
     DialogPaymentTypeComponent,
     DialogKeyComponent,
@@ -749,14 +739,12 @@ import { SenRequestComponent } from './dialog/dialog-rental-furniture/sen-reques
     DialoglLandlordBankDetailComponent,
     AppointmentAllApointmentComponent,
     DialogAttendeesInspecComponent,
-    PrintLsfComponent,
+   
     DialogAddPaymenentInformationComponent,
-    PrintLdComponent,
-    PrintIrComponent,
+
     AsignarserviciosComponent,
     DialogDasboardServiceComponent,
-    LsfComponent,
-    IrComponent,
+
     HomeFindingFullComponent,
     DialogClientSdComponent,
     DialogClientDocuComponent,

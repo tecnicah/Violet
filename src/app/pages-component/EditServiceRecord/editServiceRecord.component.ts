@@ -31,7 +31,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { PreDecisionOrientationComponent } from '../dialog/pre-decision-orientation/pre-decision-orientation.component';
 import { AreaOrientationComponent } from '../dialog/area-orientation/area-orientation.component';
-import { HomeFindingComponent } from '../dialog/home-finding/home-finding.component';
 import { SettlingInComponent } from '../dialog/settling-in/settling-in.component';
 import { SchoolSearchComponent } from '../dialog/school-search/school-search.component';
 import { DialogDepartureComponent } from '../dialog/dialog-departure/dialog-departure.component';

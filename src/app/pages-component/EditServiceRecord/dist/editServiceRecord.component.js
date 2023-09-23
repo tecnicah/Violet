@@ -70,7 +70,6 @@ var dialog_local_documentation_component_1 = require("../dialog/dialog-local-doc
 var sort_1 = require("@angular/material/sort");
 var pre_decision_orientation_component_1 = require("../dialog/pre-decision-orientation/pre-decision-orientation.component");
 var area_orientation_component_1 = require("../dialog/area-orientation/area-orientation.component");
-var home_finding_component_1 = require("../dialog/home-finding/home-finding.component");
 var settling_in_component_1 = require("../dialog/settling-in/settling-in.component");
 var school_search_component_1 = require("../dialog/school-search/school-search.component");
 var dialog_departure_component_1 = require("../dialog/dialog-departure/dialog-departure.component");
