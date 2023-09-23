@@ -66,12 +66,11 @@ export class IrSelectComponent implements OnInit {
         this.ir_tarjeta = false;
         this.moin_tarjeta = false;
         this.moout_tarjeta = false;
-debugger;
+
         if (v_selected[0].catCategoryId == 16) //departure//
         {
           this.ir_tarjeta = true;
           this.moout_tarjeta = true;
-          this.moin_tarjeta = true;
         }
         else if( v_selected[0].catCategoryId == 21) //H finding
         {

@@ -176,7 +176,7 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                           <div class="input_final">
                             <mat-form-field appearance="fill">
-                              <mat-label>Account Type |{{data_land.idAccountCategory}}</mat-label>
+                              <mat-label>Account Type </mat-label>
                               <mat-select disabled [(ngModel)]='data_land.accountType'>
                                 <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}
                                 </mat-option>

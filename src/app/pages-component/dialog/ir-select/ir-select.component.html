@@ -25,7 +25,10 @@
             <mat-form-field appearance="fill">
                 <mat-label style="font-size:medium;">Property Inspections Version</mat-label>
                 <mat-select [(ngModel)]='ir_service_detail_id' (selectionChange)="GetStatusIR();">
-                    <mat-option *ngFor="let data of versions_ir" [value]="data.idServiceDetail">{{data.catCategoryText}}</mat-option>
+                    <mat-option *ngFor="let _data of versions_ir" [value]="_data.idServiceDetail">
+                        {{_data.catCategoryText}} <span *ngIf="_data.catCategoryId == this.data.cat_category_id "> (Current) </span>
+                    </mat-option>
+                    
                 </mat-select>
             </mat-form-field>
         </div>
