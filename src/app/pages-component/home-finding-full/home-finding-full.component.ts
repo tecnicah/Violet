@@ -133,7 +133,7 @@ export class HomeFindingFullComponent implements OnInit {
   type_sr = 26;
 
   ngOnInit(): void {
-
+debugger;
     this.id_hf = this.route.snapshot.paramMap.get("id");
     //console.log("id: =", this.id_hf)
     this.user = JSON.parse(localStorage.getItem('userData'));

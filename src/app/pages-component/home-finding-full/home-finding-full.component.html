@@ -20,7 +20,7 @@
 
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <div class="page__section-data font-size-12 comments input_central" style="display: flex;">
-                    <div>
+                    <div *ngIf="home_finding.authoDate">
                         <span class="text-mini gray_05">Autho</span><br />
                         {{home_finding.authoDate | date:'dd MMM yyy'}}
                     </div>
