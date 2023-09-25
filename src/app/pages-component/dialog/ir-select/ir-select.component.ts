@@ -57,6 +57,7 @@ export class IrSelectComponent implements OnInit {
   ir_tarjeta = false;
   moin_tarjeta = false;
   moout_tarjeta = false;
+  cat_id = 0;
 
   set_cards() {
     if (this.ir_service_detail_id > 0) {
@@ -66,6 +67,7 @@ export class IrSelectComponent implements OnInit {
         this.ir_tarjeta = false;
         this.moin_tarjeta = false;
         this.moout_tarjeta = false;
+        this.cat_id = v_selected[0].catCategoryId;
 
         if (v_selected[0].catCategoryId == 16) //departure//
         {
@@ -100,22 +102,24 @@ export class IrSelectComponent implements OnInit {
 
 
   exportIR(option) {
-    alert('Export coming soon...');
-    // this.loader.showLoader();
-    // this._services.service_general_get('HousingList/GetInspRepBySectionPrint?key='+this.data.ph_id+'&servide_detail_id='+this.data.servide_detail_id +'&section='+ option)
-    // .subscribe((data => {
-    //   this.loader.hideLoader();
-    //   if (data.success) {
-    //     const linkSource = this.images_path + data.message;
-    //     const downloadLink = document.createElement('a');
-    //     const fileName = 'lSF.pdf';
+   // alert('Export coming soon...');
+     //this.loader.showLoader();this._rest.get('/api/HousingList/GetInspRepBySectionPrint?key='+ this.ph_id +'&servide_detail_id='+this.version+'&section='+this.roption+'&category_id='+ this.cat_id).subscribe(async r => {
+      this.loader.showLoader();
+     this._services.service_general_get('HousingList/GetInspRepBySectionPrint?key='+this.data.ph_id+'&servide_detail_id='+this.ir_service_detail_id +'&section='+ option+'&category_id='+ this.cat_id)
+     .subscribe((data => {
+        this.loader.hideLoader();
+       if (data.success) {
+       
+         const linkSource = this.images_path + data.message;
+         const downloadLink = document.createElement('a');
+         const fileName = 'Report_' + this.data.ph_id + data.message;
 
-    //     downloadLink.href = linkSource;
-    //     downloadLink.target = "_blank"
-    //     downloadLink.download = fileName;
-    //     downloadLink.click();
-    //   }
-    // }));
+         downloadLink.href = linkSource;
+         downloadLink.target = "_blank"
+         downloadLink.download = fileName;
+         downloadLink.click();
+       }
+   }));
   };
 
   ///api/HousingList/GetInspRepBySectionPrint?key='+this.dataJson.ph+'&servide_detail_id='+this.dataJson.id+'&section='+this.roption
