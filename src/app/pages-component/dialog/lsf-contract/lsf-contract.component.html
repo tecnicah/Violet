@@ -17,15 +17,6 @@
     
 
         <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
-            <!-- <mat-grid-list cols="4" rowHeight="70px">
-                <mat-grid-tile [colspan]="4" [rowspan]="1">
-                    <div style="display:flex; justify-content: space-between; width: 100%;">
-                        <div>
-                            <p class="page__section-name">Contract Details </p>
-                        </div>
-                    </div>
-                </mat-grid-tile>
-            </mat-grid-list> -->
         
             <div >
                 <div class="" style="padding: 10px; margin-top: 20px; margin-bottom: 20px;">
@@ -89,7 +80,8 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>Previous Rent</mat-label>
+                                    <mat-label *ngIf="data.cat_category_id == 22">Previous Rent</mat-label>
+                                    <mat-label *ngIf="data.cat_category_id != 22">List Rent Price</mat-label>
                                     <span matPrefix>$ &nbsp;</span>
                                     <input matInput placeholder="List Rent Price" type="number"
                                         [(ngModel)]="data_contracts.listRentPrice" (change)="calc_RentCostSavings();">
@@ -99,7 +91,8 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                             <div class="input_central textarea">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>New Rent Price</mat-label>
+                                    <mat-label *ngIf="data.cat_category_id == 22">New Rent Price</mat-label>
+                                    <mat-label *ngIf="data.cat_category_id != 22">Final Rent Price</mat-label>
                                     <span matPrefix>$ &nbsp;</span>
                                     <input matInput placeholder="Final Rent Price" type="number"
                                         (change)="calc_RentCostSavings();" [(ngModel)]="data_contracts.finalRentPrice">
@@ -107,7 +100,7 @@
                             </div>
                         </mat-grid-tile>
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
-                            <div class="input_central textarea" *ngIf="data_contracts.finalRentPrice > 0">
+                            <div class="input_central textarea" *ngIf="data.cat_category_id != 22">
                                 <mat-form-field appearance="fill">
                                     <mat-label>Rent Cost Savings</mat-label>
                                     <span matPrefix>$ &nbsp;</span>
