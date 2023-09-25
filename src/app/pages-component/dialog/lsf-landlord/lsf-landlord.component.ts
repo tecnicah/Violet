@@ -36,6 +36,7 @@ export class LsfLandlordComponent implements OnInit {
   };
   data_land_list = [];
   dataData_land_list = new MatTableDataSource(null);
+  images_path = `${environment.images_path}`;
 
   ////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////// VARIABLES
@@ -205,5 +206,34 @@ export class LsfLandlordComponent implements OnInit {
     var i_e = this.data_land_list.indexOf(_data_);
     var removed = this.data_land_list.splice(i_e, 1);
   }
+
+  export() {
+    // var url_lsf = this.images_path + "printlsf/" + this.data.ph_id + "/" + this.data.servide_detail_id + "/" + "this._deliveredTo" + "/" + "this._city_name" + "/" + "this._country_name" + "/" + this.data.type_id;
+   //  console.log("url de impresion LSF : ", url_lsf);
+     this.loader.showLoader();
+ 
+ var  _type_export;
+ 
+     if(this.data.cat_category_id == 21){  _type_export = 26  }
+     else if(this.data.cat_category_id == 16){ _type_export = 26 }
+     else if(this.data.cat_category_id == 22){ _type_export = 27 }
+     else{ _type_export = 26 }
+ 
+     this._services.service_general_get("HousingList/GetLSFPrintLandLord?key=" + this.data.ph_id + "&servide_detail_id=" + this.data.servide_detail_id + "&type=" + _type_export)
+       .subscribe((data => {
+         this.loader.hideLoader();
+         if (data.success) {
+           console.log("HousingList/GetLSFPrint : ", data.message);
+           const linkSource = this.images_path + data.message;
+           const downloadLink = document.createElement('a');
+           const fileName = 'lSF.pdf';
+ 
+           downloadLink.href = linkSource;
+           downloadLink.target = "_blank"
+           downloadLink.download = fileName;
+           downloadLink.click();
+         }
+       }));
+   };
 
 }

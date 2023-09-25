@@ -9,8 +9,6 @@ import { DialogChangeStatusComponent } from '../dialog-change-status/dialog-chan
 import { DialogHistoryStatusComponent } from '../dialog-history-status/dialog-history-status.component';
 import { DialogPropertyReportComponent } from '../dialog-property-report/dialog-property-report.component';
 import { DialogGeneralMessageComponent } from '../general-message/general-message.component';
-import { DialogInspectionrepairsComponent } from '../dialog-inspectionrepairs/dialog-inspectionrepairs.component';
-import { DialogLeaseSummaryComponent } from '../dialog-lease-summary/dialog-lease-summary.component';
 import { MatCurrencyFormatModule } from 'mat-currency-format';
 import { GeneralConfirmationComponent } from '../general-confirmation/general-confirmation.component';
 import { DialogDocumentsView } from '../dialog-documents-view/dialog-documents-view.component';
@@ -827,7 +825,7 @@ export class DialogHomeDetailsComponent implements OnInit {
     }
 
 
-    const dialog = this._dialog.open(DialogInspectionrepairsComponent, {
+/*     const dialog = this._dialog.open(DialogInspectionrepairsComponent, {
       data: this.data,
       width: "95%"
     });
@@ -859,7 +857,7 @@ export class DialogHomeDetailsComponent implements OnInit {
         this.data.propertyReports = [];
       }
 
-    })
+    }) */
   }
   //***********************************************************************************************************//
   lease() {
@@ -869,7 +867,7 @@ export class DialogHomeDetailsComponent implements OnInit {
       this.data.nuevo = true;
     }
     console.log("ABRE MODAL LEASE =====================================: ", this.data);
-    const dialog = this._dialog.open(DialogLeaseSummaryComponent, {
+    /* const dialog = this._dialog.open(DialogLeaseSummaryComponent, {
       data: this.data,
       width: "95%"
     });
@@ -925,7 +923,7 @@ export class DialogHomeDetailsComponent implements OnInit {
       } else {
         this.data.paymentHousings = [];
       }
-    })
+    }) */
   }
 
 

@@ -11,10 +11,19 @@
     <div fxLayout="row" fxLayoutGap="10px" class="margin-bottom-m">
         <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
 
-            Please select an option or
-            <span style="font-weight: bolder; color: #9d3292; 
+            Please select an option and complete accoridngly.
+            <br><br>
+            <span *ngIf="ir_tarjeta">- <span style="font-weight: bolder; color: #9d3292; 
+            text-decoration: underline; cursor: pointer;" (click)="exportIR(3);">Export</span>
+             Inspections & Repairs report.</span>
+            <br>
+            <span *ngIf="moin_tarjeta">- <span style="font-weight: bolder; color: #9d3292; 
             text-decoration: underline; cursor: pointer;" (click)="exportIR(1);">Export</span>
-            the information
+             the Move In report.</span>
+            <br>
+            <span *ngIf="moout_tarjeta">- <span style="font-weight: bolder; color: #9d3292; 
+            text-decoration: underline; cursor: pointer;" (click)="exportIR(2);">Export</span>
+             the Move Out report.</span>
             <br>
         </div>
     </div>
@@ -25,7 +34,10 @@
             <mat-form-field appearance="fill">
                 <mat-label style="font-size:medium;">Property Inspections Version</mat-label>
                 <mat-select [(ngModel)]='ir_service_detail_id' (selectionChange)="GetStatusIR();">
-                    <mat-option *ngFor="let data of versions_ir" [value]="data.idServiceDetail">{{data.catCategoryText}}</mat-option>
+                    <mat-option *ngFor="let _data of versions_ir" [value]="_data.idServiceDetail">
+                        {{_data.catCategoryText}} <span *ngIf="_data.catCategoryId == this.data.cat_category_id "> (Current) </span>
+                    </mat-option>
+                    
                 </mat-select>
             </mat-form-field>
         </div>

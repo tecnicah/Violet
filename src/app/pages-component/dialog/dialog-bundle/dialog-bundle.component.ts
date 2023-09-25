@@ -21,7 +21,7 @@ import { DialogDepartureComponent } from '../dialog-departure/dialog-departure.c
 import { DialogRentalFurnitureComponent } from '../dialog-rental-furniture/dialog-rental-furniture.component';
 import { DialogTransportationComponent } from '../dialog-transportation/dialog-transportation.component';
 import { DialogAirportTransportationComponent } from '../dialog-airport-transportation/dialog-airport-transportation.component';
-import { HomeFindingComponent } from '../home-finding/home-finding.component';
+
 import { HomeSaleComponent } from '../home-sale/home-sale.component';
 import { HomePurchaseComponent } from '../home-purchase/home-purchase.component';
 import { PropertyManagementComponent } from '../property-management/property-management.component';

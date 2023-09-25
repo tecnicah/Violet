@@ -29,14 +29,14 @@
           Banking Details Beneficiary
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>Account Name</mat-label>
             <input matInput required placeholder="Account Name" type="text" [(ngModel)]='data_land.accountName'>
           </mat-form-field>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
@@ -77,6 +77,16 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">
           <mat-form-field appearance="fill">
+            <mat-label>Account Holders Name</mat-label>
+            <input matInput required placeholder="Account Holders Name" type="text" #message_holdername maxlength="100"
+              [(ngModel)]='data_land.accountHoldersName'>
+            <mat-hint align="end">{{message_holdername.value.length}} / 100</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="input_final">
+          <mat-form-field appearance="fill">
             <mat-label>Bank Name</mat-label>
             <input matInput required placeholder="Bank Name" type="text" #message_bankname maxlength="100"
               [(ngModel)]='data_land.bankName'>
@@ -111,16 +121,7 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_final">
-          <mat-form-field appearance="fill">
-            <mat-label>Account Holders Name</mat-label>
-            <input matInput required placeholder="Account Holders Name" type="text" #message_holdername maxlength="100"
-              [(ngModel)]='data_land.accountHoldersName'>
-            <mat-hint align="end">{{message_holdername.value.length}} / 100</mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
+     
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_final">

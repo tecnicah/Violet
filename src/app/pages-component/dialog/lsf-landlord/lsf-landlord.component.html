@@ -176,7 +176,7 @@
                         <mat-grid-tile [colspan]="1" [rowspan]="1">
                           <div class="input_final">
                             <mat-form-field appearance="fill">
-                              <mat-label>Account Type |{{data_land.idAccountCategory}}</mat-label>
+                              <mat-label>Account Type </mat-label>
                               <mat-select disabled [(ngModel)]='data_land.accountType'>
                                 <mat-option *ngFor="let item of ca_accountType" [value]="item.id">{{item.accountType}}
                                 </mat-option>
@@ -298,10 +298,10 @@
 
 <mat-dialog-actions align="end">
 
-    <!-- <div class="page__section-buttong" style="flex: 0 1 100px;">
-        <button  style="background-color: #f9f9f9;color: #9d3292;">Cancel</button>
+     <div class="page__section-buttong" style="flex: 0 1 100px;">
+        <button  style="background-color:darkturquoise ;color:#f9f9f9;" (click)="export();">Export</button>
     </div>
-     &nbsp;&nbsp;&nbsp;-->
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <div class="page__section-buttong" style="flex: 0 1 100px;">
         <button *ngIf="data.edicion" (click)="saveLandLord();">Save </button>
     </div>

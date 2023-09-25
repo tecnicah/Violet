@@ -39,7 +39,6 @@ import { DialogRentalFurnitureComponent } from '../dialog/dialog-rental-furnitur
 import { DialogDepartureComponent } from '../dialog/dialog-departure/dialog-departure.component';
 import { PreDecisionOrientationComponent } from '../dialog/pre-decision-orientation/pre-decision-orientation.component';
 import { AreaOrientationComponent } from '../dialog/area-orientation/area-orientation.component';
-import { HomeFindingComponent } from '../dialog/home-finding/home-finding.component';
 import { SettlingInComponent } from '../dialog/settling-in/settling-in.component';
 import { SchoolSearchComponent } from '../dialog/school-search/school-search.component';
 import { DialogTemporaryHousingComponent } from '../dialog/dialog-temporary-housing/dialog-temporary-housing.component';
@@ -3126,9 +3125,9 @@ export class NewServiceRecordComponent implements OnInit {
       case 13:
         moda = AreaOrientationComponent;
         break;
-      case 21:
+/*       case 21:
         moda = HomeFindingComponent;
-        break;
+        break; */
       case 14:
         moda = SettlingInComponent;
         break;

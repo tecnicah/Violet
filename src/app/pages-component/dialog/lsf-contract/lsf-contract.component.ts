@@ -65,7 +65,7 @@ export class LsfContractComponent implements OnInit {
   }
 
   calc_RentCostSavings() {
-
+//debugger;
     this.RentCostSavings = 0;
     let _res = 0;
     let current_p = this.data_contracts.finalRentPrice;
@@ -79,7 +79,7 @@ export class LsfContractComponent implements OnInit {
       _res = this.data_contracts.listRentPrice - this.data_contracts.finalRentPrice;
       _res = _res * -1;
     }
-    this.RentCostSavings = _res;
+    this.data_contracts.rentcostsaving = _res;
 
   }
 

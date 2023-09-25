@@ -58,7 +58,7 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Repair Start Date</mat-label>
                         <input matInput [matDatepicker]="pickertres_Repair" placeholder="Repair Start Date"
-                            [(ngModel)]="repair.repairStartDate">
+                            [(ngModel)]="repair.repairStartDate" (ngModelChange)="checkDates()">
                         <mat-datepicker-toggle matSuffix [for]="pickertres_Repair"></mat-datepicker-toggle>
                         <mat-datepicker #pickertres_Repair></mat-datepicker>
                     </mat-form-field>
@@ -70,7 +70,7 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Repair End Date</mat-label>
                         <input matInput [matDatepicker]="pickertres_RepairEnd" placeholder="Repair End Date"
-                            [(ngModel)]="repair.repairEndDate">
+                            [(ngModel)]="repair.repairEndDate" (ngModelChange)="checkDates()">
                         <mat-datepicker-toggle matSuffix [for]="pickertres_RepairEnd"></mat-datepicker-toggle>
                         <mat-datepicker #pickertres_RepairEnd></mat-datepicker>
                     </mat-form-field>
@@ -79,7 +79,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <div class="input_central textarea">
                     <mat-form-field appearance="fill">
-                        <mat-label>Total Days  | {{repair.totalDays}}</mat-label>
+                        <mat-label>Total Days</mat-label>
                         <input disabled matInput  placeholder="0"  [(ngModel)]="repair.totalDays">
                     </mat-form-field>
                 </div>

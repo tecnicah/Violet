@@ -30,7 +30,7 @@ export class IrRepairDetailComponent implements OnInit {
   lsf_service_detail_id;
   // Inspection Type 
   dataSourceHousing: any[] = [];
-  displayedColumnsHousing: string[] = ['Address', 'Neighborhood', 'Property Type','Price', 'Actions'];
+  displayedColumnsHousing: string[] = ['Address', 'Neighborhood', 'Property Type', 'Price', 'Actions'];
 
   ca_inspec_type = [{ id: 1, type: "Pre Inspection" }, { id: 2, type: "Post Delivery" }]
 
@@ -129,37 +129,37 @@ export class IrRepairDetailComponent implements OnInit {
     this.get_catalogs();
     this.getDataHousing();
     this.user = JSON.parse(localStorage.getItem('userData'));
-    if(this.data.action){
+    if (this.data.action) {
       this.repair = this.data.action;
     }
-    else{
+    else {
       this.new_repair();
     }
   }
 
-  new_repair(){
+  new_repair() {
     this.repair = {
-      id : 0 
-     ,housingList: this.data.ph_id
-     ,repairType: null
-     ,paymentResponsibility: null
-     ,totalDays: null
-     ,repairStartDate: null
-     ,repairEndDate: null
-     ,totalCostRepair: null
-     ,currency: null
-     ,supplierPartner: null
-     ,comments: null
-     ,documentRepairs: []
-     ,createdBy: this.user.id
-     ,createdDate: new Date()
-     ,idServiceDetail: this.data.servide_detail_id
-     ,InspectionId: this.data.inspection.id
-     ,propertySection: null
+      id: 0
+      , housingList: this.data.ph_id
+      , repairType: null
+      , paymentResponsibility: null
+      , totalDays: null
+      , repairStartDate: null
+      , repairEndDate: null
+      , totalCostRepair: null
+      , currency: null
+      , supplierPartner: null
+      , comments: null
+      , documentRepairs: []
+      , createdBy: this.user.id
+      , createdDate: new Date()
+      , idServiceDetail: this.data.servide_detail_id
+      , InspectionId: this.data.inspection.id
+      , propertySection: null
     }
   }
 
-  totalDays ="0";
+  totalDays = "0";
 
   async get_catalogs() {
 
@@ -198,17 +198,17 @@ export class IrRepairDetailComponent implements OnInit {
     this.ca_repair = await this._services.getCatalogueFrom('GetRepairType');
     this.ca_property = await this._services.getCatalogueFrom('GetPropertyTypeHousing');
     this.supplierPartner_repairs();
-    
-   // this.GetInspRepBySection(this.data.ph_id, this.data.servide_detail_id, 3);
+
+    // this.GetInspRepBySection(this.data.ph_id, this.data.servide_detail_id, 3);
     this.checkDates();
-  
+
   };
 
-  startDate= "";
-  endDate= ";"
+  startDate = "";
+  endDate = ";"
 
-  formatDate(date: string){
-    if(date === null){
+  formatDate(date: string) {
+    if (date === null) {
       return null;
     }
     const dateF = date.slice(0, 10);
@@ -216,27 +216,31 @@ export class IrRepairDetailComponent implements OnInit {
     return myDate[0] + '/' + myDate[1] + '/' + myDate[2];
   }
 
-  checkDates(){
-    this.startDate        = this.formatDate(this.repair.repairStartDate), // jsonRepair.repairStartDate;
-    this.endDate          = this.formatDate(this.repair.repairEndDate), //jsonRepair.repairEndDate;
-    console.log(this.startDate);
-    console.log(this.endDate);
-    var date1Updated = new Date(this.startDate.replace(/-/g,'/'));  
-    var date2Updated = new Date(this.endDate.replace(/-/g,'/'));
-    console.log(date1Updated);
-    console.log(date2Updated);
-    debugger;
-    if(date2Updated < date1Updated){
-      console.log('es menor la final');
-      alert("The final date of repair must not be less than the initial date");
-    }
-    else{
-      console.log('es mayor la final');
-      var Difference_In_Time = date2Updated.getTime() - date1Updated.getTime();
-      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  checkDates() {
+    if (this.repair.repairStartDate != null && this.repair.repairEndDate != null) {
+      // this.startDate        = this.formatDate(this.repair.repairStartDate), // jsonRepair.repairStartDate;
+      // this.endDate          = this.formatDate(this.repair.repairEndDate), //jsonRepair.repairEndDate;
+      // console.log(this.startDate);
+      // console.log(this.endDate);
+      var date1Updated = new Date(this.repair.repairStartDate);
+      var date2Updated = new Date(this.repair.repairEndDate);
+      // console.log(date1Updated);
+      // console.log(date2Updated);
+      debugger;
+      if (date2Updated < date1Updated) {
+        console.log('es menor la final');
+        alert("The final date of repair must not be less than the initial date");
+        
+      }
+      else {
+        console.log('es mayor la final');
+        var Difference_In_Time = date2Updated.getTime() - date1Updated.getTime();
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
-      this.repair.totalDays = Difference_In_Days.toString();
+        this.repair.totalDays = Difference_In_Days.toString();
+      }
     }
+
   }
 
 
@@ -272,8 +276,8 @@ export class IrRepairDetailComponent implements OnInit {
   };
 
 
-   //DATA TABLE HOUSING//
-   getDataHousing() {
+  //DATA TABLE HOUSING//
+  getDataHousing() {
 
     this._services.service_general_get(`HousingList/GetPermanentHousingList?id_sr=1851`).subscribe(data_housing => {
       if (data_housing.success) {
@@ -354,26 +358,26 @@ export class IrRepairDetailComponent implements OnInit {
   };
 
   saveRepairs() {
-debugger;
-    if (this.repair.repairType> 0){
-      if(this.repair.id > 0){
+    debugger;
+    if (this.repair.repairType > 0) {
+      if (this.repair.id > 0) {
         this.update_repair(this.repair);
       }
-      else{
-         this.insert_repair(this.repair);
+      else {
+        this.insert_repair(this.repair);
       }
     }
-    else{
+    else {
       alert('Please select Action Type')
     }
-    
-   
+
+
   };
 
   insert_repair(obj_repair) {
 
     this._services.service_general_post_with_url("HousingList/PostRepair", obj_repair).subscribe((data => {
-     
+
       if (data.success) {
         console.log("HousingList/PostRepair - Request: ", data);
         this.data_repairs = data.result;
@@ -425,7 +429,7 @@ debugger;
           },
           width: "350px"
         });
-        
+
         this.loader.hideLoader();
         this.dialogRef.close(data);
       }
@@ -648,7 +652,7 @@ debugger;
 
   delete_obj_repair(obj_repair) {
     this._services.service_general_put("HousingList/DeleteRepair", obj_repair.id).subscribe((data => {
-      
+
       if (data.success) {
         console.log("HousingList/DeleteRepair: ", data);
         this.data_repairs = data.result;
@@ -678,13 +682,13 @@ debugger;
 
   };
 
-    //FUNCION PARA AGREGAR MAS DOCUMENTOS//
-    addDocument_1(i) {
-      document.getElementById('doc' + i).click();
-    };
+  //FUNCION PARA AGREGAR MAS DOCUMENTOS//
+  addDocument_1(i) {
+    document.getElementById('doc' + i).click();
+  };
 
 
-      //**DELETE DOCUMENTO FROM DATABASE**//
+  //**DELETE DOCUMENTO FROM DATABASE**//
   deleteDocument_DB_inspec(i, j, doc, item) {
     const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
       data: {
@@ -697,7 +701,7 @@ debugger;
 
   //***************** *******************************//
   //CARGA DE DOCUMENTOS PARA SECCION REPAIRS MOVE IN//
- // public files: NgxFileDropEntry[] = [];
+  // public files: NgxFileDropEntry[] = [];
   public dropped(files: NgxFileDropEntry[]) {
     ////debugger;
     this.files = files;
@@ -747,7 +751,7 @@ debugger;
         }
         );
 
-        console.log("Drop ==========================" , this.repair.documentRepairs);
+        console.log("Drop ==========================", this.repair.documentRepairs);
       }
       else {
         // It was a directory (empty directories are added, otherwise only files)
@@ -811,57 +815,57 @@ debugger;
     }
   };
 
-    //************************************************//
-    public fileOver(event) {
-      ////debugger;
-      console.log(event);
-    }
-    //************************************************//
-    public fileLeave(event) {
-      ////debugger;
-      console.log(event);
-    };
-  
-    deletePhoto_ins(id, index_pic, photosInspecs) {
-      console.log("photos Repair -------------------------------------------------" , photosInspecs)
-      const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
-        data: {
-          header: "Delete confirmation",
-          body: "Are you sure to delete this photo?"
-        },
-        width: "350px"
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
-        if (result) {
-          if (id > 0) {
-            this.delete_photo_repair(id, index_pic);
-          }
-          else {
-            photosInspecs.splice(index_pic, 1);
-          }
-  
-        }
-      })
-    };
-  
-    delete_photo_repair(id, index_pic) {
+  //************************************************//
+  public fileOver(event) {
+    ////debugger;
+    console.log(event);
+  }
+  //************************************************//
+  public fileLeave(event) {
+    ////debugger;
+    console.log(event);
+  };
 
-      this.loader.showLoader();
-      this._services.service_general_put("HousingList/delete_photo_repair", id).subscribe((response_bd => {
-        this.loader.hideLoader();
-        if (response_bd.success) {
-          console.log("responde_bd delete photos delete_photo_repair ==============================", response_bd);
-          this.repair.documentRepairs.splice(index_pic, 1);
-  
+  deletePhoto_ins(id, index_pic, photosInspecs) {
+    console.log("photos Repair -------------------------------------------------", photosInspecs)
+    const dialogRef = this._dialog.open(GeneralConfirmationComponent, {
+      data: {
+        header: "Delete confirmation",
+        body: "Are you sure to delete this photo?"
+      },
+      width: "350px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        if (id > 0) {
+          this.delete_photo_repair(id, index_pic);
         }
-      }), (err) => {
-        this.loader.hideLoader();
-        console.log("error al eliminar la foto de la inspection : ", err);
-      });
-    };
+        else {
+          photosInspecs.splice(index_pic, 1);
+        }
 
-  _supplier(){
+      }
+    })
+  };
+
+  delete_photo_repair(id, index_pic) {
+
+    this.loader.showLoader();
+    this._services.service_general_put("HousingList/delete_photo_repair", id).subscribe((response_bd => {
+      this.loader.hideLoader();
+      if (response_bd.success) {
+        console.log("responde_bd delete photos delete_photo_repair ==============================", response_bd);
+        this.repair.documentRepairs.splice(index_pic, 1);
+
+      }
+    }), (err) => {
+      this.loader.hideLoader();
+      console.log("error al eliminar la foto de la inspection : ", err);
+    });
+  };
+
+  _supplier() {
 
   }
 
@@ -869,5 +873,5 @@ debugger;
 
   ////////////////// FOTOS  //////////////////////////////////////////////
 
-  
+
 }

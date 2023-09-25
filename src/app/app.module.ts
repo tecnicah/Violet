@@ -35,7 +35,7 @@ import { EditorModule } from '@progress/kendo-angular-editor';
 import { NgxMaskModule } from 'ngx-mask';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import  {MatCurrencyFormatModule} from 'mat-currency-format';
-import { IrComponent } from './ir/ir.component';
+
 
 @NgModule({
   declarations: [
@@ -45,8 +45,7 @@ import { IrComponent } from './ir/ir.component';
     AppHeaderComponent,
     SpinnerComponent,
     AppSidebarComponent,
-    AssigneeAndFamilyInfoDirective,
-    IrComponent
+    AssigneeAndFamilyInfoDirective
   ],
   imports: [
     MatCurrencyFormatModule,

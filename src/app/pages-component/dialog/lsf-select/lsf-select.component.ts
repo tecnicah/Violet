@@ -92,7 +92,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
 
@@ -119,7 +119,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
     });
@@ -145,7 +145,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
     });
@@ -172,7 +172,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
     });
@@ -198,7 +198,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
     });
@@ -224,7 +224,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
     });
@@ -251,7 +251,7 @@ export class LsfSelectComponent implements OnInit {
         ph_id: this.data.ph_id,
         servide_detail_id: this.lsf_service_detail_id
         , edicion
-        , cat_category_id: this.data.cat_category_id
+        , cat_category_id: this.version_selected_categoryId
       },
       width: "100%",
     });
@@ -268,13 +268,22 @@ export class LsfSelectComponent implements OnInit {
 
   //***********************************************************************************************************//
   lease() {
-    var url_lsf = this.images_path + "printlsf/" + this.data.ph_id + "/" + this.data.servide_detail_id + "/" + "this._deliveredTo" + "/" + "this._city_name" + "/" + "this._country_name" + "/" + this.data.type_id;
-    console.log("url de impresion LSF : ", url_lsf);
+   // var url_lsf = this.images_path + "printlsf/" + this.data.ph_id + "/" + this.data.servide_detail_id + "/" + "this._deliveredTo" + "/" + "this._city_name" + "/" + "this._country_name" + "/" + this.data.type_id;
+  //  console.log("url de impresion LSF : ", url_lsf);
     this.loader.showLoader();
-    this._services.service_general_get("HousingList/GetLSFPrint?key=" + this.data.ph_id + "&servide_detail_id=" + this.data.servide_detail_id + "&type=" + this.data.type_id)
+
+var  _type_export;
+
+    if(this.version_selected_categoryId == 21){  _type_export = 26  }
+    else if(this.version_selected_categoryId == 16){ _type_export = 26 }
+    else if(this.version_selected_categoryId == 22){ _type_export = 27 }
+    else{ _type_export = 26 }
+
+    this._services.service_general_get("HousingList/GetLSFPrint?key=" + this.data.ph_id + "&servide_detail_id=" + this.lsf_service_detail_id+ "&type=" + _type_export)
       .subscribe((data => {
         this.loader.hideLoader();
         if (data.success) {
+          console.log("HousingList/GetLSFPrint : ", data.message);
           const linkSource = this.images_path + data.message;
           const downloadLink = document.createElement('a');
           const fileName = 'lSF.pdf';

@@ -133,7 +133,7 @@ export class HomeFindingFullComponent implements OnInit {
   type_sr = 26;
 
   ngOnInit(): void {
-
+//debugger;
     this.id_hf = this.route.snapshot.paramMap.get("id");
     //console.log("id: =", this.id_hf)
     this.user = JSON.parse(localStorage.getItem('userData'));
@@ -1217,7 +1217,7 @@ export class HomeFindingFullComponent implements OnInit {
 
   GetGeneralServiceItems() {
     this.loader.showLoader();
-    //debugger;
+    ////debugger;
     this._services.service_general_get(`ServiceRecord/GetGeneralServiceItems?wos_id=${this.home_finding.workOrderServicesId}`).subscribe(resp => {
       this.loader.hideLoader();
       if (resp.success) {
