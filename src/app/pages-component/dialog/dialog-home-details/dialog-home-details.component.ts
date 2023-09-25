@@ -953,7 +953,7 @@ export class DialogHomeDetailsComponent implements OnInit {
   put_registro() {
     this.__loader__.showLoader();
     this.data.createdBy = this.user.id;
-
+    this.data.updateBy = this.user.id;
     if (this.data.supplierPartner == 0) this.data.supplierPartner = null;
     this.data.amenitiesHousingLists = this.aux_amenitis;
     //let data_comment_aux = this.data.commentHousings;

@@ -32,11 +32,11 @@ export class DialogSchoolDetailsComponent implements OnInit {
   //**********************************************************//
   ngOnInit(): void {
     this.SchoolDetails.supplierPartner = null;
-    debugger;
+   //debugger
     this.user = JSON.parse(localStorage.getItem('userData'));
     this.get_catalogos();
     console.log("DATA SCHOOL DATAILS: ", this.data);
-    debugger;
+   //debugger
     if (this.data.id != 0) {
       this._services.service_general_get("SupplierPartnerProfile/GetSchoolDetail?id=" + this.data.supplierId).subscribe((data => {    
         if (data.success) {
@@ -57,7 +57,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
             this.SchoolDetails.visitDate = this.data.visitDate;
             this.SchoolDetails.visitDateTime = this.data.visitDateTime;
             // if(this.data.visitDate != null){
-            //   debugger;
+            //  //debugger
             //   this.SchoolDetails.visitDate = this.data.visitDate;
             //   let d = new Date(this.data.visitDateTime);
             //   var dateString = d.getHours() + ":" + d.getMinutes();
@@ -69,7 +69,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
       this._services.service_general_get("SupplierPartnerProfile/GetSuppPartner_Prof_Servide_Group?workOrderService=" + this.data.workOrderServicesId+'&cat_group_id=2').subscribe((data => {
         // this._services.service_general_get("SupplierPartnerProfile/GetSupplierPartnerServiceByServices?workOrderService="+this.data.workOrderServicesId+"&supplierType="+this.data.supplierType+"&serviceLine="+2).subscribe((data => {
         if (data.success) {
-          debugger;
+         //debugger
           data.result.value.forEach(element => {
             if(element.comercialName == this.data.schoolName){
               this.SchoolDetails.supplierPartner = element.id;
@@ -106,7 +106,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
   }
 
   _supplier() {
-    debugger;
+   //debugger
     if (this.SchoolDetails.supplierPartner != null && this.SchoolDetails.supplierPartner != 0) {
       this.data.othersupplier = '';
       // this.loader.showLoader();
@@ -168,7 +168,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
   //**********************************************************//
   save_new_register() {
     this.__loader__.showLoader();
-    debugger;
+   //debugger
     let _dependent = [];
     this.SchoolDetails.schoolName = this.SchoolDetails.supplierPartner.comercialName;
     this.SchoolDetails.supplierPartner = this.SchoolDetails.supplierPartner;
@@ -225,16 +225,30 @@ export class DialogSchoolDetailsComponent implements OnInit {
     // }), (err) => {
     //   console.log("no se realizo la consulta por falta de parametro");
     // });
-    debugger;
-    this.SchoolDetails.schoolingSearchId = this.data.schoolingSearchId;
-    this.SchoolDetails.id = this.data.id;
-    this.SchoolDetails.grade = 1;
-    this.SchoolDetails.languages = 1;
-    this.SchoolDetails.supplierId = this.SchoolDetails.supplierPartner;
-    this.SchoolDetails.updateBy = this.user.id;
-    this.SchoolDetails.updatedDate = new Date();
+   //debugger
+   this.SchoolDetails.schoolName = this.SchoolDetails.supplierPartner.comercialName;
+   this.SchoolDetails.supplierPartner = this.SchoolDetails.supplierPartner;
+   this.SchoolDetails.schoolingSearchId = this.data.schoolingSearchId;
+   
+   if (this.SchoolDetails.supplierPartner == 0) this.SchoolDetails.supplierPartner = null;
+     this.SchoolDetails.id = this.data.id;
+     this.SchoolDetails.workOrder = this.data.workOrderId;
+     this.SchoolDetails.service = this.data.sr;
+     this.SchoolDetails.serviceType = this.data.serviceTypeId;
+     this.SchoolDetails.schoolNo = 0;
+     this.SchoolDetails.createdBy = this.user.id;
+     this.SchoolDetails.createdDate = new Date();
+     this.SchoolDetails.updateBy = this.user.id;
+     this.SchoolDetails.updatedDate = new Date();
+     this.SchoolDetails.sendSchool = false;
+     this.SchoolDetails.grade = 1;
+     this.SchoolDetails.languages = 1;
+     this.SchoolDetails.workOrderServicesId = this.data.workOrderServicesId;
+     this.SchoolDetails.supplierId = this.SchoolDetails.supplierPartner; 
+     
     this._services.service_general_put("SchoolsList/PutSchools", this.SchoolDetails).subscribe((data => {
       console.log("guardar db: ", data);
+      this.__loader__.hideLoader();
       if (data.success) {
         const dialog = this._dialog.open(DialogGeneralMessageComponent, {
           data: {
@@ -244,7 +258,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
           width: "350px"
         });
         this.ngOnInit();
-        this.__loader__.hideLoader();
+        
         this.dialogRef.close();
       }
     }))
