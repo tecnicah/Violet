@@ -304,17 +304,54 @@ export class DialogRentalFurnitureComponent implements OnInit {
       this.__loader__.hideLoader()
     })
   }
-  save() {
-    this.__loader__.showLoader();
-    console.log(this.dataRentalForniture);
+  fechaFinalMenor: boolean = false
+  updateTotalDays() {
+    if (this.dataRentalForniture.scheduledPickUpDate != null && this.dataRentalForniture.deliveredDate != null) {
+      let fechaInicio = new Date(this.dataRentalForniture.deliveredDate)
+      let fechaFinal = new Date(this.dataRentalForniture.scheduledPickUpDate)
+      if (fechaFinal > fechaInicio) {
+        console.log("la fecha final es mayor que la fecha inicial ");
+        this.dataRentalForniture.totalDays = this.calcularDiferenciaEnDias(fechaInicio, fechaFinal);
+        this.fechaFinalMenor = false;
+      }
+      if (fechaFinal < fechaInicio) {
+        console.log("la fecha final es menor que la fecha inicial ");
+        this.fechaFinalMenor = true;
+        this.dataRentalForniture.totalDays = null
 
-    this._services.service_general_put('RelocationServices/PutRentalFurnitureCoordinaton', this.dataRentalForniture).subscribe(save => {
-      console.log(save);
-      if (save.success == false) return;
-      this.viewMensajeComponente('Success', 'Update Data');
-      this.__loader__.hideLoader()
-      this.dialogRef.close()
-    })
+      }
+      if (fechaFinal.getTime() === fechaInicio.getTime()) {
+        console.log("las fechas son iguales");
+        this.fechaFinalMenor = false;
+        this.dataRentalForniture.totalDays = this.calcularDiferenciaEnDias(fechaInicio, fechaFinal);
+
+      }
+    }
+    else {
+      this.dataRentalForniture.totalDays = null
+    }
+
+  }
+  calcularDiferenciaEnDias(fechaInicial: Date, fechaFinal: Date): number {
+    const tiempoInicial = fechaInicial.getTime();
+    const tiempoFinal = fechaFinal.getTime();
+    const diferencia = tiempoFinal - tiempoInicial;
+    return Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  }
+  save() {
+    if (!this.fechaFinalMenor) {
+      this.__loader__.showLoader();
+      console.log(this.dataRentalForniture);
+
+      this._services.service_general_put('RelocationServices/PutRentalFurnitureCoordinaton', this.dataRentalForniture).subscribe(save => {
+        console.log(save);
+        if (save.success == false) return;
+        this.viewMensajeComponente('Success', 'Update Data');
+        this.__loader__.hideLoader()
+        this.dialogRef.close()
+      })
+    }
+
   }
   viewMensajeComponente(header: string, msg: string) {
     window.scrollTo(0, 0);
