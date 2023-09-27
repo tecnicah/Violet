@@ -10,7 +10,7 @@
 <!----------------------------------OPEN CONTENT------------------------------------------>
 <mat-dialog-content class="mat-typography" style="height: calc(100% - 96px);max-height: unset">
 
-  <mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-list cols="4" rowHeight="57px">
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div class="input_central textarea">
@@ -28,7 +28,7 @@
 
   <div class="mat-elevation-z5">
     <!--Inicio Banking Details Beneficiary-->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory?.includes(1)">
+    <mat-grid-list cols="4" rowHeight="54px" *ngIf="accountCategory?.includes(1)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Beneficiary
@@ -145,7 +145,7 @@
           <mat-form-field appearance="fill">
             <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
             <input matInput placeholder="SWIFT / BIC Code ( If Applies)" [(ngModel)]="data.swiftBeneficiary"
-              type="number" min="0">
+             ><!-- type="number" min="0"-->
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -183,7 +183,7 @@
     <!--Fin Banking Details Beneficiary-->
 
     <!--Inicio Banking Details Intermediary-->
-    <mat-grid-list cols="4" rowHeight="70px" *ngIf="accountCategory?.includes(2)">
+    <mat-grid-list cols="4" rowHeight="53px" *ngIf="accountCategory?.includes(2)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Intermediary

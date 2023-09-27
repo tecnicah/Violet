@@ -203,7 +203,7 @@
   <div class="conten-detail" *ngIf="ocultarOffice()">
     <div class="mat-elevation-z5" style="padding-top: 10px;"
       *ngFor="let data_land of data?.officeBankingDetailLists; let i = index">
-      <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-list cols="4" rowHeight="60px">
         <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
           <div class="input_final">
             <mat-form-field appearance="fill">
@@ -219,7 +219,7 @@
       </mat-grid-list>
       <ng-container *ngFor="let item of data_land.relBankingDetailTypeOfficeBankingDetails">
         <!--Inicio Banking Details Beneficiary-->
-        <mat-grid-list cols="4" rowHeight="70px" *ngIf="item.idCatBankingDetailType == 1">
+        <mat-grid-list cols="4" rowHeight="60px" *ngIf="item.idCatBankingDetailType == 1">
           <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
             <div class="input_final">
               Banking Details Beneficiary
@@ -325,7 +325,7 @@
             <div class="input_final">
               <mat-form-field appearance="fill">
                 <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-                <input [(ngModel)]="data_land.swiftBeneficiary" disabled matInput
+                <input type="text" [(ngModel)]="data_land.swiftBeneficiary" disabled matInput
                   placeholder="SWIFT / BIC Code ( If Applies)">
               </mat-form-field>
             </div>
@@ -364,7 +364,7 @@
         </mat-grid-list>
         <!--Fin Banking Details Beneficiary-->
         <!--Inicio Banking Details Intermediary-->
-        <mat-grid-list cols="4" rowHeight="70px" *ngIf="item.idCatBankingDetailType ==2">
+        <mat-grid-list cols="4" rowHeight="60px" *ngIf="item.idCatBankingDetailType ==2">
           <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
             <div class="input_final">
               Banking Details Intermediary
@@ -418,7 +418,7 @@
         </mat-grid-list>
         <!--Fin Banking Details Intermediary-->
       </ng-container>
-      <mat-grid-list cols="4" rowHeight="70px" style="margin-left: 17px;">
+      <mat-grid-list cols="4" rowHeight="60px" style="margin-left: 17px;">
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           Account # {{i+1}}
         </mat-grid-tile>

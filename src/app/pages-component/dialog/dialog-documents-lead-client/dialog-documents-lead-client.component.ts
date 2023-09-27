@@ -12,9 +12,9 @@ import { DialogGeneralMessageComponent } from '../general-message/general-messag
 export class DialogDocumentsLeadClientComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DialogDocumentsLeadClientComponent>,
-              public _services: ServiceGeneralService,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              public _dialog: MatDialog) { }
+    public _services: ServiceGeneralService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public _dialog: MatDialog) { }
 
   temporalDocument: any = {};;
   user: any = {};
@@ -22,15 +22,21 @@ export class DialogDocumentsLeadClientComponent implements OnInit {
 
   caDocumentType: any[] = [];
   caDocumentStatus: any[] = [];
-caPrivacy: any[] = [];
+  caPrivacy: any[] = [];
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('userData'));
+    this.temporalDocument = { ...this.data } //borrar esto si no funciona en lo demas
+    console.log(this.data);
+    console.log(this.temporalDocument);
+
     this.catalogos();
   }
 
   async catalogos() {
     this.caDocumentType = await this._services.getCatalogueFrom('GetDocumentType/1');
+    console.log(this.caDocumentType);
+
     this.caDocumentStatus = await this._services.getCatalogueFrom('GetDocumentStatus');
     this.caPrivacy = await this._services.getCatalogueFrom('GetPrivacy');
   }
@@ -67,7 +73,7 @@ caPrivacy: any[] = [];
               this.temporalDocument.documentName = droppedFile.relativePath;
               this.temporalDocument.fileName = droppedFile.relativePath;
               this.temporalDocument.fileRequest = encoded;
-              this.temporalDocument.fileExtension = ext[ext.length-1];
+              this.temporalDocument.fileExtension = ext[ext.length - 1];
             };
           });
 
@@ -90,34 +96,40 @@ caPrivacy: any[] = [];
   }
 
 
-    //*************************************************************//
+  //*************************************************************//
   //VALIDACIONES//
-  active_description:boolean = false;
-  active_fileName:boolean = false;
-  active_idDocumentType :boolean = false;
+  active_description: boolean = false;
+  active_fileName: boolean = false;
+  active_idDocumentType: boolean = false;
 
-  
-  valida_form(){
+
+  valida_form() {
 
 
 
     // if(this.temporalDocument.description == undefined || this.temporalDocument.description == ''){
     //   this.active_description = true;
     // }
-    if(this.temporalDocument.idDocumentType == undefined || this.temporalDocument.idDocumentType.length == 0){
+    if (this.temporalDocument.idDocumentType == undefined || this.temporalDocument.idDocumentType.length == 0) {
       this.active_idDocumentType = true;
+      console.log('idDocumentType');
+
     }
-    if(this.temporalDocument.fileName == undefined || this.temporalDocument.fileName.length == 0){
+
+    if (this.temporalDocument.fileName == undefined || this.temporalDocument.fileName.length == 0) {
       this.active_fileName = true;
+      console.log('fileName');
+
     }
 
 
-    if(this.validationForm())
-    {
+    if (this.validationForm()) {
       this.temporalDocument.success = true;
-      this.dialogRef.close(this.temporalDocument);
-    }else
-    {
+      this.temporalDocument.documentType = this.temporalDocument.idDocumentTypeName
+      console.log('data del modal', this.temporalDocument);
+
+     this.dialogRef.close(this.temporalDocument);
+    } else {
       const dialog = this._dialog.open(DialogGeneralMessageComponent, {
         data: {
           header: "Error",
@@ -132,26 +144,27 @@ caPrivacy: any[] = [];
 
 
 
-  validationForm()
-  {
+  validationForm() {
     // if(this.temporalDocument.description == undefined){
     //   return false
     // }
 
-    if(this.temporalDocument.idDocumentTypeName == undefined){
+    if (this.temporalDocument.idDocumentTypeName == undefined) {
+      console.log('idDocumentTypeName unefined ?');
+
       return false
     }
 
-    if(this.temporalDocument.fileName == undefined){
+    if (this.temporalDocument.fileName == undefined) {
+      console.log('fileName unefined ?');
       return false
     }
 
     return true;
   }
 
-  save(){
+  save() {
 
-    console.log('this.temporalDocument',this.temporalDocument);
     this.valida_form();
 
 

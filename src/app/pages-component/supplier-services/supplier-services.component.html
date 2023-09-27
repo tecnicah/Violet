@@ -593,21 +593,21 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
-      <!--Campo agregado Other Advanced-->
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="textarea" style="height: 60%;">
-          <mat-form-field appearance="fill" class="input_central_half">
-            <mat-label>Other Advanced</mat-label>
-            <input matInput [(ngModel)]="data.supplierPartnerDetails[0].otherAdvancedProgram">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-
+     
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="textarea" style="height: 60%;">
           <p class="subtitle" style="font-size: 12px; margin: 0;"> IB </p>
           <mat-checkbox class="example-margin" [(ngModel)]="data.supplierPartnerDetails[0].ib">
           </mat-checkbox>
+        </div>
+      </mat-grid-tile>
+       <!--Campo agregado Other Advanced-->
+       <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <div class="textarea" style="height: 60%;">
+          <mat-form-field appearance="fill" class="input_central_half">
+            <mat-label>Other Advanced Programs</mat-label>
+            <input matInput [(ngModel)]="data.supplierPartnerDetails[0].otherAdvancedProgram">
+          </mat-form-field>
         </div>
       </mat-grid-tile>
 

@@ -28,7 +28,7 @@
 
   <div class="mat-elevation-z5">
     <!--Inicio Banking Details Beneficiary-->
-    <mat-grid-list cols="4" rowHeight="52px" *ngIf="accountCategory.includes(1)">
+    <mat-grid-list cols="4" rowHeight="54px" *ngIf="accountCategory.includes(1)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Beneficiary
@@ -144,8 +144,8 @@
         <div class="input_final">
           <mat-form-field appearance="fill">
             <mat-label>SWIFT / BIC Code ( If Applies)</mat-label>
-            <input matInput placeholder="SWIFT / BIC Code ( If Applies)" [(ngModel)]="data.swiftBeneficiary"
-              type="number" min="0">
+            <input matInput placeholder="SWIFT / BIC Code ( If Applies)"
+              [(ngModel)]="data.swiftBeneficiary"><!--type="number" min="0"-->
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -153,15 +153,6 @@
         <div class="input_final">
           <p class="subtitle" style="font-size: 12px;">W8/W9</p>
           <mat-checkbox class="example-margin" [(ngModel)]="data.w8W9"></mat-checkbox>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <div class="input_final" style="width: 86%;">
-          <mat-form-field appearance="fill">
-            <mat-label>Additional Instructions</mat-label>
-            <input [(ngModel)]="data.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
-            <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
-          </mat-form-field>
         </div>
       </mat-grid-tile>
       <mat-grid-tile style="left: -42px;" [colspan]="1" [rowspan]="1">
@@ -179,12 +170,20 @@
           <mat-checkbox class="example-margin" [(ngModel)]="data.internationalPaymentAcceptance"></mat-checkbox>
         </div>
       </mat-grid-tile>
-
+      <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div class="input_final" style="width: 86%;">
+          <mat-form-field appearance="fill">
+            <mat-label>Additional Instructions</mat-label>
+            <input [(ngModel)]="data.adiitionalInstruccion" matInput #message_bankaddress maxlength="250">
+            <mat-hint align="end">{{message_bankaddress.value.length}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
     </mat-grid-list>
     <!--Fin Banking Details Beneficiary-->
 
     <!--Inicio Banking Details Intermediary-->
-    <mat-grid-list  cols="4" rowHeight="53px" *ngIf="accountCategory.includes(2)">
+    <mat-grid-list cols="4" rowHeight="54px" *ngIf="accountCategory.includes(2)">
       <mat-grid-tile style="left: -42px;" [colspan]="4" [rowspan]="1">
         <div class="input_final">
           Banking Details Intermediary

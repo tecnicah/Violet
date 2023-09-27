@@ -6,3 +6,6 @@
   overflow: unset !important;
   -webkit-overflow-scrolling: touch;
 }
+.input_final {
+  padding: 2px 0 0 70px;
+}

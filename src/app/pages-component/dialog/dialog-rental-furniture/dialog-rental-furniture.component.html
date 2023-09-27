@@ -149,7 +149,7 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Total Time Alloted</mat-label>
-            <input matInput required placeholder="Total Time Alloted" [(ngModel)]="dataRentalForniture.totalTimeAllowed"
+            <input matInput required placeholder="number of days" [(ngModel)]="dataRentalForniture.totalTimeAllowed"
               type="number" min="0">
           </mat-form-field>
         </div>
@@ -160,9 +160,8 @@
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central wid">
           <mat-form-field appearance="fill">
-            <mat-label>Budget</mat-label>
-            <input matInput required placeholder="Budget" [(ngModel)]="dataRentalForniture.budget" type="number"
-              min="0">
+            <mat-label>Budget</mat-label> <!--required-->
+            <input matInput placeholder="Budget" [(ngModel)]="dataRentalForniture.budget" type="number" min="0">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -284,10 +283,9 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Property Address</mat-label>
-            <textarea matInput #message maxlength="500">
-              {{dataRentalForniture.propertyAddress}}
-          </textarea>
-          </mat-form-field>
+            <textarea matInput #message maxlength="500"
+              [(ngModel)]="dataRentalForniture.propertyAddress">          </textarea>
+          </mat-form-field><!--{{dataRentalForniture.propertyAddress}}-->
         </div>
       </mat-grid-tile>
       <!--Fin Property Address-->
@@ -321,7 +319,7 @@
 
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="wid">
-          <p class="page__section-name">Fornitule Details
+          <p class="page__section-name">Service Details
           </p>
         </div>
       </mat-grid-tile>
@@ -361,7 +359,8 @@
           <mat-form-field appearance="fill">
             <mat-label>Delivery Date</mat-label>
             <input matInput [min]="minDate" required [matDatepicker]="pickerDelivery_Date"
-              [(ngModel)]="dataRentalForniture.deliveredDate">
+              [(ngModel)]="dataRentalForniture.deliveredDate" (input)="updateTotalDays()"
+              (dateChange)="updateTotalDays()">
             <mat-datepicker-toggle matSuffix [for]="pickerDelivery_Date"></mat-datepicker-toggle>
             <mat-datepicker #pickerDelivery_Date></mat-datepicker>
           </mat-form-field>
@@ -372,13 +371,17 @@
       <!--inicio Scheduled Pick-Up Date-->
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="input_central wid">
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" style="margin-top: 15px;">
             <mat-label>Scheduled Pick-Up Date</mat-label>
             <input matInput [min]="minDate" required [matDatepicker]="pickerScheduled_Pick_Up_Date"
-              [(ngModel)]="dataRentalForniture.scheduledPickUpDate">
+              [(ngModel)]="dataRentalForniture.scheduledPickUpDate" (input)="updateTotalDays()"
+              (dateChange)="updateTotalDays()">
             <mat-datepicker-toggle matSuffix [for]="pickerScheduled_Pick_Up_Date"></mat-datepicker-toggle>
             <mat-datepicker #pickerScheduled_Pick_Up_Date></mat-datepicker>
           </mat-form-field>
+          <p style="color: red;font-size: 11px;white-space: nowrap;margin-top: -17px;" *ngIf="fechaFinalMenor">The field
+            should not be greater than Delivery Date
+          </p>
         </div>
       </mat-grid-tile>
       <!--Fin Scheduled Pick-Up Date-->
@@ -388,8 +391,8 @@
         <div class="input_central wid">
           <mat-form-field appearance="fill">
             <mat-label>Total Days</mat-label>
-            <input matInput required placeholder="Total Days" [(ngModel)]="dataRentalForniture.totalDays" type="number"
-              min="0">
+            <input disabled matInput required placeholder="Total Days" [(ngModel)]="dataRentalForniture.totalDays"
+              type="number" min="0">
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -547,7 +550,7 @@
       </div>
     </div> -->
     <!--Fin de Payments Methods-->
-<!--     <div class="page__section margin-tb-min">
+    <!--     <div class="page__section margin-tb-min">
       <div class="modal-form__subtitle">
         General Options
       </div>

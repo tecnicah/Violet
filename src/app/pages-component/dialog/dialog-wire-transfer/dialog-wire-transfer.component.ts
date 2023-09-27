@@ -15,26 +15,47 @@ export class DialogWireTransferComponent implements OnInit {
   data: any = {};
   ca_countType: any[] = [];
   ca_currency: any[] = [];
+  indentificador: string = ''
   constructor(public _services: ServiceGeneralService, public _dialog: MatDialog, public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public datas: any) { }
 
   async ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('userData'));
     console.log("INFORMACION DE RECEPCION: ", this.datas);
-    this.data = { ...this.datas }
+    this.indentificador = this.datas.component
+    console.log('indentificador: ', this.indentificador);
 
+    this.data = { ...this.datas.data }
+    console.log(this.data);
     this.getSelectOption();
-    if (this.datas != null) {
-      this.data = { ...this.datas }
-      // this.data = this.datas;
-      console.log(this.data);
-      // let office = this.data.officeBankingDetailLists[0]
-      let resul = this.data?.relBankingDetailTypeWireTransferPaymentInformationSuppliers?.map(ele => {
+    if (this.datas.data != null) {
+      this.data = { ...this.datas.data }
+      console.log("data", this.data);
+      /* let resul = this.data?.relBankingDetailTypeWireTransferPaymentInformationSuppliers?.map(ele => {
+        return ele.idCatBankingDetailType
+      }) */
+      let indentificador = this.ComponentParameter()
+      let resul = indentificador?.map(ele => {
         return ele.idCatBankingDetailType
       })
       this.accountCategory = resul
     }
     this.ca_countType = await this._services.getCatalogueFrom('GetBankAccountType');
     this.ca_currency = await this._services.getCatalogueFrom('GetCurrency');
+  }
+  ComponentParameter() {
+    let param: any
+    switch (this.indentificador) {
+      case 'supplier-service':
+        param = this.data?.relBankingDetailTypeWireTransferServices
+        break;
+      case 'partner_client':
+        param = this.data?.relBankingDetailTypeWireTransferPaymentInformationSuppliers
+        break;
+      default:
+        // param = this.data?.relBankingDetailTypeWireTransferPaymentInformationSuppliers
+        break;
+    }
+    return param
   }
   IdWireTransferPaymentInformationOfficeSupplier: any
   save() {
@@ -71,18 +92,44 @@ export class DialogWireTransferComponent implements OnInit {
     this.data.accountNumber = Number(this.data.accountNumber);
     this.data.routingNumber = Number(this.data.routingNumber);
     this.data.wireFeeApprox = Number(this.data.wireFeeApprox);
-    this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = []
-    console.log(this.data);
+    //anterior this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = []
+    let indentificador = this.ComponentParameter()
+    indentificador = []
 
-    let lista = this.accountCategory.map(select => {
+    console.log(this.data);
+    let lista: any
+    if (this.indentificador == 'supplier-service') {
+      lista = this.accountCategory.map(select => {
+        return {
+          id: 0,
+          idCatBankingDetailType: select,
+          idWireTransferService: this.datas == null ? 0 : this.data.id
+        }
+      })
+      this.data.relBankingDetailTypeWireTransferServices = lista
+    }
+    else if (this.indentificador == 'partner_client') {
+      lista = this.accountCategory.map(select => {
+        return {
+          id: 0,
+          idCatBankingDetailType: select,
+          idWireTransferPaymentInformationOfficeSupplier: this.datas == null ? 0 : this.data.id
+        }
+      })
+      this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = lista
+    }
+    /*anterior let lista = this.accountCategory.map(select => {
       return {
         id: 0,
         idCatBankingDetailType: select,
         IdWireTransferPaymentInformationOfficeSupplier: this.datas == null ? 0 : this.data.id
       }
-    })
+    }) */
+
     console.log(lista);
-    this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = lista
+
+    //anterior this.data.relBankingDetailTypeWireTransferPaymentInformationSuppliers = lista
+
     console.log(this.data);
 
     this.data.success = true;
@@ -162,15 +209,5 @@ export class DialogWireTransferComponent implements OnInit {
       }
 
     }
-
-
-    /* if (variablesAValidar.every(valid => !valid) && !this.valid_accountCategory) {
-
-      // this.save();
-    } else {
-      console.log('salio');
-
-    } */
-
   }
 }
