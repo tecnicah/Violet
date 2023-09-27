@@ -231,6 +231,7 @@ export class DialogSchoolDetailsComponent implements OnInit {
     this.SchoolDetails.grade = 1;
     this.SchoolDetails.languages = 1;
     this.SchoolDetails.supplierId = this.SchoolDetails.supplierPartner;
+    this.SchoolDetails.workOrderServicesId = this.data.workOrderServicesId;
     this.SchoolDetails.updateBy = this.user.id;
     this.SchoolDetails.updatedDate = new Date();
     this._services.service_general_put("SchoolsList/PutSchools", this.SchoolDetails).subscribe((data => {

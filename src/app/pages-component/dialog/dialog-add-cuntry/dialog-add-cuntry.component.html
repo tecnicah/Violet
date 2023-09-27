@@ -23,7 +23,7 @@
           </mat-form-field>
           <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
           <mat-option *ngFor="let item of caCounty | filterBy:filerCountry" [value]="item.id">
-            {{item.name}}
+            {{item.name | titlecase}}
           </mat-option>
           <mat-option disabled *ngIf="(caCounty | filterBy: filerCountry).length === 0">No matching
             elements</mat-option>
