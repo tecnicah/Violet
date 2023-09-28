@@ -65,14 +65,14 @@
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="2" [rowspan]="1">
-      <div class="input_final textarea">
+      <!-- <div class="input_final textarea">
         <mat-form-field appearance="fill">
           <mat-label>Type Resource</mat-label>
           <mat-select [(ngModel)]="data_.typeId">
             <mat-option *ngFor="let item of typeResources" [value]='item.id'>{{item.type}}</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </div> -->
     </mat-grid-tile>
 
     <!-- <mat-grid-tile [colspan]="2" [rowspan]="1">
@@ -172,7 +172,7 @@
   <mat-grid-list cols="1" *ngIf="data_.photoCityLivings && data_.photoCityLivings?.length > 0">
     <div class="page__section margin-top-min">
       <div class="page__section-name">
-        Photo City Living
+        Media
       </div>
       <div
         class="page__section">

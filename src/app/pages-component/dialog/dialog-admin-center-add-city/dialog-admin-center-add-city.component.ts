@@ -55,7 +55,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
     this.data_ = this.data;
     if (this.data_.fileRequest != null) {
-      this.data_.fileRequest = this._services.url_images + this.data_.fileRequest;
+     // this.data_.fileRequest = this._services.url_images + this.data_.fileRequest;
     }
     if (this.data_.resorucesGuideRequest != null) {
       this.data_.resorucesGuideRequest = this._services.url_images + this.data_.resorucesGuideRequest;
@@ -165,8 +165,9 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
 
               let ext = droppedFile.relativePath.split(".");
-              this.data_.fileName = droppedFile.relativePath;
-              this.data_.fileRequest = encoded;
+              this.data_.fileName = droppedFile.relativePath; // cover image name
+             // this.data_.fileRequest = encoded;
+              this.data_.introductionImg = droppedFile.relativePath; // cover image path
 
               // this.temporalDocument = {
               //   "id": 0,
@@ -230,8 +231,12 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
 
               let ext = droppedFile.relativePath.split(".");
-              this.data_.resorucesGuide = droppedFile.relativePath;
-              this.data_.resorucesGuideRequest = encoded;
+             // this.data_.resorucesGuide = droppedFile.relativePath;
+             // this.data_.resorucesGuideRequest = encoded;
+             this.data_.fileRequest = droppedFile.relativePath; // video path
+             this.data_.resorucesGuide = droppedFile.relativePath; // video name
+
+              
               // this.temporalDocument = {
               //   "id": 0,
               //   "idCountry": 0,

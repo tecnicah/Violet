@@ -88,8 +88,30 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
         return
       }
 
+      if(this.data.type == 6 && (this.data.title || this.data.subtitle || this.data.description)){
+        this.data.type = 6;
+        this.data_ = this.data;
+        this.data_.idCity = this.data.idCity;
+        this._services.service_general_get("CountryAdminCenter/GetTypeResources")
+        .subscribe((data => {
+          console.log("Type",data);
+            if (data.success) {
+              this.typeResources = data.result;
+            }
+            
+          }));
+        return
+      }
+
       this.data_.type = this.data.type;
       this.data_.idCity = this.data.idCity;
+
+      if(this.data_.idCity > 0){
+
+      }
+      else{
+        this.data_.typeId = 1 ; // imagen por default 
+      }
     }
 
     this._services.service_general_get("CountryAdminCenter/GetTypeResources")
@@ -144,6 +166,7 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
                   "fileExtencion": ext[ext.length-1],
                   "fileRequest": encoded,
                   "createdDate": new Date(),
+                  "typeId": 1
                 }) 
               }
               
@@ -155,6 +178,7 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
                   "fileExtencion": ext[ext.length-1],
                   "fileRequest": encoded,
                   "createdDate": new Date(),
+                  "typeId": 1
                 }) 
               }
 
@@ -166,6 +190,7 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
                   "fileExtencion": ext[ext.length-1],
                   "fileRequest": encoded,
                   "createdDate": new Date(),
+                  "typeId": 1
                 }) 
               }
 
@@ -177,6 +202,7 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
                   "fileExtencion": ext[ext.length-1],
                   "fileRequest": encoded,
                   "createdDate": new Date(),
+                  "typeId": 1
                 }) 
               }
               if(this.data_.type == 6){
@@ -187,6 +213,7 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
                   "fileExtencion": ext[ext.length-1],
                   "fileRequest": encoded,
                   "createdDate": new Date(),
+                  "typeId": 1
                 }) 
               }
             };
@@ -340,4 +367,22 @@ export class DialogAdminCenterAddInfoComponent implements OnInit {
       }
     })
   }
+
+  validate_photos(): boolean{
+
+    if(!this.data_.photoCityLivings)
+      return false;
+    else{
+      if(this.data_.photoCityLivings.length < 1)
+        return false;
+      else
+      {
+        if(this.data_.photoCityLivings[0].typeId > 0)
+           return true;
+        else
+           return false;
+      }
+    }
+  }
+
 }

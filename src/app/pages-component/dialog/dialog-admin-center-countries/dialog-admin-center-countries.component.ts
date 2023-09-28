@@ -195,6 +195,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
         }
         this._services.service_general_put("CountryAdminCenter/UpdateCountry", this.data_).subscribe((data) => {
           console.log('respuesta de eliminacion', data);
+          this.loader.hideLoader();
           if (data.success) {
             const dialog = this._dialog.open(DialogGeneralMessageComponent, {
               data: {
@@ -327,6 +328,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
 
     } else {
       this._services.service_general_put("CountryAdminCenter/UpdateCountry", this.data_).subscribe((data => {
+        this.loader.hideLoader();
         if (data.success) {
           console.log(data);
           const dialog = this._dialog.open(DialogGeneralMessageComponent, {
@@ -336,7 +338,7 @@ export class DialogAdminCenterCountriesComponent implements OnInit {
             },
             width: "350px"
           });
-          this.loader.hideLoader();
+          
           this.dialogRef.close();
         }
       }))
