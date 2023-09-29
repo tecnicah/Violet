@@ -128,16 +128,20 @@ debugger;
             }
           }
           debugger;
+          console.log("this.catServices", this.catServices);
           this.catServices.forEach(element => {
+            let _time = this.convertMsToHHMMSS(element.time); 
             if(element.tipo == "standalone"){
               this.data.serviceReportDays.push(
                 {
                   id            : element.id,
                   reportDayId   : this.data.id,
-                  service       : element.id,
+                  service       : element.id_service,
                   serviceName: element.service,
                   authotime : element.authoTime == null || element.authoTime == undefined ? 0 : element.authoTime,
                   time          : element.time,
+                  timeh :         _time.split(':')[0],
+                  timem :         _time.split(':')[1],
                   timeReminder  : element.timeReminder,
                   createdBy     : this.user.id,
                   createdDate   : new Date(),
@@ -152,7 +156,7 @@ debugger;
                 {
                   id            : element.id,
                   reportDayId   : this.data.id,
-                  service       : element.id,
+                  service       : element.id_service,
                   serviceName: element.service,
                   authotime : element.authoTime == null || element.authoTime == undefined ? 0 : element.authoTime,
                   time          : element.time,
@@ -427,8 +431,7 @@ debugger;
     this._services.service_general_get('ReportDay/GetTimeRemaindingPublic?service='+service).subscribe(r => {
       
       if(r.success){
-        if(tipo == "standalone"){
-          this.timeRemainingOriginal = r.result;
+        if(tipo == "standalone"){          
           this.data.serviceReportDays[index].timeReminder = r.result;
           this.active_time = true;
           console.log(this.active_time);
@@ -436,15 +439,25 @@ debugger;
 
           setTimeout(() => {
             let _hour = r.result;
-            let _timeWorked = timeWorked == null ? "0" : timeWorked.toString();
+            let __hour = timeWorked.toString().split(':')[0] == 'null' ? 0 : timeWorked.toString().split(':')[0];
+            let __minute = timeWorked.toString().split(':')[1] == 'null' ? 0 : timeWorked.toString().split(':')[1];
+            let __hourOriginal = r.result.toString().split(':')[0] == 'null' ? 0 : r.result.toString().split(':')[0];
+            let __minuteOriginal = r.result.toString().split(':')[1] == 'null' ? 0 : r.result.toString().split(':')[1];
+
+            let _timeWorked = __hour+':'+(__minute == undefined ? '0' : __minute);
+
             // _timeWorked.toISOString().split(":");
             create_date_one.setHours(parseInt(_hour.split(':')[0]), r.result.split(':')[1] != undefined ? parseInt(r.result.split(':')[1]) : 0, 0);
             create_date_two.setHours(parseInt(_timeWorked.split(':')[0]), _timeWorked.split(':')[1] != undefined ? parseInt(_timeWorked.split(':')[1]) : 0, 0);
 
+            console.log("get_difference", create_date_one.getTime());
             let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
+            
             let _diff = this.convertMsToHHMMSS(get_difference);
             this.data.serviceReportDays[index].timeReminder = _diff.split(':')[0] + ":" + _diff.split(':')[1];
-            this.data.serviceReportDays[index].time = _timeWorked;
+
+            this.data.serviceReportDays[index].time = (__hour * 3600000) + ((__minute == undefined ? '0' : __minute) * 60000);
+            this.timeRemainingOriginal = (__hourOriginal * 3600000) + ((__minuteOriginal == undefined ? '0' : __minuteOriginal) * 60000);
             this._cd.markForCheck();
           }, 200);
         }
@@ -578,7 +591,6 @@ debugger;
           const horas = this.data.serviceReportDays[t];
           this.horasServicio = this.horasServicio + horas.time;
           if(this.data.serviceReportDays[t].time == 0){
-            //document.getElementById("myTextField"+t).focus();
             this.data.serviceReportDays[t].timeh == 0;
             this.active_serviceTime = true;
             break;
@@ -590,13 +602,21 @@ debugger;
         for (let t = 0; t < this.data.serviceReportDaysBundle.length; t++) {
           const horas = this.data.serviceReportDaysBundle[t];
           this.horasServicio = this.horasServicio + horas.time;
-          return false;
+          if(this.data.serviceReportDaysBundle[t].time == 0){
+            this.data.serviceReportDaysBundle[t].time == 0;
+            this.active_serviceTime = true;
+            break;
+          }
         }  
       }
 
+      let __hour = this.data.totalTime.toString().split(':')[0] == 'null' ? 0 : this.data.totalTime.toString().split(':')[0];
+      let __minute = this.data.totalTime.toString().split(':')[1] == 'null' ? 0 : this.data.totalTime.toString().split(':')[1].toString().split(' ')[0];
+      let __totalTime = (__hour * 3600000) + ((__minute == undefined ? '0' : __minute) * 60000);
+
       if(this.data.serviceLine == 2 && this.data.id == 0){
           console.log('Total de horas', this.horasServicio)
-        if (this.horasServicio > this.data.totalTime) {
+        if (this.horasServicio > __totalTime) {
           // si es mayor las horas de servicio al total de horas no se podra guardar y manda alerta
           this.validHour = false;
           this.validtime = true;
@@ -619,7 +639,7 @@ debugger;
             });
           return false;
         }
-        if(this.horasServicio < this.data.totalTime){
+        if(this.horasServicio < __totalTime){
           this.validHour = false;
           this.validtime = true;
           this.messageValidTime = "The Service Time is less than the total time added to the report";
@@ -677,14 +697,14 @@ removeValid(){
       create_date_end:Date = new Date(),
       create_date_total:Date = new Date(),
       create_date_remaining:Date = new Date(); 
-
+debugger;
       create_date_start.setHours(parseInt(this.data.startTime.split(':')[0]), this.data.startTime.split(':')[1] != undefined ? parseInt(this.data.startTime.split(':')[1]) : 0, 0);
       create_date_end.setHours(parseInt(this.data.endTime.split(':')[0]), this.data.endTime.split(':')[1] != undefined ? parseInt(this.data.endTime.split(':')[1]) : 0, 0);
       create_date_total.setHours(parseInt(this.data.totalTime.split(':')[0]), this.data.totalTime.split(':')[1] != undefined ? parseInt(this.data.totalTime.split(':')[1]) : 0, 0);
 
-      this.data.startTime = create_date_start;
-      this.data.endTime = create_date_end;
-      this.data.totalTime = create_date_total;     
+      this.data.startTime =  new Date(new Date(create_date_start).toString() + 'Z');
+      this.data.endTime = new Date(new Date(create_date_end).toString() + 'Z');
+      this.data.totalTime = new Date(new Date(create_date_total).toString() + 'Z');     
 
       let timebundleH = 0;
       let timebundleM = 0;

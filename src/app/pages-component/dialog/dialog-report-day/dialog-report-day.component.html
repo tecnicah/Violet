@@ -73,15 +73,7 @@
 
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <div style="display: flex;" class="input_central comments">
-        <!-- <mat-form-field appearance="fill">
-          <mat-label [ngClass]="{valid: active_serviceLine}">Service Line</mat-label>
-          <mat-select  [(ngModel)]="data.serviceLine" (ngModelChange)="getWorkOrders()" required>
-            <mat-option *ngFor="let item of caServiceLine" [value]="item.id">{{item.serviceLine}}</mat-option>
-            <mat-option *ngIf="caServiceLine.length == 0" disabled value=""> No Service </mat-option>
-          </mat-select>
-          <mat-error>Field is required</mat-error>
-          <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceLine">Field is required</mat-hint>
-        </mat-form-field> -->
+       
         <div>
           <p class="subtitle">Service Line</p>
           <p class="title">{{serviceLineName}}</p>
@@ -118,7 +110,7 @@
         <div style="display: flex;" class="input_central comments" *ngIf="data.id != 0">
           <div>
             <p class="subtitle">Start Time</p>
-            <p class="title">{{data.startTime}}</p>
+            <p class="title">{{data.startTime | date: 'shortTime'}}</p>
           </div>
   
           <div style="text-align:end; width: auto !important;">
@@ -146,7 +138,7 @@
         <div style="display: flex;" class="input_central comments" *ngIf="data.id != 0">
           <div>
             <p class="subtitle">End Time</p>
-            <p class="title">{{data.endTime}}</p>
+            <p class="title">{{data.endTime | date: 'shortTime'}}</p>
           </div>
   
           <div style="text-align:end; width: auto !important;">
@@ -173,7 +165,17 @@
       </mat-grid-tile>
   
       <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <div class="input_central">
+        <div style="display: flex;" class="input_central comments" *ngIf="data.id != 0">
+          <div>
+            <p class="subtitle">Total Time</p>
+            <p class="title">{{data.totalTime | date: 'h:mm'}}</p>
+          </div>
+  
+          <div style="text-align:end; width: auto !important;">
+            <mat-icon class="calendar">schedule</mat-icon>
+          </div>
+        </div>
+        <div class="input_central" *ngIf="data.id == 0">
           <mat-form-field appearance="fill">
             <mat-label>Total Time</mat-label>
             <input type="time"
@@ -247,7 +249,7 @@
                     <fieldset>
                       <legend>HH:MM</legend>
                       <div>
-                        <input id="myTextField{{index}}" [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
+                        <input [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
                         <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
   
                         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
@@ -256,14 +258,7 @@
                         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
                       </div>
                    </fieldset>  
-                    <!-- <mat-form-field>
-                      <mat-label>Time Used</mat-label>
-                      <input type="time" required  matInput required placeholder="Time" autocomplete="off" min='01:00' max= '03:00' [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time, 'standalone');">
-                      <mat-error>Field is required</mat-error>
-                      <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
-                     
-                      <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
-                    </mat-form-field> -->
+           
                   </div>
 
                   <!-- <div *ngIf="data.id != 0">
@@ -274,30 +269,7 @@
         </tbody>
       </table>
       <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="validtime">{{messageValidTime}}</mat-hint>
-      <!-- <mat-grid-list cols="4" *ngFor="let itemreport of data.serviceReportDays; let i = index">
-  
-        <mat-grid-tile>
-          {{itemreport.service_name}}
-        </mat-grid-tile>
-        <mat-grid-tile>
-          {{itemreport.authotime}}
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          {{itemreport.timeReminder}}
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="1" style="margin-bottom: 50px;">
-          <div class="input_central">
-            <mat-form-field appearance="fill">
-              <mat-label [ngClass]="{valid: active_serviceTime}">Time</mat-label>
-              <input (focus)="active_serviceTime = false" required  matInput required placeholder="Time"  type="number" min="0" [(ngModel)]="itemreport.time" (ngModelChange)="removeValid(); restaTime(i,itemreport.authotime, itemreport.time);">
-              <mat-error>Field is required</mat-error>
-              <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > totalTime && !validtime">The time entered is greater than the time registered in the service</mat-hint>
-              <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="validtime">{{messageValidTime}}</mat-hint>
-              <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list> -->
+
     </div>
   </div>
 
@@ -330,18 +302,15 @@
                 </td>
                 <td style="text-align: center; max-width: 20px;">
                   <div>
-                    <!-- <mat-form-field>
-                      <mat-label>Time Used</mat-label>
-                      <input required  matInput required placeholder="Time"  type="time" min='01:00' max= '03:00' (ngModelChange)="removeValid(); restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.time, 'bundle');">
-                      <mat-error>Field is required</mat-error>
-                      <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="validtime">{{messageValidTime}}</mat-hint>
-                      <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
-                    </mat-form-field> -->
                     <fieldset>
                       <legend>HH:MM</legend>
                       <div>
                         <input [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.time, 'bundle');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
                         <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time + ':' + itemreport.timem, 'bundle');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
+                       
+                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.timeh < 1">Field is required</mat-hint>
+                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
                       </div>
                    </fieldset>  
                   </div>

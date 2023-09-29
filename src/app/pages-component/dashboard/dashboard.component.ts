@@ -1334,7 +1334,7 @@ export class DashboardComponent implements OnInit {
               statusCoordinator: data.map.value[0].statusCoordinator
 
             },
-            width: "400px"
+            width: "450px"
           });
           dialogRef.afterClosed().subscribe(result => {
             console.log(result);

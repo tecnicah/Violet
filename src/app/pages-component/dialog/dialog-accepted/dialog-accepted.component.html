@@ -256,7 +256,7 @@
     </div>
   </div>
 
-  <div mat-dialog-actions align="end" *ngIf="this.viewButtonaLL">
+  <div mat-dialog-actions align="end">
     <div *ngIf="data.tipo == 2 && data.statusCoordinator != 1">
       <button mat-button [mat-dialog-close]="data.tipo" (click)="accept_coorninator(false)">Reject</button>
       <button mat-button [mat-dialog-close]="data.tipo" cdkFocusInitial

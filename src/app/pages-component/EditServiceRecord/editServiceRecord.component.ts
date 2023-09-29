@@ -4224,21 +4224,42 @@ const msg = (user, contact, message) => ({
 
   }
 
+  padToTwoDigits(num) {
+    return num.toString().padStart(2, '0')
+  }
+  
+  convertMsToHHMMSS(ms){
+    let seconds = Math.floor(ms / 1000)
+    let minutes = Math.floor(seconds / 60)
+    let hours = Math.floor(minutes / 60)
+  
+    seconds = seconds % 60
+    minutes = minutes % 60
+    // hours = hours % 24
+  
+    seconds = this.padToTwoDigits(seconds)
+    minutes = this.padToTwoDigits(minutes)
+    hours = this.padToTwoDigits(hours)
+  
+    return `${hours}:${minutes}:${seconds}`
+  }
+
+
   _getReport_(params) {
     //console.log("SO ID: ", this.SO_ID);
     this.__loader__.showLoader();
+    const create_date_one:Date = new Date();
     this._services.service_general_get('ReportDay/GetActivityReports?sr=' + Number(this.SO_ID) + '&' + params).subscribe((data => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       if (data.success) {
         console.log('DATA CONSULTA: REPORTES ', data);
 
-        let _data: any[] = [];
+        data.view.forEach((element, index) => {
+          let _diff = this.convertMsToHHMMSS(element.totalTime);
+          data.view[index].totalTime = _diff.split(':')[0] + ":" + _diff.split(':')[1];
+        });
 
-        // data.view.forEach(element => {
-        //   element.services.forEach(service => {
-        //     if(service.tipo)
-        //   });
-        // });
+       
         this.dataSourceReport = new MatTableDataSource(data.view);
         console.log("this.dataSourceReport",this.dataSourceReport);
         this.dataSourceReport.paginator = this.ActivityReports;

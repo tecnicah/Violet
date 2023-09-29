@@ -5963,15 +5963,15 @@
             <ng-container matColumnDef="type">
               <th mat-header-cell *matHeaderCellDef> Program </th>
               <td mat-cell *matCellDef="let element">
-                <span *ngIf="element.services.length == 1">
-                  {{element.services[0].tipo}}
-                  <!-- <span *ngFor="let itemrow of element.services[0].tipo">
-                    {{element.services[0].tipo}}
-                  </span>                   -->
+                {{element.type}}
+                <!-- <span *ngIf="element.services.length == 1">
+                  {{element.services[0].tipo}}                  
                 </span>
                 <span *ngIf="element.services.length > 1">
-                  Bundled
-                </span>
+                  <span *ngFor="let itemrow of element.services">
+                    
+                  </span>
+                </span> -->
               </td>
             </ng-container>
 
@@ -5983,7 +5983,7 @@
 
             <!-- Symbol Column -->
             <ng-container matColumnDef="Time Used">
-              <th mat-header-cell *matHeaderCellDef> Time Used </th>
+              <th mat-header-cell *matHeaderCellDef> Time used in the report </th>
               <td mat-cell *matCellDef="let element">
                 <span>
                   {{element.totalTime}}

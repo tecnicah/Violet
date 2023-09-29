@@ -46,5 +46,5 @@
 
 .listaData {
   height: 400px !important;
-  overflow: auto;
+  /* overflow: auto; */
 }
