@@ -29,80 +29,6 @@
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
-
-    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'systemConfiguration'">
-        <div class="input_central textarea">
-          
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>City Name</mat-label>
-            <input type="text"
-                  placeholder="City Name"
-                  aria-label="City Name"
-                  matInput
-                  [formControl]="cityName"
-                  [matAutocomplete]="auto" required>
-            <mat-error>
-              City required
-            </mat-error>
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
-<!-- 
-    <mat-grid-tile
-      [colspan]="1"
-      [rowspan]="1"
-      *ngIf="this.data_.origin == 'violetApp'"
-    >
-      <div class="input_central textarea">
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>City Name</mat-label>
-          <input
-            type="text"
-            placeholder="City Name"
-            aria-label="City Name"
-            matInput
-            [(ngModel)]="data_.city"
-            [matAutocomplete]="auto"
-          />
-
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option
-              *ngFor="let option of filteredOptions | async"
-              [value]="option"
-            >
-              {{ option }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-    </mat-grid-tile> -->
-
-    <!-- <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'systemConfiguration'">
-        <div class="input_central textarea" >
-          <mat-form-field appearance="fill">
-            <mat-label>Search City</mat-label>
-            <input matInput placeholder="City Name" [(ngModel)]="searchcity" (ngModelChange)="change_city_text();">
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="this.data_.origin == 'systemConfiguration'">
-        <div class="input_central textarea" >
-          <mat-form-field appearance="fill">
-            <mat-label *ngIf="lista_ciudades.length > 0">City</mat-label>
-            <mat-label *ngIf="lista_ciudades.length < 1">City (No matching elements)</mat-label>
-            <mat-select [(ngModel)]="data_.city">
-              <mat-option *ngFor="let item of lista_ciudades " [value]='item.name'>{{item.name}}</mat-option>
-              <mat-option disabled *ngIf="lista_ciudades.length === 0">No matching elements</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile> -->
-
     <mat-grid-tile
       [colspan]="1"
       [rowspan]="1">
@@ -204,21 +130,21 @@
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
       <div class="input_central textarea">
         <mat-form-field appearance="fill">
-          <mat-label>Description</mat-label>
-          <input
+          <mat-label>About</mat-label>
+          <textarea
             matInput
-            placeholder="Description"
+            placeholder="About"
             [(ngModel)]="data_.description"
-          />
+          rows="3"></textarea>
         </mat-form-field>
       </div>
     </mat-grid-tile>
 
    
-      <mat-grid-tile *ngIf="isVioletApp" [colspan]="2" [rowspan]="1">
+<!--       <mat-grid-tile *ngIf="isVioletApp" [colspan]="2" [rowspan]="1">
         <div class="input_central textarea">
           <mat-form-field appearance="fill">
             <mat-label>Introduction Image</mat-label>
@@ -229,10 +155,10 @@
             />
           </mat-form-field>
         </div>
-      </mat-grid-tile>
+      </mat-grid-tile> 
 
       <mat-grid-tile [colspan]="1" [rowspan]="1"> </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"> </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1"> </mat-grid-tile>-->
       <div *ngIf="isVioletApp">
       <mat-grid-tile [colspan]="4" [rowspan]="1">
         <div class="textarea">
@@ -301,7 +227,7 @@
               (click)="deleteDocument()"
             />
             <div class="documents__ascard--task">
-              <a href="{{ data_?.fileRequest }}" target="_blank">{{
+              <a href="{{ this._services.url_images  + data_?.introductionImg }}" target="_blank">{{
                 data_.fileName
               }}</a>
             </div>
@@ -359,7 +285,7 @@
               (click)="deleteDocumentPdf()"
             />
             <div class="documents__ascard--task">
-              <a href="{{ data_?.resorucesGuideRequest }}" target="_blank">{{
+              <a href="{{ this._services.url_images  + data_?.fileRequest }}" target="_blank">{{
                 data_.resorucesGuide
               }}</a>
             </div>
@@ -441,7 +367,7 @@
       *ngIf="this.data_.origin == 'violetApp'"
     >
       <div class="textarea">
-        <p class="page__section-name">Living</p>
+        <p class="page__section-name">Living Areas</p>
       </div>
     </mat-grid-tile>
   </mat-grid-list>
@@ -465,12 +391,12 @@
         <img
           src="assets/icons/pencil.png"
           style="width: 20px; margin-right: 10px"
-          (click)="editInfo(1, item, i)"
+          (click)="editInfo(6, item, i)"
         />
         <img
           src="assets/icons/delete.png"
           style="width: 20px"
-          (click)="deleteInfo(1, i, item)"
+          (click)="deleteInfo(6, i, item)"
         />
       </td>
     </tr>
@@ -634,84 +560,85 @@
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="textarea">
-        <p class="page__section-name">What to do</p>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-  <!----------------------------------------------------------------------------------------->
-  <!--START TABLE WHAT TO DO-->
-  <table
-    class="mat-elevation-z8 textarea mat-table"
-    *ngIf="this.data_.origin == 'violetApp'"
-  >
-    <tr class="mat-header-row">
-      <th class="mat-header-cell">Title</th>
-      <th class="mat-header-cell">Subtitle</th>
-      <th class="mat-header-cell">Photos</th>
-      <th class="mat-header-cell"></th>
-    </tr>
-    <tr class="mat-row" *ngFor="let item of data_.cityWhatToDos; let i = index">
-      <td class="mat-cell">{{ item.title }}</td>
-      <td class="mat-cell">{{ item.subtitle }}</td>
-      <td class="mat-cell">{{ item.photoWhatToDos.length }}</td>
-      <td class="mat-cell" style="text-align: end">
-        <img
-          src="assets/icons/pencil.png"
-          style="width: 20px; margin-right: 10px"
-          (click)="editInfo(4, item, i)"
-        />
-        <img
-          src="assets/icons/delete.png"
-          style="width: 20px"
-          (click)="deleteInfo(4, i, item)"
-        />
-      </td>
-    </tr>
-  </table>
-  <!--CLOSE TABLE WHAT TO DO-->
-  <!----------------------------------------------------------------------------------------->
-  <mat-grid-list
-    cols="4"
-    rowHeight="70px"
-    *ngIf="this.data_.origin == 'violetApp'"
-  >
-    <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="addPropperty">
-        <div
-          class="page__section-button page__section-button--big"
-          style="left: 6px"
-        >
-          <button class="button-icon button-icon--more" (click)="addInfo(4)">
-            Add Info
-          </button>
-        </div>
-      </div>
-    </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <div class="textarea">
-        <p class="page__section-name">Where to eat</p>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
   <!----------------------------------------------------------------------------------------->
   <!--START TABLE WHERE TO EAT-->
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <div class="textarea">
+      <p class="page__section-name">Settling In</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<!----------------------------------------------------------------------------------------->
+<!--START TABLE Settling In -->
+<table
+  class="mat-elevation-z8 textarea mat-table"
+  *ngIf="this.data_.origin == 'violetApp'"
+>
+  <tr class="mat-header-row">
+    <th class="mat-header-cell">Title</th>
+    <th class="mat-header-cell">Subtitle</th>
+    <th class="mat-header-cell">Photos</th>
+    <th class="mat-header-cell"></th>
+  </tr>
+  <tr class="mat-row" *ngFor="let item of data_.cityWhatToDos; let i = index">
+    <td class="mat-cell">{{ item.title }}</td>
+    <td class="mat-cell">{{ item.subtitle }}</td>
+    <td class="mat-cell">{{ item.photoWhatToDos.length }}</td>
+    <td class="mat-cell" style="text-align: end">
+      <img
+        src="assets/icons/pencil.png"
+        style="width: 20px; margin-right: 10px"
+        (click)="editInfo(4, item, i)"
+      />
+      <img
+        src="assets/icons/delete.png"
+        style="width: 20px"
+        (click)="deleteInfo(4, i, item)"
+      />
+    </td>
+  </tr>
+</table>
+<!--CLOSE TABLE Settling IN-->
+<!----------------------------------------------------------------------------------------->
+<mat-grid-list
+  cols="4"
+  rowHeight="70px"
+  *ngIf="this.data_.origin == 'violetApp'"
+>
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <div class="addPropperty">
+      <div
+        class="page__section-button page__section-button--big"
+        style="left: 6px"
+      >
+        <button class="button-icon button-icon--more" (click)="addInfo(4)">
+          Add Info
+        </button>
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <div class="textarea">
+      <p class="page__section-name">Important Tips</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
   <table
     class="mat-elevation-z8 textarea mat-table"
     *ngIf="this.data_.origin == 'violetApp'"
   >
     <tr class="mat-header-row">
-      <th class="mat-header-cell">Title</th>
-      <th class="mat-header-cell">Subtitle</th>
-      <th class="mat-header-cell">Photos</th>
+      <th class="mat-header-cell">Tip Type</th>
+      <th class="mat-header-cell">Description</th>
+      <!-- <th class="mat-header-cell">Photos</th> -->
       <th class="mat-header-cell"></th>
     </tr>
     <tr class="mat-row" *ngFor="let item of data_.cityWhereEats; let i = index">
       <td class="mat-cell">{{ item.title }}</td>
-      <td class="mat-cell">{{ item.subtitle }}</td>
-      <td class="mat-cell">{{ item.photoWhereEats.length }}</td>
+      <!-- <td class="mat-cell">{{ item.subtitle }}</td> -->
+      <td class="mat-cell">{{ item.description | slice:0:70 }}...</td>
       <td class="mat-cell" style="text-align: end">
         <img
           src="assets/icons/pencil.png"

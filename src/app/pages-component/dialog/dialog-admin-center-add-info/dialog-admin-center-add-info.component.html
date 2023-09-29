@@ -30,7 +30,7 @@
     <mat-grid-tile [colspan]="2" [rowspan]="1"></mat-grid-tile>
   </mat-grid-list>
 
-  <mat-grid-list cols="6" rowHeight="150px">
+  <mat-grid-list cols="6" rowHeight="150px" *ngIf="this.data_.type != 5">
     <mat-grid-tile [colspan]="6" [rowspan]="1">
       <div class="textarea" style="margin-bottom: 30px;">
         <p>Photo</p>
@@ -65,14 +65,14 @@
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="2" [rowspan]="1">
-      <div class="input_final textarea">
+      <!-- <div class="input_final textarea">
         <mat-form-field appearance="fill">
           <mat-label>Type Resource</mat-label>
           <mat-select [(ngModel)]="data_.typeId">
             <mat-option *ngFor="let item of typeResources" [value]='item.id'>{{item.type}}</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </div> -->
     </mat-grid-tile>
 
     <!-- <mat-grid-tile [colspan]="2" [rowspan]="1">
@@ -140,8 +140,8 @@
       </div>
 
       <div class="page__section documents__ascard" *ngFor="let item of data_.photoCityAbouts; let i = index">
-        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="deletePhoto(item, i)">
+        <!-- <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deletePhoto(item, i)"> -->
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
           {{item.fileName}}
         </div>
@@ -172,7 +172,7 @@
   <mat-grid-list cols="1" *ngIf="data_.photoCityLivings && data_.photoCityLivings?.length > 0">
     <div class="page__section margin-top-min">
       <div class="page__section-name">
-        Photo City Living
+        Media
       </div>
       <div
         class="page__section">
@@ -209,8 +209,8 @@
       </div>
 
       <div class="page__section documents__ascard" *ngFor="let item of data_.photoCityLivings; let i = index">
-        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="deletePhoto(item, i)">
+        <!-- <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deletePhoto(item, i)"> -->
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
           {{item.fileName}}
         </div>
@@ -278,8 +278,8 @@
       </div>
 
       <div class="page__section documents__ascard" *ngFor="let item of data_.photoCityAttractions; let i = index">
-        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="deletePhotoAttraction(item, i)">
+        <!-- <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deletePhotoAttraction(item, i)"> -->
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
           {{item.fileName}}
         </div>
@@ -345,8 +345,8 @@
       </div>
 
       <div class="page__section documents__ascard" *ngFor="let item of data_.photoWhatToDos; let i = index">
-        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="deletePhotoToDo(item, i)">
+       <!--  <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
+          style="background: transparent!important;" (click)="deletePhotoToDo(item, i)"> -->
         <div class="page__section-input page__section-input--6_1 documents__ascard--task">
           {{item.fileName}}
         </div>
@@ -372,72 +372,7 @@
     </div>
   </mat-grid-list>
 
-  <mat-grid-list cols="1" *ngIf="data_.photoWhereEats && data_.photoWhereEats.length > 0">
-    <div class="page__section margin-top-min">
-      <div class="page__section-name">
-        Photo What To Eat
-      </div>
-      <div
-        class="page__section">
-        <div class="page__section-input page__section-input--6_1">
-          <span class="documents__index documents__index--task">
-            Document Name
-          </span>
-        </div>
-        <div class="page__section-input page__section-input--6_1">
-          <span class="documents__index documents__index--task">
-            
-          </span>
-        </div>
-        <div class="page__section-input page__section-input--6_1">
-          <span class="documents__index documents__index--task">
-            
-          </span>
-        </div>
-        <div class="page__section-input page__section-input--6_1">
-          <span class="documents__index documents__index--task">
-           Type
-          </span>
-        </div>
-        <div class="page__section-input page__section-input--6_1">
-          <span class="documents__index documents__index--task">
-            
-          </span>
-        </div>
-        <div class="page__section-input page__section-input--6_1">
-          <span class="documents__index documents__index--task">
-        
-          </span>
-        </div>
-      </div>
-
-      <div class="page__section documents__ascard" *ngFor="let item of data_.photoWhereEats; let i = index">
-        <img src="assets/icons/quit.svg" class="page__section--card-closeButton delete"
-          style="background: transparent!important;" (click)="deletePhotoEat(item, i)">
-        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-          {{item.fileName}}
-        </div>
-        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-        </div>
-        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-        </div>
-        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-          <div class="input_final textarea">
-            <mat-form-field appearance="fill">
-              <mat-label>Type Resource</mat-label>
-              <mat-select [(ngModel)]="item.typeId">
-                <mat-option *ngFor="let type of typeResources" [value]='type.id'>{{type.type}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-        </div>
-        <div class="page__section-input page__section-input--6_1 documents__ascard--task">
-        </div>
-      </div>
-    </div>
-  </mat-grid-list>
+ 
 
 </mat-dialog-content>
 

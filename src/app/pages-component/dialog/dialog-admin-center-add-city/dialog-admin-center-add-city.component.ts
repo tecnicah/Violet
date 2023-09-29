@@ -55,7 +55,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
     this.data_ = this.data;
     if (this.data_.fileRequest != null) {
-      this.data_.fileRequest = this._services.url_images + this.data_.fileRequest;
+     // this.data_.fileRequest = this._services.url_images + this.data_.fileRequest;
     }
     if (this.data_.resorucesGuideRequest != null) {
       this.data_.resorucesGuideRequest = this._services.url_images + this.data_.resorucesGuideRequest;
@@ -165,8 +165,9 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
 
               let ext = droppedFile.relativePath.split(".");
-              this.data_.fileName = droppedFile.relativePath;
-              this.data_.fileRequest = encoded;
+              this.data_.fileName = droppedFile.relativePath; // cover image name
+             // this.data_.fileRequest = encoded;
+              this.data_.introductionImg = droppedFile.relativePath; // cover image path
 
               // this.temporalDocument = {
               //   "id": 0,
@@ -230,8 +231,12 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
 
 
               let ext = droppedFile.relativePath.split(".");
-              this.data_.resorucesGuide = droppedFile.relativePath;
-              this.data_.resorucesGuideRequest = encoded;
+             // this.data_.resorucesGuide = droppedFile.relativePath;
+             // this.data_.resorucesGuideRequest = encoded;
+             this.data_.fileRequest = droppedFile.relativePath; // video path
+             this.data_.resorucesGuide = droppedFile.relativePath; // video name
+
+              
               // this.temporalDocument = {
               //   "id": 0,
               //   "idCountry": 0,
@@ -426,6 +431,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      //debugger
       if (result) {
         if (type == 1) {
           if (data_.id == 0) {
@@ -436,7 +442,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
                 const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
-                    body: "City was deleted"
+                    body: "Item was deleted"
                   },
                   width: "350px"
                 });
@@ -455,7 +461,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
                 const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
-                    body: "City was deleted"
+                    body: "Item was deleted"
                   },
                   width: "350px"
                 });
@@ -473,7 +479,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
                 const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
-                    body: "City was deleted"
+                    body: "Item was deleted"
                   },
                   width: "350px"
                 });
@@ -491,7 +497,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
                 const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
-                    body: "City was deleted"
+                    body: "Item was deleted"
                   },
                   width: "350px"
                 });
@@ -509,7 +515,7 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
                 const dialog = this._dialog.open(DialogGeneralMessageComponent, {
                   data: {
                     header: "Success",
-                    body: "City was deleted"
+                    body: "Item was deleted"
                   },
                   width: "350px"
                 });
@@ -517,25 +523,26 @@ export class DialogAdminCenterAddCityComponent implements OnInit {
               }
             }))
           }
-          if (type == 6) {
-            if (data_.id == 0) {
-              this.data_.cityLivings.splice(i, 1);
-            } else {
-              this._services.service_general_delete("CountryAdminCenter/DeleteCityLiving?id=" + data_.id).subscribe((data => {
-                if (data.success) {
-                  const dialog = this._dialog.open(DialogGeneralMessageComponent, {
-                    data: {
-                      header: "Success",
-                      body: "City was deleted"
-                    },
-                    width: "350px"
-                  });
-                  this.data_.cityLivings.splice(i, 1);
-                }
-              }))
-            }
-
+         
+        }
+        if (type == 6) {
+          if (data_.id == 0) {
+            this.data_.cityLivings.splice(i, 1);
+          } else {
+            this._services.service_general_delete("CountryAdminCenter/DeleteCityLiving?id=" + data_.id).subscribe((data => {
+              if (data.success) {
+                const dialog = this._dialog.open(DialogGeneralMessageComponent, {
+                  data: {
+                    header: "Success",
+                    body: "Item was deleted"
+                  },
+                  width: "350px"
+                });
+                this.data_.cityLivings.splice(i, 1);
+              }
+            }))
           }
+
         }
       }
     })
