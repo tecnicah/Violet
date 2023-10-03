@@ -4252,15 +4252,27 @@ const msg = (user, contact, message) => ({
     this._services.service_general_get('ReportDay/GetActivityReports?sr=' + Number(this.SO_ID) + '&' + params).subscribe((data => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       if (data.success) {
-        console.log('DATA CONSULTA: REPORTES ', data);
+        console.log('DATA CONSULTA: REPORTES ', data.view.value);
 
-        data.view.forEach((element, index) => {
+        data.view.value.forEach((element, index) => {
           let _diff = this.convertMsToHHMMSS(element.totalTime);
-          data.view[index].totalTime = _diff.split(':')[0] + ":" + _diff.split(':')[1];
+          data.view.value[index].totalTime = _diff.split(':')[0] + ":" + _diff.split(':')[1];
+
+          element.services.forEach(service => {
+            if(service.bundle && service.standAlone){
+              data.view.value[index].type = "Stand Alone / Bundled";  
+            }
+            if(service.bundle){
+              data.view.value[index].type = "Bundled";  
+            }
+            if(service.standAlone){
+              data.view.value[index].type = "Stand Alone";  
+            }
+          });
         });
 
        
-        this.dataSourceReport = new MatTableDataSource(data.view);
+        this.dataSourceReport = new MatTableDataSource(data.view.value);
         console.log("this.dataSourceReport",this.dataSourceReport);
         this.dataSourceReport.paginator = this.ActivityReports;
         //this.dataSourceReport.sort = this.sort;
@@ -4278,14 +4290,14 @@ const msg = (user, contact, message) => ({
     this._services.service_general_get('ReportDay/GetActivityReports?sr=' + Number(this.SO_ID)).subscribe((data => {
       //this._services.service_general_get('ReportDay/GetActivityReports?sr='+Number(this.SO_ID)).subscribe((data => {
       if (data.success) {
-        console.log('DATA CONSULTA: REPORTES ', data);
+        console.log('DATA CONSULTA: REPORTES ', data.view.value);
         this.data_directory.serviceLine = 2
         // this._getReport_(params += '&serviceLine=2')
         //this.searchDataReport();
-        // this.dataSourceReport = new MatTableDataSource(data.view);
-        // //console.log(this.dataSourceReport);
-        // this.dataSourceReport.paginator = this.ActivityReports;
-        //this.dataSourceReport.sort = this.sort;
+        this.dataSourceReport = new MatTableDataSource(data.view.value);
+        //console.log(this.dataSourceReport);
+        this.dataSourceReport.paginator = this.ActivityReports;
+        this.dataSourceReport.sort = this.sort;
         this.__loader__.hideLoader();
       }
     }));
@@ -4372,8 +4384,11 @@ const msg = (user, contact, message) => ({
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getReport();
-      this.getSupplier();
+      console.log(result);
+      if(result == undefined){
+        this._getReport_("");
+        this.getSupplier();
+      }     
     })
   }
 
@@ -5842,9 +5857,10 @@ const msg = (user, contact, message) => ({
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getReport();
-      this.getSupplier();
-      //this.ngOnInit();
+      if(result == undefined){
+        this._getReport_("");
+        this.getSupplier();
+      }    
     })
   }
 

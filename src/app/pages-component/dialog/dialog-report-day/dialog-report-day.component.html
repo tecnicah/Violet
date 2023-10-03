@@ -249,8 +249,8 @@
                     <fieldset>
                       <legend>HH:MM</legend>
                       <div>
-                        <input [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
-                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                        <input [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh, 'standalone');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 [disabled]="itemreport.isWeb">:
+                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh + ':' + itemreport.timem, 'standalone');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 [disabled]="itemreport.isWeb">
   
                         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
                        
@@ -305,12 +305,12 @@
                     <fieldset>
                       <legend>HH:MM</legend>
                       <div>
-                        <input [(ngModel)]="itemreport.time" (ngModelChange)="restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.time, 'bundle');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 >:
-                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.time + ':' + itemreport.timem, 'bundle');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 >
+                        <input [(ngModel)]="itemreport.timeh" (ngModelChange)="restaTime(i,itemreport.service,itemreport.timeReminder, itemreport.timeh, 'bundle');" class="in_put" id="hh_1" type="number" min="0" max="12" placeholder="00" value=0 [disabled]="itemreport.isWeb">:
+                        <input [(ngModel)]="itemreport.timem" (ngModelChange)="restaTime(i, itemreport.service, itemreport.timeReminder, itemreport.timeh + ':' + itemreport.timem, 'bundle');" class="in_put" id="mm_1" type="number" min="0" max="59" placeholder="00" value=0 [disabled]="itemreport.isWeb">
                         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.time > timeRemainingOriginal">The time entered is greater than the time remaining in the service</mat-hint>
                        
                         <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="itemreport.timeh < 1">Field is required</mat-hint>
-                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceTime">Field is required</mat-hint>
+                        <mat-hint style="color:#e91e63; font-size: 12px;" *ngIf="active_serviceBundleTime">Field is required</mat-hint>
                       </div>
                    </fieldset>  
                   </div>

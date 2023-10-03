@@ -116,6 +116,7 @@ debugger;
       this.__loader__.showLoader();
       this._services.service_general_get('ReportDay/GetreportDayById?id='+this.data.id).subscribe(r=>{
         if(r.success){
+          debugger;
           console.log("YYYYYYYY-->",r.result);
           this.data = r.result;
           this.data.serviceReportDays = [];
@@ -143,6 +144,7 @@ debugger;
                   timeh :         _time.split(':')[0],
                   timem :         _time.split(':')[1],
                   timeReminder  : element.timeReminder,
+                  isWeb: element.isWeb,
                   createdBy     : this.user.id,
                   createdDate   : new Date(),
                   updateBy      : this.user.id,
@@ -160,7 +162,10 @@ debugger;
                   serviceName: element.service,
                   authotime : element.authoTime == null || element.authoTime == undefined ? 0 : element.authoTime,
                   time          : element.time,
+                  timeh :         _time.split(':')[0],
+                  timem :         _time.split(':')[1],
                   timeReminder  : element.timeReminder,
+                  isWeb: element.isWeb,
                   createdBy     : this.user.id,
                   createdDate   : new Date(),
                   updateBy      : this.user.id,
@@ -372,6 +377,7 @@ debugger;
           authotime : obj.totalTime,
           time          : 0,
           timeReminder  : obj.totalRemaining,
+          isWeb: false,
           createdBy     : this.user.id,
           createdDate   : new Date(),
           updateBy      : this.user.id,
@@ -390,6 +396,7 @@ debugger;
           authotime : obj.totalTime,
           time          : 0,
           timeReminder  : obj.totalRemaining,
+          isWeb: false,
           createdBy     : this.user.id,
           createdDate   : new Date(),
           updateBy      : this.user.id,
@@ -421,8 +428,8 @@ debugger;
 
   timeRemainingOriginal: any;
   _timelocal: Date = new Date();
-  _timeWorkedH: number = 0;
-  _timeWorkedM: number = 0;
+  _timeWorkedH: any = 0;
+  _timeWorkedM: any = 0;
   restaTime(index, service, timeOriginal, timeWorked, tipo){
     debugger;
 
@@ -463,28 +470,58 @@ debugger;
         }
         if(tipo == "bundle"){
 
-          this._timeWorkedH = 0;
-          this._timeWorkedM = 0;
-          this.data.serviceReportDaysBundle.forEach(element => {
-            this._timeWorkedH += parseInt(element.time.toString().split(":")[0]);
-            this._timeWorkedM += parseInt(element.timem == undefined ? 0 : element.timem?.toString().split(":")[0]);
-          });
-          
-          let _hour = r.result;         
-          create_date_one.setHours(parseInt(_hour.split(':')[0]), r.result.split(':')[1] != undefined ? parseInt(r.result.split(':')[1]) : 0, 0);
-          create_date_two.setHours(this._timeWorkedH, this._timeWorkedM, 0);
-        
-          this.timeRemainingOriginal = r.result;
-          // this._timelocal += create_date_two.getTime();
-          this.data.serviceReportDaysBundle[0].timeReminder = r.result;              
-          
+          this.data.serviceReportDaysBundle[index].timeReminder = r.result;
+          this.active_time = true;
+          console.log(this.active_time);
+          this._cd.markForCheck();
 
           setTimeout(() => {
+            let _hour = r.result;
+            let __hour = timeWorked.toString().split(':')[0] == 'null' ? 0 : timeWorked.toString().split(':')[0];
+            let __minute = timeWorked.toString().split(':')[1] == 'null' ? 0 : timeWorked.toString().split(':')[1];
+            let __hourOriginal = r.result.toString().split(':')[0] == 'null' ? 0 : r.result.toString().split(':')[0];
+            let __minuteOriginal = r.result.toString().split(':')[1] == 'null' ? 0 : r.result.toString().split(':')[1];
+
+            let _timeWorked = __hour+':'+(__minute == undefined ? '0' : __minute);
+
+            // _timeWorked.toISOString().split(":");
+            create_date_one.setHours(parseInt(_hour.split(':')[0]), r.result.split(':')[1] != undefined ? parseInt(r.result.split(':')[1]) : 0, 0);
+            create_date_two.setHours(parseInt(_timeWorked.split(':')[0]), _timeWorked.split(':')[1] != undefined ? parseInt(_timeWorked.split(':')[1]) : 0, 0);
+
+            console.log("get_difference", create_date_one.getTime());
             let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
+            
             let _diff = this.convertMsToHHMMSS(get_difference);
             this.data.serviceReportDaysBundle[0].timeReminder = _diff.split(':')[0] + ":" + _diff.split(':')[1];
+
+            this.data.serviceReportDaysBundle[index].time = (__hour * 3600000) + ((__minute == undefined ? '0' : __minute) * 60000);
+            this.timeRemainingOriginal = (__hourOriginal * 3600000) + ((__minuteOriginal == undefined ? '0' : __minuteOriginal) * 60000);
             this._cd.markForCheck();
           }, 200);
+
+          
+          // this._timeWorkedH = 0;
+          // this._timeWorkedM = 0;
+          // this.data.serviceReportDaysBundle.forEach(element => {
+          //   this._timeWorkedH += parseInt(element.timeh.toString().split(":")[0]);
+          //   this._timeWorkedM += parseInt(element.timem == undefined ? 0 : element.timem?.toString().split(":")[0]);
+          // });
+          
+          // let _hour = r.result;    
+          // let __hourOriginal = r.result.toString().split(':')[0] == 'null' ? 0 : r.result.toString().split(':')[0];
+          // let __minuteOriginal = r.result.toString().split(':')[1] == 'null' ? 0 : r.result.toString().split(':')[1];     
+          // create_date_one.setHours(parseInt(_hour.split(':')[0]), r.result.split(':')[1] != undefined ? parseInt(r.result.split(':')[1]) : 0, 0);
+          // create_date_two.setHours(this._timeWorkedH, this._timeWorkedM, 0);
+
+          // setTimeout(() => {
+          //   let get_difference:any = (create_date_one.getTime() - create_date_two.getTime());
+          //   let _diff = this.convertMsToHHMMSS(get_difference);
+          //   this.data.serviceReportDaysBundle[0].timeReminder = _diff.split(':')[0] + ":" + _diff.split(':')[1];
+
+          //   this.data.serviceReportDaysBundle[index].time = (this._timeWorkedH * 3600000) + ((this._timeWorkedM == undefined ? '0' : this._timeWorkedM) * 60000);
+          //   this.timeRemainingOriginal = (__hourOriginal * 3600000) + ((__minuteOriginal == undefined ? '0' : __minuteOriginal) * 60000);
+          //   this._cd.markForCheck();
+          // }, 200);
         }
       }
     })
@@ -531,11 +568,13 @@ debugger;
   active_conclusion: boolean = false;
 
   active_serviceTime :boolean = false;
+  active_serviceBundleTime :boolean = false;
 
 
   validtime: boolean = false;
   messageValidTime: string = "";
   validarCampos() {
+    this.horasServicio = 0;
     // if(this.data.serviceLine == 1){
     //   console.log(this.data.serviceLine);
     //   this.data.startTime = 0;
@@ -589,7 +628,7 @@ debugger;
       if(this.data.serviceReportDays.length != 0){
         for (let t = 0; t < this.data.serviceReportDays.length; t++) {
           const horas = this.data.serviceReportDays[t];
-          this.horasServicio = this.horasServicio + horas.time;
+          this.horasServicio = this.horasServicio + parseInt(horas.time);
           if(this.data.serviceReportDays[t].time == 0){
             this.data.serviceReportDays[t].timeh == 0;
             this.active_serviceTime = true;
@@ -601,20 +640,21 @@ debugger;
       if(this.data.serviceReportDaysBundle.length != 0){
         for (let t = 0; t < this.data.serviceReportDaysBundle.length; t++) {
           const horas = this.data.serviceReportDaysBundle[t];
-          this.horasServicio = this.horasServicio + horas.time;
+          this.horasServicio = this.horasServicio + parseInt(horas.time);
           if(this.data.serviceReportDaysBundle[t].time == 0){
-            this.data.serviceReportDaysBundle[t].time == 0;
-            this.active_serviceTime = true;
+            this.data.serviceReportDaysBundle[t].timeh == 0;
+            this.active_serviceBundleTime = true;
             break;
           }
         }  
       }
 
+
       let __hour = this.data.totalTime.toString().split(':')[0] == 'null' ? 0 : this.data.totalTime.toString().split(':')[0];
       let __minute = this.data.totalTime.toString().split(':')[1] == 'null' ? 0 : this.data.totalTime.toString().split(':')[1].toString().split(' ')[0];
       let __totalTime = (__hour * 3600000) + ((__minute == undefined ? '0' : __minute) * 60000);
 
-      if(this.data.serviceLine == 2 && this.data.id == 0){
+      if(this.data.id == 0){
           console.log('Total de horas', this.horasServicio)
         if (this.horasServicio > __totalTime) {
           // si es mayor las horas de servicio al total de horas no se podra guardar y manda alerta
@@ -662,11 +702,60 @@ debugger;
         }
       }
       else{
-        this.validHour = true;
-        this.validtime = false;
-        this.save();
+        let _time = this.data.totalTime.toString().split("T")[1];
+        let __hour = _time.toString().split(':')[0] == 'null' ? 0 : _time.toString().split(':')[0];
+        let __minute = _time.toString().split(':')[1] == 'null' ? 0 : _time.toString().split(':')[1].toString().split(' ')[0];
+        let __totalTime = (__hour * 3600000) + ((__minute == undefined ? '0' : __minute) * 60000);
 
-        return false;
+        if (this.horasServicio > __totalTime) {
+          // si es mayor las horas de servicio al total de horas no se podra guardar y manda alerta
+          this.validHour = false;
+          this.validtime = true;
+          this.messageValidTime = "Service time exceeds the total time added to the report, the report cannot be saved";
+          const dialog2 = this._dialog.open(DialogGeneralMessageComponent, {
+            data: {
+              header: "Warning",
+              body: `Service time exceeds the total time added to the report, the report cannot be saved`
+            },
+            width: "350px"
+          });
+          dialog2.afterClosed().subscribe(result => {
+            // console.log(result);
+            // if (result) {
+            //   this.validHour = true;
+            //   this.validtime = false;
+            //   this.save();
+            //   }
+            this.horasServicio = 0;
+            });
+          return false;
+        }
+        if(this.horasServicio < __totalTime){
+          this.validHour = false;
+          this.validtime = true;
+          this.messageValidTime = "The Service Time is less than the total time added to the report";
+          const dialog2 = this._dialog.open(DialogConfirmComponent, {
+            data: {
+              header: "Warning",
+              body: `The Service Time is less than the total time added to the report, do you want to continue?`
+            },
+            width: "350px"
+          });
+          dialog2.afterClosed().subscribe(result => {
+            console.log(result);
+            if (result) {
+              this.validHour = true;
+              this.validtime = false;
+              this.save();
+              }
+            });
+          return false;
+        }
+        // this.validHour = true;
+        // this.validtime = false;
+        // this.save();
+
+        // return false;
       }
       
       this.validHour = true;
@@ -716,15 +805,7 @@ debugger;
       let trt = 0
       let totalReminder = 0;
       if(this.data.serviceReportDaysBundle.length > 0){
-        this.data.serviceReportDaysBundle.forEach(element => {
-          timebundleH = timebundleH + element.time;    
-          timebundleM = timebundleM + element.timem == undefined ? 0 : element.timem;
-          debugger;
-        });
-        msh = timebundleH * 3600000 / 1;
-        msm = timebundleM == undefined ? 0 : timebundleM * (60000 / 1);
-        mst = msh + msm;
-
+       
         debugger;
         this.data.serviceReportDaysBundle.forEach((element, index) => {
           debugger;
@@ -736,15 +817,16 @@ debugger;
           // trt = trh + trm;
           // totalReminder = trt - mst;
           // let _diff = this.convertMsToHHMMSS(totalReminder);
-          console.log(element.time + ":" + element.timem);
+          console.log(element.timeh + ":" + element.timem);
           this.data.serviceReportDays.push({
             id: element.id,
             reportDayId: element.reportDayId,
             service: element.service,
             serviceName: element.serviceName,
             authotime: element.authotime,
-            time: element.time?.toString() + ":" + (element.timem == undefined ? "00" : element.timem?.toString()),
+            time: element.time,
             timeReminder: this.data.serviceReportDaysBundle[0].timeReminder,
+            idWeb: true,
             createdBy: element.createdBy,
             createdDate: element.createdDate,
             updateBy: element.updateBy,
@@ -767,7 +849,7 @@ debugger;
             });
             this.__loader__.hideLoader();
             this.dialogRef.close();
-            this.ngOnInit();
+            //this.ngOnInit();
           }
         }));
     }

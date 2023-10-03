@@ -108,6 +108,13 @@ export class NewServiceRecordComponent implements OnInit {
     total: 0,
     pagina: 1
   };
+  public lengthCC;
+  public filtro = '';
+  public dataPag = {
+    filtro: '',
+    paginador: 0,
+  }
+
   /* 1. Globals */
   // @ViewChild(MatSort) sort: MatSort;
   @ViewChild('sort') sort: MatSort;
@@ -262,7 +269,7 @@ export class NewServiceRecordComponent implements OnInit {
     if (this.isUserActive()) {
       this.getTodayDay();
       this.getCatalogues();
-      this.getServiceRecordTableData();
+      this.getServiceRecordTableData('',0);
     } else {
       this._router.navigateByUrl('');
     }
@@ -558,34 +565,35 @@ export class NewServiceRecordComponent implements OnInit {
   }
 
   public service_records_table_data: any = undefined;
-  public getServiceRecordTableData(params: string = ''): void {
+  public getServiceRecordTableData(params: string, pagina: number, nextPge?: boolean): void {
     const params_in: string = params == '' ? '' : `?${params}`;
     this.loader.showLoader();
-    this._services.service_general_get('ServiceRecord/GetServiceRecord/' + this.USERDATA.id + "?" + params)
+    if(nextPge){
+      this.lengthCC == null;
+      pagina = 0
+    }
+
+    let _page_number = "";
+    if(params == ''){
+      _page_number = "?page_Number=";
+    }
+    else
+    {
+      _page_number = "&page_Number=";
+    }
+    this._services.service_general_get('ServiceRecord/GetServiceRecord/' + this.USERDATA.id + "?" + params+_page_number + pagina)
       .subscribe((response: any) => {
-        if (response.success) {
-          response.map.value.forEach(element => {
-            this._services.service_general_get(`ServiceRecord/SetStatusServiceRecord/${element.id}/2`)
-            .subscribe((response: any) => {
-              if (response.success) {
-                element.status = response.result.item2;
-                element.statusId = response.result.item1;
-              }
+        if (response.success) {          
+          console.log("response", response);
 
-            }, (error: any) => {
-
-              console.error('Error => ', error);
-
-            });
-          });
-          setTimeout(() => {
-
-            this.p.total = response.map.value.length;
-            this.service_records_table_data = new MatTableDataSource(response.map.value);
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
-            this.loader.hideLoader();
-          }, 2000);
+          this.lengthCC = response.map.value.totalRegistros;
+          this.p.total = response.map.value.length;
+          this.service_records_table_data = new MatTableDataSource(response.map.value.serviceRecord);
+          this.service_records_table_data.paginator = this.paginator;
+          this.service_records_table_data.sort = this.sort;
+          this.dataPag.filtro = '';
+          this.dataPag.paginador = 0;
+          this.loader.hideLoader();
         }
       }, (error: any) => {
         console.error('Error (GetServiceRecord) => ', error);
@@ -596,6 +604,10 @@ export class NewServiceRecordComponent implements OnInit {
         }, 4477);
         this.loader.hideLoader();
       });
+  }
+
+  public nextPage(event) {
+    this.getServiceRecordTableData('', event.pageIndex);
   }
 
   public filter_data: FilterData = new FilterData();
@@ -618,7 +630,7 @@ export class NewServiceRecordComponent implements OnInit {
 
     }
 
-    this.getServiceRecordTableData(params);
+    this.getServiceRecordTableData(params,0);
 
   }
 
@@ -651,7 +663,7 @@ export class NewServiceRecordComponent implements OnInit {
     setTimeout(() => {
       this.filteruno = false;
     }, 2000);
-    this.getServiceRecordTableData();
+    this.getServiceRecordTableData('',0);
 
   }
 

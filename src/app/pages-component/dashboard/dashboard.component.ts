@@ -97,7 +97,13 @@ export class DashboardComponent implements OnInit {
     name: ''
   };
   counts;
-
+// paginador
+  public lengthCC;
+  public filtro = '';
+  public dataPag = {
+    filtro: '',
+    paginador: 0,
+  }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   // @ViewChild('paginatorElement', {
@@ -115,7 +121,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.consultaPermisos();
       this.initPageSettings();
-      this.requestDashboarData();
+      this.requestDashboarData('',0);
       this.removeColumn();
     }, 500);
 
@@ -198,7 +204,7 @@ export class DashboardComponent implements OnInit {
             console.log('hola');
             this.service_records_table_data = []
 
-            this.requestDashboarData();
+            this.requestDashboarData('',0);
             console.log("333", this.service_records_table_data);
             this.change.detectChanges()
             this.change.markForCheck()
@@ -255,59 +261,30 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  public requestDashboarData(url_params: string = ''): void {
+  public requestDashboarData(url_params: string, pagina: number, nextPge?: boolean): void {
     this.contador_sr_pendientes = 0;
     //console.log("ENTRA A CONSULTAR INFORMACION");
     //console.log("ENTRA A EJECUTAR DESDE FULL COMPONENET");
     let serv_line: string = this.filter_data.serviceLine,
       user_id: number = this.__userlog__.id;
 
-    //console.log(user_id);
-    //console.log(serv_line);
-    //console.log(url_params);
     this.__loader__.showLoader();
-    /*
-        const urlDash = `MyDashboard/GetDashboard/${user_id}` + url_params
 
-        this._services.service_general_get(urlDash).pipe(switchMap((response: any) => {
-          if (response.success) {
-            console.log("DASHBOARD RESPONSE: ", response);
+    if(nextPge){
+      this.lengthCC == null;
+      pagina = 0
+    }
 
-            this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
-            this.service_records_table_data.paginator = this.paginator;
-            this.service_records_table_data.sort = this.sort;
+    let _page_number = "";
+    if(url_params == ''){
+      _page_number = "?page_Number=";
+    }
+    else
+    {
+      _page_number = "&page_Number=";
+    }
 
-            const urlGetReminders = `MyDashboard/GetReminders/${user_id}`
-            const urlGetCoordinators = `MyDashboard/GetCoordinators/${this.__userlog__.id + ''}`
-            this.change.detectChanges()
-            this.change.markForCheck()
-            // this.__loader__.hideLoader();
-
-
-            return forkJoin([this._services.service_general_get(urlGetReminders),
-            this._services.service_general_get(urlGetCoordinators)])
-          }
-        })
-        ).subscribe(([urlGetReminders, urlGetCoordinators]) => {
-          this.__loader__.hideLoader();
-          console.log(urlGetReminders);
-          if (urlGetReminders.success) {
-            this.counts.reminders = urlGetReminders.map.value.length;
-          }
-          console.log('Res => ', urlGetCoordinators);
-          if (urlGetCoordinators.success) {
-            this.counts.coordinators = urlGetCoordinators.map.value.length;
-          }
-        }, (error: any) => {
-          console.log('hi');
-
-          console.error('Error => ', error);
-
-          this.__loader__.hideLoader();
-
-        }); */
-
-    this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}` + url_params)
+    this._services.service_general_get(`MyDashboard/GetDashboard/${user_id}`+url_params+_page_number + pagina)
       .subscribe((response: any) => {
 
         if (response.success) {
@@ -318,9 +295,12 @@ export class DashboardComponent implements OnInit {
 
           // this.dash_data = response.map.value;
           // this.dash_data.pendngAcceptance = this.dash_data.board.filter(x => x.status == "Pending Acceptance").length;
+          this.lengthCC = response.map.value.totalRegistros;
           this.service_records_table_data = new MatTableDataSource(this.dataDashboardFilterByCards(response.map.value.board));
           this.service_records_table_data.paginator = this.paginator;
           this.service_records_table_data.sort = this.sort;
+          this.dataPag.filtro = '';
+          this.dataPag.paginador = 0;
           // this.View_All = this.service_records_table_data.filteredData.length;
           //this.counts = response.map.value.counts;
           console.log("22222", this.service_records_table_data);
@@ -372,6 +352,10 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  public nextPage(event) {
+    this.requestDashboarData('', event.pageIndex);
+  }
+
   checkCheckBoxvalue(event) {
     let _service_records_table_data = this.service_records_table_data.filteredData;
     if (event.checked) {
@@ -381,7 +365,7 @@ export class DashboardComponent implements OnInit {
       this.service_records_table_data.sort = this.sort;
     }
     else {
-      this.requestDashboarData('')
+      this.requestDashboarData('',0)
     }
   }
 
@@ -464,7 +448,7 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    this.requestDashboarData(`?${this.dash_table_params.substring(1)}`);
+    this.requestDashboarData(`?${this.dash_table_params.substring(1)}`, 0);
 
   }
 
@@ -498,7 +482,7 @@ export class DashboardComponent implements OnInit {
 
     this.filter_data = new FilterDataModel();
 
-    this.requestDashboarData();
+    this.requestDashboarData('',0);
 
   }
 
@@ -1135,7 +1119,7 @@ export class DashboardComponent implements OnInit {
       }
     }
     //console.log(params);
-    this.requestDashboarData(`?${params}`);
+    this.requestDashboarData(`?${params}`,0);
 
   }
 
@@ -1424,7 +1408,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.filteruno = false;
     }, 2000);
-    this.requestDashboarData('');
+    this.requestDashboarData('',0);
   }
 
   public info_country: any = {};

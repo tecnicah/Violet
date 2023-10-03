@@ -452,11 +452,9 @@
 
     </div>
     <div class="page__section text-center paginator">
-      <mat-paginator  [pageSizeOptions]="getPageSizeOptions()" showFirstLastButtons></mat-paginator>
-
-      <!-- <mat-paginator class="paginator"
-        (page)="paginatorHtmlElement.nativeElement.querySelector('div.mat-select-value > span > span').innerHTML = paginator.pageSize == 2147483647? 'All': paginator.pageSize"
-        #paginator #paginatorElement [pageSizeOptions]="[10, 20, 2147483647]" showFirstLastButtons></mat-paginator> -->
+      <mat-paginator *ngIf="lengthCC !== null" [length]="lengthCC" [pageSize]="10" [hidePageSize]="true"
+        aria-label="Select page" (page)="nextPage($event)">
+      </mat-paginator>
     </div>
 
       <!-- tooltip para mostrar coordinadores -->
