@@ -1,6 +1,6 @@
 <div class="main-wrapper padding-general-x">
   <div class="page">
-    <div class="page__path">Partner & Clients / Partner & Clients</div>
+    <div class="page__path">Partners & Clients / Partner & Clients</div>
     <div class="page__title title">Partners & Clients</div>
 
     <mat-grid-list cols="5" rowHeight="70px">
@@ -81,7 +81,7 @@
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field appearance="fill" class="input_central">
-          <mat-label>Company Type</mat-label>
+          <mat-label>Partner/Client</mat-label>
           <mat-select
             [(ngModel)]="filter.type"
             (ngModelChange)="applyFiltersBK()"
@@ -157,7 +157,7 @@
       </mat-grid-tile> -->
 
       <!-- <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <button mat-icon-button color="primary" style="margin-top: -28px;" matTooltip="Clear filter" (click)="clean()">
+        <button mat-icon-button color="primary" style="margin-top: -28px;" matTooltip="Clear All Filters" (click)="clean()">
           <mat-icon [ngClass]="{'refresh': refresh}">cached</mat-icon>
         </button>
         <div class="page__section-butuonc" style="margin-top: -30px;">
@@ -172,7 +172,7 @@
           mat-icon-button
           color="primary"
           style="margin-top: -28px"
-          matTooltip="Clear filter"
+          matTooltip="Clear All Filters"
           (click)="clean()"
         >
           <mat-icon [ngClass]="{ refresh: refresh }">cached</mat-icon>
@@ -200,7 +200,7 @@
     >
       <ng-container matColumnDef="Company Type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="company">
-          Partner / Client
+          Name
         </th>
         <td mat-cell *matCellDef="let element">
           <b class="browser" routerLink="/partner_client/{{ element.id }}"
@@ -211,7 +211,7 @@
 
       <ng-container matColumnDef="Client Type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="lead_type">
-          Client Type
+          Partner/Client
         </th>
         <td mat-cell *matCellDef="let element">{{ element.lead_type }}</td>
       </ng-container>
@@ -302,7 +302,7 @@
 
       <ng-container matColumnDef="Contact Name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="dateFirst">
-          Partner Client Since
+          Onboarding Date
         </th>
         <td mat-cell *matCellDef="let element">
           {{ element.partnerClientSince | date : "dd MMM yyy" }}

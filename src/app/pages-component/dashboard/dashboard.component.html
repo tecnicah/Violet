@@ -259,7 +259,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button (click)="resetDashboardTableFilters()" mat-icon-button color="primary" matTooltip="Clear filter">
+        <button (click)="resetDashboardTableFilters()" mat-icon-button color="primary" matTooltip="Clear All ilters">
           <mat-icon>cached</mat-icon>
         </button>
       </mat-grid-tile>
@@ -413,7 +413,7 @@
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;"
-            matTooltip="Clear filter" (click)="cleanFilter()">
+            matTooltip="Clear All Filters" (click)="cleanFilter()">
             <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
           </button>
       </mat-grid-tile>
@@ -479,7 +479,7 @@
             </mat-select>
           </mat-form-field>
           <button *ngxPermissionsOnly="['3']" (click)="resetDashboardTableFilters()" mat-icon-button color="primary"
-            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear filter">
+            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear All Filters">
             <mat-icon>cached</mat-icon>
           </button>
         </div>
@@ -502,16 +502,16 @@
             </mat-select>
           </mat-form-field>
           <button (click)="resetDashboardTableFilters()" mat-icon-button color="primary"
-            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear filter">
+            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear All Filters">
             <mat-icon>cached</mat-icon>
           </button>
           <button (click)="get_Notification();" id="dashboard" mat-icon-button color="primary" hidden
-            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear filter">
+            style="margin-left: -30px; margin-top: 12px;" matTooltip="Clear All filters">
             <mat-icon>cached</mat-icon>
           </button>
         </div>
-      </mat-grid-tile> -->
-      <mat-grid-tile [colspan]="1" [rowspan]="1" style="text-align: center;">
+      </mat-grid-tile> --> Service Records
+      <mat-grid-tile [colspan]="1" [rowspan]="1" style="text-align: justify;">
         <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
 
         </div>
@@ -548,15 +548,15 @@
         <td mat-cell *matCellDef="let element" [ngClass]="element.urgent==true ? 'urgent text-center':'text-center'" >
 
           <span class="cursor-pointer" title="{{ element.serviceLine }}" *ngIf="element.serviceLine=='Relocation'">
-            R
+            Relo
           </span>
 
           <span class="cursor-pointer" title="{{ element.serviceLine}}" *ngIf="element.serviceLine=='Immigration'">
-            I
+            Imm
           </span>
 
           <span class="cursor-pointer" title="{{ element.serviceLine}}" *ngIf="element.serviceLine=='I/R'">
-            I/R
+            Imm/Relo
           </span>
 
         </td>
@@ -720,7 +720,7 @@
         <td mat-cell *matCellDef="let element" [ngClass]="element.urgent==true ? 'urgent':''">
 
           <ng-container *ngIf="element.serviceLine=='Relocation' && _user_rol!=2">
-            <span class="text-center browser cursor-pointer" *ngIf="element.coordinatorRelo?.length > 1"
+            <span class="text-left browser cursor-pointer" *ngIf="element.coordinatorRelo?.length > 1"
               [matMenuTriggerFor]="coordinador"
               (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
               {{element.coordinatorRelo?.length}}
