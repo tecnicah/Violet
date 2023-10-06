@@ -1,6 +1,6 @@
 <div class="main-wrapper padding-general-x">
   <div class="page" [class.display-none]="!show_listado">
-    <div class="page__path subtitle">Operations/New Service Record</div>
+    <div class="page__path subtitle">Operations / Service Records</div>
     <div class="page__title title">
       Service Records
     </div>
@@ -163,15 +163,15 @@
           </mat-date-range-input>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
-          <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+          <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid Start Date</mat-error>
+          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid End Date</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <div class="page__section-butuon" style="margin-top: -26px; width: 100%; text-align: end;">
           <button mat-icon-button color="primary" style="margin-right: 0px; margin-top: -30px;"
-            matTooltip="Clear filter" (click)="cleanFilter()">
+            matTooltip="Clear All Filters" (click)="cleanFilter()">
             <mat-icon [ngClass]="{'refresh': filteruno}">cached</mat-icon>
           </button>
         </div>
@@ -214,17 +214,17 @@
 
             <span class="cursor-pointer"
               title="{{ element.serviceLine }}" *ngIf="element.serviceLine=='Relocation'">
-              R
+              Relo
             </span>
 
             <span class="cursor-pointer"
               title="{{ element.serviceLine}}" *ngIf="element.serviceLine=='Immigration'">
-              I
+              Imm
             </span>
 
             <span class="cursor-pointer"
               title="{{ element.serviceLine}}" *ngIf="element.serviceLine=='I/R'">
-              I/R
+              Imm/Relo
             </span>
 
           </td>
@@ -242,7 +242,7 @@
 
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Status</th>
-          <td mat-cell *matCellDef="let element" class="text-center position-relative">
+          <td mat-cell *matCellDef="let element" class="text-left position-relative">
             <span title="{{ element?.status }}">
               <!-- {{ ( element.status?.status.length > 12 )? ( element.status?.status | slice:0:12 )+ '...' : ( element.status?.status ) }} -->
               {{element?.status}}
@@ -266,7 +266,7 @@
 
         <ng-container matColumnDef="city">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">City</th>
-          <td mat-cell *matCellDef="let element" class="text-center">
+          <td mat-cell *matCellDef="let element" class="text-left">
             <span [matMenuTriggerFor]="country" class="browser" (click)="viewCity(element)"
             style="cursor: pointer" matTooltip="{{element.country}}">
               {{ element.city }}
@@ -276,7 +276,7 @@
 
         <ng-container matColumnDef="partner">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Partner</th>
-          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer">
+          <td mat-cell *matCellDef="let element" class="text-left" style="cursor: pointer">
             <span class="browser" title="{{ element.partner }}" [matMenuTriggerFor]="partner">
               <!-- {{ ( element.partner?.length > 10 )? ( element.partner | slice:0:10 ) + '...' : ( element.partner ) }} -->
               {{element.partner}}
@@ -341,7 +341,7 @@
 
         <ng-container matColumnDef="assigne_name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header="assigneeName" class="text-center">Assignee Name</th>
-          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer">
+          <td mat-cell *matCellDef="let element" class="text-left" style="cursor: pointer">
             <!--span matTooltip="{{element.assigneeName}}">
               {{ ( element.assigneeName?.length > 20 )? (element.assigneeName | slice:0:20) + '...' : (element.assigneeName) }}
             </span-->
@@ -405,7 +405,7 @@
 
         <ng-container matColumnDef="coordinator">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Coordinator</th>
-          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer">
+          <td mat-cell *matCellDef="let element" class="text-left" style="cursor: pointer">
             <span class="text-center browser cursor-pointer" *ngIf="element.coordinatorImm?.length + element.coordinatorRelo?.length > 1"
               [matMenuTriggerFor]="coordinador" (click)="viewCoordinador(element.coordinatorImm, element.coordinatorRelo)">
               <!-- {{ element.coordinator.length > 1 ? element.coordinator.length : element.coordinator[0].name }}   -->
@@ -427,7 +427,7 @@
 
         <ng-container matColumnDef="consultor">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Supplier</th>
-          <td mat-cell *matCellDef="let element" class="text-center" style="cursor: pointer">
+          <td mat-cell *matCellDef="let element" class="text-left" style="cursor: pointer">
             <span class="text-center browser cursor-pointer" *ngIf="element.supplierConsultantImm?.length + element.supplierConsultantRelo?.length > 1"
               [matMenuTriggerFor]="supplier" (click)="viewData(element.supplierConsultantImm, element.supplierConsultantRelo)">
               <!-- {{ element.coordinator.length > 1 ? element.coordinator.length : element.coordinator[0].name }}   -->
@@ -569,7 +569,7 @@
       <div class="assigned_services">
         <div class="data browser">
           <mat-list>
-            <div mat-subheader>Home destination</div>
+            <div mat-subheader>Home Destination</div>
             <mat-divider></mat-divider>
             <mat-list-item>
               <div mat-line><b style="text-transform: capitalize;">{{info_country.homeCountry}}</b></div>
@@ -577,7 +577,7 @@
             </mat-list-item>
           </mat-list>
           <mat-list>
-            <div mat-subheader>Host destination</div>
+            <div mat-subheader>Host Destination</div>
             <mat-divider></mat-divider>
             <mat-list-item>
               <div mat-line><b style="text-transform: capitalize;">{{info_country.hostCountry}}</b></div>
@@ -634,7 +634,7 @@
               elements</mat-option>
           </mat-select>
           <span class="label-error" *ngIf="nso_fields.no_offi">
-            Field is required
+            Field is Required
           </span>
         </mat-form-field>
       </mat-grid-tile>
@@ -698,7 +698,7 @@
               elements</mat-option>
           </mat-select>
           <span class="label-error" *ngIf="nso_fields.no_part">
-            Field is required
+            Field is Required
           </span>
         </mat-form-field>
       </mat-grid-tile>
@@ -846,7 +846,7 @@
                 (change)="removeErrorLabel( $event.target.value, {handler: nso_ainfo_fields, field: 'no_name'} )"
                 [(ngModel)]="new_service_record_data.assigneeInformations[0].assigneeName" />
               <span class="label-error" *ngIf="nso_ainfo_fields.no_name">
-                Field is required
+                Field is Required
               </span>
             </mat-form-field>
           </mat-grid-tile>
@@ -941,10 +941,10 @@
                   validEmailAssignee( $event.target.value );
                   validateEmailServerAvailability( $event.target.value );" placeholder="E-mail*" />
               <span class="label-error" *ngIf="nso_ainfo_fields.no_emai">
-                Field is required
+                Field is Required
               </span>
               <span class="label-error" *ngIf="nso_ainfo_fields.no_emai_val && !nso_ainfo_fields.no_emai">
-                E-mail format not valid
+                E-mail Format Not Valid
               </span>
             </mat-form-field>
           </mat-grid-tile>
@@ -1095,7 +1095,7 @@
                   matching elements</mat-option>
               </mat-select>
               <span class="label-error" *ngIf="nso_ainfo_fields.no_home">
-                Field is required
+                Field is Required
               </span>
             </mat-form-field>
           </mat-grid-tile>
@@ -1188,7 +1188,7 @@
                   matching elements</mat-option>
               </mat-select>
               <span class="label-error" *ngIf="nso_ainfo_fields.no_hhos">
-                Field is required
+                Field is Required
               </span>
             </mat-form-field>
           </mat-grid-tile>
@@ -1211,7 +1211,7 @@
                   matching elements</mat-option>
               </mat-select>
               <span class="label-error" *ngIf="nso_ainfo_fields.no_chos">
-                Field is required
+                Field is Required
               </span>
             </mat-form-field>
           </mat-grid-tile>
@@ -1312,7 +1312,7 @@
                           elements</mat-option>
                       </mat-select>
                       <span class="label-error" *ngIf="dependent_item.relationshipId == '0' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1332,7 +1332,7 @@
                       <input matInput placeholder="Name (as shown on passport)"
                         (change)="dependent_item.name = $event.target.value" />
                       <span class="label-error" *ngIf="dependent_item.name == '' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1359,7 +1359,7 @@
                       <mat-datepicker-toggle matSuffix [for]="depen_bd"></mat-datepicker-toggle>
                       <mat-datepicker #depen_bd></mat-datepicker>
                       <span class="label-error" *ngIf="dependent_item.birth == '' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1368,18 +1368,18 @@
                       <mat-label>Age</mat-label>
                       <input readonly matInput id="dependent_age_{{ index }}" placeholder="Age" type="number" />
                       <span class="label-error display-none">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
                   <!-- languages -->
                   <mat-grid-tile [colspan]="1" [rowspan]="1">
                     <mat-form-field appearance="fill" class="input_central_half">
-                      <mat-label>Languages spoken</mat-label>
+                      <mat-label>Spoken Languages</mat-label>
                       <mat-select matNativeControl required multiple
                         (selectionChange)="dependent_item.languageDependentInformations_ = $event.value;">
                         <mat-form-field appearance="outline" style="padding: 5px;">
-                          <mat-label>Languages spoken</mat-label>
+                          <mat-label>Spoken Languages</mat-label>
                           <input matInput placeholder="Languages spoken" [(ngModel)]="filterLanguagesRe.name">
                         </mat-form-field>
                         <!-- <mat-option selected disabled value="">Languages spoken</mat-option> -->
@@ -1392,7 +1392,7 @@
                       </mat-select>
                       <span class="label-error"
                         *ngIf="dependent_item.languageDependentInformations_.length == 0 && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1416,7 +1416,7 @@
                           No matching elements</mat-option>
                       </mat-select>
                       <span class="label-error" *ngIf="dependent_item.nationalityId == '' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1439,7 +1439,7 @@
                           matching elements</mat-option>
                       </mat-select>
                       <span class="label-error" *ngIf="dependent_item.education == '' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1449,7 +1449,7 @@
                       <input matInput placeholder="E-mail" (change)="dependent_item.email = $event.target.value; validateEmailServerAvailabilityDependent($event.target.value, index)"
                         type="text" />
                       <span class="label-error" *ngIf="dependent_item.email == '' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                       <span class="label-error"
                         *ngIf="dependent_item.email != '' && !validateEmail( dependent_item.email )">
@@ -1463,7 +1463,7 @@
                       <input matInput placeholder="Phone" type="number" min="0"
                         (change)="dependent_item.phone = $event.target.value"  (keydown)="validaNumericos($event)"/>
                       <span class="label-error" *ngIf="dependent_item.phone == '' && show_dependent_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1563,7 +1563,7 @@
                           matching elements</mat-option>
                       </mat-select>
                       <span class="label-error" *ngIf="pet.petTypeId == '' && show_pets_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1572,7 +1572,7 @@
                       <mat-label>Pet Name</mat-label>
                       <input matInput placeholder="Pet Name" (change)="pet.name = $event.target.value;" />
                       <span class="label-error" *ngIf="pet.name == '' && show_pets_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1614,7 +1614,7 @@
                       <mat-datepicker-toggle matSuffix [for]="pet_bd"></mat-datepicker-toggle>
                       <mat-datepicker #pet_bd></mat-datepicker>
                       <span class="label-error" *ngIf="pet.age == '' && show_pets_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1641,7 +1641,7 @@
                           matching elements</mat-option>
                       </mat-select>
                       <span class="label-error" *ngIf="pet.sizeId == '' && show_pets_erros">
-                        Field is required
+                        Field is Required
                       </span>
                     </mat-form-field>
                   </mat-grid-tile>
@@ -1962,7 +1962,7 @@
                         rel_coordinator_model.coordinatorTypeId == '' &&
                         show_dependent_erros &&
                         !one_coordinator_selected">
-                  Field is required
+                  Field is Required
                 </span>
               </mat-form-field>
             </mat-grid-tile>
@@ -1989,7 +1989,7 @@
                         rel_coordinator_model.coordinatorId == '' &&
                         show_dependent_erros &&
                         !one_coordinator_selected">
-                  Field is required
+                  Field is Required
                 </span>
               </mat-form-field>
             </mat-grid-tile>
@@ -2116,7 +2116,7 @@
                     elements</mat-option>
                 </mat-select>
                 <span class="label-error" *ngIf="rel_sup_form.no_styp">
-                  Field is required
+                  Field is Required
                 </span>
               </mat-form-field>
             </mat-grid-tile>
@@ -2163,7 +2163,7 @@
                 <mat-datepicker-toggle matSuffix [for]="assign_date"></mat-datepicker-toggle>
                 <mat-datepicker #assign_date></mat-datepicker>
                 <span class="label-error" *ngIf="rel_sup_form.no_date">
-                  Field is required
+                  Field is Required
                 </span>
               </mat-form-field>
             </mat-grid-tile>
@@ -2191,7 +2191,7 @@
                     elements</mat-option>
                 </mat-select>
                 <span class="label-error" *ngIf="rel_sup_form.no_serv">
-                  Field is required
+                  Field is Required
                 </span>
               </mat-form-field>
             </mat-grid-tile>

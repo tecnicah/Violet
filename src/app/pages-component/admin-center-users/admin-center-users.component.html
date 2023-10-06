@@ -141,7 +141,7 @@
 
       <table *ngIf="tableCatalog === 'Users'"  class="mat-elevation-z8 textarea" mat-table [dataSource]="dataUser"  #sortuser='matSort' matSort >
         <!-- Name -->
-        <ng-container matColumnDef="Name">
+        <ng-container matColumnDef="User Name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
           <td mat-cell *matCellDef="let user" (click)="profilePage(user.id)">
             <span class="browser" *ngIf="user.roleId != 4">{{user.name}} </span>
